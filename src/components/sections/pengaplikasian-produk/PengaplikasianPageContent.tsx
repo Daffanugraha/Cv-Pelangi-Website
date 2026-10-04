@@ -441,24 +441,34 @@ export default function PengaplikasianPageContent() {
       <section className="relative z-10 bg-surface py-5 shadow-sm border-b border-surface-container-high transition-all">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            {/* Filter Pills */}
-            <div className="flex items-center gap-2 overflow-x-auto no-scrollbar w-full md:w-auto py-1">
-              {FILTER_TABS.map((tab) => {
-                const isActive = activeFilter === tab.key;
-                return (
-                  <button
-                    key={tab.key}
-                    onClick={() => setActiveFilter(tab.key)}
-                    className={`whitespace-nowrap px-4 py-2 rounded-full text-xs font-semibold transition-all ${
-                      isActive
-                        ? "bg-gradient-to-r from-bracket-border to-primary text-white shadow-md shadow-bracket-border/30 scale-105"
-                        : "bg-surface-container text-on-surface hover:bg-divider-tint hover:text-bracket-border"
-                    }`}
-                  >
-                    {tab.label}
-                  </button>
-                );
-              })}
+            {/* Filter Pills Marquee (Bergerak pelan terus-menerus & pause saat hover) */}
+            <div className="relative flex-1 overflow-hidden min-w-0 w-full py-1">
+              {/* Fade masks */}
+              <div className="absolute left-0 top-0 bottom-0 w-8 sm:w-12 bg-gradient-to-r from-surface to-transparent z-10 pointer-events-none"></div>
+              <div className="absolute right-0 top-0 bottom-0 w-8 sm:w-12 bg-gradient-to-l from-surface to-transparent z-10 pointer-events-none"></div>
+
+              <div className="category-marquee-track items-center py-1">
+                {[...Array(2)].map((_, loopIdx) => (
+                  <div key={loopIdx} className="flex items-center gap-2.5 px-1.5 shrink-0">
+                    {FILTER_TABS.map((tab) => {
+                      const isActive = activeFilter === tab.key;
+                      return (
+                        <button
+                          key={`${loopIdx}-${tab.key}`}
+                          onClick={() => setActiveFilter(tab.key)}
+                          className={`whitespace-nowrap px-4 py-2 rounded-full text-xs font-semibold transition-all shrink-0 cursor-pointer select-none ${
+                            isActive
+                              ? "bg-gradient-to-r from-bracket-border to-primary text-white shadow-md shadow-bracket-border/30 scale-105"
+                              : "bg-surface-container text-on-surface hover:bg-divider-tint hover:text-bracket-border"
+                          }`}
+                        >
+                          {tab.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                ))}
+              </div>
             </div>
 
             {/* Search Box */}

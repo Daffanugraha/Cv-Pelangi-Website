@@ -102,6 +102,15 @@
   }
 }
 
+@keyframes categoryMarqueeSlow {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
 .anim-nav-down {
   animation: navFadeDown 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
@@ -203,6 +212,17 @@
 }
 
 .partner-marquee-infinite:hover {
+  animation-play-state: paused;
+}
+
+.category-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: categoryMarqueeSlow 42s linear infinite;
+  will-change: transform;
+}
+
+.category-marquee-track:hover {
   animation-play-state: paused;
 }
 
