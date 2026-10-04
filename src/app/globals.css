@@ -111,6 +111,24 @@
   }
 }
 
+@keyframes servicesMarqueeContinuous {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes seamlessLoop {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
 .anim-nav-down {
   animation: navFadeDown 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
@@ -224,6 +242,21 @@
 
 .category-marquee-track:hover {
   animation-play-state: paused;
+}
+
+.infinite-cards-track {
+  display: flex !important;
+  width: max-content !important;
+  animation: servicesMarqueeContinuous 75s linear infinite !important;
+  will-change: transform;
+}
+
+.infinite-cards-track:hover {
+  animation-play-state: paused !important;
+}
+
+.infinite-cards-track.stopped {
+  animation: none !important;
 }
 
 /* Hide scrollbars */
