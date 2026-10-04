@@ -72,10 +72,18 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/galeri"
+                  href="/#galeri"
                   className="hover:text-bracket-border transition-colors"
                 >
                   Galeri
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/galeri/pengaplikasian-produk"
+                  className="hover:text-bracket-border transition-colors"
+                >
+                  Galeri Produk
                 </Link>
               </li>
               <li>

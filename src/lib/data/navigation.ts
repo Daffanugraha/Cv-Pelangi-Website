@@ -30,7 +30,7 @@ export const navLinks: NavLink[] = [
   { label: "Kontak", href: "/kontak" },
   {
     label: "Galeri",
-    href: "/galeri",
+    href: "/#galeri",
     dropdown: [
       {
         label: "Galeri Pengaplikasian Produk",
@@ -40,7 +40,7 @@ export const navLinks: NavLink[] = [
       },
       {
         label: "Galeri Momen",
-        href: "/galeri",
+        href: "/galeri/momen",
         desc: "Dokumentasi kegiatan tim & fasilitas pabrik",
         icon: "photo_camera",
       },

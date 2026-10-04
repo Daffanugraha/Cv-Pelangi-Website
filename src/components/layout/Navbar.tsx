@@ -61,7 +61,7 @@ export default function Navbar() {
     pathname.startsWith("/galeri/pengaplikasian-produk") ||
     pathname === "/galeri/produk";
   const isGaleriMomenPage =
-    pathname === "/galeri" || pathname === "/galeri/momen";
+    pathname === "/galeri/momen" || pathname.startsWith("/galeri/momen");
   const { language, setLanguage, t } = useLanguage();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -245,7 +245,8 @@ export default function Navbar() {
             {/* Dropdown Galeri */}
             <div className="relative group py-2">
               <Link
-                href="/galeri"
+                href="/#galeri"
+                onClick={(e) => handleHashClick(e, "#galeri")}
                 className={`nav-link-item relative ${
                   isGaleriPage
                     ? "text-secondary-container font-bold after:content-[''] after:absolute after:bottom-1 after:left-3 after:right-3 after:h-[2px] after:bg-secondary-container"
@@ -283,7 +284,7 @@ export default function Navbar() {
                   </div>
                 </Link>
                 <Link
-                  href="/galeri"
+                  href="/galeri/momen"
                   className={`flex items-start gap-3 p-2 ${
                     isGaleriMomenPage ? "bg-white/15" : "hover:bg-white/10"
                   } rounded-lg transition-colors group/item`}
@@ -602,6 +603,13 @@ export default function Navbar() {
               </div>
               <div className="space-y-1 pl-2">
                 <Link
+                  href="/#galeri"
+                  onClick={(e) => handleMobileHashClick(e, "#galeri")}
+                  className="block px-3 py-2 rounded-lg text-white hover:bg-bracket-border text-sm font-medium"
+                >
+                  {t("nav_gallery")} (Beranda)
+                </Link>
+                <Link
                   href="/galeri/pengaplikasian-produk"
                   onClick={() => setMobileMenuOpen(false)}
                   className={`block px-3 py-2 rounded-lg ${
@@ -613,7 +621,7 @@ export default function Navbar() {
                   {t("nav_gallery_products")}
                 </Link>
                 <Link
-                  href="/galeri"
+                  href="/galeri/momen"
                   onClick={() => setMobileMenuOpen(false)}
                   className={`block px-3 py-2 rounded-lg ${
                     isGaleriMomenPage
