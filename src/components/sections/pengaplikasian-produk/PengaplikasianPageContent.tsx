@@ -248,12 +248,18 @@ const EDUCATIONAL_SLIDES = [
 ];
 
 export default function PengaplikasianPageContent() {
-  // 1. Looping ticker state
+  // 1. Looping ticker state with smooth fade animation
   const [currentLoopIndex, setCurrentLoopIndex] = useState(0);
+  const [fadeState, setFadeState] = useState<"in" | "out">("in");
+
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentLoopIndex((prev) => (prev + 1) % LOOPING_KEYWORDS.length);
-    }, 2800);
+      setFadeState("out");
+      setTimeout(() => {
+        setCurrentLoopIndex((prev) => (prev + 1) % LOOPING_KEYWORDS.length);
+        setFadeState("in");
+      }, 350);
+    }, 3200);
     return () => clearInterval(timer);
   }, []);
 
@@ -424,10 +430,16 @@ export default function PengaplikasianPageContent() {
               Galeri Pengaplikasian <span className="text-bracket-border">Produk Cetak</span>
             </h1>
 
-            {/* Dynamic Looping Rotating Keyword Banner */}
+            {/* Dynamic Looping Rotating Keyword */}
             <p className="text-surface-dim max-w-3xl leading-relaxed mb-8 text-base sm:text-lg">
               Solusi visualisasi hasil aplikasi finishing cetak presisi tinggi dari CV Pelangi UV — mulai dari{" "}
-              <span className="inline-block px-2.5 py-0.5 rounded-md bg-bracket-border/20 text-accent-gold font-bold border border-accent-gold/30 transition-all duration-300">
+              <span
+                className={`inline-block font-semibold text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-yellow-200 to-amber-400 transition-all duration-350 ease-out ${
+                  fadeState === "in"
+                    ? "opacity-100 translate-y-0 filter blur-0 scale-100"
+                    : "opacity-0 -translate-y-1.5 filter blur-[1px] scale-95"
+                }`}
+              >
                 {LOOPING_KEYWORDS[currentLoopIndex]}
               </span>{" "}
               hingga beragam kemasan berstandar industri ekspor.
