@@ -106,14 +106,6 @@ export const DEFAULT_GALLERY_PRODUCTS: GalleryProduct[] = [
   },
 ];
 
-const LOOPING_KEYWORDS = [
-  "Kemasan Luxury Skincare",
-  "Rigid Box Parfum",
-  "Dus Makanan Food-grade",
-  "Hardcover Agenda Eksekutif",
-  "Shopping Bag Eksklusif",
-  "Label Kartu Nama Premium",
-];
 
 const FILTER_TABS = [
   { key: "all", label: "Semua Produk" },
@@ -248,22 +240,7 @@ const EDUCATIONAL_SLIDES = [
 ];
 
 export default function PengaplikasianPageContent() {
-  // 1. Looping ticker state with smooth fade animation
-  const [currentLoopIndex, setCurrentLoopIndex] = useState(0);
-  const [fadeState, setFadeState] = useState<"in" | "out">("in");
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setFadeState("out");
-      setTimeout(() => {
-        setCurrentLoopIndex((prev) => (prev + 1) % LOOPING_KEYWORDS.length);
-        setFadeState("in");
-      }, 350);
-    }, 3200);
-    return () => clearInterval(timer);
-  }, []);
-
-  // 2. Filter state
+  // 1. Filter state
   const [activeFilter, setActiveFilter] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -430,19 +407,9 @@ export default function PengaplikasianPageContent() {
               Galeri Pengaplikasian <span className="text-bracket-border">Produk Cetak</span>
             </h1>
 
-            {/* Dynamic Looping Rotating Keyword */}
+            {/* Headline Subtitle */}
             <p className="text-surface-dim max-w-3xl leading-relaxed mb-8 text-base sm:text-lg">
-              Solusi visualisasi hasil aplikasi finishing cetak presisi tinggi dari CV Pelangi UV — mulai dari{" "}
-              <span
-                className={`inline-block font-semibold text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-yellow-200 to-amber-400 transition-all duration-350 ease-out ${
-                  fadeState === "in"
-                    ? "opacity-100 translate-y-0 filter blur-0 scale-100"
-                    : "opacity-0 -translate-y-1.5 filter blur-[1px] scale-95"
-                }`}
-              >
-                {LOOPING_KEYWORDS[currentLoopIndex]}
-              </span>{" "}
-              hingga beragam kemasan berstandar industri ekspor.
+              Solusi visualisasi hasil aplikasi finishing cetak presisi tinggi dari CV Pelangi UV — mulai dari Hardcover Agenda Eksekutif hingga beragam kemasan berstandar industri ekspor.
             </p>
 
             {/* Action Buttons */}
@@ -471,7 +438,7 @@ export default function PengaplikasianPageContent() {
       {/* ========================================================================= */}
       {/* 2. FILTER & SEARCH CONTROLS */}
       {/* ========================================================================= */}
-      <section className="sticky top-20 z-30 bg-surface/95 backdrop-blur-md py-4 shadow-sm border-b border-surface-container-high transition-all">
+      <section className="relative z-10 bg-surface py-5 shadow-sm border-b border-surface-container-high transition-all">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             {/* Filter Pills */}
@@ -494,35 +461,26 @@ export default function PengaplikasianPageContent() {
               })}
             </div>
 
-            {/* Search Box & Counter */}
-            <div className="flex items-center gap-3 w-full md:w-auto justify-between md:justify-end">
-              <div className="relative w-full md:w-64">
-                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg">
-                  search
-                </span>
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Cari efek finishing atau produk..."
-                  className="w-full pl-9 pr-4 py-2 bg-surface-container-lowest border border-surface-container-high rounded-full text-xs text-on-surface placeholder-gray-400 focus:outline-none focus:border-bracket-border transition"
-                />
-                {searchQuery && (
-                  <button
-                    onClick={() => setSearchQuery("")}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                  >
-                    <span className="material-symbols-outlined text-sm">close</span>
-                  </button>
-                )}
-              </div>
-
-              <div className="hidden lg:flex items-center gap-1.5 text-xs text-text-muted shrink-0">
-                <span className="material-symbols-outlined text-bracket-border text-base">tune</span>
-                <span>
-                  Menampilkan <strong className="text-on-surface">{filteredProducts.length}</strong> Koleksi
-                </span>
-              </div>
+            {/* Search Box */}
+            <div className="relative w-full md:w-72">
+              <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg">
+                search
+              </span>
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Cari efek finishing atau produk..."
+                className="w-full pl-9 pr-4 py-2 bg-surface-container-lowest border border-surface-container-high rounded-full text-xs text-on-surface placeholder-gray-400 focus:outline-none focus:border-bracket-border transition"
+              />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery("")}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                >
+                  <span className="material-symbols-outlined text-sm">close</span>
+                </button>
+              )}
             </div>
           </div>
         </div>
