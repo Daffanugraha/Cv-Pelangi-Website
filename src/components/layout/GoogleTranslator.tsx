@@ -20,6 +20,7 @@ declare global {
     };
     googleTranslateElementInit?: () => void;
     protectTechnicalTerms?: () => void;
+    restoreOriginalLanguage?: () => void;
   }
 }
 
@@ -47,44 +48,53 @@ export default function GoogleTranslator() {
       />
       {mounted && (
         <>
-      <Script
-        id="google-translate-init"
-        strategy="lazyOnload"
-        dangerouslySetInnerHTML={{
-          __html: `
-            function protectAllIcons() {
-              var els = document.querySelectorAll('.material-symbols-outlined, .material-symbols-rounded, .material-symbols-sharp, .material-icons, [class*="material-symbols"]');
-              for (var i = 0; i < els.length; i++) {
-                els[i].setAttribute('translate', 'no');
-                if (!els[i].classList.contains('notranslate')) {
-                  els[i].classList.add('notranslate');
+          <Script
+            id="google-translate-init"
+            strategy="lazyOnload"
+            dangerouslySetInnerHTML={{
+              __html: `
+                function protectAllIcons() {
+                  var els = document.querySelectorAll('.material-symbols-outlined, .material-symbols-rounded, .material-symbols-sharp, .material-icons, [class*="material-symbols"]');
+                  for (var i = 0; i < els.length; i++) {
+                    els[i].setAttribute('translate', 'no');
+                    if (!els[i].classList.contains('notranslate')) {
+                      els[i].classList.add('notranslate');
+                    }
+                  }
                 }
-              }
-            }
 
-            function protectTechnicalTerms() {
-              protectAllIcons();
-            }
-            window.protectTechnicalTerms = protectTechnicalTerms;
+                function protectTechnicalTerms() {
+                  protectAllIcons();
+                }
+                window.protectTechnicalTerms = protectTechnicalTerms;
 
-            function googleTranslateElementInit() {
-              protectAllIcons();
-              if (window.google && window.google.translate) {
-                new window.google.translate.TranslateElement({
-                  pageLanguage: 'id',
-                  includedLanguages: 'id,en',
-                  autoDisplay: false
-                }, 'google_translate_element');
-              }
-            }
-          `,
-        }}
-      />
-      <Script
-        id="google-translate-script"
-        strategy="lazyOnload"
-        src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
-      />
+                window.restoreOriginalLanguage = function() {
+                  var combo = document.querySelector('.goog-te-combo');
+                  if (combo) {
+                    combo.value = '';
+                    combo.dispatchEvent(new Event('change'));
+                  }
+                };
+
+                function googleTranslateElementInit() {
+                  protectAllIcons();
+                  if (window.google && window.google.translate) {
+                    new window.google.translate.TranslateElement({
+                      pageLanguage: 'id',
+                      includedLanguages: 'en',
+                      autoDisplay: false
+                    }, 'google_translate_element');
+                  }
+                }
+                window.googleTranslateElementInit = googleTranslateElementInit;
+              `,
+            }}
+          />
+          <Script
+            id="google-translate-script"
+            strategy="lazyOnload"
+            src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
+          />
         </>
       )}
     </>
