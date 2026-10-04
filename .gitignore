@@ -42,3 +42,6 @@ next-env.d.ts
 !public/**/*.webp
 !public/**/*.svg
 !public/**/*.ico
+
+# large video
+public/videos/video-beranda.mp4
