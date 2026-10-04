@@ -23,10 +23,13 @@ const UI_TRANSLATIONS: Record<string, { ID: string; EN: string }> = {
   nav_contact: { ID: "Kontak", EN: "Contact" },
   nav_gallery: { ID: "Galeri", EN: "Gallery" },
   nav_gallery_products: {
-    ID: "Galeri Pengaplikasian Produk",
-    EN: "Product Application Gallery",
+    ID: "Pengaplikasian Produk",
+    EN: "Product Applications",
   },
-  nav_gallery_moments: { ID: "Galeri Momen Kegiatan", EN: "Activity Moments Gallery" },
+  nav_gallery_moments: {
+    ID: "Momen & Kegiatan",
+    EN: "Moments & Activities",
+  },
   nav_blog: { ID: "Blog", EN: "Blog" },
   nav_download_catalog: { ID: "Unduh Katalog", EN: "Download Catalog" },
   nav_order_now: { ID: "Pesan Sekarang", EN: "Order Now" },

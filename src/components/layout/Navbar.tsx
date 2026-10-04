@@ -260,50 +260,26 @@ export default function Navbar() {
                   expand_more
                 </span>
               </Link>
-              <div className="absolute left-0 top-full hidden group-hover:block w-72 bg-navbar-dark border border-white/10 shadow-2xl rounded-xl p-2 z-50">
+              <div className="absolute left-0 top-full hidden group-hover:block w-64 bg-navbar-dark border border-white/10 shadow-2xl rounded-xl p-2 z-50">
                 <Link
                   href="/galeri/pengaplikasian-produk"
-                  className={`flex items-start gap-3 p-2 ${
-                    isGaleriAplikasiPage ? "bg-white/15" : "hover:bg-white/10"
-                  } rounded-lg transition-colors group/item`}
+                  className={`block px-3 py-2 text-sm rounded-lg transition-colors ${
+                    isGaleriAplikasiPage
+                      ? "bg-bracket-border text-white font-semibold"
+                      : "text-white hover:bg-bracket-border"
+                  }`}
                 >
-                  <div className="w-8 h-8 rounded-lg bg-bracket-border/20 text-bracket-border flex items-center justify-center shrink-0 mt-0.5">
-                    <span
-                      translate="no" className="material-symbols-outlined notranslate text-[18px]"
-                    >
-                      package_2
-                    </span>
-                  </div>
-                  <div>
-                    <p className="text-sm text-white font-semibold group-hover/item:text-bracket-border transition-colors">
-                      {t("nav_gallery_products")}
-                    </p>
-                    <p className="text-[11px] text-surface-dim">
-                      Hasil jadi finishing cetak, spot UV &amp; foil
-                    </p>
-                  </div>
+                  {t("nav_gallery_products")}
                 </Link>
                 <Link
                   href="/galeri/momen"
-                  className={`flex items-start gap-3 p-2 ${
-                    isGaleriMomenPage ? "bg-white/15" : "hover:bg-white/10"
-                  } rounded-lg transition-colors group/item`}
+                  className={`block px-3 py-2 text-sm rounded-lg transition-colors ${
+                    isGaleriMomenPage
+                      ? "bg-bracket-border text-white font-semibold"
+                      : "text-white hover:bg-bracket-border"
+                  }`}
                 >
-                  <div className="w-8 h-8 rounded-lg bg-bracket-border text-white flex items-center justify-center shrink-0 mt-0.5">
-                    <span
-                      translate="no" className="material-symbols-outlined notranslate text-[18px]"
-                    >
-                      photo_camera
-                    </span>
-                  </div>
-                  <div>
-                    <p className="text-sm text-white font-semibold group-hover/item:text-bracket-border transition-colors">
-                      {t("nav_gallery_moments")}
-                    </p>
-                    <p className="text-[11px] text-surface-dim">
-                      Dokumentasi kegiatan tim &amp; fasilitas pabrik
-                    </p>
-                  </div>
+                  {t("nav_gallery_moments")}
                 </Link>
               </div>
             </div>
@@ -602,13 +578,6 @@ export default function Navbar() {
                 <span>{t("nav_gallery")}</span>
               </div>
               <div className="space-y-1 pl-2">
-                <Link
-                  href="/#galeri"
-                  onClick={(e) => handleMobileHashClick(e, "#galeri")}
-                  className="block px-3 py-2 rounded-lg text-white hover:bg-bracket-border text-sm font-medium"
-                >
-                  {t("nav_gallery")} (Beranda)
-                </Link>
                 <Link
                   href="/galeri/pengaplikasian-produk"
                   onClick={() => setMobileMenuOpen(false)}
