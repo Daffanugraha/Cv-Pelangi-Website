@@ -34,7 +34,7 @@ export const navLinks: NavLink[] = [
     dropdown: [
       {
         label: "Galeri Pengaplikasian Produk",
-        href: "/#galeri",
+        href: "/galeri/pengaplikasian-produk",
         desc: "Hasil jadi finishing cetak, spot UV & foil",
         icon: "package_2",
       },
