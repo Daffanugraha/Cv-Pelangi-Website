@@ -22,8 +22,6 @@
   &nbsp;•&nbsp;
   <a href="#-fitur-utama">Fitur Unggulan</a>
   &nbsp;•&nbsp;
-  <a href="#-admin-panel--dashboard">Admin Panel</a>
-  &nbsp;•&nbsp;
   <a href="#-cara-menjalankan">Instalasi Lokal</a>
   &nbsp;•&nbsp;
   <a href="#-panduan-deploy-ke-vercel">Deploy ke Vercel</a>
@@ -150,19 +148,6 @@ Cv-Pelangi-Website/
 
 ---
 
-## 🔐 Admin Panel & Kredensial
-
-Platform ini dilengkapi halaman admin bawaan yang aman untuk mengelola aset dan komunikasi klien.
-
-* **URL Akses Admin**: `http://localhost:3000/admin` *(atau domain-anda/admin)*
-* **Kredensial Default**:
-  * **Username**: `admin`
-  * **Password**: `pelangiuv2024`
-
-> 💡 *Password dan informasi kontak dapat diubah kapan saja secara aman melalui tab **Pengaturan** di dalam dasbor admin.*
-
----
-
 ## ☁️ Panduan Deploy ke Vercel (1-Click Deploy)
 
 Website ini 100% kompatibel dan dioptimasi secara khusus untuk deployment di **Vercel**:
@@ -172,19 +157,6 @@ Website ini 100% kompatibel dan dioptimasi secara khusus untuk deployment di **V
 3. Cari dan pilih repository **`Daffanugraha/Cv-Pelangi-Website`**, lalu klik **"Import"**.
 4. Biarkan konfigurasi build bawaan (*Framework Preset: Next.js*).
 5. Klik **"Deploy"**. Dalam hitungan 1-2 menit, situs Anda sudah live di internet dengan domain aman SSL gratis!
-
----
-
-## 🏢 Profil Perusahaan & Hubungi Kami
-
-**CV Pelangi UV**  
-*Spesialis Pasca-Cetak & Grosir Bahan Finishing Percetakan*
-
-* 📍 **Alamat Workshop**: Kompleks Pergudangan Bizpark Tambak Sawah Blok C-10, Sidoarjo, Jawa Timur 61256
-* 📞 **WhatsApp Hotline**: [+62 822-3101-9363](https://wa.me/6282231019363)
-* ☎️ **Telepon Kantor**: (031) 866 7469
-* ✉️ **Email**: [cs@pelangifinishing.co.id](mailto:cs@pelangifinishing.co.id)
-* 🌐 **Situs Resmi**: [CV Pelangi UV](https://github.com/Daffanugraha/Cv-Pelangi-Website)
 
 ---
 
