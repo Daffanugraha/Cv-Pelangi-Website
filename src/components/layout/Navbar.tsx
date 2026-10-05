@@ -698,9 +698,15 @@ export default function Navbar() {
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && filteredSearch.length > 0) {
                     e.preventDefault();
-                    router.push(filteredSearch[0].link);
+                    const targetLink = filteredSearch[0].link;
+                    router.push(targetLink);
                     setIsSearchOpen(false);
                     setSearchQuery("");
+                    if (typeof window !== "undefined") {
+                      window.dispatchEvent(
+                        new CustomEvent("pelangi-nav-target", { detail: targetLink })
+                      );
+                    }
                   }
                 }}
                 autoFocus
@@ -745,6 +751,11 @@ export default function Navbar() {
                         onClick={() => {
                           setIsSearchOpen(false);
                           setSearchQuery("");
+                          if (typeof window !== "undefined") {
+                            window.dispatchEvent(
+                              new CustomEvent("pelangi-nav-target", { detail: item.link })
+                            );
+                          }
                         }}
                         className="flex items-center justify-between p-3 rounded-xl bg-white/[0.03] hover:bg-white/[0.08] border border-white/5 hover:border-white/15 transition-all group"
                       >

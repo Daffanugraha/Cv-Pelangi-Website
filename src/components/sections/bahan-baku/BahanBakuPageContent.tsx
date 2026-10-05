@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { rawMaterialCategories } from "@/lib/data/rawMaterials";
 import BahanBakuHero from "./BahanBakuHero";
 import BahanBakuStandards from "./BahanBakuStandards";
@@ -39,6 +39,37 @@ export default function BahanBakuPageContent() {
       formEl.scrollIntoView({ behavior: "smooth" });
     }
   };
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const checkCategoryParam = () => {
+      const params = new URLSearchParams(window.location.search);
+      let cat = params.get("category");
+      if (!cat && window.location.hash) {
+        cat = window.location.hash.replace("#product-card-", "").replace("#", "");
+      }
+      if (cat && ["opp", "foil", "lem", "spotuv"].includes(cat)) {
+        setTimeout(() => {
+          handleSelectCategoryCard(cat as "opp" | "foil" | "lem" | "spotuv");
+        }, 300);
+      }
+    };
+
+    checkCategoryParam();
+    window.addEventListener("popstate", checkCategoryParam);
+    const onNavTarget = (e: any) => {
+      if (e.detail && e.detail.includes("category=")) {
+        setTimeout(checkCategoryParam, 100);
+      }
+    };
+    window.addEventListener("pelangi-nav-target", onNavTarget);
+
+    return () => {
+      window.removeEventListener("popstate", checkCategoryParam);
+      window.removeEventListener("pelangi-nav-target", onNavTarget);
+    };
+  }, []);
 
   return (
     <div className="flex flex-col w-full bg-surface-canvas selection:bg-bracket-border selection:text-white">
