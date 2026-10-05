@@ -48,8 +48,8 @@ function highlightServiceCard(index, btnEl) {
     if (targetIndices.includes(idx)) {
       card.style.setProperty('display', 'flex', 'important');
       card.style.setProperty('opacity', '1', 'important');
-      card.style.setProperty('transform', 'none', 'important');
-      card.style.setProperty('animation', 'none', 'important');
+      card.style.removeProperty('transform');
+      card.style.removeProperty('animation');
       visibleCount++;
     } else {
       card.style.setProperty('display', 'none', 'important');
@@ -73,13 +73,13 @@ function highlightServiceCard(index, btnEl) {
   } else {
     if (track) {
       track.classList.remove('stopped');
-      track.style.setProperty('animation', 'servicesMarqueeContinuous 75s linear infinite', 'important');
-      track.style.setProperty('transform', 'translateX(0)', 'important');
-      track.style.setProperty('width', 'max-content', 'important');
-      track.style.setProperty('display', 'flex', 'important');
-      track.style.setProperty('flex-wrap', 'nowrap', 'important');
-      track.style.setProperty('justify-content', 'flex-start', 'important');
-      track.style.setProperty('gap', '1.5rem', 'important');
+      track.style.removeProperty('animation');
+      track.style.removeProperty('transform');
+      track.style.removeProperty('width');
+      track.style.removeProperty('justify-content');
+      track.style.removeProperty('gap');
+      track.style.removeProperty('display');
+      track.style.removeProperty('flex-wrap');
     }
     carousel.style.setProperty('overflow-x', 'hidden', 'important');
     carousel.style.cursor = 'grab';

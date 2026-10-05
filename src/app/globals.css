@@ -257,6 +257,7 @@
 
 .infinite-cards-track.stopped {
   animation: none !important;
+  transform: none !important;
 }
 
 /* Hide scrollbars */
