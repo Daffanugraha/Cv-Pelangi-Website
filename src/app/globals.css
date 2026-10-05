@@ -351,14 +351,3 @@ body > .skiptranslate {
 .anim-title-glow {
   animation: titlePulseGlow 3.5s ease-in-out infinite;
 }
-
-.album-marquee-track {
-  display: flex !important;
-  width: max-content !important;
-  animation: servicesMarqueeContinuous 65s linear infinite !important;
-  will-change: transform;
-}
-
-.album-marquee-track:hover {
-  animation-play-state: paused !important;
-}

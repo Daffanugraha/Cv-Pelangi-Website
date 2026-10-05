@@ -368,7 +368,7 @@ export default function GaleriMomenPageContent() {
 
       function tick() {
         // If track is using CSS animation, let CSS handle the continuous glide smoothly
-        if (track && (track.classList.contains('category-marquee-track') || track.classList.contains('album-marquee-track'))) {
+        if (track && track.classList.contains('category-marquee-track')) {
           return;
         }
         if (!isDragging) {
