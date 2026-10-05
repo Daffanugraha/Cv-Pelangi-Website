@@ -45,7 +45,7 @@ export const productsJasa: ProductItem[] = [
     tag: "",
     title: "Pond & Window Patch",
     desc: "Potong bentuk presisi tinggi (Die-Cut) dan penempelan jendela mika bening otomatis untuk kemasan kue, kosmetik, dan garmen.",
-    img: "https://lh3.googleusercontent.com/aida-public/AB6AXuDZvYkS7v20l8RLK7X4iGdClwmyaUi2_cePATVp-rjsqCssrweckGJim-CitycEX22eEtaSM-DhHCEZGmEXDH3EX9crdwC9YEFAWdI8g9PCjumoNiuuT_VyA5V4N0YDqjUBGk4wZGu5YBa0CqXw3nJJ3vBqbtIDhuSvmHHT2mF0CrDoKeGbmqQvGugAjNKKg1jefKxQZjKmGBeuQy7u02kiDTBC9HCNsXqI_y4pq1nfKco3Bxf50Wjn",
+    img: "/images/layanan/laminating-window.jpg",
     capacity: "90k/hari",
   },
 ];
