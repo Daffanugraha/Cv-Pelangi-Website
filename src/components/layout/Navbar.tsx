@@ -391,12 +391,15 @@ export default function Navbar() {
             </div>
 
             {/* Header CTA Buttons */}
-            <Link
-              href="/kontak#section-form"
+            <a
+              href="/katalog/katalog-pelangi-uv.pdf"
+              download="KATALOG PELANGI UV.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
               className="hidden md:inline-flex items-center justify-center px-3.5 py-1.5 rounded-full border border-white/30 text-white hover:bg-white/20 hover:border-bracket-border text-xs font-medium transition-all duration-300 hover:scale-105 active:scale-95 shrink-0 whitespace-nowrap hover:shadow-[0_0_12px_rgba(255,255,255,0.2)]"
             >
               {t("nav_download_catalog")}
-            </Link>
+            </a>
             <Link
               href="/kontak#section-form"
               className="hidden sm:inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-bracket-border text-white hover:bg-primary text-xs font-semibold shadow-[0_4px_14px_rgba(246,84,86,0.39)] hover:shadow-[0_6px_20px_rgba(246,84,86,0.65)] transition-all duration-300 hover:scale-105 active:scale-95 shrink-0 whitespace-nowrap"
@@ -610,8 +613,19 @@ export default function Navbar() {
               {t("nav_blog")}
             </Link>
 
-            {/* Mobile Order Now Button */}
-            <div className="pt-3">
+            {/* Mobile Action Buttons */}
+            <div className="pt-3 flex flex-col gap-2">
+              <a
+                href="/katalog/katalog-pelangi-uv.pdf"
+                download="KATALOG PELANGI UV.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-white/20 hover:bg-white/10 text-white text-sm font-semibold active:scale-95 transition-all"
+              >
+                <span translate="no" className="material-symbols-outlined notranslate text-[18px]">download</span>
+                <span>{t("nav_download_catalog")}</span>
+              </a>
               <Link
                 href="/kontak#section-form"
                 onClick={() => setMobileMenuOpen(false)}
