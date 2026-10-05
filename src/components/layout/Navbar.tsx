@@ -83,6 +83,35 @@ export default function Navbar() {
       )
     : [];
 
+  const handleSelectSearchResult = (targetLink: string, e?: React.SyntheticEvent) => {
+    if (typeof window === "undefined") return;
+
+    const targetPath = targetLink.split("?")[0].split("#")[0];
+    const isSamePage =
+      (isLayananPage && (targetLink.startsWith("/layanan") || targetLink.startsWith("/produk/jasa-finishing"))) ||
+      (isBahanBakuPage && (targetLink.startsWith("/produk/bahan-baku") || targetLink.startsWith("/bahan-baku"))) ||
+      (pathname === targetPath);
+
+    setIsSearchOpen(false);
+    setSearchQuery("");
+
+    if (isSamePage) {
+      if (e) {
+        e.preventDefault();
+      }
+      // Update browser URL without Next.js page transition / reload delay
+      window.history.pushState(null, "", targetLink);
+      window.dispatchEvent(
+        new CustomEvent("pelangi-nav-target", { detail: targetLink })
+      );
+    } else {
+      router.push(targetLink);
+      window.dispatchEvent(
+        new CustomEvent("pelangi-nav-target", { detail: targetLink })
+      );
+    }
+  };
+
   // Close search and language dropdowns on ESC / outside click
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -698,15 +727,7 @@ export default function Navbar() {
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && filteredSearch.length > 0) {
                     e.preventDefault();
-                    const targetLink = filteredSearch[0].link;
-                    router.push(targetLink);
-                    setIsSearchOpen(false);
-                    setSearchQuery("");
-                    if (typeof window !== "undefined") {
-                      window.dispatchEvent(
-                        new CustomEvent("pelangi-nav-target", { detail: targetLink })
-                      );
-                    }
+                    handleSelectSearchResult(filteredSearch[0].link, e);
                   }
                 }}
                 autoFocus
@@ -748,14 +769,8 @@ export default function Navbar() {
                       <Link
                         key={idx}
                         href={item.link}
-                        onClick={() => {
-                          setIsSearchOpen(false);
-                          setSearchQuery("");
-                          if (typeof window !== "undefined") {
-                            window.dispatchEvent(
-                              new CustomEvent("pelangi-nav-target", { detail: item.link })
-                            );
-                          }
+                        onClick={(e) => {
+                          handleSelectSearchResult(item.link, e);
                         }}
                         className="flex items-center justify-between p-3 rounded-xl bg-white/[0.03] hover:bg-white/[0.08] border border-white/5 hover:border-white/15 transition-all group"
                       >
@@ -831,9 +846,8 @@ export default function Navbar() {
                         <Link
                           key={idx}
                           href={item.link}
-                          onClick={() => {
-                            setIsSearchOpen(false);
-                            setSearchQuery("");
+                          onClick={(e) => {
+                            handleSelectSearchResult(item.link, e);
                           }}
                           className="flex items-center justify-between p-2.5 rounded-xl bg-white/[0.03] hover:bg-white/[0.08] border border-white/5 hover:border-white/15 transition-all group text-left"
                         >

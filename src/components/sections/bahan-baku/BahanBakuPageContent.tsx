@@ -43,30 +43,39 @@ export default function BahanBakuPageContent() {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    const checkCategoryParam = () => {
-      const params = new URLSearchParams(window.location.search);
-      let cat = params.get("category");
-      if (!cat && window.location.hash) {
-        cat = window.location.hash.replace("#product-card-", "").replace("#", "");
+    const checkCategoryParam = (targetUrl?: string) => {
+      let cat: string | null = null;
+      if (targetUrl && typeof targetUrl === "string") {
+        try {
+          const url = new URL(targetUrl, window.location.origin);
+          cat = url.searchParams.get("category");
+          if (!cat && url.hash) {
+            cat = url.hash.replace("#product-card-", "").replace("#", "");
+          }
+        } catch (e) {}
+      }
+      if (!cat) {
+        const params = new URLSearchParams(window.location.search);
+        cat = params.get("category");
+        if (!cat && window.location.hash) {
+          cat = window.location.hash.replace("#product-card-", "").replace("#", "");
+        }
       }
       if (cat && ["opp", "foil", "lem", "spotuv"].includes(cat)) {
-        setTimeout(() => {
-          handleSelectCategoryCard(cat as "opp" | "foil" | "lem" | "spotuv");
-        }, 300);
+        handleSelectCategoryCard(cat as "opp" | "foil" | "lem" | "spotuv");
       }
     };
 
     checkCategoryParam();
-    window.addEventListener("popstate", checkCategoryParam);
+    const handlePopState = () => checkCategoryParam();
+    window.addEventListener("popstate", handlePopState);
     const onNavTarget = (e: any) => {
-      if (e.detail && e.detail.includes("category=")) {
-        setTimeout(checkCategoryParam, 100);
-      }
+      checkCategoryParam(e.detail);
     };
     window.addEventListener("pelangi-nav-target", onNavTarget);
 
     return () => {
-      window.removeEventListener("popstate", checkCategoryParam);
+      window.removeEventListener("popstate", handlePopState);
       window.removeEventListener("pelangi-nav-target", onNavTarget);
     };
   }, []);
