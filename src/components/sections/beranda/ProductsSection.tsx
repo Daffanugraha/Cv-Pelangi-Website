@@ -349,113 +349,40 @@ export default function ProductsSection() {
                 ))}
 
                 {/* Banner Callout Card */}
-                {activeTab === "jasa" ? (
-                  <div className="w-[320px] sm:w-[360px] bg-gradient-to-br from-bracket-border via-primary to-navbar-black rounded-3xl p-space-lg flex flex-col justify-between shadow-2xl transition-transform duration-300 shrink-0 text-white hover:scale-[1.02] border-2 border-bracket-border/40">
-                    <div className="space-y-space-md">
-                      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 text-white font-label-meta text-[11px] font-bold uppercase tracking-wider backdrop-blur-sm">
-                        <span className="w-2 h-2 rounded-full bg-accent-gold animate-pulse"></span>{" "}
-                        13+ Macam Layanan
-                      </div>
-                      <h3 className="font-headline-lg text-headline-lg font-extrabold leading-tight text-white">
-                        Eksplorasi Seluruh Layanan Finishing
-                      </h3>
-                      <p className="font-body-sm text-body-sm text-white/90 leading-relaxed">
-                        Temukan spesifikasi detail, jenis mesin pendukung, kapasitas
-                        harian, dan panduan persiapan file plano untuk setiap varian.
-                      </p>
-                      <div className="space-y-2 pt-2">
-                        <div className="flex items-center gap-2 text-[12px] font-medium text-white/90">
-                          <span translate="no" className="material-symbols-outlined notranslate text-[16px] text-accent-gold">
-                            check_circle
-                          </span>{" "}
-                          Spot UV, Varnish, &amp; Drip Off
-                        </div>
-                        <div className="flex items-center gap-2 text-[12px] font-medium text-white/90">
-                          <span translate="no" className="material-symbols-outlined notranslate text-[16px] text-accent-gold">
-                            check_circle
-                          </span>{" "}
-                          Hot Foil, Emboss, &amp; Deboss
-                        </div>
-                        <div className="flex items-center gap-2 text-[12px] font-medium text-white/90">
-                          <span translate="no" className="material-symbols-outlined notranslate text-[16px] text-accent-gold">
-                            check_circle
-                          </span>{" "}
-                          Pond, Window Patch, &amp; Lem Lipat
-                        </div>
-                      </div>
+                <div className="w-[320px] sm:w-[360px] bg-navbar-black rounded-3xl p-space-lg flex flex-col justify-between shadow-xl transition-all duration-300 shrink-0 text-white hover:scale-[1.02] border border-white/10">
+                  <div className="space-y-3">
+                    <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center text-white">
+                      <span translate="no" className="material-symbols-outlined notranslate text-[24px]">
+                        {activeTab === "jasa" ? "layers" : "inventory_2"}
+                      </span>
                     </div>
-
-                    <div className="pt-space-md mt-space-md border-t border-white/20">
-                      <Link
-                        className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-white text-navbar-black hover:bg-surface-neutral-alt font-cta-pill text-cta-pill transition-all duration-200 shadow-xl hover:scale-105 active:scale-95 group"
-                        href="/layanan"
-                      >
-                        <span className="font-bold">Lihat Selengkapnya</span>
-                        <span translate="no" className="material-symbols-outlined notranslate text-[18px] transition-transform duration-200 group-hover:translate-x-1 text-bracket-border">
-                          arrow_forward
-                        </span>
-                      </Link>
-                    </div>
+                    <h3 className="font-headline-md text-headline-md font-bold text-white">
+                      {activeTab === "jasa" ? "Lihat Semua Layanan" : "Lihat Semua Bahan Baku"}
+                    </h3>
+                    <p className="font-body-sm text-body-sm text-surface-dim leading-relaxed">
+                      {activeTab === "jasa"
+                        ? "Jelajahi spesifikasi teknis dan estimasi kapasitas 13+ ragam finishing cetak kami."
+                        : "Katalog lengkap roll foil, film BOPP laminasi, lem industri, dan varnish."}
+                    </p>
                   </div>
-                ) : (
-                  <div className="w-[320px] sm:w-[360px] bg-gradient-to-br from-[#1c1b1b] via-[#2a1617] to-bracket-border rounded-3xl p-space-lg flex flex-col justify-between shadow-2xl transition-transform duration-300 shrink-0 text-white hover:scale-[1.02] border-2 border-bracket-border/40">
-                    <div className="space-y-space-md">
-                      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-bracket-border/20 text-bracket-border font-label-meta text-[11px] font-bold uppercase tracking-wider backdrop-blur-sm border border-bracket-border/40">
-                        <span className="w-2 h-2 rounded-full bg-bracket-border animate-pulse"></span>{" "}
-                        Suplai Grosir Pabrik
-                      </div>
-                      <h3 className="font-headline-lg text-headline-lg font-extrabold leading-tight text-white">
-                        Eksplorasi Seluruh Bahan Baku
-                      </h3>
-                      <p className="font-body-sm text-body-sm text-surface-dim leading-relaxed">
-                        Dapatkan pricelist grosir terlengkap, spesifikasi teknis TDS,
-                        serta opsi custom slitting ukuran roll untuk efisiensi workshop.
-                      </p>
-                      <div className="space-y-2 pt-2">
-                        <div className="flex items-center gap-2 text-[12px] font-medium text-white/90">
-                          <span translate="no" className="material-symbols-outlined notranslate text-[16px] text-bracket-border">
-                            verified
-                          </span>{" "}
-                          Direct Importer &amp; Harga Pabrik
-                        </div>
-                        <div className="flex items-center gap-2 text-[12px] font-medium text-white/90">
-                          <span translate="no" className="material-symbols-outlined notranslate text-[16px] text-bracket-border">
-                            verified
-                          </span>{" "}
-                          Layanan Potong / Slitting Akurat
-                        </div>
-                        <div className="flex items-center gap-2 text-[12px] font-medium text-white/90">
-                          <span translate="no" className="material-symbols-outlined notranslate text-[16px] text-bracket-border">
-                            verified
-                          </span>{" "}
-                          Pengiriman Cepat Se-Indonesia
-                        </div>
-                      </div>
-                    </div>
 
-                    <div className="pt-space-md mt-space-md border-t border-white/20">
-                      <Link
-                        className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-bracket-border hover:bg-primary text-white font-cta-pill text-cta-pill transition-all duration-200 shadow-xl hover:scale-105 active:scale-95 group"
-                        href="/produk/bahan-baku"
-                      >
-                        <span className="font-bold">Lihat Selengkapnya</span>
-                        <span translate="no" className="material-symbols-outlined notranslate text-[18px] transition-transform duration-200 group-hover:translate-x-1">
-                          arrow_forward
-                        </span>
-                      </Link>
-                    </div>
+                  <div className="pt-space-md mt-space-md border-t border-white/10">
+                    <Link
+                      className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-white/10 hover:bg-bracket-border text-white border border-white/20 hover:border-bracket-border font-cta-pill text-cta-pill transition-all duration-200 shadow-md group"
+                      href={activeTab === "jasa" ? "/layanan" : "/produk/bahan-baku"}
+                    >
+                      <span className="font-semibold">
+                        {activeTab === "jasa" ? "Buka Katalog Layanan" : "Buka Katalog Bahan Baku"}
+                      </span>
+                      <span translate="no" className="material-symbols-outlined notranslate text-[18px] transition-transform duration-200 group-hover:translate-x-1">
+                        arrow_forward
+                      </span>
+                    </Link>
                   </div>
-                )}
+                </div>
               </div>
             ))}
           </div>
-        </div>
-
-        {/* Category Indicators */}
-        <div className="flex items-center justify-center gap-2 mt-space-md">
-          <span className="w-8 h-2.5 rounded-full bg-bracket-border transition-all"></span>
-          <span className="w-2.5 h-2.5 rounded-full bg-outline-variant hover:bg-bracket-border cursor-pointer"></span>
-          <span className="w-2.5 h-2.5 rounded-full bg-outline-variant hover:bg-bracket-border cursor-pointer"></span>
         </div>
       </div>
     </section>
