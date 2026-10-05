@@ -422,7 +422,7 @@ export default function PengaplikasianPageContent() {
                 <span>Minta Swatch Sample Fisik</span>
               </a>
               <a
-                href="/katalog-pelangi-uv.pdf"
+                href="/katalog/katalog-pelangi-uv.pdf"
                 download="KATALOG PELANGI UV.pdf"
                 target="_blank"
                 rel="noopener noreferrer"

@@ -130,7 +130,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="/katalog-pelangi-uv.pdf"
+                  href="/katalog/katalog-pelangi-uv.pdf"
                   download="KATALOG PELANGI UV.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
