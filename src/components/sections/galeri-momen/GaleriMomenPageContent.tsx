@@ -651,7 +651,6 @@ export default function GaleriMomenPageContent() {
       });
     };
   
-    const cleanupFns: Array<() => void> = [];
     const dragTracks = document.querySelectorAll<HTMLElement>('.interactive-drag-track');
     dragTracks.forEach((track) => {
       const isFilter = track.id === 'filterMarqueeTrack' || track.querySelector('#filterMarqueeTrack') !== null;
