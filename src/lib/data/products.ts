@@ -29,7 +29,7 @@ export const productsJasa: ProductItem[] = [
     tag: "",
     title: "Laminating Gloss & Doff",
     desc: "Pelapisan plastik tipis termal (Thermal) dan Wet berkualitas prima untuk perlindungan kelembaban, anti gores, serta daya tahan kemasan.",
-    img: "https://lh3.googleusercontent.com/aida-public/AB6AXuDCBzWCv_1bQ0raAwWBvc0X1HItS1f4e3NIzXZGGCieGUalTdu4AUJemOeEBM0tbf_WgZ_tWJV0v1eJ35wZZadrRVrGEzWZCiI1xkJyxpNDAjYvI95_2YRX5aL6ZHpG655ykDg8UzL-w6Wdg6opTzjoMSD4Iv9l1dk8_02xoeZutmlTjzBOhMGWUFZeTJ2FIxsLheY86fECbMU13iqEdps4tDJpusUl4oxEueoCrNJz1kmDgFzPSsR5",
+    img: "/images/layanan/laminating.jpg",
     capacity: "200k/hari",
   },
   {
