@@ -27,7 +27,7 @@ export const journeyStoryPhases: JourneyStoryPhase[] = [
         caption: "Penataan lembaran cetak dan persiapan bahan finishing di awal pendirian usaha.",
       },
       {
-        url: "https://lh3.googleusercontent.com/aida-public/AB6AXuCHOi1hE4Dqgo49O2h9jOTn-AyANPdL6T0NuWM4e-m-0REUBnbYzggUtjhNoBXkBXGAyFKFJkvDb5j-ZxRGedSTrzluf0tRf6YCx6DgPAu2UMORgFkqIsTMT7YZIXdVY8abvIE-J6G5GIoV9rbWNrylbmUy1YqBfsuDji_0KcukxsGMLgvWGT7radoAtspu2yT1O6GSHqj9gtJxaaCG5b6XiPVZwH4NH0WRYXJtLu5Dwd2tCQnv8-bG",
+        url: "/images/layanan/hot-stamp.jpg",
         caption: "Armada pengiriman perdana CV Pelangi UV yang melayani antar-jemput order cetakan pelanggan.",
       },
     ],
@@ -87,7 +87,7 @@ export const journeyStoryPhases: JourneyStoryPhase[] = [
         caption: "Pengawasan presisi register pada pesanan harian yang melonjak hingga ribuan lembar.",
       },
       {
-        url: "https://lh3.googleusercontent.com/aida-public/AB6AXuCHOi1hE4Dqgo49O2h9jOTn-AyANPdL6T0NuWM4e-m-0REUBnbYzggUtjhNoBXkBXGAyFKFJkvDb5j-ZxRGedSTrzluf0tRf6YCx6DgPAu2UMORgFkqIsTMT7YZIXdVY8abvIE-J6G5GIoV9rbWNrylbmUy1YqBfsuDji_0KcukxsGMLgvWGT7radoAtspu2yT1O6GSHqj9gtJxaaCG5b6XiPVZwH4NH0WRYXJtLu5Dwd2tCQnv8-bG",
+        url: "/images/layanan/hot-stamp.jpg",
         caption: "Agenda tahunan rekreasi keluarga besar CV Pelangi UV sebagai bentuk apresiasi kerja tim.",
       },
     ],
@@ -139,7 +139,7 @@ export const journeyStoryPhases: JourneyStoryPhase[] = [
     desc: "Mesin-mesin terus bertambah, munculnya dan mulai penerapan sistem digital pada perusahaan, lokasi berpindah ke yang lebih besar di di pergudangan Bizpark Waru Sidoarjo B8, dan C17 - C19",
     images: [
       {
-        url: "https://lh3.googleusercontent.com/aida-public/AB6AXuCHOi1hE4Dqgo49O2h9jOTn-AyANPdL6T0NuWM4e-m-0REUBnbYzggUtjhNoBXkBXGAyFKFJkvDb5j-ZxRGedSTrzluf0tRf6YCx6DgPAu2UMORgFkqIsTMT7YZIXdVY8abvIE-J6G5GIoV9rbWNrylbmUy1YqBfsuDji_0KcukxsGMLgvWGT7radoAtspu2yT1O6GSHqj9gtJxaaCG5b6XiPVZwH4NH0WRYXJtLu5Dwd2tCQnv8-bG",
+        url: "/images/layanan/hot-stamp.jpg",
         caption: "Ekspansi workshop ke unit Bizpark B8 dan C17–C19 yang lebih luas untuk menunjang kapasitas tinggi.",
       },
       {

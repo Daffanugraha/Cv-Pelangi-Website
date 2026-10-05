@@ -78,7 +78,7 @@ export interface ContactTestimonial {
 export const contactTestimonials: ContactTestimonial[] = [
   {
     type: "image",
-    img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCHOi1hE4Dqgo49O2h9jOTn-AyANPdL6T0NuWM4e-m-0REUBnbYzggUtjhNoBXkBXGAyFKFJkvDb5j-ZxRGedSTrzluf0tRf6YCx6DgPAu2UMORgFkqIsTMT7YZIXdVY8abvIE-J6G5GIoV9rbWNrylbmUy1YqBfsuDji_0KcukxsGMLgvWGT7radoAtspu2yT1O6GSHqj9gtJxaaCG5b6XiPVZwH4NH0WRYXJtLu5Dwd2tCQnv8-bG",
+    img: "/images/layanan/hot-stamp.jpg",
     badge: "Kunjungan Tatap Muka",
     overlayTitle: "Kunjungan Langsung Showroom",
     overlayDesc:
@@ -122,7 +122,7 @@ export const contactTestimonials: ContactTestimonial[] = [
   },
   {
     type: "image",
-    img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCHOi1hE4Dqgo49O2h9jOTn-AyANPdL6T0NuWM4e-m-0REUBnbYzggUtjhNoBXkBXGAyFKFJkvDb5j-ZxRGedSTrzluf0tRf6YCx6DgPAu2UMORgFkqIsTMT7YZIXdVY8abvIE-J6G5GIoV9rbWNrylbmUy1YqBfsuDji_0KcukxsGMLgvWGT7radoAtspu2yT1O6GSHqj9gtJxaaCG5b6XiPVZwH4NH0WRYXJtLu5Dwd2tCQnv8-bG",
+    img: "/images/layanan/hot-stamp.jpg",
     badge: "Presisi & Bebas Gelembung",
     overlayTitle: "Kunjungan & Pendampingan Pelanggan",
     overlayDesc:
