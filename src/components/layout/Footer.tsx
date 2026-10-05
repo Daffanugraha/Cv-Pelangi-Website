@@ -129,12 +129,16 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/kontak#section-form"
-                  className="hover:text-bracket-border transition-colors"
+                <a
+                  href="/katalog-pelangi-uv.pdf"
+                  download="KATALOG PELANGI UV.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-bracket-border transition-colors inline-flex items-center gap-1.5"
                 >
-                  Katalog &amp; Pricelist
-                </Link>
+                  <span>Katalog &amp; Pricelist</span>
+                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-white/10 text-secondary-container font-mono">PDF</span>
+                </a>
               </li>
               <li>
                 <Link

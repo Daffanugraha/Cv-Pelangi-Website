@@ -258,7 +258,10 @@ export default function Hero() {
             </a>
             <a
               className="inline-flex items-center justify-center gap-2 px-space-lg py-space-sm rounded-full bg-surface-canvas/10 text-on-secondary hover:bg-surface-canvas hover:text-navbar-black font-cta-pill text-cta-pill backdrop-blur-sm transition-all duration-300 border border-white/20 hover:border-bracket-border hover:scale-105 active:scale-95 shadow-md hover:shadow-[0_0_20px_rgba(246,84,86,0.3)]"
-              href="#pesan-sekarang"
+              href="/katalog-pelangi-uv.pdf"
+              download="KATALOG PELANGI UV.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               <span
                 translate="no" className="material-symbols-outlined notranslate text-[18px]"

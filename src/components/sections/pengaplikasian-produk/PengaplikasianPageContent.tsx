@@ -422,7 +422,8 @@ export default function PengaplikasianPageContent() {
                 <span>Minta Swatch Sample Fisik</span>
               </a>
               <a
-                href="https://wa.me/6282231019363?text=Halo%20Pelangi%20UV%2C%20saya%20ingin%20mengunduh%20katalog%20dan%20pricelist%20finishing"
+                href="/katalog-pelangi-uv.pdf"
+                download="KATALOG PELANGI UV.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-white/10 hover:bg-white/20 text-white font-semibold border border-white/20 transition-all hover:scale-105 text-sm"
