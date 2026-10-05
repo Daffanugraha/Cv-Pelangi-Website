@@ -118,21 +118,66 @@ export default function GaleriMomenPageContent() {
     const hlPrevBtn = document.getElementById('hlPrevBtn');
     const hlNextBtn = document.getElementById('hlNextBtn');
 
+    // Foto asli per album -> ditampilkan sebagai grid di kartu sorotan
+    const HL_PHOTOS: Record<string, string[]> = {
+      expo2025: [
+        'https://pelangiuv.com/storage/2025/08/galeri/01K35D6W7TZENPHRFT7ZXFMEDN.jpg',
+        'https://pelangiuv.com/storage/2025/08/galeri/01K35KKTEQBNC2Q4T8WHR3NCRC.jpg',
+        'https://pelangiuv.com/storage/2025/08/galeri/01K35KMEHVMG6Y65Z02DF4K58E.jpg',
+        'https://pelangiuv.com/storage/2025/08/galeri/01K35KNBZA5VWWMFF8600HMSA6.jpg'
+      ],
+      expo2024: [
+        'https://pelangiuv.com/storage/2024/07/galeri/01J3EVDYN98V2FXRF27VCRV0BW.jpg',
+        'https://pelangiuv.com/storage/2024/07/galeri/01J3EVEJM07CBQYQ6KTMZEQD54.jpg',
+        'https://pelangiuv.com/storage/2024/07/galeri/01J3EVF1VZC6WWGJ71ERTCARQY.jpg',
+        'https://pelangiuv.com/storage/2024/07/galeri/01J3EVFK9HJ9X2MJHSF0D10ZEN.jpg'
+      ],
+      hut79: [1, 2, 3, 4, 5].map((n) => '/images/hut-79/hut-79-' + n + '.jpg'),
+      gathering2023: [1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => '/images/gathering-2023/gathering-2023-' + n + '.jpg'),
+      expo2023: [1, 2, 3, 4, 5, 6].map((n) => '/images/expo-2023/expo-2023-' + n + '.jpg'),
+      momenpertama: [1, 2, 3, 4, 5, 6, 7].map((n) => '/images/momen-pertama/momen-' + n + '.jpg')
+    };
+
+    function buildHighlightGrid(data: { filterKey: string; img: string; title: string }) {
+      if (!hlImageWrapper) return;
+      const photos = HL_PHOTOS[data.filterKey] && HL_PHOTOS[data.filterKey].length ? HL_PHOTOS[data.filterKey] : [data.img];
+      const shown = photos.slice(0, 4);
+      const extra = photos.length - shown.length;
+      let spans: string[];
+      if (shown.length === 1) spans = ['col-span-4 row-span-2'];
+      else if (shown.length === 2) spans = ['col-span-2 row-span-2', 'col-span-2 row-span-2'];
+      else if (shown.length === 3) spans = ['col-span-2 row-span-2', 'col-span-2', 'col-span-2'];
+      else spans = ['col-span-2 row-span-2', 'col-span-2', 'col-span-1', 'col-span-1'];
+
+      const tiles = shown.map((src, i) => {
+        const more = extra > 0 && i === shown.length - 1
+          ? '<div class="absolute inset-0 bg-black/55 flex items-center justify-center text-white font-bold text-lg">+' + extra + '</div>'
+          : '';
+        return '<button type="button" data-hl-src="' + src + '" aria-label="Perbesar foto ' + (i + 1) + ' - ' + data.title + '" class="group/tile relative overflow-hidden rounded-lg bg-black/40 cursor-zoom-in ' + spans[i] + '">' +
+          '<img src="' + src + '" alt="' + data.title + '" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover/tile:scale-105" />' +
+          '<div class="absolute inset-0 bg-black/10 group-hover/tile:bg-transparent transition-colors"></div>' +
+          more +
+          '</button>';
+      }).join('');
+
+      hlImageWrapper.innerHTML = '<div class="absolute inset-0 grid grid-cols-4 grid-rows-2 gap-2">' + tiles + '</div>';
+    }
+
+    buildHighlightGrid(highlightData[0]);
+
     function renderHighlightSlide(index: number) {
-      if (!hlImgEl || !hlContentBoxEl) return;
+      if (!hlContentBoxEl || !hlImageWrapper) return;
       currentHlIndex = (index + highlightData.length) % highlightData.length;
       const data = highlightData[currentHlIndex];
 
       // Smooth fade out
-      hlImgEl.style.opacity = '0.3';
+      hlImageWrapper.style.transition = 'opacity 0.2s ease';
+      hlImageWrapper.style.opacity = '0.3';
       hlContentBoxEl.style.opacity = '0.3';
       hlContentBoxEl.style.transform = 'translateY(4px)';
 
       setTimeout(() => {
-        if (hlImgEl) {
-          hlImgEl.src = data.img;
-          hlImgEl.alt = data.title;
-        }
+        buildHighlightGrid(data);
         if (hlCounterEl) hlCounterEl.textContent = (currentHlIndex + 1) + ' / ' + highlightData.length;
         if (hlTitleEl) hlTitleEl.textContent = data.title;
         if (hlDescEl) hlDescEl.textContent = data.desc;
@@ -150,7 +195,7 @@ export default function GaleriMomenPageContent() {
         });
 
         // Smooth fade in
-        if (hlImgEl) hlImgEl.style.opacity = '1';
+        if (hlImageWrapper) hlImageWrapper.style.opacity = '1';
         hlContentBoxEl.style.opacity = '1';
         hlContentBoxEl.style.transform = 'translateY(0)';
       }, 180);
@@ -215,8 +260,27 @@ export default function GaleriMomenPageContent() {
       }
     }
 
+    // Klik foto di grid -> buka lightbox pada foto tersebut
+    function openHighlightPhoto(src: string) {
+      const idx = triggers.findIndex((t) => {
+        const im = t.querySelector('img');
+        return !!im && im.getAttribute('src') === src;
+      });
+      if (idx >= 0) {
+        openLightbox(idx);
+      } else {
+        openCurrentHighlightInLightbox();
+      }
+    }
+
     if (hlImageWrapper) {
-      hlImageWrapper.addEventListener('click', openCurrentHighlightInLightbox);
+      hlImageWrapper.classList.remove('cursor-pointer');
+      hlImageWrapper.addEventListener('click', (e) => {
+        const tile = (e.target as HTMLElement).closest('[data-hl-src]') as HTMLElement | null;
+        if (tile) {
+          openHighlightPhoto(tile.getAttribute('data-hl-src') || '');
+        }
+      });
     }
 
     if (hlViewAlbumBtn) {
