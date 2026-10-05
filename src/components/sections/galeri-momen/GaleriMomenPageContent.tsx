@@ -6,6 +6,7 @@ const GALERI_HTML = "<!-- Top Ambient Glow Backdrop -->\n<section class=\"relati
 
 export default function GaleriMomenPageContent() {
   useEffect(() => {
+    const cleanupFns: Array<() => void> = [];
     // 1. FILTERING FUNCTIONALITY
     const filterButtons = document.querySelectorAll<HTMLButtonElement>('.filter-pill');
     const albumSections = document.querySelectorAll<HTMLElement>('.album-container');
