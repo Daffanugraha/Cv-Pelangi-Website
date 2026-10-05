@@ -142,7 +142,6 @@ export default function GaleriMomenPageContent() {
       if (!hlImageWrapper) return;
       const photos = HL_PHOTOS[data.filterKey] && HL_PHOTOS[data.filterKey].length ? HL_PHOTOS[data.filterKey] : [data.img];
       const shown = photos.slice(0, 4);
-      const extra = photos.length - shown.length;
       let spans: string[];
       if (shown.length === 1) spans = ['col-span-4 row-span-2'];
       else if (shown.length === 2) spans = ['col-span-2 row-span-2', 'col-span-2 row-span-2'];
@@ -150,13 +149,9 @@ export default function GaleriMomenPageContent() {
       else spans = ['col-span-2 row-span-2', 'col-span-2', 'col-span-1', 'col-span-1'];
 
       const tiles = shown.map((src, i) => {
-        const more = extra > 0 && i === shown.length - 1
-          ? '<div class="absolute inset-0 bg-black/55 flex items-center justify-center text-white font-bold text-lg">+' + extra + '</div>'
-          : '';
         return '<button type="button" data-hl-src="' + src + '" aria-label="Perbesar foto ' + (i + 1) + ' - ' + data.title + '" class="group/tile relative overflow-hidden rounded-lg bg-black/40 cursor-zoom-in ' + spans[i] + '">' +
           '<img src="' + src + '" alt="' + data.title + '" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover/tile:scale-105" />' +
           '<div class="absolute inset-0 bg-black/10 group-hover/tile:bg-transparent transition-colors"></div>' +
-          more +
           '</button>';
       }).join('');
 
