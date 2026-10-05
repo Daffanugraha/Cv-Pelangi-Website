@@ -238,7 +238,7 @@ export const rawMaterialCategories: MaterialCategory[] = [
       "Kemasan: Can 5 Kg & Drum 20 Kg",
     ],
     startingPrice: "Rp 35.200",
-    img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCssjTnAwOEGVKo7KwtxhOpEae4ilO4sQ3Y2F1eRaffAVhhIZ3tY3sGHSVOn02JmmeeDuItJej2ifnz1tieagVAfnGNoOddGwdrVO1qoWzQBtlUppvwN6VyLujidsmzNH1Kn2kyw_g5gGRQo_KqR7yRADmTplyZcL0j3jsS6ZwR0dG-zNUx7Ke7KlbPO9EtwYAi8iVpVhPI1wggEv9QsjR-9p4XraD6hD8R1lcPrP37Kv3HIN_v_JbX",
+    img: "/images/layanan/spot-uv.jpg",
     popularVariants: [
       "Tinta Spot UV LumineX Gloss & Mix",
       "Bluish & Spot UV HG-25 Cepat Kering",

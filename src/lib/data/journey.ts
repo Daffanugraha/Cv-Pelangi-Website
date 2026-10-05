@@ -63,7 +63,7 @@ export const journeyStoryPhases: JourneyStoryPhase[] = [
         caption: "Pengoperasian unit mesin laminating dan mesin spot UV manual tambahan.",
       },
       {
-        url: "https://lh3.googleusercontent.com/aida-public/AB6AXuCssjTnAwOEGVKo7KwtxhOpEae4ilO4sQ3Y2F1eRaffAVhhIZ3tY3sGHSVOn02JmmeeDuItJej2ifnz1tieagVAfnGNoOddGwdrVO1qoWzQBtlUppvwN6VyLujidsmzNH1Kn2kyw_g5gGRQo_KqR7yRADmTplyZcL0j3jsS6ZwR0dG-zNUx7Ke7KlbPO9EtwYAi8iVpVhPI1wggEv9QsjR-9p4XraD6hD8R1lcPrP37Kv3HIN_v_JbX",
+        url: "/images/layanan/spot-uv.jpg",
         caption: "Pertumbuhan tim produksi dan tim administrasi menjadi 15 orang personil.",
       },
       {
@@ -83,7 +83,7 @@ export const journeyStoryPhases: JourneyStoryPhase[] = [
         caption: "Modernisasi mesin finishing semi-otomatis untuk meningkatkan kapasitas dan kecepatan cetak.",
       },
       {
-        url: "https://lh3.googleusercontent.com/aida-public/AB6AXuCssjTnAwOEGVKo7KwtxhOpEae4ilO4sQ3Y2F1eRaffAVhhIZ3tY3sGHSVOn02JmmeeDuItJej2ifnz1tieagVAfnGNoOddGwdrVO1qoWzQBtlUppvwN6VyLujidsmzNH1Kn2kyw_g5gGRQo_KqR7yRADmTplyZcL0j3jsS6ZwR0dG-zNUx7Ke7KlbPO9EtwYAi8iVpVhPI1wggEv9QsjR-9p4XraD6hD8R1lcPrP37Kv3HIN_v_JbX",
+        url: "/images/layanan/spot-uv.jpg",
         caption: "Pengawasan presisi register pada pesanan harian yang melonjak hingga ribuan lembar.",
       },
       {

@@ -21,7 +21,7 @@ export const productsJasa: ProductItem[] = [
     tag: "",
     title: "Spot UV",
     desc: "Lapisan vernis mengkilap kontras pada area tertentu (logo/tipografi) untuk menciptakan efek visual dimensi yang elegan dan eksklusif.",
-    img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCssjTnAwOEGVKo7KwtxhOpEae4ilO4sQ3Y2F1eRaffAVhhIZ3tY3sGHSVOn02JmmeeDuItJej2ifnz1tieagVAfnGNoOddGwdrVO1qoWzQBtlUppvwN6VyLujidsmzNH1Kn2kyw_g5gGRQo_KqR7yRADmTplyZcL0j3jsS6ZwR0dG-zNUx7Ke7KlbPO9EtwYAi8iVpVhPI1wggEv9QsjR-9p4XraD6hD8R1lcPrP37Kv3HIN_v_JbX",
+    img: "/images/layanan/spot-uv.jpg",
     capacity: "150k/hari",
   },
   {
