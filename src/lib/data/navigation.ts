@@ -14,7 +14,7 @@ export const navLinks: NavLink[] = [
     dropdown: [
       {
         label: "Layanan Jasa Finishing",
-        href: "/#produk",
+        href: "/layanan",
         desc: "Spot UV, Hot Stamping, Laminasi & Pond",
         icon: "layers",
       },

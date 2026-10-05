@@ -218,13 +218,15 @@ export default function ProductsSection() {
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-space-xl gap-space-md">
           <div>
             <span className="font-label-meta text-label-meta uppercase tracking-widest text-bracket-border font-bold">
-              Portofolio Layanan
+              {activeTab === "jasa" ? "Portofolio Layanan" : "Katalog Bahan Baku"}
             </span>
             <h2 className="font-headline-xl text-headline-xl text-on-surface font-bold mt-1">
               Produk Kami
             </h2>
             <p className="font-body-md text-body-md text-text-muted mt-1">
-              Ahlinya jasa finishing cetak dan grosir bahan baku finishing
+              {activeTab === "jasa"
+                ? "Ahlinya jasa finishing cetak dan pasca-cetak berkecepatan tinggi"
+                : "Pusat grosir distributor resmi bahan baku finishing langsung pabrik"}
             </p>
           </div>
 
@@ -333,15 +335,15 @@ export default function ProductsSection() {
                       <span className="font-label-meta text-label-meta text-text-muted font-medium">
                         {p.capacity}
                       </span>
-                      <a
+                      <Link
                         className="inline-flex items-center gap-1 text-bracket-border hover:text-primary font-cta-pill text-cta-pill font-semibold transition-colors"
-                        href="#pesan-sekarang"
+                        href={p.href || (activeTab === "jasa" ? "/layanan" : "/produk/bahan-baku")}
                       >
                         <span>Selengkapnya</span>
                         <span translate="no" className="material-symbols-outlined notranslate text-[16px]">
                           arrow_forward
                         </span>
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 ))}
@@ -384,15 +386,15 @@ export default function ProductsSection() {
                     </div>
 
                     <div className="pt-space-md mt-space-md border-t border-white/20">
-                      <a
+                      <Link
                         className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-white text-navbar-black hover:bg-surface-neutral-alt font-cta-pill text-cta-pill transition-all duration-200 shadow-xl hover:scale-105 active:scale-95 group"
-                        href="#pesan-sekarang"
+                        href="/layanan"
                       >
                         <span className="font-bold">Lihat Selengkapnya</span>
                         <span translate="no" className="material-symbols-outlined notranslate text-[18px] transition-transform duration-200 group-hover:translate-x-1 text-bracket-border">
                           arrow_forward
                         </span>
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 ) : (
@@ -432,15 +434,15 @@ export default function ProductsSection() {
                     </div>
 
                     <div className="pt-space-md mt-space-md border-t border-white/20">
-                      <a
+                      <Link
                         className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-bracket-border hover:bg-primary text-white font-cta-pill text-cta-pill transition-all duration-200 shadow-xl hover:scale-105 active:scale-95 group"
-                        href="#pesan-sekarang"
+                        href="/produk/bahan-baku"
                       >
                         <span className="font-bold">Lihat Selengkapnya</span>
                         <span translate="no" className="material-symbols-outlined notranslate text-[18px] transition-transform duration-200 group-hover:translate-x-1">
                           arrow_forward
                         </span>
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 )}
