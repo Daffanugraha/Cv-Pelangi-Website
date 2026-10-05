@@ -6,18 +6,17 @@ import JawaTimurGlobe from "./JawaTimurGlobe";
 
 export default function JourneySection() {
   const [activeIdx, setActiveIdx] = useState(0); // Start from 2004
-  const [isPaused, setIsPaused] = useState(false);
   const [enlargedImageIndex, setEnlargedImageIndex] = useState<number | null>(null);
 
   useEffect(() => {
-    if (isPaused || enlargedImageIndex !== null) return;
+    if (enlargedImageIndex !== null) return;
 
     const interval = setInterval(() => {
       setActiveIdx((prev) => (prev + 1) % journeyStoryPhases.length);
-    }, 5500);
+    }, 10000);
 
     return () => clearInterval(interval);
-  }, [isPaused, enlargedImageIndex]);
+  }, [enlargedImageIndex]);
 
   useEffect(() => {
     if (enlargedImageIndex === null) return;
@@ -47,8 +46,6 @@ export default function JourneySection() {
       className="w-full bg-[#0d0d0e] py-space-3xl relative overflow-hidden text-white group"
       id="perjalanan"
       style={{ scrollMarginTop: "80px" }}
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
     >
       <div className="max-w-7xl mx-auto px-gutter relative z-10">
         {/* Section Header */}
