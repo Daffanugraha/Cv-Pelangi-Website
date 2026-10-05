@@ -58,7 +58,7 @@ function highlightServiceCard(index, btnEl) {
 
   carousel.scrollTo({ left: 0, behavior: 'instant' });
 
-  if (visibleCount <= 3) {
+  if (visibleCount <= 3 && index !== 'all') {
     if (track) {
       track.classList.add('stopped');
       track.style.setProperty('animation', 'none', 'important');
