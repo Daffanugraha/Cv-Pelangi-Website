@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { searchCatalog, navLinks } from "@/lib/data";
 import { useLanguage } from "@/context/LanguageContext";
 
@@ -650,39 +650,43 @@ export default function Navbar() {
         </svg>
       </div>
 
-      {/* Search Interactive Modal */}
+      {/* Search Modal - Clean & Modern */}
       {isSearchOpen && (
         <div
-          className="fixed inset-0 z-50 bg-navbar-black/80 backdrop-blur-sm flex items-start justify-center pt-20 px-4 transition-all duration-300"
+          className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-start justify-center pt-16 sm:pt-24 px-4 transition-all duration-200"
           onClick={(e) => {
-            if (e.target === e.currentTarget) setIsSearchOpen(false);
+            if (e.target === e.currentTarget) {
+              setIsSearchOpen(false);
+              setSearchQuery("");
+            }
           }}
         >
-          <div className="w-full max-w-2xl bg-navbar-dark border border-bracket-border/40 rounded-2xl shadow-2xl p-4 sm:p-6 relative text-white">
+          <div className="w-full max-w-2xl bg-[#131418] border border-white/10 rounded-2xl shadow-2xl p-4 sm:p-5 relative text-white">
+            {/* Modal Header */}
             <div className="flex items-center justify-between pb-3 mb-3 border-b border-white/10">
-              <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-bracket-border animate-pulse"></span>
-                <span className="font-label-meta text-xs uppercase tracking-wider text-surface-dim font-bold">
-                  Pencarian Interaktif <span translate="no" className="notranslate">Pelangi UV</span>
-                </span>
-              </div>
+              <span className="text-xs uppercase tracking-wider text-white/50 font-bold">
+                Pencarian Pelangi UV
+              </span>
               <button
                 type="button"
-                onClick={() => setIsSearchOpen(false)}
-                className="w-8 h-8 rounded-full bg-white/10 hover:bg-bracket-border text-white flex items-center justify-center transition-all cursor-pointer"
+                onClick={() => {
+                  setIsSearchOpen(false);
+                  setSearchQuery("");
+                }}
+                className="w-7 h-7 rounded-lg bg-white/5 hover:bg-white/10 text-white/60 hover:text-white flex items-center justify-center transition-all cursor-pointer"
                 aria-label="Tutup pencarian"
               >
-                <span
-                  translate="no" className="material-symbols-outlined notranslate text-[18px]"
-                >
+                <span translate="no" className="material-symbols-outlined notranslate text-[18px]">
                   close
                 </span>
               </button>
             </div>
 
+            {/* Clean Search Input */}
             <div className="relative flex items-center mb-3">
               <span
-                translate="no" className="material-symbols-outlined notranslate absolute left-4 text-bracket-border text-[22px]"
+                translate="no"
+                className="material-symbols-outlined notranslate absolute left-3.5 text-white/40 text-[20px]"
               >
                 search
               </span>
@@ -690,168 +694,203 @@ export default function Navbar() {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && filteredSearch.length > 0) {
+                    e.preventDefault();
+                    router.push(filteredSearch[0].link);
+                    setIsSearchOpen(false);
+                    setSearchQuery("");
+                  }
+                }}
                 autoFocus
-                placeholder="Cari layanan, foil, spot uv, lem, atau artikel..."
-                className="w-full h-12 pl-12 pr-10 rounded-xl bg-white/5 border border-white/15 text-white placeholder-text-muted text-sm font-body-md outline-none focus:border-bracket-border focus:bg-white/10 transition-all"
+                placeholder="Cari layanan, bahan baku, galeri, atau kontak..."
+                className="w-full h-11 pl-10 pr-9 rounded-xl bg-white/[0.04] border border-white/10 text-white placeholder-white/40 text-sm outline-none focus:border-bracket-border focus:bg-white/[0.07] transition-all"
                 autoComplete="off"
               />
               {searchQuery && (
                 <button
                   type="button"
                   onClick={() => setSearchQuery("")}
-                  className="absolute right-3 text-surface-dim hover:text-white cursor-pointer"
+                  className="absolute right-3 text-white/40 hover:text-white cursor-pointer"
                 >
-                  <span
-                    translate="no" className="material-symbols-outlined notranslate text-[18px]"
-                  >
-                    backspace
+                  <span translate="no" className="material-symbols-outlined notranslate text-[16px]">
+                    close
                   </span>
                 </button>
               )}
             </div>
 
-            <div className="max-h-[360px] overflow-y-auto no-scrollbar space-y-3 pt-1">
+            {/* Results or Clean Quick Links */}
+            <div className="max-h-[380px] overflow-y-auto no-scrollbar space-y-2 pt-1">
               {searchQuery.trim() ? (
-                <div className="space-y-2">
-                  <p className="text-[11px] font-label-meta uppercase tracking-wider text-bracket-border font-semibold">
-                    Hasil Rekomendasi Cocok ({filteredSearch.length}):
+                <div className="space-y-1.5">
+                  <p className="text-[11px] uppercase tracking-wider text-white/40 font-semibold px-1">
+                    Hasil Pencarian ({filteredSearch.length})
                   </p>
+                  {filteredSearch.length === 0 ? (
+                    <div className="p-6 text-center rounded-xl bg-white/[0.02] border border-white/5 text-white/50 text-xs">
+                      <p className="mb-1 text-white/80 font-medium">
+                        Tidak ada hasil yang sesuai dengan &quot;{searchQuery}&quot;
+                      </p>
+                      <p className="text-[11px] text-white/40">
+                        Coba kata kunci lain seperti: foil, uv, laminasi, lem, atau galeri.
+                      </p>
+                    </div>
+                  ) : (
+                    filteredSearch.map((item, idx) => (
+                      <Link
+                        key={idx}
+                        href={item.link}
+                        onClick={() => {
+                          setIsSearchOpen(false);
+                          setSearchQuery("");
+                        }}
+                        className="flex items-center justify-between p-3 rounded-xl bg-white/[0.03] hover:bg-white/[0.08] border border-white/5 hover:border-white/15 transition-all group"
+                      >
+                        <div className="min-w-0 pr-3">
+                          <div className="flex items-center gap-2">
+                            <p className="text-sm font-semibold text-white group-hover:text-bracket-border transition-colors truncate">
+                              {item.title}
+                            </p>
+                            <span className="text-[10px] uppercase font-medium px-2 py-0.5 rounded bg-white/5 text-white/60 border border-white/10 shrink-0">
+                              {item.tag}
+                            </span>
+                          </div>
+                          <p className="text-xs text-white/50 truncate mt-0.5">
+                            {item.desc}
+                          </p>
+                        </div>
+                        <span
+                          translate="no"
+                          className="material-symbols-outlined notranslate text-[18px] text-white/30 group-hover:text-bracket-border group-hover:translate-x-0.5 transition-all shrink-0"
+                        >
+                          arrow_forward
+                        </span>
+                      </Link>
+                    ))
+                  )}
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {/* Clean Quick Nav Links */}
                   <div className="space-y-1.5">
-                    {filteredSearch.length === 0 ? (
-                      <div className="p-4 text-center rounded-xl bg-white/5 text-surface-dim text-xs">
-                        <p className="mb-1">
-                          Tidak ada hasil pas untuk &quot;
-                          <span className="text-white font-semibold">{searchQuery}</span>
-                          &quot;
-                        </p>
-                        <p className="text-[11px] text-text-muted">
-                          Coba kata kunci lain seperti: foil, uv, lem, laminasi, atau pond.
-                        </p>
-                      </div>
-                    ) : (
-                      filteredSearch.map((item, idx) => (
+                    <p className="text-[11px] uppercase tracking-wider text-white/40 font-semibold px-1">
+                      Menu &amp; Halaman Utama
+                    </p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      {[
+                        {
+                          title: "Layanan Jasa Finishing",
+                          desc: "Hot Stamp Foil, Spot UV, Laminasi Thermal, Pond",
+                          link: "/layanan",
+                          tag: "Layanan",
+                        },
+                        {
+                          title: "Katalog Bahan Baku",
+                          desc: "Master Roll Foil, Film BOPP, Lem, & Varnish",
+                          link: "/produk/bahan-baku",
+                          tag: "Bahan Baku",
+                        },
+                        {
+                          title: "Galeri Produk & Kemasan",
+                          desc: "Sampel kemasan kosmetik, dus farmasi, & hardbox",
+                          link: "/galeri/pengaplikasian-produk",
+                          tag: "Galeri",
+                        },
+                        {
+                          title: "Dokumentasi Momen",
+                          desc: "Pameran Surabaya Printing Expo & kegiatan",
+                          link: "/galeri/momen",
+                          tag: "Momen",
+                        },
+                        {
+                          title: "Hubungi Kami / Konsultasi",
+                          desc: "Alamat bengkel Bizpark Sidoarjo & WhatsApp",
+                          link: "/kontak",
+                          tag: "Kontak",
+                        },
+                        {
+                          title: "Unduh Katalog Resmi (PDF)",
+                          desc: "Download langsung file PDF spesifikasi lengkap",
+                          link: "/katalog/katalog-pelangi-uv.pdf",
+                          tag: "Unduh PDF",
+                        },
+                      ].map((item, idx) => (
                         <Link
                           key={idx}
                           href={item.link}
-                          onClick={() => setIsSearchOpen(false)}
-                          className="search-item flex items-center justify-between p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-bracket-border transition-all group"
+                          onClick={() => {
+                            setIsSearchOpen(false);
+                            setSearchQuery("");
+                          }}
+                          className="flex items-center justify-between p-2.5 rounded-xl bg-white/[0.03] hover:bg-white/[0.08] border border-white/5 hover:border-white/15 transition-all group text-left"
                         >
-                          <div className="flex items-center gap-3 min-w-0">
-                            <div className="w-9 h-9 rounded-lg bg-bracket-border/20 text-bracket-border flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-                              <span
-                                translate="no" className="material-symbols-outlined notranslate text-[18px]"
-                              >
-                                {item.icon}
-                              </span>
-                            </div>
-                            <div className="text-left min-w-0">
-                              <div className="flex items-center gap-2">
-                                <p className="text-xs font-bold text-white group-hover:text-bracket-border truncate">
-                                  {item.title}
-                                </p>
-                                <span className="px-1.5 py-0.5 rounded text-[9px] font-label-meta bg-white/10 text-accent-gold shrink-0">
-                                  {item.tag}
-                                </span>
-                              </div>
-                              <p className="text-[11px] text-surface-dim truncate mt-0.5">
-                                {item.desc}
+                          <div className="min-w-0 pr-2">
+                            <div className="flex items-center gap-1.5">
+                              <p className="text-xs font-semibold text-white group-hover:text-bracket-border transition-colors truncate">
+                                {item.title}
                               </p>
                             </div>
+                            <p className="text-[11px] text-white/50 truncate mt-0.5">
+                              {item.desc}
+                            </p>
                           </div>
                           <span
-                            translate="no" className="material-symbols-outlined notranslate text-[18px] text-surface-dim group-hover:text-bracket-border group-hover:translate-x-1 transition-all ml-2 shrink-0"
+                            translate="no"
+                            className="material-symbols-outlined notranslate text-[16px] text-white/30 group-hover:text-bracket-border group-hover:translate-x-0.5 transition-all shrink-0"
                           >
                             arrow_forward
                           </span>
                         </Link>
-                      ))
-                    )}
-                  </div>
-                </div>
-              ) : (
-                <div className="space-y-3">
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <p className="text-[11px] font-label-meta uppercase tracking-wider text-surface-dim font-semibold flex items-center gap-1.5">
-                        <span
-                          translate="no" className="material-symbols-outlined notranslate text-[14px] text-accent-gold"
-                        >
-                          trending_up
-                        </span>{" "}
-                        Tren Pencarian Populer
-                      </p>
-                      <span className="text-[11px] text-surface-dim/70">
-                        Klik untuk mengisi
-                      </span>
+                      ))}
                     </div>
-                    <div className="flex flex-wrap gap-2">
+                  </div>
+
+                  {/* Clean Popular Search Keywords */}
+                  <div className="pt-2 border-t border-white/10 space-y-2">
+                    <p className="text-[11px] uppercase tracking-wider text-white/40 font-semibold px-1">
+                      Pencarian Populer
+                    </p>
+                    <div className="flex flex-wrap gap-1.5">
                       {[
-                        "Hot Stamp Foil Gold/Silver",
-                        "Spot UV Vernis Kilap",
-                        "Laminating Thermal Doff & Gloss",
-                        "Cast and Cure Hologram",
-                        "Lem Wet & Dry Food Grade",
-                        "Pond & Window Patch",
+                        "Hot Stamp Foil",
+                        "Spot UV",
+                        "Laminating Thermal",
+                        "Cast and Cure",
+                        "BOPP Film",
+                        "Lem Food Grade",
+                        "Window Patch",
+                        "Printing Expo",
+                        "Katalog",
                       ].map((tag) => (
                         <button
                           key={tag}
                           type="button"
-                          translate="no"
                           onClick={() => setSearchQuery(tag)}
-                          className="notranslate px-3 py-1 rounded-full bg-white/5 hover:bg-bracket-border hover:text-white text-surface-dim text-xs transition-colors cursor-pointer border border-white/10"
+                          className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-bracket-border hover:text-white text-white/70 text-xs transition-colors cursor-pointer border border-white/10"
                         >
                           {tag}
                         </button>
                       ))}
                     </div>
                   </div>
-
-                  <div className="space-y-2 pt-2 border-t border-white/10">
-                    <p className="text-[11px] font-label-meta uppercase tracking-wider text-surface-dim font-semibold flex items-center gap-1.5">
-                      <span
-                        translate="no" className="material-symbols-outlined notranslate text-[14px] text-bracket-border"
-                      >
-                        verified
-                      </span>{" "}
-                      Layanan & Produk Rekomendasi Utama
-                    </p>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                      {searchCatalog.slice(0, 4).map((item, idx) => (
-                        <Link
-                          key={idx}
-                          href={item.link}
-                          onClick={() => setIsSearchOpen(false)}
-                          className="flex items-center gap-3 p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-bracket-border transition-all group"
-                        >
-                          <div className="w-9 h-9 rounded-lg bg-bracket-border/20 text-bracket-border flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-                            <span
-                              translate="no" className="material-symbols-outlined notranslate text-[18px]"
-                            >
-                              {item.icon}
-                            </span>
-                          </div>
-                          <div className="min-w-0 text-left">
-                            <p className="text-xs font-bold text-white group-hover:text-bracket-border truncate">
-                              {item.title}
-                            </p>
-                            <p className="text-[11px] text-surface-dim truncate">
-                              {item.desc}
-                            </p>
-                          </div>
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
                 </div>
               )}
             </div>
 
-            <div className="pt-3 mt-3 border-t border-white/10 flex items-center justify-between text-[11px] text-surface-dim font-label-meta">
-              <span className="flex items-center gap-1">
-                <kbd className="px-1.5 py-0.5 rounded bg-white/10 border border-white/20 text-[10px] text-white">
+            {/* Clean Modal Footer */}
+            <div className="pt-3 mt-3 border-t border-white/10 flex items-center justify-between text-[11px] text-white/40">
+              <span className="flex items-center gap-1.5">
+                <kbd className="px-1.5 py-0.5 rounded bg-white/10 border border-white/20 text-[10px] text-white/80">
                   ESC
                 </kbd>{" "}
                 untuk menutup
+              </span>
+              <span className="flex items-center gap-1.5">
+                <kbd className="px-1.5 py-0.5 rounded bg-white/10 border border-white/20 text-[10px] text-white/80">
+                  Enter
+                </kbd>{" "}
+                untuk memilih
               </span>
             </div>
           </div>
