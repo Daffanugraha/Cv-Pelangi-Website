@@ -49,6 +49,7 @@ function FlagGB({ className = "w-4 h-3" }: { className?: string }) {
 
 export default function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
   const isContactPage = pathname === "/kontak";
   const isLayananPage =
     pathname === "/layanan" || pathname === "/produk/jasa-finishing";
