@@ -47,10 +47,8 @@ export default function InquiryFormSection() {
       className="w-full bg-[#faf7f6] border-t border-slate-200/80 py-16 lg:py-20"
       id="section-form"
     >
-      <div className="max-w-7xl mx-auto px-6 lg:px-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
-          {/* Form Left Column */}
-          <div className="lg:col-span-7 bg-white rounded-2xl p-7 lg:p-9 border border-slate-200 shadow-xs">
+      <div className="max-w-4xl mx-auto px-6 lg:px-12">
+        <div className="bg-white rounded-3xl p-7 sm:p-10 border border-slate-200 shadow-sm">
             <div className="mb-6">
               <span className="font-label-meta text-xs text-secondary font-bold uppercase tracking-wider block mb-1">
                 {t("form_badge")}
@@ -227,89 +225,6 @@ export default function InquiryFormSection() {
                 </div>
               </form>
             )}
-          </div>
-
-          {/* Right Column: Industrial Advantages */}
-          <div className="lg:col-span-5 space-y-5">
-            <div>
-              <span className="font-label-meta text-xs text-secondary font-bold uppercase tracking-wider block mb-1">
-                Standar Kualitas <span translate="no" className="notranslate">CV Pelangi UV</span>
-              </span>
-              <h3 className="font-headline-lg text-xl lg:text-2xl font-bold text-slate-900 leading-snug">
-                Mengapa Ratusan Percetakan Mempercayakan Finishing pada Kami?
-              </h3>
-            </div>
-
-            <div className="space-y-3">
-              <div className="bg-white p-4 rounded-xl border border-slate-200 flex items-start gap-3.5 shadow-xs">
-                <div className="w-9 h-9 rounded-lg bg-red-50 text-secondary-container shrink-0 flex items-center justify-center">
-                  <span translate="no" className="material-symbols-outlined notranslate text-[18px]">
-                    precision_manufacturing
-                  </span>
-                </div>
-                <div>
-                  <h4 className="font-headline-sm text-xs font-bold text-slate-900">
-                    <span translate="no" className="notranslate font-black">35+</span> Unit Mesin Otomatis Beroperasi
-                  </h4>
-                  <p className="font-body-sm text-xs text-slate-500 mt-0.5 leading-relaxed">
-                    Kapasitas produksi hingga 250.000 lembar per hari untuk
-                    memastikan deadline percetakan Anda aman tepat waktu.
-                  </p>
-                </div>
-              </div>
-
-              <div className="bg-white p-4 rounded-xl border border-slate-200 flex items-start gap-3.5 shadow-xs">
-                <div className="w-9 h-9 rounded-lg bg-emerald-50 text-emerald-600 shrink-0 flex items-center justify-center">
-                  <span translate="no" className="material-symbols-outlined notranslate text-[18px]">
-                    local_shipping
-                  </span>
-                </div>
-                <div>
-                  <h4 className="font-headline-sm text-xs font-bold text-slate-900">
-                    Gratis Antar-Jemput Se-Jawa Timur
-                  </h4>
-                  <p className="font-body-sm text-xs text-slate-500 mt-0.5 leading-relaxed">
-                    Armada box siap menjemput cetakan plano Anda di area
-                    Surabaya, Sidoarjo, Gresik, Mojokerto hingga Pasuruan.
-                  </p>
-                </div>
-              </div>
-
-              <div className="bg-white p-4 rounded-xl border border-slate-200 flex items-start gap-3.5 shadow-xs">
-                <div className="w-9 h-9 rounded-lg bg-amber-50 text-amber-600 shrink-0 flex items-center justify-center">
-                  <span translate="no" className="material-symbols-outlined notranslate text-[18px]">
-                    layers
-                  </span>
-                </div>
-                <div>
-                  <h4 className="font-headline-sm text-xs font-bold text-slate-900">
-                    Sample Swatch Fisik Gratis
-                  </h4>
-                  <p className="font-body-sm text-xs text-slate-500 mt-0.5 leading-relaxed">
-                    Ragu dengan hasil akhir? Kami kirimkan sampel fisik aneka
-                    varian spot UV, tekstur pasir, dan foil ke tempat Anda.
-                  </p>
-                </div>
-              </div>
-
-              <div className="bg-white p-4 rounded-xl border border-slate-200 flex items-start gap-3.5 shadow-xs">
-                <div className="w-9 h-9 rounded-lg bg-blue-50 text-blue-600 shrink-0 flex items-center justify-center">
-                  <span translate="no" className="material-symbols-outlined notranslate text-[18px]">
-                    verified_user
-                  </span>
-                </div>
-                <div>
-                  <h4 className="font-headline-sm text-xs font-bold text-slate-900">
-                    Garansi Presisi &amp; Bebas Gelembung
-                  </h4>
-                  <p className="font-body-sm text-xs text-slate-500 mt-0.5 leading-relaxed">
-                    Sistem kendali mutu berlapis (Double Inspection) sebelum
-                    barang dikemas rapat dan diserahkan kembali.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </section>
