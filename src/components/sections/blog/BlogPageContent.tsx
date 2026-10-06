@@ -31,7 +31,7 @@ export default function BlogPageContent() {
 
   // Filter articles based on category and search query
   const filteredArticles = useMemo(() => {
-    let list = [...articlesData];
+    let list = [featuredArticle, ...articlesData];
 
     // Filter by Category
     if (activeCategory !== "all") {
@@ -45,9 +45,7 @@ export default function BlogPageContent() {
         (art) =>
           art.title.toLowerCase().includes(q) ||
           art.desc.toLowerCase().includes(q) ||
-          art.category.toLowerCase().includes(q) ||
-          (art.technicalChips &&
-            art.technicalChips.some((chip) => chip.toLowerCase().includes(q)))
+          art.category.toLowerCase().includes(q)
       );
     }
 
@@ -91,7 +89,7 @@ export default function BlogPageContent() {
         onSearchChange={handleSearchChange}
         activeCategory={activeCategory}
         onCategoryChange={handleCategoryChange}
-        totalArticles={filteredArticles.length + (showHighlights ? 1 : 0)}
+        totalArticles={filteredArticles.length}
       />
 
       {/* 3. Sorotan Artikel per Topik (Gaya Sorotan Galeri: 1 Gambar, 1 Topik) */}

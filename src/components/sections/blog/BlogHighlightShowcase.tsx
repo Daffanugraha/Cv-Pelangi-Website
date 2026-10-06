@@ -65,9 +65,6 @@ export default function BlogHighlightShowcase({
             <h2 className="font-headline-xl text-lg sm:text-xl lg:text-2xl text-white font-bold tracking-tight">
               Sorotan Artikel Terpilih
             </h2>
-            <span className="hidden sm:inline-block text-xs text-zinc-400 bg-white/5 border border-white/10 px-2.5 py-0.5 rounded-full">
-              1 Berita per Topik
-            </span>
           </div>
 
           {/* Controls: Counter + Prev/Next Buttons */}
@@ -209,20 +206,6 @@ export default function BlogHighlightShowcase({
                 >
                   {currentArticle.desc}
                 </p>
-
-                {/* Technical Chips */}
-                {currentArticle.technicalChips && currentArticle.technicalChips.length > 0 && (
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {currentArticle.technicalChips.slice(0, 3).map((chip, idx) => (
-                      <span
-                        key={idx}
-                        className="px-2.5 py-1 rounded-md bg-white/5 text-zinc-300 text-xs font-medium border border-white/10"
-                      >
-                        {chip}
-                      </span>
-                    ))}
-                  </div>
-                )}
 
                 {/* Action Buttons */}
                 <div className="flex flex-wrap items-center gap-3">

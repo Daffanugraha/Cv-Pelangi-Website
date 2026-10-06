@@ -40,11 +40,6 @@ export const featuredArticle: ArticleItem = {
   desc: "Ketahui keunggulan konstruksi baja tuang berkekuatan tinggi, presisi pisau pond, dan efisiensi konsumsi daya mesin pond manual ML 930 & ML 750 untuk menekan scrap rate pada industri kemasan karton skala menengah hingga manufaktur besar.",
   img: "https://lh3.googleusercontent.com/aida-public/AB6AXuAzmZ7Zm60qcltUqfUXnZWiG1p0tdNhcDYXDZ-mpniBnJZJ91Pk3pTKdEJ7Kogyo0C2hqk8VHwsxdP7C4OEIlki0UXnviV8KfUiUBb-g6g6yM-g3fwziEmQWUexAG1DsFzLVPI-M_4G-Sk0BKmxrkNWXtwq1A95Q2zKkvqxUjPJmYDJgi6MdX5gTqtnZtUIg5zPudYVaw6gNs7RAb-JRPeixxOJD5g4_3p6efhdBI2_oO4Gco2aHiZp",
   isFeatured: true,
-  technicalChips: [
-    "Baja Tuang HT250",
-    "Kopling Elektromagnetik",
-    "Safety Dual Bar",
-  ],
   keyTakeaways: [
     "Konstruksi bodi monoblok baja tuang HT250 meredam getaran ekstrem saat tekanan beban potong maksimal.",
     "Sistem kopling elektromagnetik satu piringan memberikan pengereman instan saat sensor keselamatan mendeteksi objek asing.",
@@ -72,7 +67,6 @@ export const articlesData: ArticleItem[] = [
     author: "Admin Pelangi UV",
     desc: "Eksplorasi kemampuan feeding berkecepatan 7.500 lembar/jam dengan register sensor optic otomatis yang menjamin akurasi lipatan kemasan tanpa geser milimeter sedikitpun.",
     img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCzyVHW-5Zi0qqosAp0aEOt_l2gmKwW9LLxSpY70o6i14P0QLM3FHVcmOetwlyl2BDMl6Ajs0bawirxLFZ1HZitBikROPb1avep7O4mBGydoDrQDClD0SxoBXrFB79KUn3lgYojpLVLsxc5AX_-LQqXLIG3dczPHsDtaVtJrJFsHl6FNC6qjMcwhLxA3gnTjeYAt-PSfu_v0O49cp8RyEkPoHTil0s4ZNJlMLEBscJajZFvf8ggOS6e",
-    technicalChips: ["Kecepatan 7.500 lbr/jam", "Optical Fiber Register", "Stripping Unit Presisi"],
     keyTakeaways: [
       "Kapasitas produksi mencapai 7.500 lembar per jam untuk karton hingga 2000 gsm.",
       "Unit stripping otomatis memisahkan sisa limbah potongan kertas seketika.",
@@ -97,7 +91,6 @@ export const articlesData: ArticleItem[] = [
     author: "Admin Pelangi UV",
     desc: "Sistem pemanas elektromagnetik presisi tinggi yang mencegah timbulnya gelembung pada film thermal doff dan gloss untuk kapasitas cetak skala massal harian.",
     img: "https://lh3.googleusercontent.com/aida-public/AB6AXuA52_IT34kiOlEwJAOD-TpWxq5PyJzV1qmGmLJlPILEYoMyDgTlQiuJmVbc6sO1QJpU3mbqtdbQDlAw8r2Si3w10CPhuJxzk14JbNhg2ZmrSDesmPHXpFH59O4g8v2HG59DFDhXHAtmdWkkq1SfW9h3Ke8tTTcwQrDwykVHzHTeJTSE76l1eb6Y7TGt8tXL7qLSaOjiKnCOI788xBP7ExbXnWhXnh70T5ZZ3NG9vlAG6VwjQss05Hw4",
-    technicalChips: ["Pemanas Elektromagnetik", "Sistem Separator Otomatis", "Rol Krom Super Mirror"],
     keyTakeaways: [
       "Pemanasan elektromagnetik menghasilkan stabilitas temperatur ±1°C di seluruh permukaan rol.",
       "Pisau perforasi mikro dan rol penarik otomatis memotong lembaran tanpa bekas gerigi kasar.",
@@ -122,7 +115,6 @@ export const articlesData: ArticleItem[] = [
     author: "Admin Pelangi UV",
     desc: "Panduan taktis memadukan efek kilap timbul varnish UV dengan kemilau metalik foil emas untuk mengangkat nilai jual kotak parfum & skincare retail modern.",
     img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCkDzAZAzalZFA48uUtnkA5ZaMCFnOs6ICR2tN8kGvGINNSVdYvxEN-5tDZteWB5sUmUQJLjm1AHMtfXFzgsB6V45rhNRniSAVghZdLNqzSwxCmddjaDiRyxeYiwtRYaUZq5qIx0udf5UF98ynG3_gzJCJHUl0AJhvRqIfgwDSJG_hECmqnUeijVLudCGmzroUFxz9dLBI1wDd_bJN9g_cXlef2qlKW3DSyaU-b4MDDFycyrGeszWpc",
-    technicalChips: ["Kilau 98 GU", "Foil Hot Stamping", "Kombinasi Doff & Glossy"],
     keyTakeaways: [
       "Spot UV menonjolkan tekstur basah transparan tanpa mengubah warna pigmen dasar kemasan.",
       "Hot Stamping Foil memberikan refleksi logam emas, perak, atau hologram mewah dengan opasitas 100%.",
@@ -147,7 +139,6 @@ export const articlesData: ArticleItem[] = [
     author: "Admin Pelangi UV",
     desc: "Standar ketahanan daya rekat pada suhu minus derajat celcius tanpa resiko delaminasi dan bau zat kimia yang menyengat sesuai regulasi food-grade.",
     img: "https://lh3.googleusercontent.com/aida-public/AB6AXuAxpn_oPhTJgun1rCebXLIFQ80eAKXnBlQapzTfxzkh1loitD3H9qyw8Dzm4WiVfMwuyR7OmKURgkjnXaCsPLAqRFZWI5Lhx5WpdbGfGeWvzTsDtFevuf7RKeyhIzwUycBOoIukLHXZq-Q0cL6p3XkNxiEZO1cqckn3c8QX4NejVDrHzshutVCvk4IDFdpLTOJ7KfILylxxTamDAk4fh_ld-ddJ7IcA3zWpo1iOdD9nZ2Mes_Y10Dvv",
-    technicalChips: ["Food Grade Low VOC", "Tahan Suhu -20°C", "Anti-Delaminasi"],
     keyTakeaways: [
       "Kemasan frozen food memerlukan lem sintetis waterbase tanpa residu bau kimia menyengat.",
       "Kekuatan ikatan lem harus tetap elastis dan tidak getas pada kondisi beku freezer industri.",
@@ -172,7 +163,6 @@ export const articlesData: ArticleItem[] = [
     author: "Admin Pelangi UV",
     desc: "Trik pengaturan suhu plat pemanas 90°C–115°C dan dwell time tekanan agar lapisan metalized melekat sempurna tanpa merusak kepadatan serat kertas.",
     img: "https://lh3.googleusercontent.com/aida-public/AB6AXuDK6S3250vxSxCa9_vXCgk34-2dGoNmZAcY-32Mn7eATEF9gsNlxUZgJnyMyxsQV3IHm4xZ5MSSEWq-VMO87p2mLItV8gULOEdhzVKuXDP9lS80UO2AL4YorXHm-K45X9dVE4IGpAZnAvw8ttLzdn0D9GZb0u62ajwxDgjRQkGeBdvV2yZTMnJ6aNjopuN9e3ZUK5d42m2gK6Kuhmb3baNEgK5x1blrOh7sau7U2BQhMy7QpqpGuMIo",
-    technicalChips: ["Suhu Plat 90-115°C", "Pengaturan Dwell Time", "Tegangan Tarikan Foil"],
     keyTakeaways: [
       "Suhu transfer plat ideal berkisar antara 90°C hingga 115°C tergantung ketebalan karton.",
       "Tensioning roll foil yang terlalu kencang menyebabkan kerutan rambut pada tulisan tipis.",
@@ -197,7 +187,6 @@ export const articlesData: ArticleItem[] = [
     author: "Admin Pelangi UV",
     desc: "Dokumentasi kunjungan booth dan uji coba langsung sampel finishing premium bersama para pelaku industri grafika dan packaging se-Jawa Timur.",
     img: "https://lh3.googleusercontent.com/aida-public/AB6AXuD6hdV-RTsrfP0n1xaG4-VUt2RqLE813m730KepugadtmYjhQ_QZ7qe7_RayBZ2osjHKjv4EaXk2FoLnLExiFlNMTg_IP-fLFFxj8BML4PjvgowI_QrfVg-Q8b-32q_No8taRYhI-LV-CpnD6sh9ZozRMbQSqp89n1tjcvV0F8LmplobmDoHiIcB-UIVMj-HRsbQhAV4xIySisnyaXPqId_Ulld_t3J4yaXT1iWd_nG9og0JOInsU1X",
-    technicalChips: ["Surabaya Printing Expo", "Demo Swatch Interaktif", "Kemitraan Grafika Jatim"],
     keyTakeaways: [
       "Ratusan mitra percetakan mencoba langsung sampel Spot UV Drip-Off dan Sand Varnish.",
       "Konsultasi teknis mesin pond otomatis bersama tim engineer langsung di stan pameran.",
@@ -208,6 +197,146 @@ export const articlesData: ArticleItem[] = [
       "Booth Pelangi UV ramai dipadati pengunjung yang terdiri dari pemilik percetakan komersial, pabrik kemasan karton box, desainer packaging, hingga perwakilan industri farmasi dan F&B dari berbagai penjuru Jawa Timur dan Indonesia Timur.",
       "Antusiasme terbesar tertuju pada peluncuran katalog interaktif swatch finishing yang memperlihatkan perbedaan tekstur rabaan fisik antara Spot UV High Gloss 98 GU, Sand Texture Drip-off kasar, hingga kemilau Hot Stamping Foil Gold & Silver Hologram berdaya kilau spektakuler.",
       "Selain pameran sampel fisik, tim teknisi senior CV Pelangi UV juga membuka sesi konsultasi gratis seputar optimasi mesin pond otomatis, pemilihan formulasi lem laminating food-grade, serta teknik penanganan kendala delaminasi pada karton tebal.",
+    ],
+  },
+  {
+    id: "art-7",
+    slug: "revolusi-efek-cast-and-cure-hologram-ramah-lingkungan",
+    title: "Revolusi Efek Cast and Cure: Hologram Mikro Eco-Friendly Tanpa Film Plastik Konvensional",
+    category: "Tips Finishing Cetak",
+    categoryKey: "tips-finishing",
+    date: "14/01/2025",
+    readTime: "4 Menit Baca",
+    views: "1.250 views",
+    commentsCount: "0 Komentar",
+    author: "Admin Pelangi UV",
+    desc: "Teknologi varnish UV nano-embossing yang menciptakan kilau hologram pelangi tanpa menghasilkan sampah plastik mika yang sulit didaur ulang.",
+    img: "https://lh3.googleusercontent.com/aida-public/AB6AXuBEXJFAl9U2vieevJ01JauKl40I9hLNDc5i3TTZqyEvvIW41iwDDFjqEAcFJaEvVNMni-SiTko0A_srel6JQicrO-3yESDr_guNXnlm9LgV5KXMgjXUmF2pga6mbsnfeb2719sGmHtCu6vYShpDi3WxN4ztLgGpcGiM2IHvs1Z_ue4fTzQZIQNZ7RloVgRaa1TqSnd1p-mKi-2C8TPeIWcu5jONFobG7u_HtU-L8BsstZWjwfmZJdMh",
+    keyTakeaways: [
+      "Mengurangi limbah film plastik hingga 100% karena menggunakan silinder embossing casting reusable.",
+      "Efek kilau prisma holografis sulit ditiru oleh mesin percetakan rumahan konvensional.",
+      "Proses curing ultra-violet instant menjamin kertas tetap datar bebas kerut.",
+    ],
+    content: [
+      "Tuntutan pasar global terhadap kemasan ramah lingkungan (sustainable packaging) mendorong CV Pelangi UV menghadirkan teknologi Cast and Cure modern.",
+      "Berbeda dengan laminasi mika hologram biasa yang meninggalkan lapisan plastik non-biodegradable, Cast and Cure hanya mencetak pola mikro pada cairan varnish bening yang langsung dikeringkan oleh sinar UV.",
+      "Hasilnya adalah kemasan dengan estetika prismatik kelas atas yang tetap dapat didaur ulang secara optimal.",
+    ],
+  },
+  {
+    id: "art-8",
+    slug: "standar-keamanan-kemasan-farmasi-micro-emboss",
+    title: "Penerapan Micro Emboss & Rel Presisi untuk Mencegah Pemalsuan Obat dan Produk Farmasi",
+    category: "Tips Finishing Cetak",
+    categoryKey: "tips-finishing",
+    date: "05/01/2025",
+    readTime: "5 Menit Baca",
+    views: "980 views",
+    commentsCount: "2 Komentar",
+    author: "Admin Pelangi UV",
+    desc: "Mengapa industri farmasi dan kemasan rokok wajib mengadopsi tekstur timbul sub-milimeter sebagai fitur otentikasi segel keamanan visual.",
+    img: "https://lh3.googleusercontent.com/aida-public/AB6AXuAzmZ7Zm60qcltUqfUXnZWiG1p0tdNhcDYXDZ-mpniBnJZJ91Pk3pTKdEJ7Kogyo0C2hqk8VHwsxdP7C4OEIlki0UXnviV8KfUiUBb-g6g6yM-g3fwziEmQWUexAG1DsFzLVPI-M_4G-Sk0BKmxrkNWXtwq1A95Q2zKkvqxUjPJmYDJgi6MdX5gTqtnZtUIg5zPudYVaw6gNs7RAb-JRPeixxOJD5g4_3p6efhdBI2_oO4Gco2aHiZp",
+    keyTakeaways: [
+      "Tekstur relief mikro di bawah 0.2 mm tidak dapat ditiru dengan mesin cetak offset biasa.",
+      "Membantu verifikasi produk asli secara langsung lewat rabaan tangan konsumen.",
+      "Dapat dikombinasikan dengan nomor seri klise pond otomatis untuk tracking batch.",
+    ],
+    content: [
+      "Maraknya produk tiruan menuntut industri farmasi dan etiket cukai kemasan meningkatkan level keamanan fisik kemasannya.",
+      "CV Pelangi UV menyediakan layanan Micro Emboss berpresisi tinggi dengan toleransi mikron yang mampu mencetak garis taktil ultra-halus.",
+      "Tekstur timbul mikro ini menjadi benteng pertahanan pertama identitas orisinalitas produk di rak toko.",
+    ],
+  },
+  {
+    id: "art-9",
+    slug: "tips-memaksimalkan-tata-letak-plano-cetak-hemat-biaya",
+    title: "Tips Efisiensi Tata Letak Lembaran Plano Cetak: Hemat Ongkos Finishing Hingga 30%",
+    category: "Bahan Baku & Material",
+    categoryKey: "bahan-baku",
+    date: "20/12/2024",
+    readTime: "4 Menit Baca",
+    views: "1.520 views",
+    commentsCount: "5 Komentar",
+    author: "Admin Pelangi UV",
+    desc: "Strategi pengaturan pola klise hot stamping dan area lembaran pond agar tidak membuang bahan baku karton mahal secara cuma-cuma.",
+    img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCzyVHW-5Zi0qqosAp0aEOt_l2gmKwW9LLxSpY70o6i14P0QLM3FHVcmOetwlyl2BDMl6Ajs0bawirxLFZ1HZitBikROPb1avep7O4mBGydoDrQDClD0SxoBXrFB79KUn3lgYojpLVLsxc5AX_-LQqXLIG3dczPHsDtaVtJrJFsHl6FNC6qjMcwhLxA3gnTjeYAt-PSfu_v0O49cp8RyEkPoHTil0s4ZNJlMLEBscJajZFvf8ggOS6e",
+    keyTakeaways: [
+      "Mengurangi jarak gripper dan margin buangan klise menghemat meteran roll foil.",
+      "Penyesuaian arah serat kertas (grain direction) mencegah pecah tekukan saat pond.",
+      "Layanan Free Slitting Pelangi UV memotong roll jumbo pas sesuai area silinder mesin.",
+    ],
+    content: [
+      "Efisiensi biaya produksi kemasan sering kali ditentukan oleh kecermatan penataan layout desain pada lembaran kertas plano (65x100 atau 79x109 cm).",
+      "Dengan mengelompokkan area foil dalam satu baris tarikan rol dan menyelaraskan garis tekukan rel dengan arah serat, biaya finishing per kemasan dapat ditekan secara signifikan.",
+    ],
+  },
+  {
+    id: "art-10",
+    slug: "laminating-window-mika-standar-higienis-box-bakery",
+    title: "Laminating Window Mika: Rahasia Kemasan Box Bakery Tampil Menarik dan Tetap Higienis",
+    category: "Tips Finishing Cetak",
+    categoryKey: "tips-finishing",
+    date: "02/12/2024",
+    readTime: "3 Menit Baca",
+    views: "870 views",
+    commentsCount: "1 Komentar",
+    author: "Admin Pelangi UV",
+    desc: "Perekatan jendela mika transparan food-grade otomatis berkecepatan 105.000 lembar/hari untuk melindungi kue basah dari debu luar.",
+    img: "https://lh3.googleusercontent.com/aida-public/AB6AXuA52_IT34kiOlEwJAOD-TpWxq5PyJzV1qmGmLJlPILEYoMyDgTlQiuJmVbc6sO1QJpU3mbqtdbQDlAw8r2Si3w10CPhuJxzk14JbNhg2ZmrSDesmPHXpFH59O4g8v2HG59DFDhXHAtmdWkkq1SfW9h3Ke8tTTcwQrDwykVHzHTeJTSE76l1eb6Y7TGt8tXL7qLSaOjiKnCOI788xBP7ExbXnWhXnh70T5ZZ3NG9vlAG6VwjQss05Hw4",
+    keyTakeaways: [
+      "Film mika 20-30 mikron berkejernihan tinggi tanpa efek kabut embun.",
+      "Lem waterbase food-grade bersertifikasi aman untuk kontak pangan tidak langsung.",
+      "Jendela mika presisi tidak mudah lepas saat box ditekuk dan ditumpuk.",
+    ],
+    content: [
+      "Industri bakery dan kue premium mengandalkan visual keindahan produk di balik kemasan untuk memikat selera pembeli.",
+      "Layanan Window Patching otomatis CV Pelangi UV memastikan film mika terpasang kokoh, rata, dan higienis tanpa noda lem yang mengotori tampilan luar dus.",
+    ],
+  },
+  {
+    id: "art-11",
+    slug: "ekspansi-kapasitas-mesin-workshop-bizpark-sidoarjo",
+    title: "Ekspansi Kapasitas Workshop Bizpark Sidoarjo: Siap Layani 200.000 Lembar Plano Per Hari",
+    category: "Kabar Perusahaan",
+    categoryKey: "kabar-perusahaan",
+    date: "15/11/2024",
+    readTime: "4 Menit Baca",
+    views: "1.650 views",
+    commentsCount: "4 Komentar",
+    author: "Admin Pelangi UV",
+    desc: "Penambahan lini mesin cetak otomatis dan armada logistik truk boks tertutup untuk mempercepat pengiriman bebas ongkir di seluruh wilayah Jawa Timur.",
+    img: "https://lh3.googleusercontent.com/aida-public/AB6AXuAzmZ7Zm60qcltUqfUXnZWiG1p0tdNhcDYXDZ-mpniBnJZJ91Pk3pTKdEJ7Kogyo0C2hqk8VHwsxdP7C4OEIlki0UXnviV8KfUiUBb-g6g6yM-g3fwziEmQWUexAG1DsFzLVPI-M_4G-Sk0BKmxrkNWXtwq1A95Q2zKkvqxUjPJmYDJgi6MdX5gTqtnZtUIg5zPudYVaw6gNs7RAb-JRPeixxOJD5g4_3p6efhdBI2_oO4Gco2aHiZp",
+    keyTakeaways: [
+      "Total 35+ unit mesin otomatis dan semi-otomatis siap beroperasi multi-shift.",
+      "Jangkauan antar-jemput gratis diperluas ke Surabaya, Sidoarjo, Gresik, Pasuruan, dan Malang.",
+      "Dukungan teknisi standby untuk pengujian sampel finishing langsung di hari yang sama.",
+    ],
+    content: [
+      "Menjawab tingginya permintaan industri manufaktur kemasan di kawasan Jawa Timur, CV Pelangi UV resmi menyelesaikan ekspansi workshop di Pergudangan Bizpark Blok C17-C19 Waru Sidoarjo.",
+      "Dengan integrasi mesin generasi terbaru, waktu pengerjaan order skala ratusan ribu lembar kini dapat diselesaikan lebih cepat dengan standar presisi register mikron yang konsisten.",
+    ],
+  },
+  {
+    id: "art-12",
+    slug: "teknik-transfer-metalized-paper-ramah-lingkungan",
+    title: "Solusi Cerdas Pengganti Kertas Metalized Impor: Transfer Metalized Paper Berbiaya Efisien",
+    category: "Bahan Baku & Material",
+    categoryKey: "bahan-baku",
+    date: "28/10/2024",
+    readTime: "4 Menit Baca",
+    views: "1.120 views",
+    commentsCount: "2 Komentar",
+    author: "Admin Pelangi UV",
+    desc: "Bagaimana proses transfer partikel foil metalik langsung ke lembaran karton lokal mampu memangkas biaya bahan baku hingga 40%.",
+    img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCkDzAZAzalZFA48uUtnkA5ZaMCFnOs6ICR2tN8kGvGINNSVdYvxEN-5tDZteWB5sUmUQJLjm1AHMtfXFzgsB6V45rhNRniSAVghZdLNqzSwxCmddjaDiRyxeYiwtRYaUZq5qIx0udf5UF98ynG3_gzJCJHUl0AJhvRqIfgwDSJG_hECmqnUeijVLudCGmzroUFxz9dLBI1wDd_bJN9g_cXlef2qlKW3DSyaU-b4MDDFycyrGeszWpc",
+    keyTakeaways: [
+      "Hasil cetak sebanding dengan kertas metalized impor tanpa resiko stok kosong.",
+      "Karton tetap lentur dan tidak mudah sobek saat proses pengeleman lipatan box.",
+      "Pilihan efek Silver, Gold, hingga Rainbow Hologram yang siap dioverprint tinta offset.",
+    ],
+    content: [
+      "Ketergantungan terhadap kertas metalized impor kerap memicu pembengkakan biaya akibat fluktuasi kurs dan biaya logistik pengiriman.",
+      "Teknologi Transfer Metalized CV Pelangi UV memungkinkan transfer partikel aluminium ultra-tipis langsung ke permukaan duplex atau ivory lokal sebelum dicetak, menghasilkan efek cermin metalik sempurna dengan efisiensi biaya maksimal.",
     ],
   },
 ];
@@ -222,12 +351,10 @@ export function getArticleBySlug(slug: string): ArticleItem | undefined {
   );
 }
 
-// 1 Berita terpilih per topik/kategori untuk highlight carousel
 export function getTopicHighlights(): ArticleItem[] {
   const all = getAllArticles();
   const topicMap: Record<string, ArticleItem> = {};
 
-  // Prioritaskan artikel featured atau urutan pertama per kategori
   for (const item of all) {
     if (!topicMap[item.categoryKey]) {
       topicMap[item.categoryKey] = item;
@@ -238,4 +365,3 @@ export function getTopicHighlights(): ArticleItem[] {
 
   return Object.values(topicMap);
 }
-
