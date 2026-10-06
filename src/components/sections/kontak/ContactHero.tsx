@@ -102,32 +102,6 @@ export default function ContactHero() {
             <p className="text-slate-300 font-body-md text-base sm:text-lg max-w-2xl leading-relaxed">
               {t("contact_hero_desc")}
             </p>
-
-            <div className="pt-2 flex flex-wrap items-center gap-3 sm:gap-4">
-              <div className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 shadow-xs text-xs font-label-meta text-slate-200 font-medium backdrop-blur-xs">
-                <span translate="no" className="material-symbols-outlined notranslate text-emerald-400 text-[18px]">
-                  chat
-                </span>{" "}
-                {t("contact_hero_badge1")}
-              </div>
-              <div className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 shadow-xs text-xs font-label-meta text-slate-200 font-medium backdrop-blur-xs">
-                <span translate="no" className="material-symbols-outlined notranslate text-amber-500 text-[18px]">
-                  tips_and_updates
-                </span>{" "}
-                {t("contact_hero_badge2")}
-              </div>
-              <div className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 shadow-xs text-xs font-label-meta text-slate-200 font-medium backdrop-blur-xs">
-                <span translate="no" className="material-symbols-outlined notranslate text-secondary-container text-[18px]">
-                  inventory_2
-                </span>{" "}
-                {t("contact_hero_badge3")}
-              </div>
-            </div>
-
-            <p className="text-[11px] font-label-meta text-slate-400 italic pt-1">
-              *Konsultasi gratis tanpa komitmen pemesanan. Kami siap membantu
-              menemukan solusi terbaik untuk cetakan Anda.
-            </p>
           </div>
 
           {/* Hero Right Column: Clean Dark Hotline Card */}
