@@ -67,20 +67,16 @@ export default function PengaplikasianHero() {
           </h1>
 
           {/* Headline Subtitle */}
-          <p className="text-surface-dim max-w-3xl leading-relaxed mb-8 text-base sm:text-lg min-h-[3rem] flex flex-wrap items-center justify-center gap-1.5">
-            <span>
-              Solusi visualisasi hasil aplikasi finishing cetak presisi tinggi dari CV Pelangi UV — mulai dari
-            </span>
+          <p className="text-surface-dim max-w-2xl leading-relaxed mb-8 text-base sm:text-lg text-center">
+            Solusi visualisasi hasil aplikasi finishing cetak presisi tinggi dari CV Pelangi UV — mulai dari{" "}
             <span
-              className={`inline-block font-bold text-white transition-all duration-300 transform bg-white/10 px-3 py-0.5 rounded-full border border-bracket-border/40 shadow-xs text-bracket-border ${
-                fade ? "opacity-0 -translate-y-1.5 scale-95" : "opacity-100 translate-y-0 scale-100"
+              className={`font-semibold text-bracket-border inline transition-opacity duration-300 ease-in-out ${
+                fade ? "opacity-0" : "opacity-100"
               }`}
             >
               {ROTATING_PACKAGING[currentIndex]}
-            </span>
-            <span>
-              hingga beragam kemasan berstandar industri ekspor.
-            </span>
+            </span>{" "}
+            hingga beragam kemasan berstandar industri ekspor.
           </p>
 
           {/* Action Buttons */}
