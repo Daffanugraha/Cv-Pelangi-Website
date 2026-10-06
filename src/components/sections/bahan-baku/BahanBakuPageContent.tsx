@@ -22,8 +22,13 @@ export default function BahanBakuPageContent() {
 
   const handleSelectCategoryCard = (categoryId: "opp" | "foil" | "lem" | "spotuv") => {
     const card = document.getElementById(`product-card-${categoryId}`);
+    const carousel = document.getElementById("materials-carousel");
     if (card) {
       card.scrollIntoView({ behavior: "smooth", block: "center" });
+      if (carousel) {
+        const cardOffset = card.offsetLeft - 32;
+        carousel.scrollTo({ left: Math.max(0, cardOffset), behavior: "smooth" });
+      }
       card.classList.add("ring-4", "ring-bracket-border", "scale-[1.02]");
       setTimeout(() => {
         card.classList.remove("ring-4", "ring-bracket-border", "scale-[1.02]");
