@@ -92,33 +92,28 @@ export const contactTestimonials: ContactTestimonial[] = [
   },
   {
     type: "whatsapp",
-    badge: "Obrolan WhatsApp Riil",
+    badge: "Ulasan Kepuasan Pelanggan",
     contactName: "Sales CV Pelangi UV",
     contactStatus: "Online • Fast Response",
     contactIcon: "support_agent",
     chatMessages: [
       {
-        from: "sales",
-        text: "Pak Hendra, sampel Roll Foil Gold Brilliant & Lem OPP sudah kami kirim via armada ya. Siang ini tiba di workshop Malang 👍",
-        time: "09:14",
+        from: "client",
+        text: "Pelayanan cepat dan responsive oleh admin. Harga cukup terjangkau tapi hasil tetap berkualitas. Recomended buat bisnis yang baru berjalan dan butuh jasa finishing 👍👍👍",
+        time: "09:20",
       },
       {
         from: "client",
-        text: "Mantap terima kasih mas! Kualitas foilnya nempel presisi banget di box parfum kita. Repeat order 20 roll lagi ya untuk minggu ini!",
+        text: "Pelayanan baik dan bahan bakunya sangat berkualitas. Joss markotop 😁",
         time: "09:28",
-      },
-      {
-        from: "sales",
-        text: "Siap Pak Hendra, PO kami proses langsung, armada kirim besok pagi!",
-        time: "09:30",
       },
     ],
     quote:
-      '"Pelayanan jemput cetak plano bebas ongkir ke Malang sangat menghemat biaya operasional kami. Tim marketing selalu cepat update pengiriman bahan baku roll OPP dan foil gold, stok selalu aman tidak pernah bikin mesin kami nganggur."',
-    initials: "HW",
-    author: "Bpk. Hendra Wijaya",
-    role: "Owner Prima Offset — Malang",
-    partnershipBadge: "Klien Kemitraan 4+ Tahun",
+      '"Pelayanan cepat dan responsive oleh admin. Harga cukup terjangkau tapi hasil tetap berkualitas. Recomended buat bisnis yang baru berjalan dan butuh jasa finishing 👍👍👍"',
+    initials: "AR",
+    author: "Arif B. Ramadhan",
+    role: "Klien Percetakan & Finishing — Surabaya",
+    partnershipBadge: "Ulasan Google Bintang 5",
   },
   {
     type: "image",
