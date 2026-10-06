@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { MaterialCategory } from "@/lib/data/rawMaterials";
 
 interface BahanBakuCatalogProps {
@@ -21,40 +21,30 @@ export default function BahanBakuCatalog({
   categories,
   onOpenPricelist,
 }: BahanBakuCatalogProps) {
-  const carouselRef = useRef<HTMLDivElement>(null);
+  const [isHovered, setIsHovered] = useState(false);
   const [activeFilter, setActiveFilter] = useState<string>("all");
 
-  const slideCarousel = (direction: "left" | "right") => {
-    if (carouselRef.current) {
-      const amount = 430;
-      carouselRef.current.scrollBy({
-        left: direction === "left" ? -amount : amount,
-        behavior: "smooth",
-      });
-    }
-  };
+  // 2 sets per track ensures track is ~4,300px wide, perfectly seamless on any screen width
+  const twinCards = [...categories, ...categories];
 
   const handleFilterClick = (catId: string) => {
     setActiveFilter(catId);
     if (catId === "all") {
-      if (carouselRef.current) {
-        carouselRef.current.scrollTo({ left: 0, behavior: "smooth" });
-      }
+      setIsHovered(false);
     } else {
+      setIsHovered(true);
       const card = document.getElementById(`product-card-${catId}`);
-      if (card && carouselRef.current) {
-        const offset = card.offsetLeft - 32;
-        carouselRef.current.scrollTo({ left: Math.max(0, offset), behavior: "smooth" });
+      if (card) {
         card.scrollIntoView({ behavior: "smooth", block: "center" });
         card.classList.add("ring-4", "ring-bracket-border", "scale-[1.02]");
         setTimeout(() => {
           card.classList.remove("ring-4", "ring-bracket-border", "scale-[1.02]");
-        }, 2000);
+        }, 2500);
       }
     }
   };
 
-  const renderCard = (cat: MaterialCategory) => {
+  const renderCard = (cat: MaterialCategory, trackKey: string, isPrimary: boolean) => {
     const waText = encodeURIComponent(
       `Halo Tim Marketing CV Pelangi UV, saya ingin konsultasi harga dan pemesanan grosir untuk Bahan Baku: *${cat.title}*. Mohon info ketersediaan stok & penawaran terbaik.`
     );
@@ -62,8 +52,8 @@ export default function BahanBakuCatalog({
 
     return (
       <div
-        key={cat.id}
-        id={`product-card-${cat.id}`}
+        key={`${cat.id}-${trackKey}`}
+        id={isPrimary ? `product-card-${cat.id}` : undefined}
         data-category-key={cat.id}
         className="shrink-0 w-[360px] lg:w-[410px] rounded-3xl bg-surface-container-lowest border-2 border-divider-tint/60 text-on-surface p-8 flex flex-col justify-between shadow-[0_12px_40px_-10px_rgba(246,84,86,0.12)] transition-transform duration-300 hover:-translate-y-2 group relative overflow-hidden sheen-effect hover:shadow-2xl"
         style={{
@@ -164,6 +154,23 @@ export default function BahanBakuCatalog({
       className="relative w-full bg-surface-bright overflow-hidden py-16 lg:py-20"
     >
       <style>{`
+        @keyframes continuousMarqueeTrack {
+          0% {
+            transform: translate3d(0, 0, 0);
+          }
+          100% {
+            transform: translate3d(-100%, 0, 0);
+          }
+        }
+        .marquee-track {
+          display: flex;
+          width: max-content;
+          animation: continuousMarqueeTrack 45s linear infinite;
+          will-change: transform;
+        }
+        .marquee-track.paused {
+          animation-play-state: paused;
+        }
         @keyframes foilShimmer {
           0% { transform: translateX(-150%) rotate(25deg); opacity: 0; }
           30% { opacity: 0.7; }
@@ -202,22 +209,15 @@ export default function BahanBakuCatalog({
         .sheen-effect:hover {
           border-color: rgba(246, 84, 86, 0.45) !important;
         }
-        #materials-carousel::-webkit-scrollbar {
-          display: none;
-        }
-        #materials-carousel {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
       `}</style>
 
       {/* Ambient Blurred Blobs */}
       <div className="absolute -top-32 -right-32 w-[680px] h-[680px] bg-divider-tint/50 rounded-full blur-3xl pointer-events-none -z-0" />
       <div className="absolute top-1/2 -left-48 w-[720px] h-[720px] bg-surface-tint-light/80 rounded-full blur-3xl pointer-events-none -z-0" />
 
-      <div className="relative z-10 w-full max-w-[1440px] mx-auto px-6 lg:px-12 flex flex-col">
+      <div className="relative z-10 w-full max-w-[1440px] mx-auto px-6 lg:px-12 flex flex-col mb-10">
         {/* Section Header Matching Layanan */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
           <div className="flex flex-col items-start gap-4">
             <span className="px-5 py-2 rounded-full bg-secondary-container text-on-primary font-cta-pill text-cta-pill shadow-[0_4px_16px_rgba(246,84,86,0.25)]">
               Katalog Bahan Baku Pasca Cetak
@@ -227,7 +227,7 @@ export default function BahanBakuCatalog({
                 Bahan Baku Finishing Standar Industri
               </h2>
               <p className="font-body-md text-body-md text-text-muted mt-1">
-                Empat pilar material esensial percetakan modern dengan daya rekat superior, kilau optimal, dan toleransi putaran mesin berkecepatan tinggi.
+                Material esensial percetakan modern dengan daya rekat superior, kilau optimal, dan toleransi putaran mesin berkecepatan tinggi.
               </p>
             </div>
 
@@ -286,39 +286,42 @@ export default function BahanBakuCatalog({
             </div>
           </div>
 
-          {/* Left / Right Carousel Navigation Buttons */}
-          <div className="hidden sm:flex items-center gap-2 self-end mb-1 shrink-0">
-            <button
-              type="button"
-              onClick={() => slideCarousel("left")}
-              aria-label="Geser ke kiri"
-              className="w-10 h-10 rounded-full bg-white hover:bg-secondary-container hover:text-white text-neutral-800 border border-neutral-300 transition-all flex items-center justify-center shadow-xs cursor-pointer hover:scale-105 active:scale-95"
-            >
-              <span translate="no" className="material-symbols-outlined notranslate text-[20px]">
-                arrow_back
-              </span>
-            </button>
-            <button
-              type="button"
-              onClick={() => slideCarousel("right")}
-              aria-label="Geser ke kanan"
-              className="w-10 h-10 rounded-full bg-white hover:bg-secondary-container hover:text-white text-neutral-800 border border-neutral-300 transition-all flex items-center justify-center shadow-xs cursor-pointer hover:scale-105 active:scale-95"
-            >
-              <span translate="no" className="material-symbols-outlined notranslate text-[20px]">
-                arrow_forward
-              </span>
-            </button>
+          {/* Pause / Play State Indicator */}
+          <div className="hidden sm:flex items-center gap-2 self-end mb-1 text-xs text-text-muted">
+            <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/70 border border-divider-tint/60 shadow-2xs">
+              <span className={`w-2 h-2 rounded-full ${isHovered ? "bg-accent-gold" : "bg-action-whatsapp animate-ping"}`} />
+              {isHovered ? "Dihentikan (Hover)" : "Infinite Loop Berjalan"}
+            </span>
           </div>
         </div>
+      </div>
 
-        {/* Carousel matching Layanan */}
-        <div
-          id="materials-carousel"
-          ref={carouselRef}
-          className="flex items-stretch gap-6 overflow-x-auto pb-8 pt-2 cursor-grab active:cursor-grabbing select-none"
-        >
-          <div className="flex items-stretch gap-6 pb-8 pt-2">
-            {categories.map((cat) => renderCard(cat))}
+      {/* Never-Ending Infinite Loop Conveyor Track */}
+      <div
+        className="relative w-full overflow-hidden py-3"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        onTouchStart={() => setIsHovered(true)}
+        onTouchEnd={() => setIsHovered(false)}
+      >
+        {/* Edge Gradient Vignettes for smooth entry/exit */}
+        <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-8 sm:w-28 bg-gradient-to-r from-surface-bright via-surface-bright/70 to-transparent z-10" />
+        <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-8 sm:w-28 bg-gradient-to-l from-surface-bright via-surface-bright/70 to-transparent z-10" />
+
+        {/* Dual Synchronized Tracks for Seamless Never-Ending Loop */}
+        <div className="flex w-max">
+          <div className={`marquee-track flex gap-6 pr-6 shrink-0 ${isHovered ? "paused" : ""}`}>
+            {twinCards.map((cat, idx) =>
+              renderCard(cat, `t1-${idx}`, idx < categories.length)
+            )}
+          </div>
+          <div
+            className={`marquee-track flex gap-6 pr-6 shrink-0 ${isHovered ? "paused" : ""}`}
+            aria-hidden="true"
+          >
+            {twinCards.map((cat, idx) =>
+              renderCard(cat, `t2-${idx}`, false)
+            )}
           </div>
         </div>
       </div>
