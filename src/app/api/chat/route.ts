@@ -67,6 +67,46 @@ PANDUAN GAYA & FORMAT JAWABAN (SANGAT KETAT):
     // 1. Prioritas Utama: Groq API (Qwen 3.8 / LLaMA berkecepatan tinggi)
     if (groqApiKey) {
       try {
+        // 0. Keamanan Input: Pindai Pesan dengan meta-llama/llama-prompt-guard-2-22m
+        try {
+          const guardRes = await fetch(
+            "https://api.groq.com/openai/v1/chat/completions",
+            {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${groqApiKey}`,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                model: "meta-llama/llama-prompt-guard-2-22m",
+                messages: [{ role: "user", content: message }],
+                max_tokens: 1,
+              }),
+            }
+          );
+
+          if (guardRes.ok) {
+            const guardData = await guardRes.json();
+            const guardScoreRaw = guardData.choices?.[0]?.message?.content;
+            const guardScore = parseFloat(guardScoreRaw);
+
+            // Jika skor ancaman > 0.85 (indikasi prompt injection / jailbreak berbahaya)
+            if (!isNaN(guardScore) && guardScore > 0.85) {
+              return NextResponse.json({
+                html: `<p class="text-neutral-800 leading-relaxed">Pertanyaan yang diajukan tidak dapat diproses. Mohon ajukan pertanyaan seputar layanan finishing cetak, spesifikasi teknis, atau bahan baku CV Pelangi UV.</p>`,
+                chips: [
+                  "Layanan Finishing Cetak",
+                  "Pricelist Bahan Baku",
+                  "Alamat Pabrik & Jam Buka",
+                  "Kontak WhatsApp Marketing",
+                ],
+              });
+            }
+          }
+        } catch (guardErr) {
+          console.warn("Prompt guard check failed, proceeding safely:", guardErr);
+        }
+
         const groqMessages: { role: string; content: string }[] = [
           { role: "system", content: systemPrompt },
         ];
