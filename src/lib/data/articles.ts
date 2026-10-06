@@ -221,3 +221,21 @@ export function getArticleBySlug(slug: string): ArticleItem | undefined {
     (a) => a.slug === slug || a.id === slug
   );
 }
+
+// 1 Berita terpilih per topik/kategori untuk highlight carousel
+export function getTopicHighlights(): ArticleItem[] {
+  const all = getAllArticles();
+  const topicMap: Record<string, ArticleItem> = {};
+
+  // Prioritaskan artikel featured atau urutan pertama per kategori
+  for (const item of all) {
+    if (!topicMap[item.categoryKey]) {
+      topicMap[item.categoryKey] = item;
+    } else if (item.isFeatured && !topicMap[item.categoryKey].isFeatured) {
+      topicMap[item.categoryKey] = item;
+    }
+  }
+
+  return Object.values(topicMap);
+}
+

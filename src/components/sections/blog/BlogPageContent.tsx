@@ -5,10 +5,11 @@ import {
   featuredArticle,
   articlesData,
   ArticleItem,
+  getTopicHighlights,
 } from "@/lib/data/articles";
 import BlogHero from "./BlogHero";
 import BlogFilters from "./BlogFilters";
-import BlogFeaturedCard from "./BlogFeaturedCard";
+import BlogHighlightShowcase from "./BlogHighlightShowcase";
 import BlogGrid from "./BlogGrid";
 import BlogPagination from "./BlogPagination";
 import BlogReaderModal from "./BlogReaderModal";
@@ -20,6 +21,13 @@ export default function BlogPageContent() {
   const [activeCategory, setActiveCategory] = useState<string>("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedArticle, setSelectedArticle] = useState<ArticleItem | null>(null);
+
+  // Ambil 1 artikel sorotan per topik
+  const highlightArticles = useMemo(() => {
+    const list = getTopicHighlights();
+    if (activeCategory === "all") return list;
+    return list.filter((a) => a.categoryKey === activeCategory);
+  }, [activeCategory]);
 
   // Filter articles based on category and search query
   const filteredArticles = useMemo(() => {
@@ -69,10 +77,8 @@ export default function BlogPageContent() {
     setCurrentPage(1);
   };
 
-  // Determine if featured card should be shown
-  const showFeaturedCard =
-    !searchQuery.trim() &&
-    (activeCategory === "all" || activeCategory === featuredArticle.categoryKey);
+  // Tampilkan highlight jika tidak sedang mengetik search
+  const showHighlights = !searchQuery.trim() && highlightArticles.length > 0;
 
   return (
     <div className="flex flex-col w-full bg-surface-canvas selection:bg-bracket-border selection:text-white">
@@ -85,13 +91,13 @@ export default function BlogPageContent() {
         onSearchChange={handleSearchChange}
         activeCategory={activeCategory}
         onCategoryChange={handleCategoryChange}
-        totalArticles={filteredArticles.length + (showFeaturedCard ? 1 : 0)}
+        totalArticles={filteredArticles.length + (showHighlights ? 1 : 0)}
       />
 
-      {/* 3. Featured Article Highlight of the Month */}
-      {showFeaturedCard && (
-        <BlogFeaturedCard
-          article={featuredArticle}
+      {/* 3. Sorotan Artikel per Topik (Gaya Sorotan Galeri: 1 Gambar, 1 Topik) */}
+      {showHighlights && (
+        <BlogHighlightShowcase
+          articles={highlightArticles}
           onReadArticle={(art) => setSelectedArticle(art)}
         />
       )}
