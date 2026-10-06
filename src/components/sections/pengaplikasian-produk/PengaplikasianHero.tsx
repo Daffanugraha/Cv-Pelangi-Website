@@ -1,9 +1,32 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 
+const ROTATING_PACKAGING = [
+  "Kemasan & Etiket Rokok Sigaret",
+  "Kemasan Box Rokok Eksklusif",
+  "Kemasan Box Skincare & Kosmetik Mewah",
+  "Kemasan Box Makanan Food-Grade",
+  "Kemasan Farmasi & Dus Obat Presisi",
+  "Kemasan Rigid Box & Hardbox Ekspor",
+];
+
 export default function PengaplikasianHero() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [fade, setFade] = useState(false);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setFade(true);
+      setTimeout(() => {
+        setCurrentIndex((prev) => (prev + 1) % ROTATING_PACKAGING.length);
+        setFade(false);
+      }, 250);
+    }, 2800);
+
+    return () => clearInterval(timer);
+  }, []);
   return (
     <section className="relative w-full overflow-hidden bg-navbar-black rounded-b-[40px] shadow-2xl pt-12 pb-20 border-b border-white/10">
       {/* Background Image with Gradient Overlay */}
@@ -44,8 +67,20 @@ export default function PengaplikasianHero() {
           </h1>
 
           {/* Headline Subtitle */}
-          <p className="text-surface-dim max-w-3xl leading-relaxed mb-8 text-base sm:text-lg">
-            Solusi visualisasi hasil aplikasi finishing cetak presisi tinggi dari CV Pelangi UV — mulai dari Hardcover Agenda Eksekutif hingga beragam kemasan berstandar industri ekspor.
+          <p className="text-surface-dim max-w-3xl leading-relaxed mb-8 text-base sm:text-lg min-h-[3rem] flex flex-wrap items-center justify-center gap-1.5">
+            <span>
+              Solusi visualisasi hasil aplikasi finishing cetak presisi tinggi dari CV Pelangi UV — mulai dari
+            </span>
+            <span
+              className={`inline-block font-bold text-white transition-all duration-300 transform bg-white/10 px-3 py-0.5 rounded-full border border-bracket-border/40 shadow-xs text-bracket-border ${
+                fade ? "opacity-0 -translate-y-1.5 scale-95" : "opacity-100 translate-y-0 scale-100"
+              }`}
+            >
+              {ROTATING_PACKAGING[currentIndex]}
+            </span>
+            <span>
+              hingga beragam kemasan berstandar industri ekspor.
+            </span>
           </p>
 
           {/* Action Buttons */}
