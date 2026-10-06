@@ -7,19 +7,15 @@ interface HistoryMessage {
 }
 
 /**
- * Mengonversi output teks dari LLM (Markdown) menjadi struktur HTML bersih
- * dengan dukungan:
- * - List tidak berurut (bullet points: * atau -) -> <ul class="..."><li>...</li></ul>
- * - List berurut (1. item) -> <ol class="..."><li>...</li></ol>
+ * Mengonversi output teks dari LLM (Markdown) menjadi struktur HTML bersih:
+ * - List (bullet / angka) -> <ul>/<ol>
  * - Bold (**teks**) -> <strong>teks</strong>
  * - Italic (*teks*) -> <em>teks</em>
- * - Paragraf biasa -> <p class="...">...</p>
+ * - Paragraf biasa -> <p>
  */
 function formatLlmResponseToHtml(raw: string): string {
-  // Bersihkan block code markdown jika LLM membungkus outputnya
   let text = raw.replace(/```[a-z]*\n?/gi, "").trim();
 
-  // Jika teks sudah berupa HTML lengkap dengan tag <p> atau <ul> atau <div>, jangan diubah berlebihan
   if (/<(p|ul|ol|div|li)[^>]*>/i.test(text) && !text.includes("* ") && !text.includes("- ")) {
     return text;
   }
@@ -44,35 +40,29 @@ function formatLlmResponseToHtml(raw: string): string {
       continue;
     }
 
-    // Bold formatting: **text** atau __text__
     line = line.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
     line = line.replace(/__(.*?)__/g, "<strong>$1</strong>");
-
-    // Italic formatting: *text* atau _text_ (pastikan tidak bentrok dengan sisa karakter)
     line = line.replace(/(^|[^*])\*(?!\s)([^*]+?)\*(?!\*)/g, "$1<em>$2</em>");
     line = line.replace(/(^|[^_])_(?!\s)([^_]+?)_(?!_)/g, "$1<em>$2</em>");
 
-    // Check bullet list: * item atau - item atau • item
     if (/^[-*•]\s+/.test(line)) {
       if (inOl) {
         result.push("</ol>");
         inOl = false;
       }
       if (!inUl) {
-        result.push('<ul class="my-2 space-y-1.5 pl-4 list-disc text-neutral-800">');
+        result.push('<ul class="my-2 space-y-1 pl-4 list-disc text-neutral-800">');
         inUl = true;
       }
       const itemContent = line.replace(/^[-*•]\s+/, "");
       result.push(`<li class="leading-relaxed">${itemContent}</li>`);
-    }
-    // Check numbered list: 1. item
-    else if (/^\d+\.\s+/.test(line)) {
+    } else if (/^\d+\.\s+/.test(line)) {
       if (inUl) {
         result.push("</ul>");
         inUl = false;
       }
       if (!inOl) {
-        result.push('<ol class="my-2 space-y-1.5 pl-4 list-decimal text-neutral-800">');
+        result.push('<ol class="my-2 space-y-1 pl-4 list-decimal text-neutral-800">');
         inOl = true;
       }
       const itemContent = line.replace(/^\d+\.\s+/, "");
@@ -87,7 +77,6 @@ function formatLlmResponseToHtml(raw: string): string {
         inOl = false;
       }
 
-      // Hindari membungkus ganda jika baris sudah diawali tag HTML block
       if (/^<(p|h\d|div|ul|ol|table|blockquote)/i.test(line)) {
         result.push(line);
       } else {
@@ -121,98 +110,56 @@ export async function POST(req: NextRequest) {
     const groqModel = process.env.GROQ_MODEL || "qwen/qwen3.8-27b";
     const geminiApiKey = process.env.GEMINI_API_KEY;
 
-    const systemPrompt = `Anda adalah "Pelangi Assistant", konsultan teknis finishing cetak & grosir bahan baku resmi dari CV Pelangi UV ("When Quality Be A Priority", berdiri sejak 2004).
+    const systemPrompt = `Anda adalah "Pelangi Assistant", konsultan teknis AI resmi dari CV Pelangi UV ("When Quality Be A Priority", berdiri sejak 2004 di Bizpark Sidoarjo).
 
-DATABASE LENGKAP & PRICELIST RESMI DARI SELURUH HALAMAN WEBSITE CV PELANGI UV:
-(Setiap kali pengguna menanyakan harga, layanan, atau bahan baku, SEBUTKAN DATA DAN ANGKA HARGA PASTI DI BAWAH INI secara langsung, jangan berbelit-belit atau bilang harga tidak ada!)
+KNOWLEDGE BASE LENGKAP DARI SELURUH HALAMAN WEBSITE CV PELANGI UV:
+1. INFORMASI PERUSAHAAN & LOGISTIK:
+   - Alamat Pabrik: Kompleks Pergudangan Bizpark Blok C17-C19, Jabon, Tambaksawah, Kec. Waru, Kabupaten Sidoarjo, Jawa Timur 61256.
+   - Jam Buka: Senin–Jumat 07.30–15.30 WIB, Sabtu 07.30–13.00 WIB.
+   - WhatsApp Marketing: 0822 3101 9363 | Telepon: (031) 866 7469 / (031) 867 7468 | Email: info@pelangiuv.com.
+   - Layanan Logistik: Antar-Jemput Plano Cetakan GRATIS se-Jawa Timur (Surabaya, Sidoarjo, Gresik, Mojokerto, Pasuruan, Malang) armada truk boks tertutup mandiri.
+   - Kapasitas: 35+ unit mesin otomatis (mampu s/d 200.000+ lembar/hari).
+   - Sample Kit: Swatch Sample Kit fisik GRATIS dikirim ke workshop rekanan.
 
-1. LOKASI, OPERASIONAL, & KONTAK RESMI:
-   - Lokasi: Kompleks Pergudangan Bizpark Blok C17-C19, Jabon, Tambaksawah, Kec. Waru, Kabupaten Sidoarjo, Jawa Timur 61256 (akses strategis dekat Bandara Juanda & Tol Rungkut).
-   - Jam Buka: Senin – Jumat: 07.30 – 15.30 WIB | Sabtu: 07.30 – 13.00 WIB | Minggu & Libur Nasional: Tutup (produksi shift jalan untuk pesanan besar).
-   - WhatsApp Marketing/Konsultasi: 0822 3101 9363 (atau +62 822-3101-9363)
-   - Telepon Kantor: (031) 866 7469 / (031) 867 7468
-   - Email: info@pelangiuv.com
+2. DATABASE HARGA RESMI WEBSITE:
+   A. GROSIR FOIL (Halaman /produk/bahan-baku?category=foil):
+      - Roll Foil Gold / Silver (120m, 64cm): Rp 186.000 / roll
+      - Warna-Warni (Merah, Biru, Hijau, Tembaga 120m): Rp 227.000 / roll
+      - Hologram Laser Gold/Silver (120m): Rp 314.500 / roll
+      - Transparan Security Stamp (120m): Rp 360.500 / roll
+      - Putih BO1: Rp 398.000 / roll | White BO1 Jumbo: Rp 815.500 / roll
+   B. JASA HOT STAMP FOIL & FINISHING (Halaman /layanan):
+      - Jasa Hot Stamp Foil Gold / Silver: Rp 1,08 / cm² (Min. order Rp 300.000)
+      - Jasa Hot Stamp Warna: Rp 1,7 / cm² | Hologram: Rp 2,0 / cm²
+      - Cold Foil Inline: Rp 2,5 / cm²
+      - Spot UV Gloss: Rp 0,22 / cm² | Matte / Pasir: Rp 0,25 / cm²
+      - Laminating Doff: Rp 0,24 / cm² | Gloss: Rp 0,163 / cm² | Window Mika: mulai Rp 0,17 / cm²
+      - Pond Die-Cut: Rp 80 / lembar | Micro Emboss: Rp 270 / lembar (Plat klise Rp 3.000.000) | Emboss 3D: Rp 90-100 / lembar
+   C. FILM BOPP & THERMAL (Halaman /produk/bahan-baku?category=opp):
+      - BOPP Glossy: Rp 41.100 - Rp 56.000 / roll | Doff: Rp 49.000 - Rp 57.000 / roll | PET Metalize: Rp 73.100 / roll (Free Slitting lebar 200-1200mm).
+   D. LEM & VARNISH (Halaman /produk/bahan-baku):
+      - Lem Wet & Dry: Rp 40.000 - Rp 45.000 / pail atau kg
+      - Tinta Spot UV: mulai Rp 35.200 (WB Glossy) s/d Rp 165.000 - Rp 246.500 / can
 
-2. PRICELIST GROSIR BAHAN BAKU RESMI (READY STOCK BIZPARK SIDOARJO):
-   A. BAHAN BAKU FOIL STAMPING (Halaman /produk/bahan-baku?category=foil):
-      - Roll Foil Gold (120 Meter / 64cm x 120m): Rp 186.000 / roll
-      - Roll Foil Silver (120 Meter / 64cm x 120m): Rp 186.000 / roll
-      - Roll Foil Warna - Warni (Red, Blue, Green, Copper 120m): Rp 227.000 / roll
-      - Roll Foil Gold & Silver Hologram Laser (120m): Rp 314.500 / roll
-      - Roll Foil Transparan (Security Ghost Stamp 120m): Rp 360.500 / roll
-      - Roll Foil Putih BO1 (Pigment White Stamp): Rp 398.000 / roll
-      - Roll Foil White BO1 (Extra Width Roll Jumbo): Rp 815.500 / roll
-      * Spesifikasi: Suhu transfer 100°C - 120°C, lepas rilis presisi tanpa serabut, tahan gesekan, tersedia juga panjang jumbo hingga 3.000 meter.
+CARA MENJAWAB SEBAGAI AI KONSULTAN PINTAR (SANGAT PENTING):
+1. JAWABAN SINGKAT, CERDAS, DAN ADAPTIF (BUKAN TEMPLATE / BUKAN DAFTAR PANJANG MEMBOSANKAN):
+   - Jawab secara ringkas, luwes, dan padat (1-2 paragraf singkat atau 2-4 poin inti yang paling relevan dengan pertanyaan).
+   - JANGAN meng-copy paste seluruh katalog atau membuat list panjang lebar kecuali user secara spesifik meminta "sebutkan semua harganya".
+   - Jika user bertanya harga secara umum (misal: "harga foilnya berapa aja ya"), sebutkan gambaran rentang harga intinya dan varian terpopuler dengan to the point:
+     Contoh alur cerdas:
+     Sebutkan langsung bahwa untuk bahan baku roll foil (120m), varian Gold & Silver mulai dari Rp 186.000/roll, Warna-warni Rp 227.000, hingga Hologram Rp 314.500/roll. Sedangkan untuk jasa aplikasinya per cm² adalah Rp 1,08/cm² (Gold/Silver). Lalu tanya kebutuhan spesifiknya apakah butuh bahan baku roll atau jasa pengerjaannya.
+2. MEMAHAMI KONTEKS DAN RELEVANSI PERCAKAPAN (MULTI-TURN MEMORY):
+   - Ingat percakapan sebelumnya dan informasi pengguna. Jika user memperkenalkan diri (misal namanya Daffa), sapa dengan sopan "Pak Daffa" atau "Daffa".
+   - Jika percakapan sebelumnya membahas kemasan rokok, kaitkan rekomendasi dengan kemasan rokok tanpa harus mengulang penjelasan dari nol.
+   - Pahami setiap isi website secara organik, diskusikan seperti konsultan ahli percetakan manusia yang cerdas, bukan bot kaku penjawab keyword.
+3. LARANGAN:
+   - DILARANG menggunakan sapaan alay seperti "hai kak", "halo kak".
+   - DILARANG memberikan jawaban generik menghindar seperti "harga bervariasi dan tidak ada harga pasti". Anda punya data harga resmi website, berikan angka riilnya secara ringkas!`;
 
-   B. FILM PLASTIK BOPP / THERMAL LAMINASI (Halaman /produk/bahan-baku?category=opp):
-      - BOPP Glossy 20 mic: Rp 41.100 / roll
-      - Glossy Waterbase 12 mic: Rp 46.500 / roll
-      - OPP Glossy Waterbase 30 mic: Rp 47.500 / roll
-      - Thermal Glossy 22, 24, 27 mic: Rp 48.000 / roll
-      - Doff Waterbase 15 mic: Rp 49.000 / roll
-      - Glossy Waterbase 12 mic (Spek Khusus): Rp 49.500 / roll
-      - Thermal Glossy 4000m (Jumbo): Rp 52.000 / roll
-      - Thermal Doff 4000m (Jumbo): Rp 53.000 / roll
-      - Thermall Glossy 18 mic: Rp 56.000 / roll
-      - Thermal Glossy 3000m (Jumbo): Rp 56.000 / roll
-      - Thermall Doff 18 mic: Rp 57.000 / roll
-      - PET Metalize: Rp 73.100 / roll
-      * Fitur: Corona dyne ≥ 42 dynes/cm, FREE Slitting belah roll custom lebar 200 mm - 1200 mm akurasi ±0.5 mm.
-
-   C. LEM WET & DRY LAMINATING LENGKAP (Halaman /produk/bahan-baku?category=lem):
-      - Lem Wet Laminating (Waterbase Emulsion): Rp 45.000 / Pail atau Kg
-      - Lem Dry / Lem Laminating A: Rp 40.000 / Pail atau Kg
-      - Lem Dry / Lem Laminating B: Rp 45.000 / Pail atau Kg
-      - Lem Polygum: Rp 37.000 / Pail atau Kg
-      - Creasing Matrix: Rp 15.000 / Pcs strip rel pond
-      - Hand Roll Stretch Film: Rp 91.500 / Roll
-
-   D. TINTA & VARNISH SPOT UV LUMINEX (Halaman /produk/bahan-baku?category=spotuv):
-      - WB Glossy (Waterbase Coat): Rp 35.200 / Kg atau Can
-      - Tinta Tex 20 Varnish: Rp 40.500 / Kg atau Can
-      - Tinta UV Full Varnish: Rp 95.000 / Kg atau Can
-      - Tinta Spot UV Standard: Rp 165.000 / Kg atau Can
-      - Tinta Spot UV Mix: Rp 168.000 / Kg atau Can
-      - Bluish High Gloss Varnish: Rp 173.000 / Kg atau Can
-      - Tinta Spot UV HG - 25 Cepat Kering: Rp 246.500 / Kg atau Can
-      - Tinta Spot UV Matte (Doff): Rp 408.500 / Kg atau Can
-
-3. TARIF JASA FINISHING LENGKAP (Halaman /layanan):
-   - Jasa Hot Stamp Foil Gold / Silver: Rp 1,08 / cm² (Min. order Rp 300.000)
-   - Jasa Hot Stamp Warna-Warni: Rp 1,7 / cm² (Min. order Rp 300.000)
-   - Jasa Hot Stamp Hologram Prismatik: Rp 2,0 / cm² (Min. order Rp 300.000)
-   - Jasa Cold Foil Silver/Gold: Rp 2,5 / cm² | Warna: Rp 2 / cm² | Hologram: Rp 2,5 / cm²
-   - Jasa Spot UV Gloss: Rp 0,22 / cm² | Spot UV Matte: Rp 0,25 / cm² | Spot UV Pasir: Rp 0,25 / cm² (Min. order Rp 300.000)
-   - Jasa Laminating Doff Halus: Rp 0,24 / cm² | Laminating Gloss Bening: Rp 0,163 / cm² | Hologram: Rp 0,31 / cm²
-   - Jasa Laminating Window Mika: 12 mic: Rp 0,17/cm² | 20 mic: Rp 0,21/cm² | 25 mic: Rp 0,22/cm² | 30 mic: Rp 0,24/cm²
-   - Jasa Pond & Die-Cut: Plong Otomatis Rp 80/lembar (Min Rp 500k) | Plong Manual Rp 80/lembar (Min Rp 200k)
-   - Jasa Micro Emboss: Rp 270 / lembar (Min order Rp 500k) | Pembuatan Plat Klise Micro Emboss: Rp 3.000.000 / plat
-   - Jasa Emboss & Deboss: Emboss Manual Rp 90/lembar (Min Rp 200k) | Emboss Otomatis Rp 100/lembar (Min Rp 300k)
-   - Jasa Transfer Metalized: Silver Rp 0,403/cm² | Gold Rp 0,53/cm² | Rainbow Rp 0,46/cm²
-   - Jasa Transfer PET: Silver Rp 0,26/cm² | Gold Rp 0,43/cm² | Rainbow Rp 0,46/cm²
-   - Jasa Rewinding Foil Roll: Rp 50.000 / roll
-   - Jasa Potong Foil (Slitting Custom): Rp 50.000 / roll (atau Free Slitting untuk pembelian bahan baku roll jumbo tertentu)
-
-4. FASILITAS & LOGISTIK UNGGULAN:
-   - Antar-Jemput Plano Cetakan GRATIS se-Jawa Timur (Surabaya, Sidoarjo, Gresik, Mojokerto, Pasuruan, Malang) armada truk boks mandiri.
-   - 35+ Mesin Otomatis, kapasitas 200.000+ lembar/hari.
-   - Swatch Sample Kit Fisik GRATIS dikirim ke workshop mitra.
-
-ATURAN PERCAKAPAN (SANGAT KETAT):
-1. JIKA USER TANYA HARGA (Contoh: "harga foilnya berapa aja ya"):
-   - JAWAB LANGSUNG DENGAN DAFTAR HARGA LENGKAP YANG TERCANTUM DI ATAS!
-   - Pisahkan antara harga bahan baku roll (Rp 186.000 untuk Gold/Silver 120m, dst.) dan tarif jasa hot stamp per cm² (Rp 1,08/cm²).
-   - Format dalam bentuk bullet points yang rapi dan terstruktur: **Nama Varian:** Harga satuan.
-   - JANGAN PERNAH mengatakan "harga bervariasi dan tidak ada satu harga tetap" tanpa menyebutkan nominal harga yang ada di database web! Tampilkan harganya terlebih dahulu dengan bangga dan transparan.
-2. MEMORI NAMA & MULTI-TURN CONTEXT:
-   - Jika di history user minta dipanggil "Daffa", panggil selalu "Pak Daffa" atau "Daffa".
-   - Pertahankan topik yang sedang dibicarakan.
-   - Dilarang sapaan alay seperti "hai kak", gunakan bahasa profesional, lugas, dan terpercaya.`;
-
-    // 1. Prioritas Utama: Groq API (Qwen 3.8 / LLaMA berkecepatan tinggi)
+    // 1. Prioritas Utama: Groq API
     if (groqApiKey) {
       try {
-        // 0. Keamanan Input: Pindai Pesan dengan meta-llama/llama-prompt-guard-2-22m
+        // Keamanan Input dengan prompt guard
         try {
           const guardRes = await fetch(
             "https://api.groq.com/openai/v1/chat/completions",
@@ -235,7 +182,6 @@ ATURAN PERCAKAPAN (SANGAT KETAT):
             const guardScoreRaw = guardData.choices?.[0]?.message?.content;
             const guardScore = parseFloat(guardScoreRaw);
 
-            // Jika skor ancaman > 0.85 (indikasi prompt injection / jailbreak berbahaya)
             if (!isNaN(guardScore) && guardScore > 0.85) {
               return NextResponse.json({
                 html: `<p class="text-neutral-800 leading-relaxed">Pertanyaan yang diajukan tidak dapat diproses. Mohon ajukan pertanyaan seputar layanan finishing cetak, spesifikasi teknis, atau bahan baku CV Pelangi UV.</p>`,
@@ -256,7 +202,6 @@ ATURAN PERCAKAPAN (SANGAT KETAT):
           { role: "system", content: systemPrompt },
         ];
 
-        // Sertakan hingga 10 pesan riwayat terakhir agar bot mengingat nama dan alur percakapan
         if (Array.isArray(conversationHistory)) {
           for (const msg of conversationHistory.slice(-10)) {
             if (!msg.text || !msg.text.trim()) continue;
@@ -280,8 +225,8 @@ ATURAN PERCAKAPAN (SANGAT KETAT):
             body: JSON.stringify({
               model: groqModel,
               messages: groqMessages,
-              temperature: 0.2,
-              max_tokens: 750,
+              temperature: 0.4,
+              max_tokens: 450,
             }),
           }
         );
@@ -295,7 +240,7 @@ ATURAN PERCAKAPAN (SANGAT KETAT):
             let cleanHtml = formatLlmResponseToHtml(generatedText);
 
             const waUrl = `https://wa.me/6282231019363?text=${encodeURIComponent(
-              `Halo Tim Marketing CV Pelangi UV, saya ingin order/konsultasi harga: ${message.slice(
+              `Halo Tim Marketing CV Pelangi UV, saya ingin tanya/konsultasi: ${message.slice(
                 0,
                 80
               )}`
@@ -327,7 +272,7 @@ ATURAN PERCAKAPAN (SANGAT KETAT):
       }
     }
 
-    // 2. Alternatif: Gemini LLM jika diatur
+    // 2. Alternatif Gemini LLM
     if (geminiApiKey) {
       try {
         const contents: { role: string; parts: { text: string }[] }[] = [];
@@ -360,8 +305,8 @@ ATURAN PERCAKAPAN (SANGAT KETAT):
                 parts: [{ text: systemPrompt }],
               },
               generationConfig: {
-                temperature: 0.2,
-                maxOutputTokens: 750,
+                temperature: 0.4,
+                maxOutputTokens: 450,
               },
             }),
           }
