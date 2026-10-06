@@ -153,68 +153,6 @@ export default function BahanBakuCatalog({
       id="katalog-material"
       className="relative w-full bg-surface-bright overflow-hidden py-16 lg:py-20"
     >
-      <style
-        dangerouslySetInnerHTML={{
-          __html: `
-        @keyframes continuousMarqueeTrack {
-          0% {
-            transform: translate3d(0, 0, 0);
-          }
-          100% {
-            transform: translate3d(-100%, 0, 0);
-          }
-        }
-        .marquee-track {
-          display: flex;
-          width: max-content;
-          animation: continuousMarqueeTrack 45s linear infinite;
-          will-change: transform;
-        }
-        .marquee-track.paused {
-          animation-play-state: paused;
-        }
-        @keyframes foilShimmer {
-          0% { transform: translateX(-150%) rotate(25deg); opacity: 0; }
-          30% { opacity: 0.7; }
-          100% { transform: translateX(250%) rotate(25deg); opacity: 0; }
-        }
-        .sheen-effect {
-          position: relative;
-          overflow: hidden;
-        }
-        .sheen-effect::after {
-          content: "";
-          position: absolute;
-          top: -50%;
-          left: -60%;
-          width: 60%;
-          height: 200%;
-          background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.45) 50%, rgba(255,255,255,0) 100%);
-          transform: rotate(25deg);
-          pointer-events: none;
-          opacity: 0;
-          z-index: 15;
-        }
-        .sheen-effect:hover::after {
-          animation: foilShimmer 1.1s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .sheen-effect:hover .stat-rainbow-hover {
-          background: linear-gradient(135deg, #fe5453 0%, #FFD700 50%, #25D366 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          filter: drop-shadow(0 2px 8px rgba(246,84,86,0.25));
-          transition: all 0.3s ease;
-        }
-        .sheen-effect {
-          transition: transform 0.3s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.3s ease, border-color 0.3s ease;
-        }
-        .sheen-effect:hover {
-          border-color: rgba(246, 84, 86, 0.45) !important;
-        }
-      `,
-        }}
-      />
-
       {/* Ambient Blurred Blobs */}
       <div className="absolute -top-32 -right-32 w-[680px] h-[680px] bg-divider-tint/50 rounded-full blur-3xl pointer-events-none -z-0" />
       <div className="absolute top-1/2 -left-48 w-[720px] h-[720px] bg-surface-tint-light/80 rounded-full blur-3xl pointer-events-none -z-0" />
@@ -288,14 +226,6 @@ export default function BahanBakuCatalog({
                 </button>
               ))}
             </div>
-          </div>
-
-          {/* Pause / Play State Indicator */}
-          <div className="hidden sm:flex items-center gap-2 self-end mb-1 text-xs text-text-muted">
-            <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/70 border border-divider-tint/60 shadow-2xs">
-              <span className={`w-2 h-2 rounded-full ${isHovered ? "bg-accent-gold" : "bg-action-whatsapp animate-ping"}`} />
-              {isHovered ? "Dihentikan (Hover)" : "Infinite Loop Berjalan"}
-            </span>
           </div>
         </div>
       </div>
