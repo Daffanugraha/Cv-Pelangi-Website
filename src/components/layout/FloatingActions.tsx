@@ -98,12 +98,17 @@ export default function FloatingActions() {
     const startTime = Date.now();
 
     try {
+      const formattedHistory = messages.slice(-6).map((m) => ({
+        sender: m.sender,
+        text: m.text || (m.html ? m.html.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim() : ""),
+      }));
+
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           message: text,
-          conversationHistory: messages.slice(-4),
+          conversationHistory: formattedHistory,
         }),
       });
 
