@@ -8,13 +8,17 @@ import {
 import PengaplikasianHero from "./PengaplikasianHero";
 import PengaplikasianFilters from "./PengaplikasianFilters";
 import PengaplikasianGrid from "./PengaplikasianGrid";
+import PengaplikasianPagination from "./PengaplikasianPagination";
 import PengaplikasianEducationGuide from "./PengaplikasianEducationGuide";
 import PengaplikasianDetailModal from "./PengaplikasianDetailModal";
+
+const ITEMS_PER_PAGE = 6;
 
 export default function PengaplikasianPageContent() {
   // 1. Filter state
   const [activeFilter, setActiveFilter] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
 
   // 2. Admin gallery items merge (if any uploaded from admin panel)
   const [extraGallery, setExtraGallery] = useState<GalleryProduct[]>([]);
@@ -62,7 +66,46 @@ export default function PengaplikasianPageContent() {
     });
   }, [allProducts, activeFilter, searchQuery]);
 
-  // 4. Modal State
+  // 4. Pagination calculations
+  const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE) || 1;
+
+  // Auto-correct page if filteredProducts shrink
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(1);
+    }
+  }, [currentPage, totalPages]);
+
+  const paginatedProducts = useMemo(() => {
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    return filteredProducts.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  }, [filteredProducts, currentPage]);
+
+  const handleFilterChange = (filter: string) => {
+    setActiveFilter(filter);
+    setCurrentPage(1);
+  };
+
+  const handleSearchChange = (query: string) => {
+    setSearchQuery(query);
+    setCurrentPage(1);
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    const gridEl = document.getElementById("pengaplikasian-grid");
+    if (gridEl) {
+      gridEl.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
+  const handleResetFilter = () => {
+    setActiveFilter("all");
+    setSearchQuery("");
+    setCurrentPage(1);
+  };
+
+  // 5. Modal State
   const [selectedProduct, setSelectedProduct] = useState<GalleryProduct | null>(null);
 
   // Close modal on Escape
@@ -85,25 +128,29 @@ export default function PengaplikasianPageContent() {
       {/* 2. FILTER & SEARCH CONTROLS */}
       <PengaplikasianFilters
         activeFilter={activeFilter}
-        onFilterChange={setActiveFilter}
+        onFilterChange={handleFilterChange}
         searchQuery={searchQuery}
-        onSearchChange={setSearchQuery}
+        onSearchChange={handleSearchChange}
       />
 
       {/* 3. INTERACTIVE PRODUCT GALLERY SHOWCASE */}
       <PengaplikasianGrid
-        products={filteredProducts}
+        products={paginatedProducts}
         onSelectProduct={(p) => setSelectedProduct(p)}
-        onResetFilter={() => {
-          setActiveFilter("all");
-          setSearchQuery("");
-        }}
+        onResetFilter={handleResetFilter}
       />
 
-      {/* 4. EDUCATIONAL SELECTION GUIDE (PANDUAN SELEKSI PASCA-CETAK) */}
+      {/* 4. PAGINATION CONTROLS (1 2 3 ... N) */}
+      <PengaplikasianPagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+      />
+
+      {/* 5. EDUCATIONAL SELECTION GUIDE (PANDUAN SELEKSI PASCA-CETAK) */}
       <PengaplikasianEducationGuide />
 
-      {/* 5. INTERACTIVE SPECIFICATION MODAL (POPUP INSPEKSI FINISHING) */}
+      {/* 6. INTERACTIVE SPECIFICATION MODAL (POPUP INSPEKSI FINISHING) */}
       <PengaplikasianDetailModal
         product={selectedProduct}
         onClose={() => setSelectedProduct(null)}

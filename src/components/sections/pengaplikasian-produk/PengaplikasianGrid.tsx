@@ -15,7 +15,7 @@ export default function PengaplikasianGrid({
   onResetFilter,
 }: PengaplikasianGridProps) {
   return (
-    <section className="w-full py-12">
+    <section id="pengaplikasian-grid" className="w-full py-12 scroll-mt-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-2 text-sm text-text-muted">
@@ -92,18 +92,6 @@ export default function PengaplikasianGrid({
                     <p className="text-xs text-text-body line-clamp-2 leading-relaxed mt-1">
                       {product.desc}
                     </p>
-                  </div>
-
-                  {/* Chips */}
-                  <div className="flex flex-wrap gap-1.5 pt-1">
-                    {product.badges.map((badge, idx) => (
-                      <span
-                        key={idx}
-                        className="px-2.5 py-1 rounded-md bg-surface-container text-[11px] font-medium text-text-muted"
-                      >
-                        {badge}
-                      </span>
-                    ))}
                   </div>
 
                   {/* Footer Row */}
