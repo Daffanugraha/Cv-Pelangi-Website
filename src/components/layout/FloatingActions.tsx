@@ -26,16 +26,16 @@ const INITIAL_BOT_MESSAGE: ChatMessage = {
     <div class="space-y-1.5 text-left">
       <div class="flex items-center gap-1.5 text-neutral-400 font-medium text-[10px] uppercase tracking-wider">
         <span class="w-1.5 h-1.5 rounded-full bg-[#25D366]"></span>
-        <span>Konsultan CV Pelangi UV • Bizpark Sidoarjo</span>
+        <span>Konsultan Teknis CV Pelangi UV</span>
       </div>
       <p class="font-bold text-neutral-900 text-xs sm:text-[13px] leading-snug">
-        Halo! Selamat datang di <span translate="no" class="notranslate">CV Pelangi UV</span> 👋
+        Layanan Konsultasi Teknis &amp; Spesifikasi Cetak
       </p>
       <p class="text-neutral-600 text-xs leading-relaxed">
-        Punya pertanyaan seputar finishing cetak (Hot Stamp, Spot UV, Laminating, Cast &amp; Cure, Pond) atau pembelian bahan baku (Roll Film BOPP, Foil, Lem)? Tanyakan langsung di sini, kami siap membantu dengan informasi akurat!
+        Silakan ajukan pertanyaan seputar jasa finishing (Hot Stamp Foil, Spot UV, Laminating Thermal, Cast &amp; Cure, Pond Die-Cut) atau ketersediaan bahan baku (Roll Film BOPP, Foil Stamping, Lem Waterbase).
       </p>
       <span class="text-[10px] text-neutral-400 mt-2 block text-right font-medium">
-        Online • Respon Cepat
+        Online • Respon Cepat &amp; Akurat
       </span>
     </div>
   `,

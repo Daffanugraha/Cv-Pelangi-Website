@@ -108,7 +108,7 @@ export const consultationScenarios: ScenarioPattern[] = [
     ],
     replyGenerator: (input) =>
       formatAdvice({
-        greeting: "Oh iya kak, paham banget! Untuk produk skincare & kecantikan, kemasan adalah kunci trust pertama pelanggan! ✨",
+        greeting: "Untuk Untuk produk skincare & kecantikan, kemasan adalah kunci trust pertama pelanggan! ✨",
         explanation:
           "Packaging skincare membutuhkan sentuhan yang lembut saat dipegang (tactile experience) dan aksen kilau berkilau agar terlihat eksklusif di etalase maupun video unboxing.",
         tips: [
@@ -126,7 +126,7 @@ export const consultationScenarios: ScenarioPattern[] = [
           },
         ],
         conclusion:
-          "Mau kami kirimkan Swatch Sample Kit fisik kemasan skincare langsung ke workshop/alamat kakak?",
+          "Mau kami kirimkan Swatch Sample Kit fisik kemasan skincare langsung ke workshop/workshop Anda?",
         waTopic: `Rekomendasi Finishing Kemasan Skincare (${input})`,
         chips: [
           "Minta Sampel Foil Rose Gold",
@@ -158,7 +158,7 @@ export const consultationScenarios: ScenarioPattern[] = [
     ],
     replyGenerator: (input) =>
       formatAdvice({
-        greeting: "Oh iya kak, masalah karton pecah di garis lipatan itu memang sering bikin pusing ya! Tenang, ini penyebab dan solusi tepatnya: 🛠️",
+        greeting: "Kendala karton retak atau pecah pada garis tekukan disebabkan oleh faktor teknis berikut: 🛠️",
         explanation:
           "Karton pecah atau retak saat ditekuk biasanya disebabkan oleh 3 faktor: arah serat kertas yang berlawanan dengan rel pond, penggunaan laminasi manual (water-based) yang rapuh, atau spon/pisau pond yang terlalu tajam.",
         tips: [
@@ -168,7 +168,7 @@ export const consultationScenarios: ScenarioPattern[] = [
           },
           {
             title: "Perhatikan Arah Serat (Grain Direction)",
-            desc: "Pastikan garis tekukan sejajar dengan arah serat karton (grain parallel). Jangan melintang, karena kertas rentan robek bila seratnya tertekuk patah.",
+            desc: "Pastikan garis tekukan utama (crease line) sejajar dengan arah serat kertas (grain parallel) agar tidak mematahkan serat karton. Jika dipaksa melintang tanpa perlindungan laminasi thermal fleksibel, serat akan pecah saat dilipat 90°–180°.",
           },
           {
             title: "Koreksi Pisau Pond & Matriks Creasing",
@@ -176,7 +176,7 @@ export const consultationScenarios: ScenarioPattern[] = [
           },
         ],
         conclusion:
-          "Tim teknisi kami siap uji coba pond sampel cetakan kakak di workshop Sidoarjo untuk memastikan 100% aman sebelum diproduksi massal.",
+          "Tim teknisi kami siap uji coba pond sampel cetakan Anda di workshop Sidoarjo untuk memastikan 100% aman sebelum diproduksi massal.",
         waTopic: `Konsultasi Problem Solving Box Pecah/Retak (${input})`,
         chips: [
           "Solusi Laminasi Thermal BOPP",
@@ -205,7 +205,7 @@ export const consultationScenarios: ScenarioPattern[] = [
     ],
     replyGenerator: (input) =>
       formatAdvice({
-        greeting: "Oh iya kak, ini trik cerdas yang sering kami bagikan ke teman-teman UMKM & percetakan: Mewah tidak harus mahal! 💡💰",
+        greeting: "Efisiensi biaya finishing dapat dioptimalkan tanpa mengurangi kesan premium: 💡💰",
         explanation:
           "Kunci kemasan terlihat mahal bukan pada banyaknya efek yang dipasang, melainkan pada 'kontras' visual yang tepat sasaran.",
         tips: [
@@ -223,7 +223,7 @@ export const consultationScenarios: ScenarioPattern[] = [
           },
         ],
         conclusion:
-          "Mau kami bantu hitungkan estimasi perbandingan biaya opsi-opsi finishing ini sesuai ukuran lembaran kakak?",
+          "Mau kami bantu hitungkan estimasi perbandingan biaya opsi-opsi finishing ini sesuai ukuran lembaran plano Anda?",
         waTopic: `Simulasi Biaya Finishing Hemat & Mewah (${input})`,
         chips: [
           "Hitung Estimasi Biaya",
@@ -259,7 +259,7 @@ export const consultationScenarios: ScenarioPattern[] = [
     ],
     replyGenerator: (input) =>
       formatAdvice({
-        greeting: "Oh iya kak, kemasan makanan & FnB punya standar khusus! Selain estetik, faktor higienitas & ketahanan minyak/air adalah nomor satu! 🍔🍰",
+        greeting: "Kemasan makanan dan FnB memerlukan spesifikasi ketahanan ekstra: Selain estetik, faktor higienitas & ketahanan minyak/air adalah nomor satu! 🍔🍰",
         explanation:
           "Uap panas dari makanan, minyak mentega, atau suhu dingin freezer bisa merusak karton jika tidak dilapisi proteksi yang tepat.",
         tips: [
@@ -306,7 +306,7 @@ export const consultationScenarios: ScenarioPattern[] = [
     ],
     replyGenerator: (input) =>
       formatAdvice({
-        greeting: "Wah selamat ya kak untuk rencana pernikahannya! Untuk undangan, sentuhan finishing adalah yang membuat momen sakral terasa istimewa 💍💌",
+        greeting: "Aplikasi finishing undangan dan kartu suvenir menitikberatkan pada detail presisi: 💍💌",
         explanation:
           "Undangan pernikahan yang berkesan selalu memadukan tekstur kertas eksklusif dengan aksen logam mulia yang presisi.",
         tips: [
@@ -355,7 +355,7 @@ export const consultationScenarios: ScenarioPattern[] = [
     ],
     replyGenerator: (input) =>
       formatAdvice({
-        greeting: "Oh iya kak, untuk publikasi seperti buku, katalog, dan kalender, cover adalah jendela utama yang menentukan nilai jualnya! 📚📅",
+        greeting: "Finishing buku, company profile, dan kalender memerlukan perlindungan serta daya tahan tinggi: 📚📅",
         explanation:
           "Buku dan katalog sering disentuh dan dibolak-balik, sehingga butuh lapisan pelindung anti-baret yang sekaligus menonjolkan visual judul.",
         tips: [
@@ -403,7 +403,7 @@ export const consultationScenarios: ScenarioPattern[] = [
     ],
     replyGenerator: (input) =>
       formatAdvice({
-        greeting: "Oh iya kak, banyak banget yang menanyakan perbandingan ini! Biar tidak bingung, ini rangkuman singkat dan mudahnya: 🧐🔍",
+        greeting: "Berikut perbandingan karakteristik teknis finishing: 🧐🔍",
         explanation:
           "Setiap finishing punya karakter unik dan peruntukan produk yang berbeda:",
         tips: [
@@ -455,21 +455,21 @@ export const consultationScenarios: ScenarioPattern[] = [
     ],
     replyGenerator: (input) =>
       formatAdvice({
-        greeting: "Oh iya kak, santai aja! Semangat ya untuk proyek & bisnis barunya! Wajar banget kok kalau di awal masih bingung memilih spek finishing yang tepat 😊🙌",
+        greeting: "Berikut panduan langkah pemilihan spesifikasi finishing untuk kebutuhan baru: 😊🙌",
         explanation:
           "Di CV Pelangi UV, kami terbiasa mendampingi ribuan pelaku usaha dari nol hingga produknya sukses bersaing di rak supermarket & e-commerce. Ini 3 langkah mudahnya:",
         tips: [
           {
             title: "Langkah 1: Ceritakan Produk & Target Pasarmu",
-            desc: "Produk apa yang kakak jual dan siapa pembelinya? (Misal: kopi anak muda, herbal kesehatan, atau skincare premium). Ini menentukan apakah karakter packagingnya harus cerah, doff elegan, atau natural kraft.",
+            desc: "Produk apa yang Anda produksi dan siapa pembelinya? (Misal: kopi anak muda, herbal kesehatan, atau skincare premium). Ini menentukan apakah karakter packagingnya harus cerah, doff elegan, atau natural kraft.",
           },
           {
             title: "Langkah 2: Pegang Contoh Fisik (Gratis dari Kami!)",
-            desc: "Jangan menebak-nebak di layar monitor! Minta <strong>Sample Kit Swatch</strong> dari Pelangi UV. Kami kirimkan sampel foil, doff velvet, dan spot UV ke alamat kakak tanpa biaya.",
+            desc: "Jangan menebak-nebak di layar monitor! Minta <strong>Sample Kit Swatch</strong> dari Pelangi UV. Kami kirimkan sampel foil, doff velvet, dan spot UV ke workshop Anda tanpa biaya.",
           },
           {
             title: "Langkah 3: Uji Coba Proofing Sebelum Cetak Banyak",
-            desc: "Setelah desain cetak selesai di plano, kita bisa uji finishing beberapa lembar dulu sampai kakak 100% puas dengan hasilnya!",
+            desc: "Setelah desain cetak selesai di plano, kita bisa uji finishing beberapa lembar dulu sampai hasil 100% presisi dengan hasilnya!",
           },
         ],
         conclusion:
@@ -506,9 +506,9 @@ export const consultationScenarios: ScenarioPattern[] = [
     ],
     replyGenerator: (input) =>
       formatAdvice({
-        greeting: "Oh iya kak, kabar gembira! CV Pelangi UV punya fasilitas ANTAR-JEMPUT CETAKAN PLANO GRATIS se-Jawa Timur! 🚚✨",
+        greeting: "CV Pelangi UV menyediakan fasilitas Antar-Jemput Plano Cetakan Gratis se-Jawa Timur: 🚚✨",
         explanation:
-          "Kakak tidak perlu pusing memikirkan biaya transportasi atau repot membawa lembaran plano yang berat ke workshop.",
+          "Anda tidak perlu khawatir memikirkan biaya transportasi atau repot membawa lembaran plano yang berat ke workshop.",
         tips: [
           {
             title: "Area Cakupan Antar-Jemput Gratis",
@@ -552,9 +552,9 @@ export const consultationScenarios: ScenarioPattern[] = [
     ],
     replyGenerator: (input) =>
       formatAdvice({
-        greeting: "Bisa banget kak! Kami sediakan Swatch Sample Kit Resmi CV Pelangi UV secara GRATIS! 📦🎁",
+        greeting: "CV Pelangi UV menyediakan Swatch Sample Kit Resmi secara gratis: 📦🎁",
         explanation:
-          "Melihat foto di layar HP seringkali berbeda dengan aslinya. Dengan Sample Kit ini, kakak bisa meraba langsung tekstur kertas dan menguji pantulan kilaunya.",
+          "Melihat foto di layar HP seringkali berbeda dengan aslinya. Dengan Sample Kit ini, Anda dapat memeriksa langsung tekstur kertas dan menguji pantulan kilaunya.",
         tips: [
           {
             title: "Isi dalam Box Sample Kit",
@@ -594,7 +594,7 @@ export const consultationScenarios: ScenarioPattern[] = [
     ],
     replyGenerator: (input) =>
       formatAdvice({
-        greeting: "Oh iya kak, untuk daftar harga & pricelist lengkap 2026 CV Pelangi UV sangat transparan dan kompetitif! 📋🏷️",
+        greeting: "Daftar harga dan pricelist CV Pelangi UV dihitung berdasarkan parameter teknis berikut: 📋🏷️",
         explanation:
           "Tarif finishing dihitung berdasarkan ukuran lembaran plano cetak (misal: 65x100, 79x109, atau setengah plano) dan volume kuantiti pesanan.",
         tips: [
@@ -646,7 +646,7 @@ export const consultationScenarios: ScenarioPattern[] = [
     ],
     replyGenerator: (input) =>
       formatAdvice({
-        greeting: "Halo kak! Workshop & kantor CV Pelangi UV selalu terbuka untuk kunjungan dan konsultasi langsung 🏢🤝",
+        greeting: "Informasi operasional dan alamat pabrik CV Pelangi UV: 🏢🤝",
         explanation:
           "Berikut informasi resmi operasional kami:",
         tips: [
@@ -802,7 +802,7 @@ export const getSmartAdvisorReply = (userText: string): AdvisorResponse => {
     cleanText === "assalamualaikum"
   ) {
     return formatAdvice({
-      greeting: "Halo kak! Senang sekali bisa menyapa kakak hari ini 👋😊",
+      greeting: "Selamat datang di layanan konsultasi teknis CV Pelangi UV. 👋😊",
       explanation:
         "Ada yang bisa kami bantu seputar kebutuhan kemasan, packaging produk, atau finishing cetak (Hot Stamp Foil, Spot UV, Laminating Doff/Glossy, Pond Rel)?",
       tips: [
@@ -811,7 +811,7 @@ export const getSmartAdvisorReply = (userText: string): AdvisorResponse => {
           desc: "Bisa cerita seputar kemasan skincare, FnB, kartu undangan, masalah karton pecah saat dilipat, atau tips hemat biaya finishing. Kami siap beri saran teknis terbaik!",
         },
       ],
-      conclusion: "Pilih salah satu rekomendasi topik di bawah atau ketik langsung ceritamu ya kak!",
+      conclusion: "Silakan pilih topik di bawah atau ajukan pertanyaan teknis Anda.",
       waTopic: "Konsultasi Layanan Finishing Pelangi UV",
       chips: [
         "Kemasan Skincare Mewah",
@@ -824,7 +824,7 @@ export const getSmartAdvisorReply = (userText: string): AdvisorResponse => {
 
   // 3. Fallback Solutif & Berempati Tinggi (menanggapi gaya curhat "aku gini gitu...")
   return formatAdvice({
-    greeting: "Oh iya kak, paham banget apa yang kakak maksud! Menarik sekali diskusinya 😊✨",
+    greeting: "Terkait kebutuhan teknis finishing Anda: 😊✨",
     explanation:
       `Terkait kebutuhan: <em>"${userText}"</em>, tim teknis & konsultan spesifikasi finishing CV Pelangi UV siap membantu memberikan rekomendasi material dan teknik terbaik agar hasilnya presisi, rapi, dan sesuai budget.`,
     tips: [
@@ -834,11 +834,11 @@ export const getSmartAdvisorReply = (userText: string): AdvisorResponse => {
       },
       {
         title: "Layanan Uji Coba & Sampel Gratis",
-        desc: "Kakak juga bisa meminta Swatch Sample Kit fisik gratis untuk melihat langsung perbandingan hasil laminasi thermal, foil emas, dan spot UV sebelum memutuskan.",
+        desc: "Anda juga dapat meminta Swatch Sample Kit fisik gratis untuk melihat langsung perbandingan hasil laminasi thermal, foil emas, dan spot UV sebelum memutuskan.",
       },
     ],
     conclusion:
-      "Mau lanjut ngobrol detail via WhatsApp dengan technical engineer kami? Pesan kakak sudah otomatis disiapkan!",
+      "Mau lanjut ngobrol detail via WhatsApp dengan technical engineer kami? Tim teknis kami siap membantu kalkulasi detail.",
     waTopic: `Pertanyaan Khusus: ${userText}`,
     chips: [
       "Minta Swatch Sample Kit Gratis",
