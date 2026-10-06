@@ -12,19 +12,16 @@ interface HistoryMessage {
 const MARKETING_TEAM = [
   {
     name: "Bu Nurul Islamiyah",
-    role: "Finishing & Sampel",
     phone: "6282231019363",
     display: "0822-3101-9363",
   },
   {
     name: "Mbak Fathia Rizky",
-    role: "Estimasi & Order",
     phone: "6285211543430",
     display: "0852-1154-3430",
   },
   {
     name: "Pak Aris Waluyo",
-    role: "Bahan Baku & Mesin",
     phone: "6281803727671",
     display: "0818-0372-7671",
   },
@@ -165,9 +162,9 @@ KNOWLEDGE BASE LENGKAP ISI WEBSITE CV PELANGI UV:
    - Alamat Workshop: Kompleks Pergudangan Bizpark Blok C17-C19, Jabon, Tambaksawah, Kec. Waru, Kabupaten Sidoarjo, Jawa Timur 61256.
    - Jam Buka: Senin–Jumat 07.30–15.30 WIB, Sabtu 07.30–13.00 WIB.
    - Tim Marketing Resmi Pelangi UV:
-     * Bu Nurul Islamiyah: Spesialis Finishing Cetak, Uji Coba Efek Spot UV & Foil, dan Rekomendasi Bahan Percetakan.
-     * Mbak Fathia Rizky: Spesialis Kalkulasi Penawaran Cepat, Penjadwalan Jemput Plano, dan Tracking Order Kemasan.
-     * Pak Aris Waluyo: Spesialis Grosir Roll OPP, Lem Wet/Waterbased, Foil Stamping, dan Spesifikasi Teknis Mesin.
+     * Bu Nurul Islamiyah (Finishing Cetak, Uji Efek Spot UV & Foil, Bahan Percetakan)
+     * Mbak Fathia Rizky (Kalkulasi Penawaran, Jadwal Jemput Plano, Tracking Order)
+     * Pak Aris Waluyo (Grosir Roll OPP, Lem Wet/Waterbase, Foil Stamping, Mesin Cetak)
    - Layanan Pengiriman: Antar-Jemput Plano Cetakan GRATIS se-Jawa Timur (Surabaya, Sidoarjo, Gresik, Mojokerto, Pasuruan, Malang) armada truk boks tertutup mandiri.
    - Kapasitas: 35+ unit mesin otomatis (mampu s/d 200.000+ lembar/hari).
 
