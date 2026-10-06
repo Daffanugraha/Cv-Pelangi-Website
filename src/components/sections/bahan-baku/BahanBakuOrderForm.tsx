@@ -5,7 +5,7 @@ import { MaterialCategory } from "@/lib/data/rawMaterials";
 
 interface BahanBakuOrderFormProps {
   categories?: MaterialCategory[];
-  requestedCategory?: "opp" | "foil" | "lem" | "spotuv";
+  requestedCategory?: string;
 }
 
 const SAMPLE_OPTIONS = [
@@ -28,7 +28,7 @@ export default function BahanBakuOrderForm({
   const [notes, setNotes] = useState("");
 
   useEffect(() => {
-    if (requestedCategory === "foil") {
+    if (requestedCategory === "foil" || requestedCategory === "foil-stamping") {
       setSelectedSamples([SAMPLE_OPTIONS[1].label]);
     } else if (requestedCategory === "lem") {
       setSelectedSamples([SAMPLE_OPTIONS[2].label]);

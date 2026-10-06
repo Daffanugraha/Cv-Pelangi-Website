@@ -5,13 +5,14 @@ import { MaterialCategory } from "@/lib/data/rawMaterials";
 
 interface BahanBakuCatalogProps {
   categories: MaterialCategory[];
-  onOpenPricelist: (categoryId: "opp" | "foil" | "lem" | "spotuv") => void;
-  onRequestSample?: (categoryId?: "opp" | "foil" | "lem" | "spotuv") => void;
+  onOpenPricelist: (categoryId: string) => void;
+  onRequestSample?: (categoryId?: string) => void;
 }
 
 const categoryIcons: Record<string, string> = {
   opp: "filter_frames",
   foil: "auto_awesome",
+  "foil-stamping": "local_fire_department",
   lem: "water_drop",
   spotuv: "brush",
 };
@@ -274,7 +275,9 @@ export default function BahanBakuCatalog({
                   {cat.id === "opp"
                     ? "Film OPP / BOPP"
                     : cat.id === "foil"
-                    ? "Hot & Cold Foil"
+                    ? "Foil"
+                    : cat.id === "foil-stamping"
+                    ? "Foil Stamping"
                     : cat.id === "lem"
                     ? "Lem Laminasi"
                     : "Spot UV Varnish"}

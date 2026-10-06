@@ -11,16 +11,16 @@ import BahanBakuSampleModal from "./BahanBakuSampleModal";
 
 export default function BahanBakuPageContent() {
   const [isPricelistOpen, setIsPricelistOpen] = useState(false);
-  const [pricelistCategory, setPricelistCategory] = useState<"opp" | "foil" | "lem" | "spotuv">("opp");
+  const [pricelistCategory, setPricelistCategory] = useState<string>("opp");
   const [isSampleModalOpen, setIsSampleModalOpen] = useState(false);
-  const [sampleCategory, setSampleCategory] = useState<"opp" | "foil" | "lem" | "spotuv">("opp");
+  const [sampleCategory, setSampleCategory] = useState<string>("opp");
 
-  const handleOpenPricelist = (categoryId?: "opp" | "foil" | "lem" | "spotuv") => {
+  const handleOpenPricelist = (categoryId?: string) => {
     if (categoryId) setPricelistCategory(categoryId);
     setIsPricelistOpen(true);
   };
 
-  const handleSelectCategoryCard = (categoryId: "opp" | "foil" | "lem" | "spotuv") => {
+  const handleSelectCategoryCard = (categoryId: string) => {
     const card = document.getElementById(`product-card-${categoryId}`);
     const carousel = document.getElementById("materials-carousel");
     if (card) {
@@ -36,7 +36,7 @@ export default function BahanBakuPageContent() {
     }
   };
 
-  const handleRequestSample = (categoryId?: "opp" | "foil" | "lem" | "spotuv") => {
+  const handleRequestSample = (categoryId?: string) => {
     if (categoryId) setSampleCategory(categoryId);
     setIsPricelistOpen(false);
     const formEl = document.getElementById("form-sample-gratis");
@@ -66,8 +66,8 @@ export default function BahanBakuPageContent() {
           cat = window.location.hash.replace("#product-card-", "").replace("#", "");
         }
       }
-      if (cat && ["opp", "foil", "lem", "spotuv"].includes(cat)) {
-        handleSelectCategoryCard(cat as "opp" | "foil" | "lem" | "spotuv");
+      if (cat && ["opp", "foil", "foil-stamping", "lem", "spotuv"].includes(cat)) {
+        handleSelectCategoryCard(cat);
       }
     };
 

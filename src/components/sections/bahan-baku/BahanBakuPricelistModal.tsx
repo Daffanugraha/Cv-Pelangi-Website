@@ -6,9 +6,9 @@ import { MaterialCategory } from "@/lib/data/rawMaterials";
 interface BahanBakuPricelistModalProps {
   isOpen: boolean;
   onClose: () => void;
-  initialCategory?: "opp" | "foil" | "lem" | "spotuv";
+  initialCategory?: string;
   categories: MaterialCategory[];
-  onRequestSample: (categoryKey?: "opp" | "foil" | "lem" | "spotuv") => void;
+  onRequestSample: (categoryKey?: string) => void;
 }
 
 export default function BahanBakuPricelistModal({
@@ -146,10 +146,10 @@ export default function BahanBakuPricelistModal({
             <table className="w-full text-left text-xs sm:text-sm font-body-sm">
               <thead className="bg-surface-neutral-alt text-on-surface font-label-nav text-xs border-b border-outline-variant uppercase tracking-wider">
                 <tr>
-                  <th className="py-3 px-4 w-12 text-center">No</th>
-                  <th className="py-3 px-4">Nama Produk / Spesifikasi</th>
-                  <th className="py-3 px-4">Satuan</th>
-                  <th className="py-3 px-4 text-right font-bold">Harga Grosir</th>
+                  <th className="py-3 px-4 w-12 text-center">NO</th>
+                  <th className="py-3 px-4">Tipe Bahan Baku</th>
+                  <th className="py-3 px-4">Ukuran</th>
+                  <th className="py-3 px-4 text-right font-bold">Harga / Roll</th>
                   <th className="py-3 px-4 text-center w-20">Aksi</th>
                 </tr>
               </thead>

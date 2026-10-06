@@ -6,8 +6,8 @@ import { MaterialCategory } from "@/lib/data/rawMaterials";
 
 interface BahanBakuHeroProps {
   categories: MaterialCategory[];
-  onOpenPricelist: (categoryId?: "opp" | "foil" | "lem" | "spotuv") => void;
-  onSelectCategoryCard: (categoryId: "opp" | "foil" | "lem" | "spotuv") => void;
+  onOpenPricelist: (categoryId?: string) => void;
+  onSelectCategoryCard: (categoryId: string) => void;
   onRequestSample?: () => void;
 }
 
@@ -87,7 +87,7 @@ export default function BahanBakuHero({
     setIsDropdownOpen(false);
   };
 
-  const handleSuggestionClick = (catId: "opp" | "foil" | "lem" | "spotuv") => {
+  const handleSuggestionClick = (catId: string) => {
     onSelectCategoryCard(catId);
     setIsDropdownOpen(false);
   };

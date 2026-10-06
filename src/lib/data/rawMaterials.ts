@@ -10,7 +10,7 @@ export interface MaterialPriceItem {
 }
 
 export interface MaterialCategory {
-  id: "opp" | "foil" | "lem" | "spotuv";
+  id: string;
   num: string;
   tag: string;
   title: string;
@@ -128,6 +128,57 @@ export const rawMaterialCategories: MaterialCategory[] = [
   {
     id: "foil",
     num: "02",
+    tag: "Bahan Baku Foil",
+    title: "Foil",
+    shortDesc:
+      "Foil adalah bahan baku yang digunakan bersamaan dengan teknik Hot stamp maupun cold foil dalam proses finishing untuk menciptakan efek visual yang menarik pada cetakan atau desain. Teknik ini umumnya digunakan dalam percetakan untuk memberikan sentuhan eksklusif dan meningkatkan estetika produk. Pelangin UV memiliki 5 jenis bahan baku foil.",
+    fullDesc:
+      "Foil adalah bahan baku yang digunakan bersamaan dengan teknik Hot stamp maupun cold foil dalam proses finishing untuk menciptakan efek visual yang menarik pada cetakan atau desain. Teknik ini umumnya digunakan dalam percetakan untuk memberikan sentuhan eksklusif dan meningkatkan estetika produk. Pelangin UV memiliki 5 jenis bahan baku foil: Gold, Silver, Warna - Warni, Gold & SIlver Hologram, Transparan, serta Putih BO1 dan White BO1.",
+    specsHighlight: [
+      "Standar Panjang: 120 Meter",
+      "Teknik: Hot Stamp & Cold Foil",
+      "5 Jenis Bahan Baku Foil",
+      "Kualitas Finishing Eksklusif",
+    ],
+    startingPrice: "Rp 186.000",
+    img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCfExHr5NtXgfBa9u2YHnpxRRPEPCE73orW9lZA_d_yzBZcitN95z8S3pGSlnw0Vc_o4jp8LEEH85ZkYlaGZx52GZ7PCxlskaWo1RA-_VT5VcXAAkmIdlpXO8dWn0DF87l1VwHTUoGFWjEatCW5qZYHk2YsveDx1oMuWaumvjNyX8Mbh2ouSnuIGC9NR0hRsKS0-W_mtnmZQU0CYudQbp5V-u9HpIbLwZd2xudSjVdWQtgj0Xiu_5T3",
+    popularVariants: [
+      "Gold & Silver 120 Meter",
+      "Warna - Warni 120 Meter",
+      "Gold & SIlver Hologram",
+      "Transparan 120 Meter",
+      "Putih BO1 & White BO1",
+    ],
+    features: [
+      {
+        icon: "auto_awesome",
+        title: "Sentuhan Eksklusif",
+        desc: "Meningkatkan estetika dan nilai prestisius cetakan atau desain secara signifikan.",
+      },
+      {
+        icon: "speed",
+        title: "Hot Stamp & Cold Foil",
+        desc: "Dapat diaplikasikan bersamaan dengan teknik hot stamping maupun inline cold foil.",
+      },
+      {
+        icon: "verified",
+        title: "5 Jenis Bahan Baku Foil",
+        desc: "Pilihan lengkap mulai dari emas, perak, hologram, transparan, hingga putih solid.",
+      },
+    ],
+    items: [
+      { id: "foil-01", name: "Gold", unit: "120 Meter", price: "Rp 186.000", priceNumber: 186000, stockStatus: "ready" },
+      { id: "foil-02", name: "Silver", unit: "120 Meter", price: "Rp 186.000", priceNumber: 186000, stockStatus: "ready" },
+      { id: "foil-03", name: "Warna - Warni", unit: "120 Meter", price: "Rp 227.000", priceNumber: 227000, stockStatus: "ready" },
+      { id: "foil-04", name: "Gold & SIlver Hologram", unit: "120 Meter", price: "Rp 314.500", priceNumber: 314500, stockStatus: "ready" },
+      { id: "foil-05", name: "Transparan", unit: "120 Meter", price: "Rp 360.500", priceNumber: 360500, stockStatus: "ready" },
+      { id: "foil-06", name: "Putih BO1", unit: "-", price: "Rp 398.000", priceNumber: 398000, stockStatus: "ready" },
+      { id: "foil-07", name: "White BO1", unit: "-", price: "Rp 815.500", priceNumber: 815500, stockStatus: "ready" },
+    ],
+  },
+  {
+    id: "foil-stamping",
+    num: "03",
     tag: "Stamping Roll",
     title: "Hot & Cold Foil Stamping",
     shortDesc:
@@ -165,18 +216,18 @@ export const rawMaterialCategories: MaterialCategory[] = [
       },
     ],
     items: [
-      { id: "foil-01", name: "Gold 120M High Precision", unit: "Roll (64cm x 120m)", price: "Rp 186.000", priceNumber: 186000, stockStatus: "ready" },
-      { id: "foil-02", name: "Silver 120M High Precision", unit: "Roll (64cm x 120m)", price: "Rp 186.000", priceNumber: 186000, stockStatus: "ready" },
-      { id: "foil-03", name: "Warna - Warni 120M (Red, Blue, Green, Copper)", unit: "Roll (64cm x 120m)", price: "Rp 227.000", priceNumber: 227000, stockStatus: "ready" },
-      { id: "foil-04", name: "Gold & Silver Hologram Laser", unit: "Roll (64cm x 120m)", price: "Rp 314.500", priceNumber: 314500, stockStatus: "ready" },
-      { id: "foil-05", name: "Transparan 120M (Security Ghost Stamp)", unit: "Roll (64cm x 120m)", price: "Rp 360.500", priceNumber: 360500, stockStatus: "ready" },
-      { id: "foil-06", name: "Putih BO1 (Pigment White Stamp)", unit: "Roll", price: "Rp 398.000", priceNumber: 398000, stockStatus: "ready" },
-      { id: "foil-07", name: "White BO1 (Extra Width Roll)", unit: "Roll Jumbo", price: "Rp 815.500", priceNumber: 815500, stockStatus: "ready" },
+      { id: "foil-st-01", name: "Gold 120M High Precision", unit: "Roll (64cm x 120m)", price: "Rp 186.000", priceNumber: 186000, stockStatus: "ready" },
+      { id: "foil-st-02", name: "Silver 120M High Precision", unit: "Roll (64cm x 120m)", price: "Rp 186.000", priceNumber: 186000, stockStatus: "ready" },
+      { id: "foil-st-03", name: "Warna - Warni 120M (Red, Blue, Green, Copper)", unit: "Roll (64cm x 120m)", price: "Rp 227.000", priceNumber: 227000, stockStatus: "ready" },
+      { id: "foil-st-04", name: "Gold & Silver Hologram Laser", unit: "Roll (64cm x 120m)", price: "Rp 314.500", priceNumber: 314500, stockStatus: "ready" },
+      { id: "foil-st-05", name: "Transparan 120M (Security Ghost Stamp)", unit: "Roll (64cm x 120m)", price: "Rp 360.500", priceNumber: 360500, stockStatus: "ready" },
+      { id: "foil-st-06", name: "Putih BO1 (Pigment White Stamp)", unit: "Roll", price: "Rp 398.000", priceNumber: 398000, stockStatus: "ready" },
+      { id: "foil-st-07", name: "White BO1 (Extra Width Roll)", unit: "Roll Jumbo", price: "Rp 815.500", priceNumber: 815500, stockStatus: "ready" },
     ],
   },
   {
     id: "lem",
-    num: "03",
+    num: "04",
     tag: "Adhesive Emulsion",
     title: "Lem Wet & Dry Laminating",
     shortDesc:
@@ -224,7 +275,7 @@ export const rawMaterialCategories: MaterialCategory[] = [
   },
   {
     id: "spotuv",
-    num: "04",
+    num: "05",
     tag: "UV Varnish & Ink",
     title: "Tinta & Varnish Spot UV",
     shortDesc:

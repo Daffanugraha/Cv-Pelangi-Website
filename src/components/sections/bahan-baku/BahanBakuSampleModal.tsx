@@ -5,7 +5,7 @@ import React, { useState, useEffect } from "react";
 interface BahanBakuSampleModalProps {
   isOpen: boolean;
   onClose: () => void;
-  defaultCategory?: "opp" | "foil" | "lem" | "spotuv";
+  defaultCategory?: string;
 }
 
 export default function BahanBakuSampleModal({
@@ -23,7 +23,7 @@ export default function BahanBakuSampleModal({
   const [extraNotes, setExtraNotes] = useState("");
 
   useEffect(() => {
-    if (defaultCategory === "foil") {
+    if (defaultCategory === "foil" || defaultCategory === "foil-stamping") {
       setSelectedSamples(["Hot & Cold Stamping Foil (Gold, Silver, Hologram)"]);
     } else if (defaultCategory === "lem") {
       setSelectedSamples(["Sampel Lem Wet & Dry Laminating"]);
