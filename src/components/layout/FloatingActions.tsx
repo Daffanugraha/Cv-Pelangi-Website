@@ -25,17 +25,17 @@ const INITIAL_BOT_MESSAGE: ChatMessage = {
   html: `
     <div class="space-y-1.5 text-left">
       <div class="flex items-center gap-1.5 text-neutral-400 font-medium text-[10px] uppercase tracking-wider">
-        <span translate="no" class="material-symbols-outlined notranslate text-[13px]">support_agent</span>
-        <span>Konsultan Finishing <span translate="no" class="notranslate">Pelangi UV</span></span>
+        <span class="w-1.5 h-1.5 rounded-full bg-[#25D366]"></span>
+        <span>Konsultan CV Pelangi UV • Bizpark Sidoarjo</span>
       </div>
       <p class="font-bold text-neutral-900 text-xs sm:text-[13px] leading-snug">
         Halo! Selamat datang di <span translate="no" class="notranslate">CV Pelangi UV</span> 👋
       </p>
       <p class="text-neutral-600 text-xs leading-relaxed">
-        Punya ide produk baru atau sedang ada kendala cetak? Ceritakan aja kak, misal: <em>"aku mau bikin packaging skincare hemat budget"</em> atau <em>"box saya pecah pas dilipat"</em>. Kami siap bantu kasih saran teknis &amp; solusi finishing terbaik!
+        Punya pertanyaan seputar finishing cetak (Hot Stamp, Spot UV, Laminating, Cast &amp; Cure, Pond) atau pembelian bahan baku (Roll Film BOPP, Foil, Lem)? Tanyakan langsung di sini, kami siap membantu dengan informasi akurat!
       </p>
       <span class="text-[10px] text-neutral-400 mt-2 block text-right font-medium">
-        Online • Siap Konsultasi Teknis
+        Online • Respon Cepat
       </span>
     </div>
   `,
@@ -165,13 +165,8 @@ export default function FloatingActions() {
             <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-gradient-to-r from-[#b1212b] via-[#e5a00d] to-[#008744]"></div>
 
             <div className="flex items-center gap-2.5">
-              <div className="relative">
-                <img
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuCc96sL1QpNfZpzAokJH_GoAIBdU0ypXFCGDsJI824kEvmSFil84Qf_jRD6vZAN9fyxs7gG68HZt3LS5wlobiCpKGm-rtWErwXjVuYu2hwy6NeHaniQ1K48vqTGM5I8abqneRusZPip0nc1Jm9gEc9myOvUx100yMMQNkJQoNykm52z7qHfgi0GLsV9rbbbeEyvGMMplzmnctDhwMaS3Sbo4U9m4Ly-Yb61xp7HaSOLRlidq3l1xhp0koUYClSsLsbVnw"
-                  alt="CV Pelangi UV"
-                  className="w-9 h-9 object-contain bg-white rounded-full p-1 border border-white/20 shrink-0"
-                />
-                <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-[#25D366] rounded-full ring-2 ring-[#18181b]"></span>
+              <div className="w-8 h-8 rounded-full bg-white/10 border border-white/20 flex items-center justify-center shrink-0">
+                <span className="w-2.5 h-2.5 rounded-full bg-[#25D366] ring-2 ring-[#25D366]/30"></span>
               </div>
               <div className="min-w-0 text-left">
                 <div className="flex items-center gap-1.5">
@@ -183,7 +178,7 @@ export default function FloatingActions() {
                   </span>
                 </div>
                 <p className="font-body-sm text-[11px] text-neutral-300 leading-tight mt-0.5 truncate flex items-center gap-1">
-                  <span>Fast Response • Siap Beri Saran &amp; Solusi</span>
+                  <span>Fast Response • Konsultasi Teknis &amp; Bahan</span>
                 </p>
               </div>
             </div>
@@ -227,12 +222,7 @@ export default function FloatingActions() {
                 </div>
               ) : (
                 <div key={msg.id} className="flex items-start gap-2">
-                  <div className="w-6 h-6 rounded-full bg-neutral-200/80 text-neutral-600 flex items-center justify-center shrink-0 mt-0.5">
-                    <span translate="no" className="material-symbols-outlined notranslate text-[14px]">
-                      smart_toy
-                    </span>
-                  </div>
-                  <div className="bg-white border border-neutral-200/80 rounded-2xl rounded-tl-xs p-3 sm:p-3.5 max-w-[90%] text-xs sm:text-[13px] leading-relaxed shadow-2xs text-neutral-800">
+                  <div className="bg-white border border-neutral-200/80 rounded-2xl rounded-tl-xs p-3 sm:p-3.5 max-w-[95%] text-xs sm:text-[13px] leading-relaxed shadow-2xs text-neutral-800">
                     <div
                       dangerouslySetInnerHTML={{ __html: msg.html || "" }}
                     />
@@ -244,19 +234,14 @@ export default function FloatingActions() {
             {/* Typing Indicator */}
             {isTyping && (
               <div className="flex items-start gap-2">
-                <div className="w-6 h-6 rounded-full bg-neutral-200/80 text-neutral-600 flex items-center justify-center shrink-0 mt-0.5">
-                  <span translate="no" className="material-symbols-outlined notranslate text-[14px]">
-                    smart_toy
-                  </span>
-                </div>
-                <div className="bg-white border border-neutral-200/80 rounded-2xl rounded-tl-xs px-3 py-2 shadow-2xs flex items-center gap-2">
+                <div className="bg-white border border-neutral-200/80 rounded-2xl rounded-tl-xs px-3.5 py-2.5 shadow-2xs flex items-center gap-2">
                   <div className="flex items-center gap-1">
                     <span className="w-1.5 h-1.5 rounded-full bg-neutral-400 animate-bounce"></span>
                     <span className="w-1.5 h-1.5 rounded-full bg-neutral-400 animate-bounce [animation-delay:0.15s]"></span>
                     <span className="w-1.5 h-1.5 rounded-full bg-neutral-400 animate-bounce [animation-delay:0.3s]"></span>
                   </div>
                   <span className="text-[11px] text-neutral-400 font-medium">
-                    Menyiapkan saran...
+                    Menyiapkan informasi...
                   </span>
                 </div>
               </div>

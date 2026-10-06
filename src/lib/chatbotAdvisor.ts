@@ -51,8 +51,8 @@ const formatAdvice = (options: {
   const html = `
     <div class="space-y-1.5 text-left">
       <div class="flex items-center gap-1.5 text-neutral-400 font-medium text-[10px] uppercase tracking-wider">
-        <span class="material-symbols-outlined text-[13px]">psychology</span>
-        <span>Saran Konsultan Pelangi UV</span>
+        <span class="w-1.5 h-1.5 rounded-full bg-[#25D366]"></span>
+        <span>Konsultan CV Pelangi UV</span>
       </div>
       <p class="font-bold text-neutral-900 text-xs sm:text-[13px] leading-snug">${options.greeting}</p>
       <p class="text-neutral-600 text-xs leading-relaxed">${options.explanation}</p>
@@ -651,16 +651,16 @@ export const consultationScenarios: ScenarioPattern[] = [
           "Berikut informasi resmi operasional kami:",
         tips: [
           {
-            title: "Alamat Workshop & Kantor",
-            desc: 'Kompleks Pergudangan Bizpark C17-C19, Tambaksawah, Kec. Waru, Kabupaten Sidoarjo, Jawa Timur (Dekat Bandara Juanda & Akses Tol Rungkut).<br><a href="https://maps.app.goo.gl/sfBs972qUZfScwMJ6" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-[#e62129] font-semibold text-xs mt-1 hover:underline">📍 Buka Rute di Google Maps</a>',
+            title: "Alamat Workshop & Pabrik Utama",
+            desc: 'Kompleks Pergudangan Bizpark C17-C19, Jabon, Tambaksawah, Kec. Waru, Kabupaten Sidoarjo, Jawa Timur 61256 (Akses strategis dekat Bandara Juanda & Tol Rungkut).<br><a href="https://maps.app.goo.gl/sfBs972qUZfScwMJ6" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-[#e62129] font-semibold text-xs mt-1 hover:underline">📍 Buka Rute di Google Maps</a>',
           },
           {
             title: "Jam Operasional",
-            desc: "Senin – Jumat: 07.30 – 15.30 WIB<br>Sabtu: 07.30 – 13.00 WIB (Mesin produksi beroperasi shift penuh).",
+            desc: "Senin – Jumat: 07.30 – 15.30 WIB<br>Sabtu: 07.30 – 13.00 WIB (Kapasitas mesin 35+ unit dengan sistem shift beroperasi untuk pesanan volume besar).",
           },
           {
-            title: "Kontak Cepat",
-            desc: "WhatsApp: <strong>0822 3101 9363</strong><br>Telepon Kantor: (031) 866 7469<br>Email: cs@pelangifinishing.co.id",
+            title: "Kontak Resmi",
+            desc: "WhatsApp Marketing: <strong>0822 3101 9363</strong><br>Telepon Kantor: 031 866 7469 / 031 867 7468<br>Email: info@pelangiuv.com",
           },
         ],
         conclusion:
@@ -671,6 +671,103 @@ export const consultationScenarios: ScenarioPattern[] = [
           "Petunjuk Arah Google Maps",
           "Minta Sample Fisik Gratis",
           "Cek Layanan Finishing",
+        ],
+      }),
+  },
+
+  // 13. Grosir Bahan Baku Cetak (Roll BOPP, Foil Hot Stamping, Lem Waterbase)
+  {
+    id: "bahan-baku",
+    keywords: [
+      "bahan baku",
+      "bopp",
+      "opp",
+      "thermal film",
+      "roll foil",
+      "stamping foil",
+      "lem",
+      "lem waterbase",
+      "lem opp",
+      "lem laminasi",
+      "slitting",
+      "potong roll",
+      "grosir bahan",
+      "beli bahan",
+      "stok bahan",
+    ],
+    replyGenerator: (input) =>
+      formatAdvice({
+        greeting: "CV Pelangi UV adalah distributor utama bahan baku finishing cetak terpercaya di Bizpark Sidoarjo! 📦🏭",
+        explanation:
+          "Kami menyediakan pasokan bahan baku industri berkualitas grade A+ ready stock di gudang Bizpark Sidoarjo dengan fasilitas Free Slitting (potong belah ukuran custom presisi rotari ±0.5 mm).",
+        tips: [
+          {
+            title: "Film BOPP Thermal & Waterbase",
+            desc: "Ketebalan 12–30 mic (Glossy, Doff Halus, Velvet Soft-Touch, PET Metalize). Corona dyne level ≥ 42 dynes/cm menjamin daya rekat kuat tanpa delaminasi.",
+          },
+          {
+            title: "Roll Hot Stamping Foil",
+            desc: "Pilihan warna Gold, Silver, Rose Gold, Hologram, hingga Pigment Foil. Tersedia ukuran standar 120 meter hingga roll jumbo 3.000 meter untuk mesin otomatis.",
+          },
+          {
+            title: "Lem Wet & Dry Laminating Waterbase",
+            desc: "Formula ramah lingkungan food-safe tanpa bau menyengat, cepat kering, dan tidak menggelembung saat ditekuk. Kemasan pail 20kg dan drum industri.",
+          },
+        ],
+        conclusion:
+          "Siap kirim ke workshop Anda dengan fasilitas Antar-Jemput Gratis se-Jawa Timur.",
+        waTopic: `Tanya Stok & Harga Bahan Baku (${input})`,
+        chips: [
+          "Cek Stok Film BOPP Thermal",
+          "Harga Roll Foil Hot Stamping",
+          "Spesifikasi Lem Waterbase",
+          "Free Slitting Ukuran Custom",
+        ],
+      }),
+  },
+
+  // 14. Kemasan Rokok & Box Industrial Eksklusif
+  {
+    id: "kemasan-rokok-industri",
+    keywords: [
+      "rokok",
+      "cigarette",
+      "kemasan rokok",
+      "box rokok",
+      "slop rokok",
+      "hologram rokok",
+      "cukai",
+      "kemasan industri",
+      "packaging farmasi",
+      "obat",
+    ],
+    replyGenerator: (input) =>
+      formatAdvice({
+        greeting: "Untuk kemasan rokok & industri berstandar tinggi, presisi register mikron dan anti-pemalsuan adalah prioritas utama! 🚬🏭",
+        explanation:
+          "CV Pelangi UV berpengalaman menangani finishing kemasan rokok eksklusif dan box farmasi/industri dengan toleransi ketat, kapasitas puluhan ribu lembar per hari, dan standar bebas cacat.",
+        tips: [
+          {
+            title: "Cast & Cure Hologram Anti-Counterfeit",
+            desc: "Efek holografis optik mikro langsung pada lapisan UV varnish tanpa plastik mika konvensional. Ramah lingkungan sekaligus menjadi fitur keamanan produk dari pemalsuan.",
+          },
+          {
+            title: "Hot Stamping Foil Presisi Tinggi",
+            desc: "Aplikasi foil emas/hologram berkecepatan tinggi pada tipografi kecil dan logo rokok/brand tanpa rontok dan tanpa bleeding.",
+          },
+          {
+            title: "Pond Die-Cut Otomatis & Creasing Rapi",
+            desc: "Menggunakan pisau rel presisi agar tekukan box rokok bersudut tajam 90° sempurna, tidak sobek, dan lancar pada mesin packing otomatis (high-speed packing line).",
+          },
+        ],
+        conclusion:
+          "Workshop kami di Bizpark Sidoarjo siap uji coba proofing sampel kemasan industri Anda.",
+        waTopic: `Finishing Kemasan Rokok & Industri (${input})`,
+        chips: [
+          "Konsultasi Kemasan Rokok",
+          "Sampel Efek Cast & Cure",
+          "Kapasitas Produksi Oplah Besar",
+          "Chat Tim Marketing",
         ],
       }),
   },
