@@ -72,33 +72,41 @@ export default function ContactTestimonialsSection() {
                     {/* Visual Media Column (Left) */}
                     <div className="lg:col-span-5 relative">
                       {item.type === "image" && (
-                        <div className="relative rounded-2xl overflow-hidden shadow-lg border border-slate-200 bg-slate-100">
+                        <div className="relative rounded-2xl overflow-hidden shadow-lg border border-slate-200 bg-white flex items-center justify-center min-h-[320px] sm:min-h-[380px] lg:min-h-[400px]">
                           <img
                             src={item.img}
                             alt={item.author}
-                            className="w-full h-[320px] sm:h-[380px] lg:h-[400px] object-cover"
+                            className={`w-full h-[320px] sm:h-[380px] lg:h-[400px] ${
+                              item.img?.includes("review") || item.img?.includes("Cuplikan")
+                                ? "object-contain p-4 bg-white"
+                                : "object-cover"
+                            }`}
                           />
-                          <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent" />
-                          <div className="absolute bottom-4 left-4 right-4 bg-white/95 backdrop-blur-md rounded-xl p-3 border border-white/20 shadow-lg">
-                            <div className="flex items-center gap-2 mb-0.5">
-                              <div className="flex text-amber-500">
-                                {[...Array(5)].map((_, i) => (
-                                  <span
-                                    key={i}
-                                    translate="no" className="material-symbols-outlined notranslate text-[16px]"
-                                  >
-                                    star
+                          {item.overlayTitle && (
+                            <>
+                              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent pointer-events-none" />
+                              <div className="absolute bottom-4 left-4 right-4 bg-white/95 backdrop-blur-md rounded-xl p-3 border border-white/20 shadow-lg">
+                                <div className="flex items-center gap-2 mb-0.5">
+                                  <div className="flex text-amber-500">
+                                    {[...Array(5)].map((_, i) => (
+                                      <span
+                                        key={i}
+                                        translate="no" className="material-symbols-outlined notranslate text-[16px]"
+                                      >
+                                        star
+                                      </span>
+                                    ))}
+                                  </div>
+                                  <span className="text-xs font-bold text-slate-800 font-label-meta">
+                                    {item.overlayTitle}
                                   </span>
-                                ))}
+                                </div>
+                                <p className="text-xs text-slate-600 font-body-sm italic leading-snug">
+                                  {item.overlayDesc}
+                                </p>
                               </div>
-                              <span className="text-xs font-bold text-slate-800 font-label-meta">
-                                {item.overlayTitle}
-                              </span>
-                            </div>
-                            <p className="text-xs text-slate-600 font-body-sm italic leading-snug">
-                              {item.overlayDesc}
-                            </p>
-                          </div>
+                            </>
+                          )}
                         </div>
                       )}
 

@@ -295,11 +295,6 @@ export default function Hero() {
                   <h4 className="font-headline-sm text-[15px] font-bold text-white truncate">
                     {currentT.author}
                   </h4>
-                  {currentT.role ? (
-                    <p className="font-body-sm text-[12px] text-surface-dim truncate">
-                      {currentT.role}
-                    </p>
-                  ) : null}
                 </div>
               </div>
             </div>

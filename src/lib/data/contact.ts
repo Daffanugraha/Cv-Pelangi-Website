@@ -99,30 +99,15 @@ export const contactTestimonials: ContactTestimonial[] = [
     partnershipBadge: "Klien Kemitraan 5+ Tahun",
   },
   {
-    type: "google-review",
-    badge: "Cuplikan Layar Ulasan Google",
+    type: "image",
+    img: "/images/Cuplikan layar 2026-10-06 112440.png",
+    badge: "Ulasan Google Maps",
     quote:
       '"Pelayanan cepat dan responsive oleh admin. Harga cukup terjangkau tapi hasil tetap berkualitas. Recomended buat bisnis yang baru berjalan dan butuh jasa finishing 👍👍👍"',
     initials: "AR",
     author: "Arif B. Ramadhan",
     role: "",
     partnershipBadge: "Ulasan Google Bintang 5",
-    googleReviews: [
-      {
-        name: "Arif B. Ramadhan",
-        avatarColor: "bg-indigo-600",
-        initial: "A",
-        time: "2 tahun lalu",
-        text: "Pelayanan cepat dan responsive oleh admin. Harga cukup terjangkau tapi hasil tetap berkualitas. Recomended buat bisnis yang baru berjalan dan butuh jasa finishing 👍👍👍",
-      },
-      {
-        name: "Dicky Bagus",
-        avatarColor: "bg-teal-600",
-        initial: "D",
-        time: "2 tahun lalu",
-        text: "Pelayanan baik dan bahan bakunya sangat berkualitas. Joss markotop 😁",
-      },
-    ],
   },
   {
     type: "image",
