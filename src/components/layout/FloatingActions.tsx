@@ -98,7 +98,7 @@ export default function FloatingActions() {
     const startTime = Date.now();
 
     try {
-      const formattedHistory = messages.slice(-6).map((m) => ({
+      const formattedHistory = messages.slice(-10).map((m) => ({
         sender: m.sender,
         text: m.text || (m.html ? m.html.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim() : ""),
       }));

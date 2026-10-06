@@ -6,6 +6,102 @@ interface HistoryMessage {
   text?: string;
 }
 
+/**
+ * Mengonversi output teks dari LLM (Markdown) menjadi struktur HTML bersih
+ * dengan dukungan:
+ * - List tidak berurut (bullet points: * atau -) -> <ul class="..."><li>...</li></ul>
+ * - List berurut (1. item) -> <ol class="..."><li>...</li></ol>
+ * - Bold (**teks**) -> <strong>teks</strong>
+ * - Italic (*teks*) -> <em>teks</em>
+ * - Paragraf biasa -> <p class="...">...</p>
+ */
+function formatLlmResponseToHtml(raw: string): string {
+  // Bersihkan block code markdown jika LLM membungkus outputnya
+  let text = raw.replace(/```[a-z]*\n?/gi, "").trim();
+
+  // Jika teks sudah berupa HTML lengkap dengan tag <p> atau <ul> atau <div>, jangan diubah berlebihan
+  if (/<(p|ul|ol|div|li)[^>]*>/i.test(text) && !text.includes("* ") && !text.includes("- ")) {
+    return text;
+  }
+
+  const lines = text.split("\n");
+  const result: string[] = [];
+  let inUl = false;
+  let inOl = false;
+
+  for (let i = 0; i < lines.length; i++) {
+    let line = lines[i].trim();
+
+    if (!line) {
+      if (inUl) {
+        result.push("</ul>");
+        inUl = false;
+      }
+      if (inOl) {
+        result.push("</ol>");
+        inOl = false;
+      }
+      continue;
+    }
+
+    // Bold formatting: **text** atau __text__
+    line = line.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+    line = line.replace(/__(.*?)__/g, "<strong>$1</strong>");
+
+    // Italic formatting: *text* atau _text_ (pastikan tidak bentrok dengan sisa karakter)
+    line = line.replace(/(^|[^*])\*(?!\s)([^*]+?)\*(?!\*)/g, "$1<em>$2</em>");
+    line = line.replace(/(^|[^_])_(?!\s)([^_]+?)_(?!_)/g, "$1<em>$2</em>");
+
+    // Check bullet list: * item atau - item atau • item
+    if (/^[-*•]\s+/.test(line)) {
+      if (inOl) {
+        result.push("</ol>");
+        inOl = false;
+      }
+      if (!inUl) {
+        result.push('<ul class="my-2 space-y-1.5 pl-4 list-disc text-neutral-800">');
+        inUl = true;
+      }
+      const itemContent = line.replace(/^[-*•]\s+/, "");
+      result.push(`<li class="leading-relaxed">${itemContent}</li>`);
+    }
+    // Check numbered list: 1. item
+    else if (/^\d+\.\s+/.test(line)) {
+      if (inUl) {
+        result.push("</ul>");
+        inUl = false;
+      }
+      if (!inOl) {
+        result.push('<ol class="my-2 space-y-1.5 pl-4 list-decimal text-neutral-800">');
+        inOl = true;
+      }
+      const itemContent = line.replace(/^\d+\.\s+/, "");
+      result.push(`<li class="leading-relaxed">${itemContent}</li>`);
+    } else {
+      if (inUl) {
+        result.push("</ul>");
+        inUl = false;
+      }
+      if (inOl) {
+        result.push("</ol>");
+        inOl = false;
+      }
+
+      // Hindari membungkus ganda jika baris sudah diawali tag HTML block
+      if (/^<(p|h\d|div|ul|ol|table|blockquote)/i.test(line)) {
+        result.push(line);
+      } else {
+        result.push(`<p class="mb-2 leading-relaxed text-neutral-800">${line}</p>`);
+      }
+    }
+  }
+
+  if (inUl) result.push("</ul>");
+  if (inOl) result.push("</ol>");
+
+  return result.join("");
+}
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
@@ -25,47 +121,60 @@ export async function POST(req: NextRequest) {
     const groqModel = process.env.GROQ_MODEL || "qwen/qwen3.8-27b";
     const geminiApiKey = process.env.GEMINI_API_KEY;
 
-    const systemPrompt = `Anda adalah "Pelangi Assistant", konsultan teknis finishing cetak & bahan baku resmi dari CV Pelangi UV ("When Quality Be A Priority", berdiri sejak 2004).
+    const systemPrompt = `Anda adalah "Pelangi Assistant", konsultan teknis finishing cetak & grosir bahan baku resmi dari CV Pelangi UV ("When Quality Be A Priority", berdiri sejak 2004).
 
-DATA RESMI PERUSAHAAN (MUTLAK & AKURAT):
+DATA RESMI PERUSAHAAN & WORKSHOP (MUTLAK BERDASARKAN WEBSITE RESMI):
 1. LOKASI PABRIK & WORKSHOP:
    Kompleks Pergudangan Bizpark Blok C17-C19, Jabon, Tambaksawah, Kec. Waru, Kabupaten Sidoarjo, Jawa Timur 61256 (akses strategis dekat Bandara Juanda & Tol Rungkut).
 2. JAM OPERASIONAL:
    - Senin – Jumat: 07.30 – 15.30 WIB
    - Sabtu: 07.30 – 13.00 WIB
-   - Minggu & Hari Libur Nasional: Tutup (mesin produksi beroperasi shift penuh untuk order skala besar).
+   - Minggu & Hari Libur Nasional: Tutup (produksi shift tetap berjalan untuk pesanan industri besar).
 3. KONTAK RESMI:
    - WhatsApp Marketing/Konsultasi: 0822 3101 9363 (atau +62 822-3101-9363)
    - Telepon Kantor: (031) 866 7469 / (031) 867 7468
    - Email: info@pelangiuv.com
-4. LAYANAN JASA FINISHING LENGKAP:
-   - Hot Stamp Foil: Emas (Gold), Perak (Silver), Rose Gold, Hologram, Warna-Warni, Pigment Foil.
-   - Spot UV: Spot Gloss kilap tinggi, Spot Doff/Matte, Tekstur Pasir taktil presisi mikron.
-   - Laminating: Thermal BOPP (Doff Halus, Glossy Bening, Velvet Soft-Touch anti-sidik jari).
-   - Cast and Cure: Efek hologram prisma mikro ramah lingkungan tanpa film laminasi mika konvensional.
-   - Micro Emboss & Emboss/Deboss: Tekstur timbul mikro sub-milimeter anti-pemalsuan (security feature) dan aksen eksklusif pada kemasan rokok, farmasi, serta kosmetik. Kami BISA melayani Micro Emboss dan Emboss/Deboss timbul 3D fisik.
-   - Pond & Window: Die-cut otomatis pisau tajam (tidak retak pada tekukan) & pasang jendela mika transparan food-grade.
-5. GROSIR BAHAN BAKU:
-   - Film BOPP Thermal & Waterbase (Doff, Glossy, Velvet 12-30 mic, free slitting potong belah ukuran custom presisi rotari ±0.5 mm).
-   - Roll Hot Stamping Foil (standar 120m s/d roll jumbo 3000m).
-   - Lem Wet & Dry Laminating Waterbased ramah pangan dan cepat kering.
-   - Varnish Spot UV curing.
-6. FASILITAS & KEUNGGULAN:
-   - 35+ unit mesin otomatis dan semi-otomatis berkapasitas besar (mampu menyelesaikan hingga 200.000+ lembar/hari).
-   - Antar-Jemput Plano Cetakan GRATIS se-Jawa Timur (Surabaya, Sidoarjo, Gresik, Mojokerto, Pasuruan, Malang) menggunakan armada truk boks tertutup mandiri.
-   - MOQ fleksibel: melayani UMKM hingga partai besar industri kemasan & rokok.
-   - Swatch Sample Kit fisik GRATIS dikirim ke alamat workshop rekanan.
 
-PANDUAN GAYA, STRUKTUR, DAN LOGIKA PERCAKAPAN (SANGAT KETAT):
-1. PERSONALISASI: Jika user memperkenalkan diri (misal namanya Daffa), sapa dengan nama secara sopan dan profesional (misal: "Baik, Pak Daffa" atau "Halo Daffa"). JANGAN gunakan sapaan alay/santai seperti: "hai kak", "halo kak", "oh iya kak".
-2. MEMAHAMI KONTEKS SEBELUMNYA (MULTI-TURN AWARENESS):
-   - Perhatikan pertanyaan dan topik sebelumnya. Jangan menjawab seolah-olah percakapan baru dimulai dari nol.
-   - Jika user menanyakan kelanjutan tentang kemasan rokok dan Micro Emboss, jelaskan dengan runtut bahwa CV Pelangi UV BISA dan MENYEDIAKAN Micro Emboss untuk kemasan rokok (efek tekstur timbul mikro anti-pemalsuan dan pattern eksklusif), yang sering dipadukan dengan Hot Stamping Foil dan Laminasi Doff/Velvet.
-3. STRUKTUR JAWABAN RAPI & PADAT:
-   - Berikan jawaban langsung di paragraf awal (to the point).
-   - Gunakan bullet points ringkas untuk poin-poin teknis.
-   - Jangan mengulang-ulang pembukaan yang berbelit-belit.
-4. Gunakan format HTML bersih (<p>, <strong>, <em>, <ul>, <li>). JANGAN gunakan tag markdown code block.`;
+4. KATALOG LENGKAP 13 LAYANAN JASA FINISHING CETAK CV PELANGI UV:
+   1. Hot Stamp Foil: Finishing kilap metalik presisi tinggi (Gold, Silver, Rose Gold, Hologram, Warna-Warni, Pigment Foil tahan gores). Kapasitas: 120.000+ lembar/hari.
+   2. Spot UV: Lapisan vernis mengkilap kontras tinggi (Spot Gloss kilap tinggi 98 GU, Spot Doff/Matte, dan Tekstur Pasir taktil presisi mikron). Kapasitas: 150.000+ lembar/hari.
+   3. Laminating Thermal & Wet: Pelapisan plastik BOPP bebas gelembung (Doff Halus, Glossy Bening, Velvet Soft-Touch anti-sidik jari). Kapasitas: 200.000+ lembar/hari.
+   4. Laminating Window Mika Box: Perekatan jendela mika transparan food-grade presisi untuk dus kue, box makanan, & kemasan souvenir. Kapasitas: 90.000+ lembar/hari.
+   5. Cast and Cure Holographic: Efek kilau pelangi prisma mikro modern ramah lingkungan tanpa film laminasi mika, sulit dipalsukan. Kapasitas: 80.000+ lembar/hari.
+   6. Pond & Die-Cut Presisi: Potong bentuk die-cut otomatis pisau tajam dan garis rel tekukan presisi, bebas retak pada lipatan kemasan karton.
+   7. Micro Emboss Keamanan & Tekstur: Tekstur timbul mikro sub-milimeter presisi tinggi sebagai fitur anti-pemalsuan (security feature) dan aksen eksklusif untuk kemasan rokok, farmasi, kosmetik, serta segel cukai. CV Pelangi UV BISA dan rutin mengerjakan Micro Emboss!
+   8. Emboss & Deboss Timbul 3D: Efek timbul relief 3D fisik atau tenggelam presisi pada cover buku, kartu, dan box packaging eksklusif.
+   9. Transfer Metalized Paper: Transfer partikel foil metalik pengganti kertas metalized import, ramah lingkungan dan hemat biaya.
+   10. Transfer PET Film Prismatik: Proteksi maksimal anti-keausan dengan pantulan spektrum pelangi mewah.
+   11. Cold Foil Inline Printing: Finishing foil inline berkecepatan tinggi dengan overprinting warna langsung di atas foil.
+   12. Rewinding Foil Roll: Jasa penggulungan master roll foil ke core gulungan shaft spesifik mesin cetak offset/rotari.
+   13. Potong Foil (Slitting): Pemotongan slitting lebar roll foil custom akurasi ±0.5 mm sesuai area klise cetak.
+
+5. GROSIR BAHAN BAKU RESMI CV PELANGI UV:
+   1. Film BOPP / Thermal Film: Varian Thermal Glossy & Doff (18 mic), Waterbase Glossy & Doff (12-15 mic), Velvet Soft-Touch (30 mic), Metalize PET. Corona Dyne ≥ 42 dynes/cm. FREE slitting potong belah roll jumbo ke lebar custom 200 mm - 1200 mm akurasi ±0.5 mm.
+   2. Roll Hot Stamping Foil: Master roll impor aneka warna (Gold, Silver, Rose Gold, Hologram, Hitam, Putih BO1, Clear, Pigment). Panjang roll 120m s/d roll jumbo 3000m, daya rekat kuat tidak rontok.
+   3. Lem Wet Waterbase & Dry Thermal: Lem laminasi food-grade daya rekat tinggi anti bau kimia menyengat, cepat kering (Kemasan pail 20kg & drum).
+   4. Tinta & Varnish Spot UV LumineX: Varnish UV ultra gloss 98 GU dan matte anti yellowing tahan gores (Kemasan can 5kg & 20kg).
+
+6. KEUNGGULAN OPERASIONAL & LOGISTIK:
+   - 35+ unit mesin otomatis & semi-otomatis berkapasitas total hingga 200.000+ lembar/hari.
+   - Antar-Jemput Plano Cetakan GRATIS se-Jawa Timur (Surabaya, Sidoarjo, Gresik, Mojokerto, Pasuruan, Malang) menggunakan armada truk boks tertutup mandiri.
+   - MOQ fleksibel: melayani UMKM percetakan hingga partai industri besar (rokok, farmasi, biskuit).
+   - Swatch Sample Kit fisik GRATIS dikirim ke alamat workshop/kantor rekanan.
+
+PANDUAN GAYA BAHASA & KONSISTENSI MULTI-TURN (WAJIB DIIKUTI):
+1. MEMORI NAMA & PERSONALISASI KONSISTEN:
+   - Jika pengguna menyebut namanya (misalnya: "panggil aku daffa" atau "Daffa"), Anda WAJIB mengingatnya di seluruh giliran percakapan berikutnya.
+   - Sapa selalu dengan hormat dan ramah: "Pak Daffa" atau "Daffa".
+   - DILARANG KERAS menggunakan sapaan santai/alay seperti: "hai kak", "kakak", "halo kak", "oh iya kak". Gunakan nada profesional, solutif, dan ramah bisnis B2B.
+2. MEMAHAMI KONTEKS SEBELUMNYA SECARA UTUH (MULTI-TURN MEMORY):
+   - Jaga kesinambungan percakapan. Hubungkan jawaban Anda dengan topik yang baru saja dibahas (misal: jika sedang membahas kemasan rokok, lalu user menanyakan "bukannya micro emboss ya?", jawab langsung bahwa CV Pelangi UV BISA dan MENYEDIAKAN Micro Emboss khusus untuk kemasan rokok sebagai tekstur timbul mikro anti-pemalsuan dan pattern mewah).
+3. STRUKTUR JAWABAN TERORGANISIR & RAPI:
+   - Paragraf pertama langsung menjawab inti pertanyaan (to the point).
+   - Gunakan bullet points ringkas (tanda * atau -) dengan judul tebal (**Judul:** Penjelasan) agar mudah dibaca dan terstruktur.
+   - Berikan rekomendasi teknis yang jelas beserta solusinya.
+4. TERTIB DATA & INTEGRITAS:
+   - Jangan pernah mengatakan CV Pelangi UV tidak bisa atau tidak melayani Micro Emboss, Emboss/Deboss, atau layanan lain yang terdaftar di atas. CV Pelangi UV BISA dan ahlinya!`;
 
     // 1. Prioritas Utama: Groq API (Qwen 3.8 / LLaMA berkecepatan tinggi)
     if (groqApiKey) {
@@ -114,11 +223,13 @@ PANDUAN GAYA, STRUKTUR, DAN LOGIKA PERCAKAPAN (SANGAT KETAT):
           { role: "system", content: systemPrompt },
         ];
 
+        // Sertakan hingga 10 pesan riwayat terakhir agar bot mengingat nama dan alur percakapan
         if (Array.isArray(conversationHistory)) {
-          for (const msg of conversationHistory.slice(-4)) {
+          for (const msg of conversationHistory.slice(-10)) {
+            if (!msg.text || !msg.text.trim()) continue;
             groqMessages.push({
               role: msg.sender === "user" ? "user" : "assistant",
-              content: msg.text || "",
+              content: msg.text.trim(),
             });
           }
         }
@@ -137,7 +248,7 @@ PANDUAN GAYA, STRUKTUR, DAN LOGIKA PERCAKAPAN (SANGAT KETAT):
               model: groqModel,
               messages: groqMessages,
               temperature: 0.2,
-              max_tokens: 500,
+              max_tokens: 650,
             }),
           }
         );
@@ -148,17 +259,7 @@ PANDUAN GAYA, STRUKTUR, DAN LOGIKA PERCAKAPAN (SANGAT KETAT):
             groqData.choices?.[0]?.message?.content;
 
           if (generatedText) {
-            let cleanHtml = generatedText
-              .replace(/```html/gi, "")
-              .replace(/```/g, "")
-              .trim();
-
-            if (!cleanHtml.includes("<p>") && !cleanHtml.includes("<div>")) {
-              cleanHtml = cleanHtml
-                .split("\n\n")
-                .map((p: string) => `<p class="mb-2 leading-relaxed">${p}</p>`)
-                .join("");
-            }
+            let cleanHtml = formatLlmResponseToHtml(generatedText);
 
             const waUrl = `https://wa.me/6282231019363?text=${encodeURIComponent(
               `Halo Tim Marketing CV Pelangi UV, saya ingin konsultasi teknis: ${message.slice(
@@ -199,10 +300,11 @@ PANDUAN GAYA, STRUKTUR, DAN LOGIKA PERCAKAPAN (SANGAT KETAT):
         const contents: { role: string; parts: { text: string }[] }[] = [];
 
         if (Array.isArray(conversationHistory)) {
-          for (const msg of conversationHistory.slice(-4)) {
+          for (const msg of conversationHistory.slice(-10)) {
+            if (!msg.text || !msg.text.trim()) continue;
             contents.push({
               role: msg.sender === "user" ? "user" : "model",
-              parts: [{ text: msg.text || "" }],
+              parts: [{ text: msg.text.trim() }],
             });
           }
         }
@@ -226,7 +328,7 @@ PANDUAN GAYA, STRUKTUR, DAN LOGIKA PERCAKAPAN (SANGAT KETAT):
               },
               generationConfig: {
                 temperature: 0.2,
-                maxOutputTokens: 500,
+                maxOutputTokens: 650,
               },
             }),
           }
@@ -238,17 +340,7 @@ PANDUAN GAYA, STRUKTUR, DAN LOGIKA PERCAKAPAN (SANGAT KETAT):
             data.candidates?.[0]?.content?.parts?.[0]?.text;
 
           if (generatedText) {
-            let cleanHtml = generatedText
-              .replace(/```html/gi, "")
-              .replace(/```/g, "")
-              .trim();
-
-            if (!cleanHtml.includes("<p>") && !cleanHtml.includes("<div>")) {
-              cleanHtml = cleanHtml
-                .split("\n\n")
-                .map((p: string) => `<p class="mb-2 leading-relaxed">${p}</p>`)
-                .join("");
-            }
+            let cleanHtml = formatLlmResponseToHtml(generatedText);
 
             const waUrl = `https://wa.me/6282231019363?text=${encodeURIComponent(
               `Halo Tim Marketing CV Pelangi UV, saya ingin konsultasi teknis: ${message.slice(
