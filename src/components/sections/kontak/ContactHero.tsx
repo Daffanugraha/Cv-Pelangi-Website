@@ -128,9 +128,6 @@ export default function ContactHero() {
                     <h2 className="text-sm font-label-meta font-bold text-white tracking-wide">
                       {t("contact_hero_hotline_title")}
                     </h2>
-                    <p className="text-xs text-zinc-400 mt-0.5 font-normal">
-                      Konsultasi Cepat Pasca-Cetak
-                    </p>
                   </div>
                 </div>
 
@@ -141,42 +138,30 @@ export default function ContactHero() {
                 </div>
               </div>
 
-              {/* Direct Phone Link */}
-              <div className="mb-4 relative z-10">
-                <span className="block text-[11px] font-semibold text-zinc-400 uppercase tracking-wider mb-1">
+              {/* Direct Phone Link (Klik langsung mengarah ke WhatsApp) */}
+              <div className="mb-3 relative z-10">
+                <span className="block text-[11px] font-semibold text-zinc-400 uppercase tracking-wider mb-1.5">
                   Hotline Resmi CV Pelangi UV
                 </span>
                 <a
-                  className="inline-block text-2xl sm:text-3xl font-headline-sm font-extrabold text-white hover:text-[#25D366] transition-colors tracking-tight"
+                  className="inline-flex items-center gap-2 text-2xl sm:text-3xl font-headline-sm font-extrabold text-white hover:text-[#25D366] transition-colors tracking-tight group/link"
                   href={`https://wa.me/6282231019363?text=${encodeURIComponent(
                     "Halo Tim Marketing CV Pelangi UV,\n\nSaya [Nama] dari [Perusahaan], mau tanya tentang konsultasi finishing cetak yang tepat untuk produk kemasan kami.\n\nSpesifikasi Kebutuhan:\n- Kebutuhan Finishing: \n- Estimasi Oplah: \n- Catatan Khusus: \n\nMohon bantuannya. Terima kasih!"
                   )}`}
                   rel="noopener noreferrer"
                   target="_blank"
                 >
-                  +62 822-3101-9363
+                  <span>+62 822-3101-9363</span>
+                  <span translate="no" className="material-symbols-outlined notranslate text-[20px] text-zinc-400 group-hover/link:text-[#25D366] transition-colors">
+                    open_in_new
+                  </span>
                 </a>
               </div>
 
               {/* Brief Description */}
-              <p className="text-xs text-zinc-300 leading-relaxed mb-6 relative z-10">
+              <p className="text-xs text-zinc-300 leading-relaxed relative z-10">
                 Diskusikan langsung file cetak, alternatif finishing Spot UV / Foil, kalkulasi oplah efisien, atau kirim sampel fisik ke workshop Anda.
               </p>
-
-              {/* WhatsApp Action Button */}
-              <a
-                className="w-full py-3.5 px-5 rounded-2xl bg-[#25D366] hover:bg-[#1EBE5D] text-white text-xs sm:text-sm font-label-nav font-bold flex items-center justify-center gap-2.5 shadow-[0_8px_24px_rgba(37,211,102,0.35)] hover:shadow-[0_12px_28px_rgba(37,211,102,0.45)] transition-all hover:scale-[1.02] active:scale-98 relative z-10 cursor-pointer"
-                href={`https://wa.me/6282231019363?text=${encodeURIComponent(
-                  "Halo Tim Marketing CV Pelangi UV,\n\nSaya [Nama] dari [Perusahaan], mau tanya tentang konsultasi finishing cetak yang tepat untuk produk kemasan kami.\n\nSpesifikasi Kebutuhan:\n- Kebutuhan Finishing: \n- Estimasi Oplah: \n- Catatan Khusus: \n\nMohon bantuannya. Terima kasih!"
-                )}`}
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                <span translate="no" className="material-symbols-outlined notranslate text-[20px]">
-                  chat
-                </span>
-                <span>{t("contact_hero_cta")}</span>
-              </a>
             </div>
           </div>
         </div>
