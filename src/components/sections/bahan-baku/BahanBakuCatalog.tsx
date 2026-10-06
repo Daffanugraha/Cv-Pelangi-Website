@@ -153,7 +153,9 @@ export default function BahanBakuCatalog({
       id="katalog-material"
       className="relative w-full bg-surface-bright overflow-hidden py-16 lg:py-20"
     >
-      <style>{`
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
         @keyframes continuousMarqueeTrack {
           0% {
             transform: translate3d(0, 0, 0);
@@ -181,7 +183,7 @@ export default function BahanBakuCatalog({
           overflow: hidden;
         }
         .sheen-effect::after {
-          content: '';
+          content: "";
           position: absolute;
           top: -50%;
           left: -60%;
@@ -209,7 +211,9 @@ export default function BahanBakuCatalog({
         .sheen-effect:hover {
           border-color: rgba(246, 84, 86, 0.45) !important;
         }
-      `}</style>
+      `,
+        }}
+      />
 
       {/* Ambient Blurred Blobs */}
       <div className="absolute -top-32 -right-32 w-[680px] h-[680px] bg-divider-tint/50 rounded-full blur-3xl pointer-events-none -z-0" />
