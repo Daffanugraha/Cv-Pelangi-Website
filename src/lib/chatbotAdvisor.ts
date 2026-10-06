@@ -594,27 +594,31 @@ export const consultationScenarios: ScenarioPattern[] = [
     ],
     replyGenerator: (input) =>
       formatAdvice({
-        greeting: "Daftar harga dan pricelist CV Pelangi UV dihitung berdasarkan parameter teknis berikut: 📋🏷️",
+        greeting: "Berikut daftar harga resmi bahan baku & jasa finishing CV Pelangi UV: 📋🏷️",
         explanation:
-          "Tarif finishing dihitung berdasarkan ukuran lembaran plano cetak (misal: 65x100, 79x109, atau setengah plano) dan volume kuantiti pesanan.",
+          "Kami menyediakan pasokan bahan baku roll foil, plastik film BOPP, lem, varnish, serta jasa finishing dengan tarif transparan:",
         tips: [
           {
-            title: "Kapasitas 35+ Mesin Otomatis",
-            desc: "Karena menggunakan mesin full-automatic berkecepatan tinggi, kami dapat memberikan harga grosir yang sangat efisien untuk volume menengah hingga jutaan lembar.",
+            title: "Grosir Roll Foil Hot Stamping (64cm x 120m)",
+            desc: "• <strong>Gold & Silver 120m:</strong> Rp 186.000 / roll<br>• <strong>Warna-Warni (Red, Blue, Green, Copper):</strong> Rp 227.000 / roll<br>• <strong>Gold & Silver Hologram Laser:</strong> Rp 314.500 / roll<br>• <strong>Transparan Security Stamp:</strong> Rp 360.500 / roll<br>• <strong>Putih BO1:</strong> Rp 398.000 / roll (White BO1 Jumbo: Rp 815.500)",
           },
           {
-            title: "Kalkulasi Presisi dalam 15 Menit",
-            desc: "Kirimkan detail ukuran plano, jenis bahan (misal Art Carton 260gsm), dan kuantiti lembar ke tim admin via WhatsApp untuk mendapatkan kalkulasi harga resmi dan diskon volume.",
+            title: "Plastik Film BOPP & Thermal",
+            desc: "• <strong>BOPP Glossy 20 mic:</strong> Rp 41.100 / roll<br>• <strong>Glossy & Doff Waterbase 12-15 mic:</strong> Rp 46.500 – Rp 49.000 / roll<br>• <strong>Thermal Glossy & Doff 18 mic:</strong> Rp 56.000 – Rp 57.000 / roll<br>• <strong>PET Metalize:</strong> Rp 73.100 / roll (Tersedia Free Slitting potong custom)",
+          },
+          {
+            title: "Tarif Jasa Finishing Percetakan",
+            desc: "• <strong>Jasa Hot Stamp Foil:</strong> Rp 1,08 / cm² (Min. order Rp 300.000)<br>• <strong>Jasa Spot UV Gloss:</strong> Rp 0,22 / cm² | Matte / Pasir: Rp 0,25 / cm²<br>• <strong>Jasa Laminating Doff:</strong> Rp 0,24 / cm² | Gloss: Rp 0,163 / cm²<br>• <strong>Jasa Pond Die-Cut:</strong> Rp 80 / lembar | Micro Emboss: Rp 270 / lembar",
           },
         ],
         conclusion:
-          "Ingin mengunduh Pricelist PDF atau mau langsung dibantu hitungkan estimasi spesifik?",
-        waTopic: `Minta Daftar Harga / Pricelist Finishing (${input})`,
+          "Semua bahan baku ready stock di Kompleks Pergudangan Bizpark Waru Sidoarjo dengan fasilitas Antar-Jemput Gratis se-Jawa Timur.",
+        waTopic: `Tanya Harga & Stok Bahan Baku (${input})`,
         chips: [
-          "Hitung Estimasi Biaya Cetakan Saya",
-          "Unduh Pricelist PDF",
-          "Tanya Diskon Order Kuantiti Besar",
-          "Chat WhatsApp Sales",
+          "Beli Roll Foil Gold/Silver",
+          "Harga Film BOPP Thermal",
+          "Kalkulasi Ongkos Jasa Finishing",
+          "Minta Swatch Sample Kit Gratis",
         ],
       }),
   },
