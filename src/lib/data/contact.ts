@@ -52,11 +52,11 @@ export const marketingTeam: MarketingMember[] = [
 ];
 
 export interface ContactTestimonial {
-  type: "image" | "whatsapp" | "technical";
+  type: "image" | "whatsapp" | "technical" | "google-review";
   badge: string;
   quote: string;
   author: string;
-  role: string;
+  role?: string;
   initials: string;
   partnershipBadge: string;
   // type === 'image'
@@ -67,7 +67,15 @@ export interface ContactTestimonial {
   contactName?: string;
   contactStatus?: string;
   contactIcon?: string;
-  chatMessages?: { from: "sales" | "client"; text: string; time: string }[];
+  chatMessages?: { from: "sales" | "client"; text: string; time: string; sender?: string }[];
+  // type === 'google-review'
+  googleReviews?: {
+    name: string;
+    avatarColor: string;
+    initial: string;
+    time: string;
+    text: string;
+  }[];
   // type === 'technical'
   cardTag?: string;
   cardTitle?: string;
@@ -87,33 +95,34 @@ export const contactTestimonials: ContactTestimonial[] = [
       '"Sangat terbantu oleh tim marketing Pelangi UV yang proaktif datang langsung membawa swatch sample, bantu kalkulasi foil dan spot UV sesuai budget cetakan kami. Komunikasi via WhatsApp sangat responsif dan armada jemputan cetak plano selalu tepat waktu tiba di pabrik kami."',
     initials: "HR",
     author: "Bpk. H. Rachmat",
-    role: "Owner PT Grafika Mandiri — Surabaya",
+    role: "PT Grafika Mandiri — Surabaya",
     partnershipBadge: "Klien Kemitraan 5+ Tahun",
   },
   {
-    type: "whatsapp",
-    badge: "Ulasan Kepuasan Pelanggan",
-    contactName: "Sales CV Pelangi UV",
-    contactStatus: "Online • Fast Response",
-    contactIcon: "support_agent",
-    chatMessages: [
-      {
-        from: "client",
-        text: "Pelayanan cepat dan responsive oleh admin. Harga cukup terjangkau tapi hasil tetap berkualitas. Recomended buat bisnis yang baru berjalan dan butuh jasa finishing 👍👍👍",
-        time: "09:20",
-      },
-      {
-        from: "client",
-        text: "Pelayanan baik dan bahan bakunya sangat berkualitas. Joss markotop 😁",
-        time: "09:28",
-      },
-    ],
+    type: "google-review",
+    badge: "Cuplikan Layar Ulasan Google",
     quote:
       '"Pelayanan cepat dan responsive oleh admin. Harga cukup terjangkau tapi hasil tetap berkualitas. Recomended buat bisnis yang baru berjalan dan butuh jasa finishing 👍👍👍"',
     initials: "AR",
     author: "Arif B. Ramadhan",
-    role: "Klien Percetakan & Finishing — Surabaya",
+    role: "",
     partnershipBadge: "Ulasan Google Bintang 5",
+    googleReviews: [
+      {
+        name: "Arif B. Ramadhan",
+        avatarColor: "bg-indigo-600",
+        initial: "A",
+        time: "2 tahun lalu",
+        text: "Pelayanan cepat dan responsive oleh admin. Harga cukup terjangkau tapi hasil tetap berkualitas. Recomended buat bisnis yang baru berjalan dan butuh jasa finishing 👍👍👍",
+      },
+      {
+        name: "Dicky Bagus",
+        avatarColor: "bg-teal-600",
+        initial: "D",
+        time: "2 tahun lalu",
+        text: "Pelayanan baik dan bahan bakunya sangat berkualitas. Joss markotop 😁",
+      },
+    ],
   },
   {
     type: "image",
@@ -126,7 +135,7 @@ export const contactTestimonials: ContactTestimonial[] = [
       '"Kualitas laminating doff velvet dan hot stamping gold-nya konsisten tidak pernah meleset. Kalau ada deadline mendesak, tim PIC Pelangi UV selalu sigap membantu koordinasi jadwal lembur dan penjemputan bahan sehingga komitmen kami ke brand kosmetik selalu terjaga."',
     initials: "CD",
     author: "Ibu Cynthia Dewi",
-    role: "Production Head CV Aneka Grafika — Sidoarjo",
+    role: "CV Aneka Grafika — Sidoarjo",
     partnershipBadge: "Klien Kemitraan 3+ Tahun",
   },
   {
@@ -156,7 +165,7 @@ export const contactTestimonials: ContactTestimonial[] = [
       '"Katalog swatch fisik dikirim cepat ke pabrik kami, tim sales sangat menguasai detail teknis tiap jenis finishing box kosmetik & farmasi. Penjemputan plano dengan truk box tertutup membuat lembaran cetak aman dari cuaca dan debu."',
     initials: "FR",
     author: "Bpk. Fajar Ramadhan",
-    role: "Procurement Manager PT Sinar Indah Pack",
+    role: "PT Sinar Indah Pack",
     partnershipBadge: "Klien Kemitraan 2+ Tahun",
   },
   {
@@ -175,7 +184,7 @@ export const contactTestimonials: ContactTestimonial[] = [
       '"Konsultasi teknis lem wet laminating dan film OPP sangat solutif. Masalah lem menggelembung di mesin lama kami tuntas setelah dibimbing tim teknis Pelangi UV. Suplai bahan kimia dan lem drum selalu konsisten. Kemitraan terpercaya!"',
     initials: "IS",
     author: "Bpk. Irwan Santoso",
-    role: "Owner CV Mahkota Grafika — Mojokerto",
+    role: "CV Mahkota Grafika — Mojokerto",
     partnershipBadge: "Klien Kemitraan 3+ Tahun",
   },
 ];
