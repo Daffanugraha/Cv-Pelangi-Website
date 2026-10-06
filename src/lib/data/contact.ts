@@ -44,7 +44,7 @@ export const marketingTeam: MarketingMember[] = [
     prefillText:
       "Halo Pak Aris Waluyo, saya ingin menanyakan ketersediaan bahan baku roll OPP dan lem finishing.",
     imgSrc:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuCMWuEI8PFtxKYnWWb1_OcED5aR-5_Q_7RUs86xWHX7dBKfHh4qGBnViC_pHJsQlffkDXiYtT4jXruMud6c8iGpsnlYDnd82JoWjrs5CrBmKLihYD5fPdbRPafp2lzWNA0tFGEMu2OFi6492AZxs6EG9kHFnyBRt2nfXU4zT6XUCC6n1eBGnU_x6BkuKEthkQvVBu3nIc026tHFmyguSh8bdo1S8GVnbXAxF6QwXO90nSMcDM91LZKU",
+      "/images/team/aris-waluyo.webp",
     focus:
       "Grosir Roll OPP, Lem Wet/Waterbased, Foil Stamping, dan Spesifikasi Teknis Mesin.",
     scopeTag: "Grosir Bahan Baku & Roll OPP",
