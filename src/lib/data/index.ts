@@ -12,3 +12,4 @@ export * from "./search";
 export * from "./chatbot";
 export * from "./contact";
 export * from "./rawMaterials";
+export * from "./galeriMomen";
