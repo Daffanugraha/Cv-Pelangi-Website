@@ -96,18 +96,6 @@ export default function BahanBakuCatalog({
             {cat.title}
           </h3>
 
-          {/* Popular Variant Badges / Pills */}
-          <div className="flex flex-wrap gap-1.5 mb-5">
-            {cat.popularVariants.map((variant, vIdx) => (
-              <span
-                key={vIdx}
-                className="px-3.5 py-1.5 rounded-full text-xs sm:text-[13px] font-label-meta bg-surface-tint-light text-primary border border-divider-tint/60 font-semibold"
-              >
-                {variant}
-              </span>
-            ))}
-          </div>
-
           {/* Description */}
           <p className="font-body-md text-sm sm:text-[15px] text-text-body leading-relaxed">
             {cat.shortDesc}
@@ -165,7 +153,7 @@ export default function BahanBakuCatalog({
               Katalog Bahan Baku Pasca Cetak
             </span>
             <div>
-              <h2 className="font-headline-xl text-headline-xl text-on-surface tracking-tight font-extrabold text-navbar-black sm:text-4xl lg:text-[42px] leading-tight">
+              <h2 className="font-headline-xl text-headline-xl text-on-surface tracking-tight font-extrabold sm:text-4xl lg:text-[42px] leading-tight">
                 Bahan Baku Finishing Standar Industri
               </h2>
               <p className="font-body-md text-body-md text-text-muted mt-1">
