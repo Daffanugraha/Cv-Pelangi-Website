@@ -79,7 +79,7 @@ export default function ContactHero() {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
           {/* Hero Left Column */}
-          <div className="lg:col-span-8 space-y-5">
+          <div className="lg:col-span-7 space-y-5">
             <h1 className="font-headline-xl text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-[1.15]">
               {t("contact_hero_title")}{" "}
               <br className="hidden sm:inline" />
@@ -104,52 +104,78 @@ export default function ContactHero() {
             </p>
           </div>
 
-          {/* Hero Right Column: Clean Dark Hotline Card */}
-          <div className="lg:col-span-4 flex justify-start lg:justify-end">
-            <div className="w-full max-w-sm bg-navbar-black/90 backdrop-blur-md rounded-2xl p-6 sm:p-7 shadow-[0_12px_36px_-12px_rgba(0,0,0,0.5)] border border-white/10 relative overflow-hidden group">
-              <div className="flex items-center gap-3 mb-5 relative z-10">
-                <div className="w-12 h-12 rounded-xl bg-white/10 text-secondary-container flex items-center justify-center border border-white/10 shadow-xs">
-                  <span translate="no" className="material-symbols-outlined notranslate text-[24px]">
-                    support_agent
-                  </span>
+          {/* Hero Right Column: Premium Hotline WhatsApp Card */}
+          <div className="lg:col-span-5 flex justify-start lg:justify-end">
+            <div className="w-full max-w-md bg-gradient-to-b from-[#18191d] to-[#111215] rounded-3xl p-7 sm:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.6)] border border-white/10 relative overflow-hidden group">
+              {/* Subtle top glow line */}
+              <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-[#25D366] to-transparent opacity-75" />
+
+              {/* Header Card: Support Agent & Online Badge */}
+              <div className="flex items-center justify-between gap-4 mb-6 relative z-10 pb-5 border-b border-white/10">
+                <div className="flex items-center gap-3.5">
+                  <div className="relative">
+                    <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 text-white flex items-center justify-center shadow-inner group-hover:scale-105 transition-transform duration-300">
+                      <span translate="no" className="material-symbols-outlined notranslate text-[24px] text-white">
+                        support_agent
+                      </span>
+                    </div>
+                    {/* Pulsing Green Online Indicator */}
+                    <span className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-[#25D366] rounded-full border-2 border-[#141518] flex items-center justify-center">
+                      <span className="w-1.5 h-1.5 bg-white rounded-full animate-ping opacity-75" />
+                    </span>
+                  </div>
+                  <div>
+                    <h2 className="text-sm font-label-meta font-bold text-white tracking-wide">
+                      {t("contact_hero_hotline_title")}
+                    </h2>
+                    <p className="text-xs text-zinc-400 mt-0.5 font-normal">
+                      Konsultasi Cepat Pasca-Cetak
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-xs font-label-meta font-bold text-slate-300 uppercase tracking-wider">
-                    {t("contact_hero_hotline_title")}
-                  </p>
-                  <p className="text-[11px] text-emerald-400 font-medium flex items-center gap-1.5 mt-0.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />{" "}
-                    {t("contact_hero_hotline_status")}
-                  </p>
+
+                {/* Status Pill */}
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#25D366]/10 border border-[#25D366]/30 text-[#25D366] text-[11px] font-semibold tracking-wide">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#25D366] animate-pulse" />
+                  <span>Online</span>
                 </div>
               </div>
 
-              <a
-                className="block text-2xl sm:text-[28px] font-headline-sm font-extrabold text-white hover:text-secondary-container transition-colors mb-3 tracking-tight relative z-10"
-                href={`https://wa.me/6282231019363?text=${encodeURIComponent(
-                  "Halo Tim Marketing CV Pelangi UV,\n\nSaya [Nama] dari [Perusahaan], mau tanya tentang konsultasi finishing cetak yang tepat untuk produk kemasan kami.\n\nSpesifikasi Kebutuhan:\n- Kebutuhan Finishing: \n- Estimasi Oplah: \n- Catatan Khusus: \n\nMohon bantuannya. Terima kasih!"
-                )}`}
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                +62 822-3101-9363
-              </a>
+              {/* Direct Phone Link */}
+              <div className="mb-4 relative z-10">
+                <span className="block text-[11px] font-semibold text-zinc-400 uppercase tracking-wider mb-1">
+                  Hotline Resmi CV Pelangi UV
+                </span>
+                <a
+                  className="inline-block text-2xl sm:text-3xl font-headline-sm font-extrabold text-white hover:text-[#25D366] transition-colors tracking-tight"
+                  href={`https://wa.me/6282231019363?text=${encodeURIComponent(
+                    "Halo Tim Marketing CV Pelangi UV,\n\nSaya [Nama] dari [Perusahaan], mau tanya tentang konsultasi finishing cetak yang tepat untuk produk kemasan kami.\n\nSpesifikasi Kebutuhan:\n- Kebutuhan Finishing: \n- Estimasi Oplah: \n- Catatan Khusus: \n\nMohon bantuannya. Terima kasih!"
+                  )}`}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  +62 822-3101-9363
+                </a>
+              </div>
 
-              <p className="text-xs text-slate-300 leading-relaxed pt-3 border-t border-white/10 relative z-10">
-                Diskusikan sampel file cetak, alternatif finishing spot UV/foil,
-                atau mintakan sample swatch fisik ke workshop Anda.
+              {/* Brief Description */}
+              <p className="text-xs text-zinc-300 leading-relaxed mb-6 relative z-10">
+                Diskusikan langsung file cetak, alternatif finishing Spot UV / Foil, kalkulasi oplah efisien, atau kirim sampel fisik ke workshop Anda.
               </p>
 
+              {/* WhatsApp Action Button */}
               <a
-                className="mt-5 w-full py-3 px-4 rounded-full bg-[#25D366] hover:bg-[#1EBE5D] text-white text-xs font-label-nav font-bold flex items-center justify-center gap-2 shadow-[0_4px_16px_rgba(37,211,102,0.35)] transition-all relative z-10 active:scale-95"
+                className="w-full py-3.5 px-5 rounded-2xl bg-[#25D366] hover:bg-[#1EBE5D] text-white text-xs sm:text-sm font-label-nav font-bold flex items-center justify-center gap-2.5 shadow-[0_8px_24px_rgba(37,211,102,0.35)] hover:shadow-[0_12px_28px_rgba(37,211,102,0.45)] transition-all hover:scale-[1.02] active:scale-98 relative z-10 cursor-pointer"
                 href={`https://wa.me/6282231019363?text=${encodeURIComponent(
                   "Halo Tim Marketing CV Pelangi UV,\n\nSaya [Nama] dari [Perusahaan], mau tanya tentang konsultasi finishing cetak yang tepat untuk produk kemasan kami.\n\nSpesifikasi Kebutuhan:\n- Kebutuhan Finishing: \n- Estimasi Oplah: \n- Catatan Khusus: \n\nMohon bantuannya. Terima kasih!"
                 )}`}
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                <span translate="no" className="material-symbols-outlined notranslate text-[18px]">chat</span>
-                {t("contact_hero_cta")}
+                <span translate="no" className="material-symbols-outlined notranslate text-[20px]">
+                  chat
+                </span>
+                <span>{t("contact_hero_cta")}</span>
               </a>
             </div>
           </div>
