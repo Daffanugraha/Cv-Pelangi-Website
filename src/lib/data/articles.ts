@@ -186,8 +186,8 @@ export const articlesData: ArticleItem[] = [
   },
   {
     id: "art-6",
-    slug: "pelangi-uv-surabaya-printing-expo",
-    title: "Pelangi UV Hadir di Surabaya Printing Expo: Menampilkan Ragam Efek Tekstur Spot Varnish Terbaru",
+    slug: "pelangi-uv-ikut-meriahkan-event-surabaya-printing-expo-2024",
+    title: "Pelangi UV Ikut Meriahkan Event Surabaya Printing Expo 2024",
     category: "Kabar Perusahaan",
     categoryKey: "kabar-perusahaan",
     date: "18/02/2025",
@@ -204,9 +204,20 @@ export const articlesData: ArticleItem[] = [
       "Komitmen Pelangi UV memperkuat ekosistem industri pasca-cetak di wilayah Indonesia Timur.",
     ],
     content: [
-      "Pada ajang pameran Surabaya Printing Expo (SPE), CV Pelangi UV kembali menjadi pusat perhatian pelaku grafika regional dengan memamerkan puluhan inovasi efek finishing cetak terkini.",
-      "Booth Pelangi UV ramai dikunjungi desainer packaging, pemilik percetakan komersial, hingga perwakilan manufaktur kemasan farmasi dari Surabaya, Sidoarjo, Malang, hingga Kediri.",
-      "Antusiasme terbesar tertuju pada katalog interaktif swatch finishing yang memperlihatkan perbedaan tekstur rabaan fisik antara Spot UV biasa, Sand Texture Drip-off, serta glitter varnish berdaya kilap spektakuler.",
+      "Pada ajang pameran akbar Surabaya Printing Expo (SPE) 2024 di Grand City Convention Hall, CV Pelangi UV kembali menjadi pusat perhatian para pelaku industri grafika regional dengan memamerkan puluhan inovasi efek finishing cetak pasca-cetak terkini.",
+      "Booth Pelangi UV ramai dipadati pengunjung yang terdiri dari pemilik percetakan komersial, pabrik kemasan karton box, desainer packaging, hingga perwakilan industri farmasi dan F&B dari berbagai penjuru Jawa Timur dan Indonesia Timur.",
+      "Antusiasme terbesar tertuju pada peluncuran katalog interaktif swatch finishing yang memperlihatkan perbedaan tekstur rabaan fisik antara Spot UV High Gloss 98 GU, Sand Texture Drip-off kasar, hingga kemilau Hot Stamping Foil Gold & Silver Hologram berdaya kilau spektakuler.",
+      "Selain pameran sampel fisik, tim teknisi senior CV Pelangi UV juga membuka sesi konsultasi gratis seputar optimasi mesin pond otomatis, pemilihan formulasi lem laminating food-grade, serta teknik penanganan kendala delaminasi pada karton tebal.",
     ],
   },
 ];
+
+export function getAllArticles(): ArticleItem[] {
+  return [featuredArticle, ...articlesData];
+}
+
+export function getArticleBySlug(slug: string): ArticleItem | undefined {
+  return getAllArticles().find(
+    (a) => a.slug === slug || a.id === slug
+  );
+}

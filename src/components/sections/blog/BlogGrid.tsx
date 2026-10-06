@@ -1,11 +1,12 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { ArticleItem } from "@/lib/data/articles";
 
 interface BlogGridProps {
   articles: ArticleItem[];
-  onReadArticle: (article: ArticleItem) => void;
+  onReadArticle?: (article: ArticleItem) => void;
   onResetFilters: () => void;
 }
 
@@ -63,9 +64,9 @@ export default function BlogGrid({
                 className="flex flex-col h-full rounded-3xl bg-surface-canvas overflow-hidden border border-divider-tint/50 shadow-[0_10px_30px_-10px_rgba(246,84,86,0.08),0_4px_12px_rgba(0,0,0,0.03)] hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group"
               >
                 {/* Image Container with Category Badge */}
-                <div
-                  className="relative h-56 w-full overflow-hidden bg-surface-container cursor-pointer"
-                  onClick={() => onReadArticle(art)}
+                <Link
+                  href={`/blog/${art.slug}`}
+                  className="relative h-56 w-full overflow-hidden bg-surface-container cursor-pointer block"
                 >
                   <div
                     className="w-full h-full bg-cover bg-center group-hover:scale-105 transition-transform duration-500"
@@ -74,7 +75,7 @@ export default function BlogGrid({
                   <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-surface-canvas/95 backdrop-blur-md text-bracket-border font-label-meta text-xs font-bold shadow-sm border border-divider-tint/40">
                     {art.category}
                   </span>
-                </div>
+                </Link>
 
                 {/* Content Area */}
                 <div className="p-7 flex flex-col justify-between flex-grow">
@@ -87,11 +88,10 @@ export default function BlogGrid({
                     </div>
 
                     {/* Title */}
-                    <h3
-                      onClick={() => onReadArticle(art)}
-                      className="font-headline-sm text-lg sm:text-[20px] font-bold text-on-surface group-hover:text-bracket-border transition-colors line-clamp-2 leading-snug cursor-pointer"
-                    >
-                      {art.title}
+                    <h3 className="font-headline-sm text-lg sm:text-[20px] font-bold text-on-surface group-hover:text-bracket-border transition-colors line-clamp-2 leading-snug">
+                      <Link href={`/blog/${art.slug}`}>
+                        {art.title}
+                      </Link>
                     </h3>
 
                     {/* Description */}
@@ -105,16 +105,15 @@ export default function BlogGrid({
                     <span className="font-label-meta text-xs text-on-surface-variant font-medium">
                       {art.author}
                     </span>
-                    <button
-                      type="button"
-                      onClick={() => onReadArticle(art)}
+                    <Link
+                      href={`/blog/${art.slug}`}
                       className="inline-flex items-center gap-1 font-cta-pill text-xs sm:text-sm text-bracket-border hover:text-secondary group-hover:translate-x-1 transition-all font-semibold cursor-pointer"
                     >
                       <span>Baca Selengkapnya</span>
                       <span translate="no" className="material-symbols-outlined notranslate text-sm">
                         arrow_forward
                       </span>
-                    </button>
+                    </Link>
                   </div>
                 </div>
               </article>

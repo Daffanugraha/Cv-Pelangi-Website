@@ -5,3 +5,4 @@ export { default as BlogGrid } from "./BlogGrid";
 export { default as BlogPagination } from "./BlogPagination";
 export { default as BlogReaderModal } from "./BlogReaderModal";
 export { default as BlogPageContent } from "./BlogPageContent";
+export { default as BlogDetailContent } from "./BlogDetailContent";

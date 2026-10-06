@@ -1,11 +1,12 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { ArticleItem } from "@/lib/data/articles";
 
 interface BlogFeaturedCardProps {
   article: ArticleItem;
-  onReadArticle: (article: ArticleItem) => void;
+  onReadArticle?: (article: ArticleItem) => void;
 }
 
 export default function BlogFeaturedCard({
@@ -18,9 +19,9 @@ export default function BlogFeaturedCard({
         <div className="w-full rounded-3xl bg-surface-canvas overflow-hidden border border-divider-tint/60 shadow-[0_10px_30px_-10px_rgba(246,84,86,0.12),0_4px_16px_rgba(0,0,0,0.04)] hover:shadow-2xl transition-all duration-300">
           <div className="grid grid-cols-1 lg:grid-cols-12 items-stretch">
             {/* Image Column */}
-            <div
-              className="lg:col-span-6 relative min-h-[320px] lg:min-h-[460px] overflow-hidden group cursor-pointer"
-              onClick={() => onReadArticle(article)}
+            <Link
+              href={`/blog/${article.slug}`}
+              className="lg:col-span-6 relative min-h-[320px] lg:min-h-[460px] overflow-hidden group cursor-pointer block"
             >
               <div
                 className="w-full h-full bg-cover bg-center group-hover:scale-105 transition-transform duration-700"
@@ -35,7 +36,7 @@ export default function BlogFeaturedCard({
                 </span>
                 <span>Pilihan Redaksi</span>
               </div>
-            </div>
+            </Link>
 
             {/* Content Column */}
             <div className="lg:col-span-6 p-8 lg:p-12 flex flex-col justify-between bg-surface-canvas relative">
@@ -60,11 +61,10 @@ export default function BlogFeaturedCard({
                 </div>
 
                 {/* Title */}
-                <h2
-                  onClick={() => onReadArticle(article)}
-                  className="font-headline-xl text-2xl sm:text-3xl lg:text-[34px] font-bold text-on-surface hover:text-bracket-border transition-colors tracking-tight leading-tight cursor-pointer"
-                >
-                  {article.title}
+                <h2 className="font-headline-xl text-2xl sm:text-3xl lg:text-[34px] font-bold text-on-surface hover:text-bracket-border transition-colors tracking-tight leading-tight">
+                  <Link href={`/blog/${article.slug}`}>
+                    {article.title}
+                  </Link>
                 </h2>
 
                 {/* Summary */}
@@ -110,16 +110,15 @@ export default function BlogFeaturedCard({
                   </span>
                 </div>
 
-                <button
-                  type="button"
-                  onClick={() => onReadArticle(article)}
+                <Link
+                  href={`/blog/${article.slug}`}
                   className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-bracket-border hover:bg-secondary text-on-primary font-cta-pill text-sm font-semibold shadow-[0_8px_20px_rgba(246,84,86,0.35)] transition-all transform hover:scale-[1.02] cursor-pointer"
                 >
                   <span>Baca Selengkapnya</span>
                   <span translate="no" className="material-symbols-outlined notranslate text-base">
                     arrow_forward
                   </span>
-                </button>
+                </Link>
               </div>
             </div>
           </div>

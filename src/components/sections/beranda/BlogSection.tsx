@@ -61,7 +61,9 @@ export default function BlogSection() {
                     </span>
                   </div>
                   <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold mb-space-xs group-hover:text-bracket-border transition-colors leading-snug">
-                    {art.title}
+                    <Link href={`/blog/${art.slug}`}>
+                      {art.title}
+                    </Link>
                   </h3>
                   <p className="font-body-sm text-body-sm text-text-body line-clamp-2 leading-relaxed">
                     {art.desc}
@@ -71,7 +73,7 @@ export default function BlogSection() {
                 <div className="pt-space-md mt-space-md border-t border-surface-container flex items-center justify-between">
                   <Link
                     className="font-cta-pill text-cta-pill text-bracket-border group-hover:text-primary inline-flex items-center gap-1 font-semibold"
-                    href="/blog"
+                    href={`/blog/${art.slug}`}
                   >
                     <span>Baca Selengkapnya</span>
                     <span translate="no" className="material-symbols-outlined notranslate text-[16px]">
