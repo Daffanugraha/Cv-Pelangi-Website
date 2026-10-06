@@ -7,11 +7,59 @@ interface HistoryMessage {
 }
 
 /**
- * Mengonversi output teks dari LLM (Markdown) menjadi struktur HTML bersih:
- * - List (bullet / angka) -> <ul>/<ol>
- * - Bold (**teks**) -> <strong>teks</strong>
- * - Italic (*teks*) -> <em>teks</em>
- * - Paragraf biasa -> <p>
+ * 3 Tim Marketing Resmi CV Pelangi UV dari halaman Kontak Website
+ */
+const MARKETING_TEAM = [
+  {
+    name: "Bu Nurul Islamiyah",
+    role: "Finishing & Sampel",
+    phone: "6282231019363",
+    display: "0822-3101-9363",
+  },
+  {
+    name: "Mbak Fathia Rizky",
+    role: "Estimasi & Order",
+    phone: "6285211543430",
+    display: "0852-1154-3430",
+  },
+  {
+    name: "Pak Aris Waluyo",
+    role: "Bahan Baku & Mesin",
+    phone: "6281803727671",
+    display: "0818-0372-7671",
+  },
+];
+
+/**
+ * Membuat tombol WhatsApp terstruktur untuk 3 tim marketing resmi CV Pelangi UV
+ */
+function buildMarketingButtons(userQuery: string): string {
+  const querySummary = userQuery.slice(0, 70);
+  const links = MARKETING_TEAM.map((m) => {
+    const waUrl = `https://wa.me/${m.phone}?text=${encodeURIComponent(
+      `Halo ${m.name}, saya ingin konsultasi/tanya: ${querySummary}`
+    )}`;
+    return `
+      <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-neutral-900 hover:bg-black text-white text-[11px] font-medium transition-all shadow-2xs">
+        <span class="w-1.5 h-1.5 rounded-full bg-[#25D366]"></span>
+        <span>WA ${m.name}</span>
+        <span class="material-symbols-outlined text-[12px] text-neutral-400">arrow_forward</span>
+      </a>
+    `;
+  }).join("");
+
+  return `
+    <div class="pt-2 border-t border-neutral-100 mt-2">
+      <p class="text-[11px] text-neutral-500 font-medium mb-1.5">Hubungi Tim Marketing Langsung via WhatsApp:</p>
+      <div class="flex flex-wrap gap-1.5">
+        ${links}
+      </div>
+    </div>
+  `;
+}
+
+/**
+ * Mengonversi output teks dari LLM (Markdown) menjadi struktur HTML bersih
  */
 function formatLlmResponseToHtml(raw: string): string {
   let text = raw.replace(/```[a-z]*\n?/gi, "").trim();
@@ -112,23 +160,25 @@ export async function POST(req: NextRequest) {
 
     const systemPrompt = `Anda adalah "Pelangi Assistant", konsultan teknis AI resmi dari CV Pelangi UV ("When Quality Be A Priority", berdiri sejak 2004 di Bizpark Sidoarjo).
 
-KNOWLEDGE BASE LENGKAP DARI SELURUH HALAMAN WEBSITE CV PELANGI UV:
-1. INFORMASI PERUSAHAAN & LOGISTIK:
-   - Alamat Pabrik: Kompleks Pergudangan Bizpark Blok C17-C19, Jabon, Tambaksawah, Kec. Waru, Kabupaten Sidoarjo, Jawa Timur 61256.
+KNOWLEDGE BASE LENGKAP ISI WEBSITE CV PELANGI UV:
+1. INFORMASI PERUSAHAAN & TIM MARKETING RESMI:
+   - Alamat Workshop: Kompleks Pergudangan Bizpark Blok C17-C19, Jabon, Tambaksawah, Kec. Waru, Kabupaten Sidoarjo, Jawa Timur 61256.
    - Jam Buka: Senin–Jumat 07.30–15.30 WIB, Sabtu 07.30–13.00 WIB.
-   - WhatsApp Marketing: 0822 3101 9363 | Telepon: (031) 866 7469 / (031) 867 7468 | Email: info@pelangiuv.com.
-   - Layanan Logistik: Antar-Jemput Plano Cetakan GRATIS se-Jawa Timur (Surabaya, Sidoarjo, Gresik, Mojokerto, Pasuruan, Malang) armada truk boks tertutup mandiri.
+   - Tim Marketing Resmi Pelangi UV:
+     * Bu Nurul Islamiyah: Spesialis Finishing Cetak, Uji Coba Efek Spot UV & Foil, dan Rekomendasi Bahan Percetakan.
+     * Mbak Fathia Rizky: Spesialis Kalkulasi Penawaran Cepat, Penjadwalan Jemput Plano, dan Tracking Order Kemasan.
+     * Pak Aris Waluyo: Spesialis Grosir Roll OPP, Lem Wet/Waterbased, Foil Stamping, dan Spesifikasi Teknis Mesin.
+   - Layanan Pengiriman: Antar-Jemput Plano Cetakan GRATIS se-Jawa Timur (Surabaya, Sidoarjo, Gresik, Mojokerto, Pasuruan, Malang) armada truk boks tertutup mandiri.
    - Kapasitas: 35+ unit mesin otomatis (mampu s/d 200.000+ lembar/hari).
-   - Sample Kit: Swatch Sample Kit fisik GRATIS dikirim ke workshop rekanan.
 
-2. DATABASE HARGA RESMI WEBSITE:
-   A. GROSIR FOIL (Halaman /produk/bahan-baku?category=foil):
+2. REFERENSI HARGA RESMI WEBSITE (DISEBUTKAN SECARA NATURAL JIKA DITANYA):
+   A. GROSIR FOIL ROLL (Halaman /produk/bahan-baku?category=foil):
       - Roll Foil Gold / Silver (120m, 64cm): Rp 186.000 / roll
       - Warna-Warni (Merah, Biru, Hijau, Tembaga 120m): Rp 227.000 / roll
       - Hologram Laser Gold/Silver (120m): Rp 314.500 / roll
       - Transparan Security Stamp (120m): Rp 360.500 / roll
       - Putih BO1: Rp 398.000 / roll | White BO1 Jumbo: Rp 815.500 / roll
-   B. JASA HOT STAMP FOIL & FINISHING (Halaman /layanan):
+   B. JASA FINISHING PERCETAKAN (Halaman /layanan):
       - Jasa Hot Stamp Foil Gold / Silver: Rp 1,08 / cm² (Min. order Rp 300.000)
       - Jasa Hot Stamp Warna: Rp 1,7 / cm² | Hologram: Rp 2,0 / cm²
       - Cold Foil Inline: Rp 2,5 / cm²
@@ -141,20 +191,17 @@ KNOWLEDGE BASE LENGKAP DARI SELURUH HALAMAN WEBSITE CV PELANGI UV:
       - Lem Wet & Dry: Rp 40.000 - Rp 45.000 / pail atau kg
       - Tinta Spot UV: mulai Rp 35.200 (WB Glossy) s/d Rp 165.000 - Rp 246.500 / can
 
-CARA MENJAWAB SEBAGAI AI KONSULTAN PINTAR (SANGAT PENTING):
-1. JAWABAN SINGKAT, CERDAS, DAN ADAPTIF (BUKAN TEMPLATE / BUKAN DAFTAR PANJANG MEMBOSANKAN):
-   - Jawab secara ringkas, luwes, dan padat (1-2 paragraf singkat atau 2-4 poin inti yang paling relevan dengan pertanyaan).
-   - JANGAN meng-copy paste seluruh katalog atau membuat list panjang lebar kecuali user secara spesifik meminta "sebutkan semua harganya".
-   - Jika user bertanya harga secara umum (misal: "harga foilnya berapa aja ya"), sebutkan gambaran rentang harga intinya dan varian terpopuler dengan to the point:
-     Contoh alur cerdas:
-     Sebutkan langsung bahwa untuk bahan baku roll foil (120m), varian Gold & Silver mulai dari Rp 186.000/roll, Warna-warni Rp 227.000, hingga Hologram Rp 314.500/roll. Sedangkan untuk jasa aplikasinya per cm² adalah Rp 1,08/cm² (Gold/Silver). Lalu tanya kebutuhan spesifiknya apakah butuh bahan baku roll atau jasa pengerjaannya.
-2. MEMAHAMI KONTEKS DAN RELEVANSI PERCAKAPAN (MULTI-TURN MEMORY):
-   - Ingat percakapan sebelumnya dan informasi pengguna. Jika user memperkenalkan diri (misal namanya Daffa), sapa dengan sopan "Pak Daffa" atau "Daffa".
-   - Jika percakapan sebelumnya membahas kemasan rokok, kaitkan rekomendasi dengan kemasan rokok tanpa harus mengulang penjelasan dari nol.
-   - Pahami setiap isi website secara organik, diskusikan seperti konsultan ahli percetakan manusia yang cerdas, bukan bot kaku penjawab keyword.
+CARA MENJAWAB SEBAGAI AI KONSULTAN CERDAS (PANDUAN KETAT):
+1. JAWABAN SINGKAT, LUWES, DAN SOLUTIF (MAKSIMAL 1-2 PARAGRAF RINGKAS):
+   - Jawab langsung intinya. Jika ditanya harga, sebutkan kisaran harga atau angka varian utamanya secara luwes dalam kalimat alami, TIDAK PERLU membuat list panjang tabel yang kaku.
+   - JANGAN meminta file desain AI/PDF atau menyinggung "kirimkan file AI/PDF" atau "swatch sample kit gratis" kecuali memang ditanyakan oleh user.
+   - Cukup berikan penjelasan teknis/harga secara singkat, lalu persilakan user melanjutkan diskusi dengan tim marketing (Bu Nurul, Mbak Fathia, atau Pak Aris).
+2. MULTI-TURN CONTEXT MEMORY:
+   - Jika pengguna sudah menyebut namanya (misal Daffa), sapa dengan sopan "Pak Daffa" atau "Daffa".
+   - Pahami alur percakapan sebelumnya (misal: kemasan rokok, micro emboss, dsb.) secara kontekstual tanpa mengulang dari nol.
 3. LARANGAN:
    - DILARANG menggunakan sapaan alay seperti "hai kak", "halo kak".
-   - DILARANG memberikan jawaban generik menghindar seperti "harga bervariasi dan tidak ada harga pasti". Anda punya data harga resmi website, berikan angka riilnya secara ringkas!`;
+   - DILARANG menyebut "kirimkan file AI/PDF" atau menjanjikan template kata-kata kaku di akhir teks. Tombol WhatsApp marketing sudah otomatis kami pasang di bawah jawaban.`;
 
     // 1. Prioritas Utama: Groq API
     if (groqApiKey) {
@@ -225,8 +272,8 @@ CARA MENJAWAB SEBAGAI AI KONSULTAN PINTAR (SANGAT PENTING):
             body: JSON.stringify({
               model: groqModel,
               messages: groqMessages,
-              temperature: 0.4,
-              max_tokens: 450,
+              temperature: 0.3,
+              max_tokens: 550,
             }),
           }
         );
@@ -238,23 +285,7 @@ CARA MENJAWAB SEBAGAI AI KONSULTAN PINTAR (SANGAT PENTING):
 
           if (generatedText) {
             let cleanHtml = formatLlmResponseToHtml(generatedText);
-
-            const waUrl = `https://wa.me/6282231019363?text=${encodeURIComponent(
-              `Halo Tim Marketing CV Pelangi UV, saya ingin tanya/konsultasi: ${message.slice(
-                0,
-                80
-              )}`
-            )}`;
-
-            cleanHtml += `
-              <div class="pt-2 flex flex-wrap gap-2">
-                <a href="${waUrl}" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-neutral-900 hover:bg-black text-white text-[11px] font-medium transition-all shadow-xs">
-                  <span class="w-1.5 h-1.5 rounded-full bg-[#25D366]"></span>
-                  <span>Hubungi Marketing via WhatsApp</span>
-                  <span class="material-symbols-outlined text-[13px] text-neutral-400">arrow_forward</span>
-                </a>
-              </div>
-            `;
+            cleanHtml += buildMarketingButtons(message);
 
             return NextResponse.json({
               html: cleanHtml,
@@ -262,7 +293,7 @@ CARA MENJAWAB SEBAGAI AI KONSULTAN PINTAR (SANGAT PENTING):
                 "Cek Stok Roll Foil Gold/Silver",
                 "Harga Jasa Hot Stamp Foil",
                 "Pricelist Film BOPP Thermal",
-                "Minta Swatch Sample Kit Gratis",
+                "Jadwal Antar-Jemput Gratis",
               ],
             });
           }
@@ -305,8 +336,8 @@ CARA MENJAWAB SEBAGAI AI KONSULTAN PINTAR (SANGAT PENTING):
                 parts: [{ text: systemPrompt }],
               },
               generationConfig: {
-                temperature: 0.4,
-                maxOutputTokens: 450,
+                temperature: 0.3,
+                maxOutputTokens: 550,
               },
             }),
           }
@@ -319,23 +350,7 @@ CARA MENJAWAB SEBAGAI AI KONSULTAN PINTAR (SANGAT PENTING):
 
           if (generatedText) {
             let cleanHtml = formatLlmResponseToHtml(generatedText);
-
-            const waUrl = `https://wa.me/6282231019363?text=${encodeURIComponent(
-              `Halo Tim Marketing CV Pelangi UV, saya ingin konsultasi teknis: ${message.slice(
-                0,
-                80
-              )}`
-            )}`;
-
-            cleanHtml += `
-              <div class="pt-2 flex flex-wrap gap-2">
-                <a href="${waUrl}" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-neutral-900 hover:bg-black text-white text-[11px] font-medium transition-all shadow-xs">
-                  <span class="w-1.5 h-1.5 rounded-full bg-[#25D366]"></span>
-                  <span>Hubungi Marketing via WhatsApp</span>
-                  <span class="material-symbols-outlined text-[13px] text-neutral-400">arrow_forward</span>
-                </a>
-              </div>
-            `;
+            cleanHtml += buildMarketingButtons(message);
 
             return NextResponse.json({
               html: cleanHtml,
@@ -343,7 +358,7 @@ CARA MENJAWAB SEBAGAI AI KONSULTAN PINTAR (SANGAT PENTING):
                 "Cek Stok Roll Foil Gold/Silver",
                 "Harga Jasa Hot Stamp Foil",
                 "Pricelist Film BOPP Thermal",
-                "Minta Swatch Sample Kit Gratis",
+                "Jadwal Antar-Jemput Gratis",
               ],
             });
           }
