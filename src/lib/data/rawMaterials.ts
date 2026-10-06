@@ -131,14 +131,14 @@ export const rawMaterialCategories: MaterialCategory[] = [
     tag: "Bahan Baku Foil",
     title: "Foil",
     shortDesc:
-      "Foil adalah bahan baku yang digunakan bersamaan dengan teknik Hot stamp maupun cold foil dalam proses finishing untuk menciptakan efek visual yang menarik pada cetakan atau desain. Teknik ini umumnya digunakan dalam percetakan untuk memberikan sentuhan eksklusif dan meningkatkan estetika produk. Pelangin UV memiliki 5 jenis bahan baku foil.",
+      "Bahan baku finishing yang digunakan bersama teknik hot stamp maupun cold foil untuk memberikan sentuhan efek kilau eksklusif dan meningkatkan estetika cetakan.",
     fullDesc:
-      "Foil adalah bahan baku yang digunakan bersamaan dengan teknik Hot stamp maupun cold foil dalam proses finishing untuk menciptakan efek visual yang menarik pada cetakan atau desain. Teknik ini umumnya digunakan dalam percetakan untuk memberikan sentuhan eksklusif dan meningkatkan estetika produk. Pelangin UV memiliki 5 jenis bahan baku foil: Gold, Silver, Warna - Warni, Gold & SIlver Hologram, Transparan, serta Putih BO1 dan White BO1.",
+      "Foil adalah bahan baku yang digunakan bersamaan dengan teknik Hot stamp maupun cold foil dalam proses finishing untuk menciptakan efek visual yang menarik pada cetakan atau desain, memberikan sentuhan eksklusif, dan meningkatkan estetika produk.",
     specsHighlight: [
       "Standar Panjang: 120 Meter",
       "Teknik: Hot Stamp & Cold Foil",
-      "5 Jenis Bahan Baku Foil",
-      "Kualitas Finishing Eksklusif",
+      "Efek Visual Eksklusif",
+      "Kualitas Finishing Presisi",
     ],
     startingPrice: "Rp 186.000",
     img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCfExHr5NtXgfBa9u2YHnpxRRPEPCE73orW9lZA_d_yzBZcitN95z8S3pGSlnw0Vc_o4jp8LEEH85ZkYlaGZx52GZ7PCxlskaWo1RA-_VT5VcXAAkmIdlpXO8dWn0DF87l1VwHTUoGFWjEatCW5qZYHk2YsveDx1oMuWaumvjNyX8Mbh2ouSnuIGC9NR0hRsKS0-W_mtnmZQU0CYudQbp5V-u9HpIbLwZd2xudSjVdWQtgj0Xiu_5T3",
@@ -162,8 +162,8 @@ export const rawMaterialCategories: MaterialCategory[] = [
       },
       {
         icon: "verified",
-        title: "5 Jenis Bahan Baku Foil",
-        desc: "Pilihan lengkap mulai dari emas, perak, hologram, transparan, hingga putih solid.",
+        title: "Kilau & Presisi Tinggi",
+        desc: "Memberikan aksen visual mewah, tajam, dan tidak mudah rontok atau mengelupas.",
       },
     ],
     items: [
