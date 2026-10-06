@@ -95,28 +95,47 @@ export default function BahanBakuPricelistModal({
 
         {/* Modal Body Content (Scrollable) */}
         <div className="p-4 sm:p-6 overflow-y-auto space-y-4 flex-1">
-          {/* Material Characteristic Banner */}
-          <div className="p-3.5 sm:p-4 bg-surface-tint-light/50 rounded-2xl border border-divider-tint/60">
-            <span className="text-primary font-bold text-xs uppercase tracking-wider mb-1 flex items-center gap-1.5">
-              <span translate="no" className="material-symbols-outlined notranslate text-[16px] notranslate">
-                info
-              </span>
-              Karakteristik &amp; Deskripsi {currentCategory.title}:
-            </span>
-            <p className="font-body-sm text-xs sm:text-[13px] text-text-body leading-relaxed">
-              {currentCategory.fullDesc}
-            </p>
-            <div className="flex flex-wrap gap-2 mt-2 pt-2 border-t border-divider-tint/40">
-              {currentCategory.specsHighlight.map((spec, sIdx) => (
-                <span
-                  key={sIdx}
-                  className="px-2.5 py-0.5 rounded-md bg-surface-canvas text-on-surface text-[11px] font-medium border border-divider-tint/40"
-                >
-                  {spec}
+          {/* Spesifikasi & Standar Material Grid */}
+          {currentCategory.specsHighlight && currentCategory.specsHighlight.length > 0 && (
+            <div className="p-3.5 sm:p-4 bg-surface-tint-light/40 rounded-2xl border border-divider-tint/60">
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-primary font-bold text-xs uppercase tracking-wider flex items-center gap-1.5">
+                  <span translate="no" className="material-symbols-outlined notranslate text-[16px]">
+                    tune
+                  </span>
+                  Spesifikasi &amp; Standar {currentCategory.title}
                 </span>
-              ))}
+                <span className="text-[11px] font-semibold text-text-muted hidden sm:inline-block">
+                  Standar Industri Percetakan
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+                {currentCategory.specsHighlight.map((spec, sIdx) => {
+                  const hasColon = spec.includes(":");
+                  const [label, ...valParts] = hasColon ? spec.split(":") : ["", spec];
+                  const value = valParts.join(":").trim();
+
+                  return (
+                    <div
+                      key={sIdx}
+                      className="p-3 rounded-xl bg-surface-canvas border border-divider-tint/60 flex flex-col justify-center shadow-xs"
+                    >
+                      {hasColon && (
+                        <span className="font-label-meta text-[11px] font-bold text-text-muted uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                          <span className="w-1.5 h-1.5 rounded-full bg-secondary-container inline-block shrink-0" />
+                          <span className="truncate">{label.trim()}</span>
+                        </span>
+                      )}
+                      <span className="font-body-sm text-xs sm:text-[13px] font-extrabold text-navbar-black leading-snug">
+                        {value}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Quick Filter Box */}
           <div className="flex items-center gap-2 px-3 py-1.5 bg-surface-neutral-alt rounded-xl border border-outline-variant/70">

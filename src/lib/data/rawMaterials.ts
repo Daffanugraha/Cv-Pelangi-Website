@@ -136,9 +136,9 @@ export const rawMaterialCategories: MaterialCategory[] = [
       "Foil adalah bahan baku yang digunakan bersamaan dengan teknik Hot stamp maupun cold foil dalam proses finishing untuk menciptakan efek visual yang menarik pada cetakan atau desain, memberikan sentuhan eksklusif, dan meningkatkan estetika produk.",
     specsHighlight: [
       "Standar Panjang: 120 Meter",
-      "Teknik: Hot Stamp & Cold Foil",
-      "Efek Visual Eksklusif",
-      "Kualitas Finishing Presisi",
+      "Teknik Aplikasi: Hot Stamp & Cold Foil",
+      "Efek Visual: Kilau Reflektif Eksklusif",
+      "Standar Kualitas: Presisi Tinggi Tanpa Serabut",
     ],
     startingPrice: "Rp 186.000",
     img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCfExHr5NtXgfBa9u2YHnpxRRPEPCE73orW9lZA_d_yzBZcitN95z8S3pGSlnw0Vc_o4jp8LEEH85ZkYlaGZx52GZ7PCxlskaWo1RA-_VT5VcXAAkmIdlpXO8dWn0DF87l1VwHTUoGFWjEatCW5qZYHk2YsveDx1oMuWaumvjNyX8Mbh2ouSnuIGC9NR0hRsKS0-W_mtnmZQU0CYudQbp5V-u9HpIbLwZd2xudSjVdWQtgj0Xiu_5T3",
