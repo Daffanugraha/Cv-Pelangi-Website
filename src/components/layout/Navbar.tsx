@@ -315,9 +315,12 @@ export default function Navbar() {
             </div>
 
             <Link
-              href="/#blog"
-              onClick={(e) => handleHashClick(e, "#blog")}
-              className="nav-link-item text-white hover:text-bracket-border font-medium text-sm flex items-center px-3 py-2 rounded-lg transition-colors"
+              href="/blog"
+              className={`nav-link-item hover:text-bracket-border font-medium text-sm flex items-center px-3 py-2 rounded-lg transition-colors ${
+                pathname === "/blog"
+                  ? "text-bracket-border font-semibold"
+                  : "text-white"
+              }`}
             >
               {t("nav_blog")}
             </Link>
@@ -636,9 +639,13 @@ export default function Navbar() {
               </div>
             </div>
             <Link
-              href="/#blog"
-              onClick={(e) => handleMobileHashClick(e, "#blog")}
-              className="block px-3 py-2 rounded-lg text-white hover:bg-bracket-border text-sm font-medium"
+              href="/blog"
+              onClick={() => setMobileMenuOpen(false)}
+              className={`block px-3 py-2 rounded-lg text-sm font-medium ${
+                pathname === "/blog"
+                  ? "text-bracket-border font-semibold bg-white/10"
+                  : "text-white hover:bg-bracket-border"
+              }`}
             >
               {t("nav_blog")}
             </Link>

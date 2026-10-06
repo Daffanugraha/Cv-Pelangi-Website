@@ -19,15 +19,15 @@ export default function BlogSection() {
               Cari Tahu Berita Terbaru
             </h2>
           </div>
-          <a
+          <Link
             className="font-cta-pill text-cta-pill text-bracket-border hover:text-primary inline-flex items-center gap-1 font-semibold"
-            href="#blog"
+            href="/blog"
           >
             <span>Lihat Semua Artikel</span>
             <span translate="no" className="material-symbols-outlined notranslate text-[18px]">
               chevron_right
             </span>
-          </a>
+          </Link>
         </div>
 
         {/* 3-Column Article Grid */}
@@ -44,7 +44,7 @@ export default function BlogSection() {
                   src={art.img}
                 />
                 <span className="absolute top-space-sm right-space-sm px-space-sm py-space-2xs rounded-full bg-navbar-black/80 backdrop-blur-sm text-on-secondary font-label-meta text-label-meta font-medium">
-                  {art.tag}
+                  {art.category || art.tag}
                 </span>
               </div>
 
@@ -69,15 +69,15 @@ export default function BlogSection() {
                 </div>
 
                 <div className="pt-space-md mt-space-md border-t border-surface-container flex items-center justify-between">
-                  <a
+                  <Link
                     className="font-cta-pill text-cta-pill text-bracket-border group-hover:text-primary inline-flex items-center gap-1 font-semibold"
-                    href="#blog"
+                    href="/blog"
                   >
                     <span>Baca Selengkapnya</span>
                     <span translate="no" className="material-symbols-outlined notranslate text-[16px]">
                       arrow_forward
                     </span>
-                  </a>
+                  </Link>
                 </div>
               </div>
             </article>

@@ -88,7 +88,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/#blog"
+                  href="/blog"
                   className="hover:text-bracket-border transition-colors"
                 >
                   Blog
