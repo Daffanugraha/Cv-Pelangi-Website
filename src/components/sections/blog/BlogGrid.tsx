@@ -19,18 +19,13 @@ export default function BlogGrid({
     <section className="w-full bg-surface-bright py-12">
       <div className="max-w-[1440px] mx-auto px-6 lg:px-20">
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-4 mb-10">
-          <div>
-            <span className="font-label-meta text-xs sm:text-sm text-bracket-border font-bold uppercase tracking-wider block mb-1">
-              Koleksi Wawasan Terkini
-            </span>
-            <h2 className="font-headline-lg text-2xl sm:text-3xl lg:text-[36px] font-bold text-on-surface">
-              Artikel &amp; Panduan Produksi
-            </h2>
-          </div>
-          <p className="font-body-sm text-xs sm:text-sm text-text-muted max-w-md">
-            Ditulis oleh engineer cetak, teknisi lamination UV, dan konsultan grafika berpengalaman CV Pelangi UV Surabaya.
-          </p>
+        <div className="mb-8">
+          <span className="font-label-meta text-xs sm:text-sm text-bracket-border font-bold uppercase tracking-wider block mb-1">
+            Koleksi Wawasan Terkini
+          </span>
+          <h2 className="font-headline-lg text-2xl sm:text-3xl lg:text-[36px] font-bold text-on-surface">
+            Artikel &amp; Panduan Produksi
+          </h2>
         </div>
 
         {/* Empty State */}

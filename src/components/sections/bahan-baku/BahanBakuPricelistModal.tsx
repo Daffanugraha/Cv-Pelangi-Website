@@ -106,7 +106,6 @@ export default function BahanBakuPricelistModal({
                   Spesifikasi &amp; Standar {currentCategory.title}
                 </span>
                 <span className="text-[11px] font-semibold text-text-muted hidden sm:inline-block">
-                  Standar Industri Percetakan
                 </span>
               </div>
 
