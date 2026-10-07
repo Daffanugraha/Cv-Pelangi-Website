@@ -34,7 +34,7 @@ export const PELANGI_LIFE_REELS: PelangiLifeReel[] = [
     likes: "2.1K",
     thumbnail: "/images/instagram/DdIes18TbKg.jpg",
     instagramUrl: "https://www.instagram.com/p/DdIes18TbKg/",
-    videoSrc: "/videos/video-beranda.mp4",
+    videoSrc: "/videos/video-layanan.mp4",
     caption: "Cita-cita kalian dulu apa guys? Intip keseharian dan dedikasi operator mesin finishing cetak presisi di CV Pelangi UV.",
   },
   {

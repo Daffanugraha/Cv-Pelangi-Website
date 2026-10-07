@@ -5,11 +5,11 @@ import { PELANGI_LIFE_REELS, PelangiLifeReel } from "@/data/careers";
 
 export default function PelangiLifeSection() {
   const [activeReel, setActiveReel] = useState<PelangiLifeReel | null>(null);
-  const [playerMode, setPlayerMode] = useState<"video" | "embed">("embed");
+  const [playerMode, setPlayerMode] = useState<"video" | "embed">("video");
 
   const handleOpenReel = (reel: PelangiLifeReel) => {
     setActiveReel(reel);
-    setPlayerMode("embed");
+    setPlayerMode("video");
   };
 
   return (
@@ -57,13 +57,15 @@ export default function PelangiLifeSection() {
         {/* Reels Grid (4 Vertical Cards) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {PELANGI_LIFE_REELS.map((reel) => (
-            <div
+            <button
+              type="button"
               key={reel.id}
               onClick={() => handleOpenReel(reel)}
-              className="group relative rounded-2xl overflow-hidden bg-neutral-900 border border-surface-container hover:border-bracket-border/60 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl cursor-pointer flex flex-col justify-between aspect-[9/15]"
+              aria-label={`Putar video ${reel.title}`}
+              className="group relative rounded-2xl overflow-hidden bg-neutral-900 border border-surface-container hover:border-bracket-border transition-all duration-300 hover:-translate-y-1.5 hover:shadow-2xl cursor-pointer flex flex-col justify-between aspect-[9/15] text-left w-full p-0 select-none active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-bracket-border"
             >
               {/* Background Thumbnail Image */}
-              <div className="absolute inset-0 z-0">
+              <div className="absolute inset-0 z-0 pointer-events-none">
                 <img
                   src={reel.thumbnail}
                   alt={reel.title}
@@ -74,7 +76,7 @@ export default function PelangiLifeSection() {
               </div>
 
               {/* Card Header (Badge & Reel Icon) */}
-              <div className="relative z-10 p-4 flex items-center justify-between">
+              <div className="relative z-10 p-4 flex items-center justify-between w-full pointer-events-none">
                 <span className="px-3 py-1 rounded-full bg-black/60 backdrop-blur-md text-[11px] font-bold text-white border border-white/20">
                   {reel.tag}
                 </span>
@@ -86,16 +88,16 @@ export default function PelangiLifeSection() {
               </div>
 
               {/* Center Play Button Overlay */}
-              <div className="relative z-10 self-center">
-                <div className="w-13 h-13 rounded-full bg-white/25 backdrop-blur-md border border-white/40 flex items-center justify-center text-white group-hover:scale-110 group-hover:bg-bracket-border transition-all duration-300 shadow-xl">
-                  <svg className="w-6 h-6 fill-current translate-x-0.5" viewBox="0 0 24 24">
+              <div className="relative z-10 self-center pointer-events-none">
+                <div className="w-14 h-14 rounded-full bg-bracket-border/90 text-white flex items-center justify-center group-hover:scale-115 group-hover:bg-primary transition-all duration-300 shadow-2xl">
+                  <svg className="w-7 h-7 fill-current translate-x-0.5" viewBox="0 0 24 24">
                     <polygon points="5 3 19 12 5 21 5 3" />
                   </svg>
                 </div>
               </div>
 
               {/* Bottom Details */}
-              <div className="relative z-10 p-4">
+              <div className="relative z-10 p-4 pointer-events-none w-full">
                 <div className="flex items-center gap-2 text-xs text-white/80 font-medium mb-1">
                   <span>{reel.views} tayangan</span>
                   <span>&bull;</span>
@@ -108,7 +110,7 @@ export default function PelangiLifeSection() {
                   {reel.caption}
                 </p>
               </div>
-            </div>
+            </button>
           ))}
         </div>
       </div>
@@ -169,8 +171,10 @@ export default function PelangiLifeSection() {
                   poster={activeReel.thumbnail}
                   controls
                   autoPlay
+                  muted
                   loop
                   playsInline
+                  preload="auto"
                   className="w-full h-full object-cover"
                 />
               ) : (
