@@ -170,7 +170,7 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 w-full transition-all duration-300 anim-nav-down">
       <div className="relative bg-[#111111] shadow-[0_8px_30px_rgba(0,0,0,0.5)]">
-        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-20 gap-2 xl:gap-4">
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-20 gap-2 xl:gap-3">
           {/* Logo */}
           <div className="flex items-center shrink-0">
             <Link
@@ -187,12 +187,12 @@ export default function Navbar() {
           </div>
 
           {/* Desktop Nav */}
-          <nav className="hidden xl:flex items-center gap-1 2xl:gap-2 whitespace-nowrap text-[13px] 2xl:text-[14px]">
+          <nav className="hidden xl:flex items-center gap-0.5 2xl:gap-1 whitespace-nowrap text-[13px] 2xl:text-[13.5px]">
             {/* 1. Tentang Kami */}
             <Link
               href="/#tentang-kami"
               onClick={(e) => handleHashClick(e, "#tentang-kami")}
-              className="text-white/85 hover:text-white hover:bg-white/5 font-medium px-3 py-2 rounded-lg transition-all"
+              className="text-white/80 hover:text-white hover:bg-white/5 font-medium px-2.5 py-1.5 rounded-lg transition-colors"
             >
               {t("nav_about")}
             </Link>
@@ -201,7 +201,7 @@ export default function Navbar() {
             <Link
               href="/#partner"
               onClick={(e) => handleHashClick(e, "#partner")}
-              className="text-white/85 hover:text-white hover:bg-white/5 font-medium px-3 py-2 rounded-lg transition-all"
+              className="text-white/80 hover:text-white hover:bg-white/5 font-medium px-2.5 py-1.5 rounded-lg transition-colors"
             >
               {t("nav_partner")}
             </Link>
@@ -210,7 +210,7 @@ export default function Navbar() {
             <Link
               href="/#perjalanan"
               onClick={(e) => handleHashClick(e, "#perjalanan")}
-              className="text-white/85 hover:text-white hover:bg-white/5 font-medium px-3 py-2 rounded-lg transition-all"
+              className="text-white/80 hover:text-white hover:bg-white/5 font-medium px-2.5 py-1.5 rounded-lg transition-colors"
             >
               {t("nav_journey")}
             </Link>
@@ -218,37 +218,37 @@ export default function Navbar() {
             {/* 4. Karir (di sebelah Perjalanan) */}
             <Link
               href="/karir"
-              className={`font-medium px-3 py-2 rounded-lg transition-all ${
+              className={`font-medium px-2.5 py-1.5 rounded-lg transition-colors ${
                 isKarirPage
-                  ? "bg-bracket-border/15 text-bracket-border font-semibold shadow-xs"
-                  : "text-white/85 hover:text-white hover:bg-white/5"
+                  ? "text-bracket-border font-semibold"
+                  : "text-white/80 hover:text-white hover:bg-white/5"
               }`}
             >
               {t("nav_career")}
             </Link>
 
             {/* 5. Dropdown Produk */}
-            <div className="relative group py-2">
+            <div className="relative group py-1.5">
               <Link
                 href="/layanan"
-                className={`inline-flex items-center gap-1 px-3 py-2 rounded-lg transition-all ${
+                className={`inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg transition-colors ${
                   isLayananPage || isBahanBakuPage
-                    ? "bg-bracket-border/15 text-bracket-border font-semibold shadow-xs"
-                    : "text-white/85 hover:text-white hover:bg-white/5 font-medium"
+                    ? "text-bracket-border font-semibold"
+                    : "text-white/80 hover:text-white hover:bg-white/5 font-medium"
                 }`}
               >
                 <span>{t("nav_products")}</span>
                 <span
                   translate="no"
-                  className="material-symbols-outlined notranslate text-[16px] text-white/50 group-hover:text-white transition-transform duration-200 group-hover:rotate-180"
+                  className="material-symbols-outlined notranslate text-[15px] text-white/40 group-hover:text-white transition-transform duration-200 group-hover:rotate-180"
                 >
                   expand_more
                 </span>
               </Link>
-              <div className="absolute left-0 top-[calc(100%-4px)] hidden group-hover:block w-56 bg-[#161616] border border-white/10 shadow-2xl rounded-xl p-1.5 z-50 backdrop-blur-md">
+              <div className="absolute left-0 top-full hidden group-hover:block w-56 bg-[#161616] border border-white/10 shadow-2xl rounded-xl p-1.5 z-50 backdrop-blur-md">
                 <Link
                   href="/layanan"
-                  className={`block px-3 py-2.5 text-xs 2xl:text-sm rounded-lg transition-colors ${
+                  className={`block px-3 py-2 text-xs 2xl:text-sm rounded-lg transition-colors ${
                     isLayananPage
                       ? "bg-bracket-border text-white font-semibold"
                       : "text-white/80 hover:text-white hover:bg-white/10"
@@ -258,7 +258,7 @@ export default function Navbar() {
                 </Link>
                 <Link
                   href="/produk/bahan-baku"
-                  className={`block px-3 py-2.5 text-xs 2xl:text-sm rounded-lg transition-colors ${
+                  className={`block px-3 py-2 text-xs 2xl:text-sm rounded-lg transition-colors ${
                     isBahanBakuPage
                       ? "bg-bracket-border text-white font-semibold"
                       : "text-white/80 hover:text-white hover:bg-white/10"
@@ -272,38 +272,38 @@ export default function Navbar() {
             {/* 6. Kontak */}
             <Link
               href="/kontak"
-              className={`font-medium px-3 py-2 rounded-lg transition-all ${
+              className={`font-medium px-2.5 py-1.5 rounded-lg transition-colors ${
                 isContactPage
-                  ? "bg-bracket-border/15 text-bracket-border font-semibold shadow-xs"
-                  : "text-white/85 hover:text-white hover:bg-white/5"
+                  ? "text-bracket-border font-semibold"
+                  : "text-white/80 hover:text-white hover:bg-white/5"
               }`}
             >
               {t("nav_contact")}
             </Link>
 
             {/* 7. Dropdown Galeri */}
-            <div className="relative group py-2">
+            <div className="relative group py-1.5">
               <Link
                 href="/#galeri"
                 onClick={(e) => handleHashClick(e, "#galeri")}
-                className={`inline-flex items-center gap-1 px-3 py-2 rounded-lg transition-all ${
+                className={`inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg transition-colors ${
                   isGaleriPage
-                    ? "bg-bracket-border/15 text-bracket-border font-semibold shadow-xs"
-                    : "text-white/85 hover:text-white hover:bg-white/5 font-medium"
+                    ? "text-bracket-border font-semibold"
+                    : "text-white/80 hover:text-white hover:bg-white/5 font-medium"
                 }`}
               >
                 <span>{t("nav_gallery")}</span>
                 <span
                   translate="no"
-                  className="material-symbols-outlined notranslate text-[16px] text-white/50 group-hover:text-white transition-transform duration-200 group-hover:rotate-180"
+                  className="material-symbols-outlined notranslate text-[15px] text-white/40 group-hover:text-white transition-transform duration-200 group-hover:rotate-180"
                 >
                   expand_more
                 </span>
               </Link>
-              <div className="absolute left-0 top-[calc(100%-4px)] hidden group-hover:block w-60 bg-[#161616] border border-white/10 shadow-2xl rounded-xl p-1.5 z-50 backdrop-blur-md">
+              <div className="absolute left-0 top-full hidden group-hover:block w-60 bg-[#161616] border border-white/10 shadow-2xl rounded-xl p-1.5 z-50 backdrop-blur-md">
                 <Link
                   href="/galeri/pengaplikasian-produk"
-                  className={`block px-3 py-2.5 text-xs 2xl:text-sm rounded-lg transition-colors ${
+                  className={`block px-3 py-2 text-xs 2xl:text-sm rounded-lg transition-colors ${
                     isGaleriAplikasiPage
                       ? "bg-bracket-border text-white font-semibold"
                       : "text-white/80 hover:text-white hover:bg-white/10"
@@ -313,7 +313,7 @@ export default function Navbar() {
                 </Link>
                 <Link
                   href="/galeri/momen"
-                  className={`block px-3 py-2.5 text-xs 2xl:text-sm rounded-lg transition-colors ${
+                  className={`block px-3 py-2 text-xs 2xl:text-sm rounded-lg transition-colors ${
                     isGaleriMomenPage
                       ? "bg-bracket-border text-white font-semibold"
                       : "text-white/80 hover:text-white hover:bg-white/10"
@@ -327,10 +327,10 @@ export default function Navbar() {
             {/* 8. Blog */}
             <Link
               href="/blog"
-              className={`font-medium px-3 py-2 rounded-lg transition-all ${
+              className={`font-medium px-2.5 py-1.5 rounded-lg transition-colors ${
                 pathname === "/blog"
-                  ? "bg-bracket-border/15 text-bracket-border font-semibold shadow-xs"
-                  : "text-white/85 hover:text-white hover:bg-white/5"
+                  ? "text-bracket-border font-semibold"
+                  : "text-white/80 hover:text-white hover:bg-white/5"
               }`}
             >
               {t("nav_blog")}
@@ -338,19 +338,26 @@ export default function Navbar() {
           </nav>
 
           {/* Right actions */}
-          <div className="flex items-center gap-2 xl:gap-3 shrink-0">
-            {/* Search Trigger Button */}
+          <div className="flex items-center gap-2 xl:gap-2.5 shrink-0">
+            {/* Search Trigger Box Button */}
             <button
               type="button"
               onClick={() => setIsSearchOpen(true)}
-              className="w-9 h-9 rounded-full bg-white/5 hover:bg-bracket-border text-white/80 hover:text-white flex items-center justify-center transition-all duration-200 shrink-0 cursor-pointer hover:scale-105 active:scale-95 border border-white/10"
+              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/15 text-white/70 hover:text-white text-xs transition-all cursor-pointer group active:scale-95"
               aria-label="Buka pencarian"
               title="Cari layanan, bahan, artikel"
             >
               <span
-                translate="no" className="material-symbols-outlined notranslate text-[18px]"
+                translate="no"
+                className="material-symbols-outlined notranslate text-[16px] text-white/50 group-hover:text-bracket-border transition-colors"
               >
                 search
+              </span>
+              <span className="hidden sm:inline font-medium text-white/70 group-hover:text-white text-[12px]">
+                {language === "EN" ? "Search..." : "Pencarian..."}
+              </span>
+              <span className="hidden lg:inline-flex text-[10px] bg-white/10 text-white/50 px-1.5 py-0.5 rounded border border-white/10 font-mono">
+                ⌘K
               </span>
             </button>
 
@@ -359,7 +366,7 @@ export default function Navbar() {
               <button
                 type="button"
                 onClick={() => setIsLangOpen(!isLangOpen)}
-                className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold text-white transition-all cursor-pointer active:scale-95"
+                className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/15 text-xs font-semibold text-white transition-all cursor-pointer active:scale-95"
                 aria-label="Pilih Bahasa / Select Language"
                 title="Pilih Bahasa / Select Language"
               >
@@ -368,11 +375,11 @@ export default function Navbar() {
                 ) : (
                   <FlagGB className="w-4 h-2.5" />
                 )}
-                <span className="font-bold text-xs uppercase tracking-wider">
+                <span className="font-bold text-[11px] uppercase tracking-wider">
                   {language === "ID" ? "ID" : "GB"}
                 </span>
                 <span
-                  translate="no" className={`material-symbols-outlined notranslate text-[16px] text-white/70 transition-transform duration-200 ${
+                  translate="no" className={`material-symbols-outlined notranslate text-[14px] text-white/60 transition-transform duration-200 ${
                     isLangOpen ? "rotate-180 text-white" : ""
                   }`}
                 >
@@ -390,7 +397,7 @@ export default function Navbar() {
                     }}
                     className={`w-full px-3 py-2 text-xs flex items-center justify-between transition-colors cursor-pointer ${
                       language === "ID"
-                        ? "bg-secondary-container text-white font-bold"
+                        ? "bg-white/10 text-bracket-border font-bold"
                         : "text-white/80 hover:bg-white/10 hover:text-white"
                     }`}
                   >
@@ -414,7 +421,7 @@ export default function Navbar() {
                     }}
                     className={`w-full px-3 py-2 text-xs flex items-center justify-between transition-colors cursor-pointer ${
                       language === "EN"
-                        ? "bg-secondary-container text-white font-bold"
+                        ? "bg-white/10 text-bracket-border font-bold"
                         : "text-white/80 hover:bg-white/10 hover:text-white"
                     }`}
                   >
@@ -440,13 +447,13 @@ export default function Navbar() {
               download="KATALOG PELANGI UV.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden 2xl:inline-flex items-center justify-center px-3 py-1.5 rounded-full border border-white/30 text-white hover:bg-white/20 hover:border-bracket-border text-xs font-medium transition-all duration-300 hover:scale-105 active:scale-95 shrink-0 whitespace-nowrap hover:shadow-[0_0_12px_rgba(255,255,255,0.2)]"
+              className="hidden 2xl:inline-flex items-center justify-center px-3 py-1.5 rounded-lg border border-white/20 text-white/90 hover:text-white hover:bg-white/10 hover:border-white/40 text-xs font-medium transition-all duration-200 active:scale-95 shrink-0 whitespace-nowrap"
             >
               {t("nav_download_catalog")}
             </a>
             <Link
               href="/kontak#section-form"
-              className="hidden sm:inline-flex items-center justify-center px-3.5 py-1.5 rounded-full bg-bracket-border text-white hover:bg-primary text-xs font-semibold shadow-[0_4px_14px_rgba(246,84,86,0.39)] hover:shadow-[0_6px_20px_rgba(246,84,86,0.65)] transition-all duration-300 hover:scale-105 active:scale-95 shrink-0 whitespace-nowrap"
+              className="hidden sm:inline-flex items-center justify-center px-3.5 py-1.5 rounded-lg bg-bracket-border text-white hover:bg-primary text-xs font-semibold shadow-sm transition-all duration-200 hover:scale-[1.02] active:scale-95 shrink-0 whitespace-nowrap"
             >
               {t("nav_order_now")}
             </Link>
@@ -455,11 +462,11 @@ export default function Navbar() {
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="xl:hidden w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center cursor-pointer transition-colors"
+              className="xl:hidden w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 text-white flex items-center justify-center cursor-pointer transition-colors"
               aria-label="Menu Mobile"
             >
               <span
-                translate="no" className="material-symbols-outlined notranslate text-[20px]"
+                translate="no" className="material-symbols-outlined notranslate text-[19px]"
               >
                 {mobileMenuOpen ? "close" : "menu"}
               </span>
