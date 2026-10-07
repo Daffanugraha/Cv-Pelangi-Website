@@ -66,7 +66,7 @@ export default function PengaplikasianHero() {
 
           {/* Headline Subtitle yang Jelas & Informatif */}
           <p className="text-surface-dim max-w-3xl leading-relaxed text-sm sm:text-base lg:text-lg text-center font-normal">
-            Katalog dan portofolio visualisasi hasil nyata finishing cetak presisi tinggi dari CV Pelangi UV — mulai dari{" "}
+            Katalog dan portofolio visualisasi hasil nyata finishing cetak presisi tinggi dari CV Pelangi UV mulai dari{" "}
             <span
               className={`font-semibold text-accent-gold inline transition-opacity duration-300 ease-in-out ${
                 fade ? "opacity-0" : "opacity-100"
