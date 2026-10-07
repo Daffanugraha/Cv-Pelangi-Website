@@ -96,6 +96,14 @@ export default function Footer() {
               </li>
               <li>
                 <Link
+                  href="/karir"
+                  className="hover:text-bracket-border transition-colors"
+                >
+                  Karir
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/#faq"
                   className="hover:text-bracket-border transition-colors"
                 >

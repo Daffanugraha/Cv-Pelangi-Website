@@ -63,6 +63,7 @@ export default function Navbar() {
     pathname === "/galeri/produk";
   const isGaleriMomenPage =
     pathname === "/galeri/momen" || pathname.startsWith("/galeri/momen");
+  const isKarirPage = pathname === "/karir" || pathname.startsWith("/karir");
   const { language, setLanguage, t } = useLanguage();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -169,7 +170,7 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 w-full transition-all duration-300 anim-nav-down">
       <div className="relative bg-[#111111] shadow-[0_8px_30px_rgba(0,0,0,0.5)]">
-        <div className="max-w-7xl mx-auto px-4 lg:px-8 flex items-center justify-between h-20 gap-3 xl:gap-6">
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-20 gap-2 xl:gap-4">
           {/* Logo */}
           <div className="flex items-center shrink-0">
             <Link
@@ -180,73 +181,87 @@ export default function Navbar() {
               <img
                 src="/images/logo.png"
                 alt="CV Pelangi UV - When Quality Be A Priority"
-                className="h-11 md:h-12 w-auto object-contain shrink-0 transition-transform duration-300"
+                className="h-10 sm:h-11 md:h-12 w-auto object-contain shrink-0 transition-transform duration-300"
               />
             </Link>
           </div>
 
           {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-2 xl:gap-4 whitespace-nowrap text-sm font-medium">
-            <Link
-              href="/#beranda"
-              onClick={(e) => handleHashClick(e, "#beranda")}
-              className={`nav-link-item ${
-                !isContactPage
-                  ? "text-white hover:text-bracket-border"
-                  : "text-white/80 hover:text-secondary-container"
-              } font-medium text-sm flex items-center px-3 py-2 rounded-lg transition-colors`}
-            >
-              {t("nav_home")}
-            </Link>
+          <nav className="hidden xl:flex items-center gap-1 2xl:gap-2 whitespace-nowrap text-[13px] 2xl:text-[14px]">
+            {/* 1. Tentang Kami */}
             <Link
               href="/#tentang-kami"
               onClick={(e) => handleHashClick(e, "#tentang-kami")}
-              className="nav-link-item text-white hover:text-bracket-border font-medium text-sm flex items-center px-3 py-2 rounded-lg transition-colors"
+              className="text-white/85 hover:text-white hover:bg-white/5 font-medium px-3 py-2 rounded-lg transition-all"
             >
               {t("nav_about")}
             </Link>
+
+            {/* 2. Partner (sebelum Perjalanan) */}
+            <Link
+              href="/#partner"
+              onClick={(e) => handleHashClick(e, "#partner")}
+              className="text-white/85 hover:text-white hover:bg-white/5 font-medium px-3 py-2 rounded-lg transition-all"
+            >
+              {t("nav_partner")}
+            </Link>
+
+            {/* 3. Perjalanan */}
             <Link
               href="/#perjalanan"
               onClick={(e) => handleHashClick(e, "#perjalanan")}
-              className="nav-link-item text-white hover:text-bracket-border font-medium text-sm flex items-center px-3 py-2 rounded-lg transition-colors"
+              className="text-white/85 hover:text-white hover:bg-white/5 font-medium px-3 py-2 rounded-lg transition-all"
             >
               {t("nav_journey")}
             </Link>
 
-            {/* Dropdown Produk */}
+            {/* 4. Karir (di sebelah Perjalanan) */}
+            <Link
+              href="/karir"
+              className={`font-medium px-3 py-2 rounded-lg transition-all ${
+                isKarirPage
+                  ? "bg-bracket-border/15 text-bracket-border font-semibold shadow-xs"
+                  : "text-white/85 hover:text-white hover:bg-white/5"
+              }`}
+            >
+              {t("nav_career")}
+            </Link>
+
+            {/* 5. Dropdown Produk */}
             <div className="relative group py-2">
               <Link
                 href="/layanan"
-                className={`nav-link-item ${
+                className={`inline-flex items-center gap-1 px-3 py-2 rounded-lg transition-all ${
                   isLayananPage || isBahanBakuPage
-                    ? "text-secondary-container font-bold"
-                    : "text-white group-hover:text-bracket-border font-medium"
-                } text-sm inline-flex items-center gap-1 px-3 py-2 rounded-lg transition-colors cursor-pointer`}
+                    ? "bg-bracket-border/15 text-bracket-border font-semibold shadow-xs"
+                    : "text-white/85 hover:text-white hover:bg-white/5 font-medium"
+                }`}
               >
                 <span>{t("nav_products")}</span>
                 <span
-                  translate="no" className="material-symbols-outlined notranslate text-[16px] transition-transform duration-200 group-hover:rotate-180"
+                  translate="no"
+                  className="material-symbols-outlined notranslate text-[16px] text-white/50 group-hover:text-white transition-transform duration-200 group-hover:rotate-180"
                 >
                   expand_more
                 </span>
               </Link>
-              <div className="absolute left-0 top-full hidden group-hover:block w-64 bg-navbar-dark border border-white/10 shadow-2xl rounded-xl p-2 z-50">
+              <div className="absolute left-0 top-[calc(100%-4px)] hidden group-hover:block w-56 bg-[#161616] border border-white/10 shadow-2xl rounded-xl p-1.5 z-50 backdrop-blur-md">
                 <Link
                   href="/layanan"
-                  className={`block px-3 py-2 text-sm rounded-lg transition-colors ${
+                  className={`block px-3 py-2.5 text-xs 2xl:text-sm rounded-lg transition-colors ${
                     isLayananPage
                       ? "bg-bracket-border text-white font-semibold"
-                      : "text-white hover:bg-bracket-border"
+                      : "text-white/80 hover:text-white hover:bg-white/10"
                   }`}
                 >
                   {t("nav_services")}
                 </Link>
                 <Link
                   href="/produk/bahan-baku"
-                  className={`block px-3 py-2 text-sm rounded-lg transition-colors ${
+                  className={`block px-3 py-2.5 text-xs 2xl:text-sm rounded-lg transition-colors ${
                     isBahanBakuPage
                       ? "bg-bracket-border text-white font-semibold"
-                      : "text-white hover:bg-bracket-border"
+                      : "text-white/80 hover:text-white hover:bg-white/10"
                   }`}
                 >
                   {t("nav_materials")}
@@ -254,59 +269,54 @@ export default function Navbar() {
               </div>
             </div>
 
-            <Link
-              href="/#partner"
-              onClick={(e) => handleHashClick(e, "#partner")}
-              className="nav-link-item text-white hover:text-bracket-border font-medium text-sm flex items-center px-3 py-2 rounded-lg transition-colors"
-            >
-              {t("nav_partner")}
-            </Link>
+            {/* 6. Kontak */}
             <Link
               href="/kontak"
-              className={`nav-link-item relative ${
+              className={`font-medium px-3 py-2 rounded-lg transition-all ${
                 isContactPage
-                  ? "text-secondary-container font-bold after:content-[''] after:absolute after:bottom-1 after:left-3 after:right-3 after:h-[2px] after:bg-secondary-container"
-                  : "text-white hover:text-bracket-border font-medium"
-              } text-sm flex items-center px-3 py-2 rounded-lg transition-colors`}
+                  ? "bg-bracket-border/15 text-bracket-border font-semibold shadow-xs"
+                  : "text-white/85 hover:text-white hover:bg-white/5"
+              }`}
             >
               {t("nav_contact")}
             </Link>
 
-            {/* Dropdown Galeri */}
+            {/* 7. Dropdown Galeri */}
             <div className="relative group py-2">
               <Link
                 href="/#galeri"
                 onClick={(e) => handleHashClick(e, "#galeri")}
-                className={`nav-link-item relative ${
+                className={`inline-flex items-center gap-1 px-3 py-2 rounded-lg transition-all ${
                   isGaleriPage
-                    ? "text-secondary-container font-bold after:content-[''] after:absolute after:bottom-1 after:left-3 after:right-3 after:h-[2px] after:bg-secondary-container"
-                    : "text-white hover:text-bracket-border font-medium"
-                } text-sm inline-flex items-center gap-1 px-3 py-2 rounded-lg transition-colors cursor-pointer`}
+                    ? "bg-bracket-border/15 text-bracket-border font-semibold shadow-xs"
+                    : "text-white/85 hover:text-white hover:bg-white/5 font-medium"
+                }`}
               >
                 <span>{t("nav_gallery")}</span>
                 <span
-                  translate="no" className="material-symbols-outlined notranslate text-[16px] transition-transform duration-200 group-hover:rotate-180"
+                  translate="no"
+                  className="material-symbols-outlined notranslate text-[16px] text-white/50 group-hover:text-white transition-transform duration-200 group-hover:rotate-180"
                 >
                   expand_more
                 </span>
               </Link>
-              <div className="absolute left-0 top-full hidden group-hover:block w-64 bg-navbar-dark border border-white/10 shadow-2xl rounded-xl p-2 z-50">
+              <div className="absolute left-0 top-[calc(100%-4px)] hidden group-hover:block w-60 bg-[#161616] border border-white/10 shadow-2xl rounded-xl p-1.5 z-50 backdrop-blur-md">
                 <Link
                   href="/galeri/pengaplikasian-produk"
-                  className={`block px-3 py-2 text-sm rounded-lg transition-colors ${
+                  className={`block px-3 py-2.5 text-xs 2xl:text-sm rounded-lg transition-colors ${
                     isGaleriAplikasiPage
                       ? "bg-bracket-border text-white font-semibold"
-                      : "text-white hover:bg-bracket-border"
+                      : "text-white/80 hover:text-white hover:bg-white/10"
                   }`}
                 >
                   {t("nav_gallery_products")}
                 </Link>
                 <Link
                   href="/galeri/momen"
-                  className={`block px-3 py-2 text-sm rounded-lg transition-colors ${
+                  className={`block px-3 py-2.5 text-xs 2xl:text-sm rounded-lg transition-colors ${
                     isGaleriMomenPage
                       ? "bg-bracket-border text-white font-semibold"
-                      : "text-white hover:bg-bracket-border"
+                      : "text-white/80 hover:text-white hover:bg-white/10"
                   }`}
                 >
                   {t("nav_gallery_moments")}
@@ -314,12 +324,13 @@ export default function Navbar() {
               </div>
             </div>
 
+            {/* 8. Blog */}
             <Link
               href="/blog"
-              className={`nav-link-item hover:text-bracket-border font-medium text-sm flex items-center px-3 py-2 rounded-lg transition-colors ${
+              className={`font-medium px-3 py-2 rounded-lg transition-all ${
                 pathname === "/blog"
-                  ? "text-bracket-border font-semibold"
-                  : "text-white"
+                  ? "bg-bracket-border/15 text-bracket-border font-semibold shadow-xs"
+                  : "text-white/85 hover:text-white hover:bg-white/5"
               }`}
             >
               {t("nav_blog")}
@@ -332,7 +343,7 @@ export default function Navbar() {
             <button
               type="button"
               onClick={() => setIsSearchOpen(true)}
-              className="w-9 h-9 rounded-full bg-white/10 hover:bg-bracket-border text-white flex items-center justify-center transition-all duration-300 shrink-0 cursor-pointer hover:shadow-[0_0_15px_rgba(246,84,86,0.6)] hover:scale-110 active:scale-95"
+              className="w-9 h-9 rounded-full bg-white/5 hover:bg-bracket-border text-white/80 hover:text-white flex items-center justify-center transition-all duration-200 shrink-0 cursor-pointer hover:scale-105 active:scale-95 border border-white/10"
               aria-label="Buka pencarian"
               title="Cari layanan, bahan, artikel"
             >
@@ -348,7 +359,7 @@ export default function Navbar() {
               <button
                 type="button"
                 onClick={() => setIsLangOpen(!isLangOpen)}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 text-xs font-semibold text-white transition-all cursor-pointer active:scale-95 shadow-2xs"
+                className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold text-white transition-all cursor-pointer active:scale-95"
                 aria-label="Pilih Bahasa / Select Language"
                 title="Pilih Bahasa / Select Language"
               >
@@ -429,13 +440,13 @@ export default function Navbar() {
               download="KATALOG PELANGI UV.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden md:inline-flex items-center justify-center px-3.5 py-1.5 rounded-full border border-white/30 text-white hover:bg-white/20 hover:border-bracket-border text-xs font-medium transition-all duration-300 hover:scale-105 active:scale-95 shrink-0 whitespace-nowrap hover:shadow-[0_0_12px_rgba(255,255,255,0.2)]"
+              className="hidden 2xl:inline-flex items-center justify-center px-3 py-1.5 rounded-full border border-white/30 text-white hover:bg-white/20 hover:border-bracket-border text-xs font-medium transition-all duration-300 hover:scale-105 active:scale-95 shrink-0 whitespace-nowrap hover:shadow-[0_0_12px_rgba(255,255,255,0.2)]"
             >
               {t("nav_download_catalog")}
             </a>
             <Link
               href="/kontak#section-form"
-              className="hidden sm:inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-bracket-border text-white hover:bg-primary text-xs font-semibold shadow-[0_4px_14px_rgba(246,84,86,0.39)] hover:shadow-[0_6px_20px_rgba(246,84,86,0.65)] transition-all duration-300 hover:scale-105 active:scale-95 shrink-0 whitespace-nowrap"
+              className="hidden sm:inline-flex items-center justify-center px-3.5 py-1.5 rounded-full bg-bracket-border text-white hover:bg-primary text-xs font-semibold shadow-[0_4px_14px_rgba(246,84,86,0.39)] hover:shadow-[0_6px_20px_rgba(246,84,86,0.65)] transition-all duration-300 hover:scale-105 active:scale-95 shrink-0 whitespace-nowrap"
             >
               {t("nav_order_now")}
             </Link>
@@ -444,7 +455,7 @@ export default function Navbar() {
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center"
+              className="xl:hidden w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center cursor-pointer transition-colors"
               aria-label="Menu Mobile"
             >
               <span
@@ -456,9 +467,9 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Mobile Dropdown Menu */}
+        {/* Mobile Dropdown Menu Drawer */}
         {mobileMenuOpen && (
-          <div className="lg:hidden bg-navbar-dark border-t border-white/10 px-4 py-4 space-y-2">
+          <div className="xl:hidden bg-navbar-dark border-t border-white/10 px-4 py-4 space-y-2 shadow-2xl max-h-[calc(100vh-80px)] overflow-y-auto anim-fade-in">
             {/* Mobile Language Switcher */}
             <div className="flex items-center justify-between pb-3 mb-2 border-b border-white/10">
               <span className="text-xs text-white/70 font-medium">Pilih Bahasa / Language:</span>
@@ -541,110 +552,139 @@ export default function Navbar() {
               </div>
             </div>
 
+            {/* Mobile Nav Links - Exact requested order */}
+            {/* 1. Beranda */}
             <Link
               href="/#beranda"
               onClick={(e) => handleMobileHashClick(e, "#beranda")}
-              className="block px-3 py-2 rounded-lg text-white hover:bg-bracket-border text-sm font-medium"
+              className="block px-3.5 py-2.5 rounded-xl text-white/90 hover:text-white hover:bg-white/5 text-sm font-medium transition-all"
             >
               {t("nav_home")}
             </Link>
+
+            {/* 2. Tentang Kami */}
             <Link
               href="/#tentang-kami"
               onClick={(e) => handleMobileHashClick(e, "#tentang-kami")}
-              className="block px-3 py-2 rounded-lg text-white hover:bg-bracket-border text-sm font-medium"
+              className="block px-3.5 py-2.5 rounded-xl text-white/90 hover:text-white hover:bg-white/5 text-sm font-medium transition-all"
             >
               {t("nav_about")}
             </Link>
+
+            {/* 3. Partner (sebelum Perjalanan) */}
+            <Link
+              href="/#partner"
+              onClick={(e) => handleMobileHashClick(e, "#partner")}
+              className="block px-3.5 py-2.5 rounded-xl text-white/90 hover:text-white hover:bg-white/5 text-sm font-medium transition-all"
+            >
+              {t("nav_partner")}
+            </Link>
+
+            {/* 4. Perjalanan */}
             <Link
               href="/#perjalanan"
               onClick={(e) => handleMobileHashClick(e, "#perjalanan")}
-              className="block px-3 py-2 rounded-lg text-white hover:bg-bracket-border text-sm font-medium"
+              className="block px-3.5 py-2.5 rounded-xl text-white/90 hover:text-white hover:bg-white/5 text-sm font-medium transition-all"
             >
               {t("nav_journey")}
             </Link>
-            <div>
-              <div className="flex items-center justify-between px-3 py-1.5 text-xs font-bold text-white/50 uppercase tracking-wider">
+
+            {/* 5. Karir (di sebelah Perjalanan) */}
+            <Link
+              href="/karir"
+              onClick={() => setMobileMenuOpen(false)}
+              className={`block px-3.5 py-2.5 rounded-xl text-sm transition-all ${
+                isKarirPage
+                  ? "bg-bracket-border/15 text-bracket-border font-semibold shadow-xs"
+                  : "text-white/90 hover:text-white hover:bg-white/5 font-medium"
+              }`}
+            >
+              {t("nav_career")}
+            </Link>
+
+            {/* 6. Produk */}
+            <div className="pt-1">
+              <div className="px-3.5 py-1 text-[11px] font-bold text-white/40 uppercase tracking-wider">
                 <span>{t("nav_products")}</span>
               </div>
-              <div className="space-y-1 pl-2">
+              <div className="space-y-0.5 mt-0.5">
                 <Link
                   href="/layanan"
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`block px-3 py-2 rounded-lg ${
+                  className={`block px-3.5 py-2 rounded-xl text-sm transition-all ${
                     isLayananPage
-                      ? "bg-secondary-container text-white font-bold"
-                      : "text-white hover:bg-bracket-border"
-                  } text-sm font-medium`}
+                      ? "bg-bracket-border/15 text-bracket-border font-semibold shadow-xs"
+                      : "text-white/80 hover:text-white hover:bg-white/5 font-medium"
+                  }`}
                 >
                   {t("nav_services")}
                 </Link>
                 <Link
                   href="/produk/bahan-baku"
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`block px-3 py-2 rounded-lg ${
+                  className={`block px-3.5 py-2 rounded-xl text-sm transition-all ${
                     isBahanBakuPage
-                      ? "bg-secondary-container text-white font-bold"
-                      : "text-white hover:bg-bracket-border"
-                  } text-sm font-medium`}
+                      ? "bg-bracket-border/15 text-bracket-border font-semibold shadow-xs"
+                      : "text-white/80 hover:text-white hover:bg-white/5 font-medium"
+                  }`}
                 >
                   {t("nav_materials")}
                 </Link>
               </div>
             </div>
-            <Link
-              href="/#partner"
-              onClick={(e) => handleMobileHashClick(e, "#partner")}
-              className="block px-3 py-2 rounded-lg text-white hover:bg-bracket-border text-sm font-medium"
-            >
-              {t("nav_partner")}
-            </Link>
+
+            {/* 7. Kontak */}
             <Link
               href="/kontak"
               onClick={() => setMobileMenuOpen(false)}
-              className={`block px-3 py-2 rounded-lg ${
+              className={`block px-3.5 py-2.5 rounded-xl text-sm transition-all ${
                 isContactPage
-                  ? "bg-secondary-container text-white font-bold"
-                  : "text-white hover:bg-bracket-border"
-              } text-sm font-medium`}
+                  ? "bg-bracket-border/15 text-bracket-border font-semibold shadow-xs"
+                  : "text-white/90 hover:text-white hover:bg-white/5 font-medium"
+              }`}
             >
               {t("nav_contact")}
             </Link>
-            <div>
-              <div className="flex items-center justify-between px-3 py-1.5 text-xs font-bold text-white/50 uppercase tracking-wider">
+
+            {/* 8. Galeri */}
+            <div className="pt-1">
+              <div className="px-3.5 py-1 text-[11px] font-bold text-white/40 uppercase tracking-wider">
                 <span>{t("nav_gallery")}</span>
               </div>
-              <div className="space-y-1 pl-2">
+              <div className="space-y-0.5 mt-0.5">
                 <Link
                   href="/galeri/pengaplikasian-produk"
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`block px-3 py-2 rounded-lg ${
+                  className={`block px-3.5 py-2 rounded-xl text-sm transition-all ${
                     isGaleriAplikasiPage
-                      ? "bg-secondary-container text-white font-bold"
-                      : "text-white hover:bg-bracket-border"
-                  } text-sm font-medium`}
+                      ? "bg-bracket-border/15 text-bracket-border font-semibold shadow-xs"
+                      : "text-white/80 hover:text-white hover:bg-white/5 font-medium"
+                  }`}
                 >
                   {t("nav_gallery_products")}
                 </Link>
                 <Link
                   href="/galeri/momen"
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`block px-3 py-2 rounded-lg ${
+                  className={`block px-3.5 py-2 rounded-xl text-sm transition-all ${
                     isGaleriMomenPage
-                      ? "bg-secondary-container text-white font-bold"
-                      : "text-white hover:bg-bracket-border"
-                  } text-sm font-medium`}
+                      ? "bg-bracket-border/15 text-bracket-border font-semibold shadow-xs"
+                      : "text-white/80 hover:text-white hover:bg-white/5 font-medium"
+                  }`}
                 >
                   {t("nav_gallery_moments")}
                 </Link>
               </div>
             </div>
+
+            {/* 9. Blog */}
             <Link
               href="/blog"
               onClick={() => setMobileMenuOpen(false)}
-              className={`block px-3 py-2 rounded-lg text-sm font-medium ${
+              className={`block px-3.5 py-2.5 rounded-xl text-sm transition-all ${
                 pathname === "/blog"
-                  ? "text-bracket-border font-semibold bg-white/10"
-                  : "text-white hover:bg-bracket-border"
+                  ? "bg-bracket-border/15 text-bracket-border font-semibold shadow-xs"
+                  : "text-white/90 hover:text-white hover:bg-white/5 font-medium"
               }`}
             >
               {t("nav_blog")}

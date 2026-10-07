@@ -31,6 +31,7 @@ const UI_TRANSLATIONS: Record<string, { ID: string; EN: string }> = {
     EN: "Moments & Activities",
   },
   nav_blog: { ID: "Blog", EN: "Blog" },
+  nav_career: { ID: "Karir", EN: "Careers" },
   nav_download_catalog: { ID: "Unduh Katalog", EN: "Download Catalog" },
   nav_order_now: { ID: "Pesan Sekarang", EN: "Order Now" },
 

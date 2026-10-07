@@ -213,4 +213,13 @@ export const searchCatalog: SearchCatalogItem[] = [
     link: "/katalog/katalog-pelangi-uv.pdf",
     tag: "Unduh PDF",
   },
+
+  // 6. Karir & Rekrutmen
+  {
+    title: "Karir & Lowongan Kerja (Pelangi Life)",
+    type: "Karir",
+    desc: "Peluang kerja terbuka di bidang Finance, Marketing, Operasional, Mesin Finishing, dan Warehouse",
+    link: "/karir",
+    tag: "Karir",
+  },
 ];
