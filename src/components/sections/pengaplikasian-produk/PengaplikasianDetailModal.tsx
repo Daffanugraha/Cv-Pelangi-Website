@@ -40,14 +40,6 @@ export default function PengaplikasianDetailModal({
             alt={product.title}
             className="w-full h-full object-cover"
           />
-          <div className="absolute bottom-4 left-4 flex gap-2">
-            <span className="px-3 py-1 rounded-full bg-bracket-border text-white text-xs font-bold shadow">
-              {product.tag}
-            </span>
-            <span className="px-3 py-1 rounded-full bg-black/70 backdrop-blur-md text-white text-xs font-medium border border-white/20">
-              {product.categoryLabel}
-            </span>
-          </div>
         </div>
 
         {/* Modal Content */}

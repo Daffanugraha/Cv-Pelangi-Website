@@ -15,20 +15,17 @@ export default function PengaplikasianGrid({
   onResetFilter,
 }: PengaplikasianGridProps) {
   return (
-    <section id="pengaplikasian-grid" className="w-full py-12 scroll-mt-24">
+    <section id="pengaplikasian-grid" className="w-full py-10 scroll-mt-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center gap-2 text-sm text-text-muted">
-            <span className="material-symbols-outlined text-bracket-border text-xl">
-              auto_awesome
-            </span>
-            <span className="font-semibold text-on-surface text-base">
-              Koleksi Mockup &amp; Portofolio Fisik Terverifikasi
+        <div className="flex items-center justify-between mb-6 pb-4 border-b border-surface-container/60">
+          <div className="flex items-center gap-2">
+            <h2 className="font-heading font-extrabold text-on-surface text-xl sm:text-2xl tracking-tight">
+              Katalog Produk
+            </h2>
+            <span className="text-xs font-semibold text-text-muted bg-surface-container px-2.5 py-0.5 rounded-full">
+              {products.length} Produk
             </span>
           </div>
-          <span className="text-xs text-text-muted hidden sm:inline">
-            Klik salah satu produk untuk inspeksi spesifikasi teknis
-          </span>
         </div>
 
         {/* Product Grid */}
@@ -67,15 +64,10 @@ export default function PengaplikasianGrid({
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     loading="lazy"
                   />
-                  <div className="absolute top-3 left-3 flex gap-1.5 flex-wrap">
-                    <span className="px-3 py-1 rounded-full bg-bracket-border text-white text-xs font-bold shadow-md">
-                      {product.tag}
-                    </span>
-                  </div>
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
-                    <span className="text-white text-xs font-semibold flex items-center gap-1.5 bg-bracket-border/90 px-3 py-1.5 rounded-full backdrop-blur-sm">
+                    <span className="text-white text-xs font-semibold flex items-center gap-1.5 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/20">
                       <span className="material-symbols-outlined text-sm">visibility</span>
-                      Inspeksi Detail Finishing
+                      Lihat Detail
                     </span>
                   </div>
                 </div>
@@ -86,7 +78,7 @@ export default function PengaplikasianGrid({
                     <span className="text-[11px] font-bold text-bracket-border uppercase tracking-wider">
                       {product.categoryLabel}
                     </span>
-                    <h3 className="font-heading font-bold text-on-surface text-lg group-hover:text-bracket-border transition-colors mt-0.5">
+                    <h3 className="font-heading font-bold text-on-surface text-base sm:text-lg group-hover:text-bracket-border transition-colors mt-0.5">
                       {product.title}
                     </h3>
                     <p className="text-xs text-text-body line-clamp-2 leading-relaxed mt-1">
@@ -94,19 +86,15 @@ export default function PengaplikasianGrid({
                     </p>
                   </div>
 
-                  {/* Footer Row */}
-                  <div className="pt-3 border-t border-surface-container-high flex items-center justify-between mt-auto">
-                    <span className="text-xs font-semibold text-bracket-border flex items-center gap-1">
-                      <span className="material-symbols-outlined text-sm">check_circle</span>
-                      {product.highlight}
+                  {/* Footer Row Simpel & Bersih (Tanpa Teks Akurasi Berlebihan) */}
+                  <div className="pt-3 border-t border-surface-container/60 flex items-center justify-between mt-auto">
+                    <span className="text-xs font-medium text-text-muted">
+                      {product.tag}
                     </span>
-                    <button
-                      type="button"
-                      className="w-8 h-8 rounded-full bg-surface-tint-light hover:bg-bracket-border text-bracket-border hover:text-white flex items-center justify-center transition-colors shadow-sm"
-                      title="Buka Detail Spesifikasi"
-                    >
-                      <span className="material-symbols-outlined text-base">open_in_new</span>
-                    </button>
+                    <span className="inline-flex items-center gap-1 text-xs font-semibold text-bracket-border group-hover:text-primary transition-colors">
+                      <span>Detail</span>
+                      <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                    </span>
                   </div>
                 </div>
               </article>

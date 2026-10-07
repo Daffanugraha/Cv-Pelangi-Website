@@ -76,22 +76,6 @@ export default function PengaplikasianHero() {
             </span>{" "}
             hingga beragam kemasan komersial dan korporat berstandar industri ekspor.
           </p>
-
-          {/* Quick Category / Showcase Pills (Menjelaskan ini Galeri Sampel Fisik) */}
-          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mt-6">
-            <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-white/80 text-xs font-medium backdrop-blur-sm">
-              <span className="w-1.5 h-1.5 rounded-full bg-bracket-border" />
-              Kemasan &amp; Packaging Mewah
-            </span>
-            <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-white/80 text-xs font-medium backdrop-blur-sm">
-              <span className="w-1.5 h-1.5 rounded-full bg-accent-gold" />
-              Hot Stamping Foil &amp; Spot UV
-            </span>
-            <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-white/80 text-xs font-medium backdrop-blur-sm">
-              <span className="w-1.5 h-1.5 rounded-full bg-action-whatsapp" />
-              Pond &amp; Presisi Pasca-Cetak
-            </span>
-          </div>
         </div>
       </div>
     </section>
