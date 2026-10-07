@@ -5,6 +5,12 @@ import { PELANGI_LIFE_REELS, PelangiLifeReel } from "@/data/careers";
 
 export default function PelangiLifeSection() {
   const [activeReel, setActiveReel] = useState<PelangiLifeReel | null>(null);
+  const [playerMode, setPlayerMode] = useState<"video" | "embed">("video");
+
+  const handleOpenReel = (reel: PelangiLifeReel) => {
+    setActiveReel(reel);
+    setPlayerMode("video");
+  };
 
   return (
     <section className="w-full py-12 sm:py-16 bg-white text-on-surface relative overflow-hidden border-b border-surface-container">
@@ -53,7 +59,7 @@ export default function PelangiLifeSection() {
           {PELANGI_LIFE_REELS.map((reel) => (
             <div
               key={reel.id}
-              onClick={() => setActiveReel(reel)}
+              onClick={() => handleOpenReel(reel)}
               className="group relative rounded-2xl overflow-hidden bg-neutral-900 border border-surface-container hover:border-bracket-border/60 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl cursor-pointer flex flex-col justify-between aspect-[9/15]"
             >
               {/* Background Thumbnail Image */}
@@ -114,21 +120,40 @@ export default function PelangiLifeSection() {
           onClick={() => setActiveReel(null)}
         >
           <div
-            className="w-full max-w-[380px] sm:max-w-[420px] rounded-3xl overflow-hidden bg-neutral-950 border border-white/20 shadow-2xl relative text-white flex flex-col max-h-[92vh]"
+            className="w-full max-w-[390px] sm:max-w-[430px] rounded-3xl overflow-hidden bg-neutral-950 border border-white/20 shadow-2xl relative text-white flex flex-col max-h-[94vh]"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Header Modal */}
-            <div className="p-3.5 bg-neutral-900/90 border-b border-white/10 flex items-center justify-between shrink-0">
-              <div className="flex items-center gap-2">
-                <span className="px-2.5 py-0.5 rounded-full bg-bracket-border/20 text-bracket-border text-[11px] font-bold border border-bracket-border/30">
-                  {activeReel.tag}
-                </span>
-                <span className="text-xs text-white/70 font-medium">CV Pelangi Life</span>
+            {/* Header Modal with Switcher */}
+            <div className="p-3 bg-neutral-900/95 border-b border-white/10 flex items-center justify-between shrink-0 gap-2">
+              <div className="inline-flex items-center rounded-full bg-white/10 p-1 text-[11px]">
+                <button
+                  type="button"
+                  onClick={() => setPlayerMode("video")}
+                  className={`px-3 py-1 rounded-full font-semibold transition-all cursor-pointer ${
+                    playerMode === "video"
+                      ? "bg-bracket-border text-white shadow-sm"
+                      : "text-white/70 hover:text-white"
+                  }`}
+                >
+                  ▶ Putar Video
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPlayerMode("embed")}
+                  className={`px-3 py-1 rounded-full font-semibold transition-all cursor-pointer ${
+                    playerMode === "embed"
+                      ? "bg-bracket-border text-white shadow-sm"
+                      : "text-white/70 hover:text-white"
+                  }`}
+                >
+                  Post Instagram
+                </button>
               </div>
+
               <button
                 type="button"
                 onClick={() => setActiveReel(null)}
-                className="w-8 h-8 rounded-full bg-white/10 hover:bg-bracket-border flex items-center justify-center text-white cursor-pointer transition-colors"
+                className="w-8 h-8 rounded-full bg-white/10 hover:bg-bracket-border flex items-center justify-center text-white cursor-pointer transition-colors shrink-0"
                 aria-label="Tutup pemutar video"
               >
                 &times;
@@ -137,7 +162,7 @@ export default function PelangiLifeSection() {
 
             {/* Video Player In-Situ (Langsung Diputar di Website) */}
             <div className="relative aspect-[9/14] sm:aspect-[9/15] bg-black overflow-hidden flex items-center justify-center">
-              {activeReel.videoSrc ? (
+              {playerMode === "video" && activeReel.videoSrc ? (
                 <video
                   key={activeReel.id}
                   src={activeReel.videoSrc}
