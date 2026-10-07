@@ -84,12 +84,24 @@ export default function KarirHero({
 
   return (
     <section className="w-full bg-navbar-black text-on-secondary relative pt-12 sm:pt-16 pb-16 sm:pb-20 border-b border-surface-canvas/10 overflow-hidden rounded-b-[40px] sm:rounded-b-[48px]">
-      {/* Ambient Red Glow Accents (Tanpa Video Background) */}
-      <div className="absolute -right-24 -top-24 w-96 h-96 rounded-full bg-bracket-border/25 blur-3xl pointer-events-none z-[1]" />
+      {/* Background Gambar Galeri Momen (Employee Gathering & Kebersamaan Tim) */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        <img
+          src="/images/gathering-2023/gathering-2023-1.jpg"
+          alt="Latar Belakang Galeri Momen & Kebersamaan Tim CV Pelangi UV"
+          className="w-full h-full object-cover object-center transform scale-105 brightness-[0.38] contrast-[1.12]"
+        />
+        {/* Sinematik Gradient Overlays untuk Menjaga Keterbacaan Teks */}
+        <div className="absolute inset-0 bg-gradient-to-r from-navbar-black/95 via-navbar-black/60 to-navbar-black/90" />
+        <div className="absolute inset-0 bg-gradient-to-t from-navbar-black via-navbar-black/50 to-navbar-black/75" />
+      </div>
+
+      {/* Ambient Red Glow Accents */}
+      <div className="absolute -right-24 -top-24 w-96 h-96 rounded-full bg-bracket-border/20 blur-3xl pointer-events-none z-[1]" />
       <div className="absolute -left-20 bottom-0 w-80 h-80 rounded-full bg-bracket-border/15 blur-3xl pointer-events-none z-[1]" />
 
-      {/* Grid Pattern Background subtle */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none z-0" />
+      {/* Subtle Pattern Grid Overlay */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none z-[1]" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Breadcrumb Navigation */}
