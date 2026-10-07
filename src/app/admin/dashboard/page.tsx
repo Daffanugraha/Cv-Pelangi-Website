@@ -38,13 +38,15 @@ export default function DashboardPage() {
   const router = useRouter();
   const [gallery, setGallery] = useState<GalleryItem[]>([]);
   const [leads, setLeads] = useState<LeadItem[]>([]);
+  const [momenCount, setMomenCount] = useState(0);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function load() {
-      const [gRes, lRes] = await Promise.all([
+      const [gRes, lRes, mRes] = await Promise.all([
         fetch("/api/admin/gallery"),
         fetch("/api/admin/leads"),
+        fetch("/api/admin/momen"),
       ]);
 
       if (gRes.status === 401 || lRes.status === 401) {
@@ -54,6 +56,10 @@ export default function DashboardPage() {
 
       setGallery(await gRes.json());
       setLeads(await lRes.json());
+      if (mRes.ok) {
+        const mData = await mRes.json();
+        setMomenCount(Array.isArray(mData) ? mData.length : 0);
+      }
       setLoading(false);
     }
     load();
@@ -95,6 +101,13 @@ export default function DashboardPage() {
           color="text-bracket-border"
         />
         <StatCard
+          icon="collections_bookmark"
+          label="Album Momen"
+          value={momenCount}
+          color="text-purple-600"
+          sub="Dokumentasi & Event"
+        />
+        <StatCard
           icon="inbox"
           label="Total Lead Masuk"
           value={leads.length}
@@ -106,13 +119,6 @@ export default function DashboardPage() {
           value={newLeads}
           color="text-bracket-border"
           sub={newLeads > 0 ? "Butuh follow-up segera!" : "Semua sudah direspon ✓"}
-        />
-        <StatCard
-          icon="star"
-          label="Foto Featured"
-          value={gallery.filter((g) => g.featured).length}
-          color="text-amber-500"
-          sub="Tampil di katalog unggulan"
         />
       </div>
 

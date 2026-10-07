@@ -6,6 +6,7 @@ import { MOMEN_ALBUMS, MomenAlbum, MomenPhoto } from "@/lib/data/galeriMomen";
 interface GaleriMomenAlbumsProps {
   activeFilter: string;
   onSelectPhoto: (photo: MomenPhoto) => void;
+  albums?: MomenAlbum[];
 }
 
 interface AlbumCarouselTrackProps {
@@ -277,11 +278,12 @@ function AlbumCarouselTrack({ album, onSelectPhoto }: AlbumCarouselTrackProps) {
 export default function GaleriMomenAlbums({
   activeFilter,
   onSelectPhoto,
+  albums = MOMEN_ALBUMS,
 }: GaleriMomenAlbumsProps) {
   const visibleAlbums =
     activeFilter === "all"
-      ? MOMEN_ALBUMS
-      : MOMEN_ALBUMS.filter((a) => a.category === activeFilter);
+      ? albums
+      : albums.filter((a) => a.category === activeFilter);
 
   return (
     <div className="w-full space-y-0">

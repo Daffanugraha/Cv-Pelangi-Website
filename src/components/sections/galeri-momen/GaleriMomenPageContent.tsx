@@ -1,21 +1,85 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import GaleriMomenHero from "./GaleriMomenHero";
 import GaleriMomenFilters from "./GaleriMomenFilters";
 import GaleriMomenHighlightShowcase from "./GaleriMomenHighlightShowcase";
 import GaleriMomenAlbums from "./GaleriMomenAlbums";
 import GaleriMomenLightboxModal from "./GaleriMomenLightboxModal";
-import { MOMEN_ALBUMS, MomenPhoto } from "@/lib/data/galeriMomen";
+import { MOMEN_ALBUMS, MOMEN_FILTERS, MOMEN_HIGHLIGHTS, MomenAlbum, MomenHighlight, MomenPhoto } from "@/lib/data/galeriMomen";
+import type { MomenAlbumItem } from "@/lib/admin/db";
 
-export default function GaleriMomenPageContent() {
+interface GaleriMomenPageContentProps {
+  initialAlbums?: MomenAlbumItem[];
+}
+
+export default function GaleriMomenPageContent({ initialAlbums }: GaleriMomenPageContentProps) {
+  const [albums, setAlbums] = useState<MomenAlbumItem[]>(initialAlbums || (MOMEN_ALBUMS as MomenAlbumItem[]));
   const [activeFilter, setActiveFilter] = useState("all");
   const [selectedPhoto, setSelectedPhoto] = useState<MomenPhoto | null>(null);
 
+  // Client-side fetch to ensure live sync with admin changes
+  useEffect(() => {
+    async function fetchLiveMomen() {
+      try {
+        const res = await fetch("/api/momen");
+        if (res.ok) {
+          const data = await res.json();
+          if (data?.albums && Array.isArray(data.albums)) {
+            setAlbums(data.albums);
+          }
+        }
+      } catch (err) {
+        console.warn("Using initial momen data:", err);
+      }
+    }
+    fetchLiveMomen();
+  }, []);
+
+  // Compute dynamic filters based on current albums and presets
+  const dynamicFilters = useMemo(() => {
+    const existingKeys = new Set(MOMEN_FILTERS.map((f) => f.key));
+    const filters = [...MOMEN_FILTERS];
+
+    albums.forEach((album) => {
+      if (album.category && !existingKeys.has(album.category)) {
+        existingKeys.add(album.category);
+        filters.push({
+          key: album.category,
+          label: album.title,
+        });
+      }
+    });
+
+    return filters;
+  }, [albums]);
+
+  // Compute dynamic highlights from albums (highlight-marked or first photo of each album)
+  const dynamicHighlights = useMemo<MomenHighlight[]>(() => {
+    const customHighlights: MomenHighlight[] = [];
+    const seenCategories = new Set<string>();
+
+    albums.forEach((album) => {
+      if (album.isHighlight !== false && album.photos?.length > 0 && !seenCategories.has(album.category)) {
+        seenCategories.add(album.category);
+        const firstPhoto = album.photos[0];
+        customHighlights.push({
+          filterKey: album.category,
+          title: album.title,
+          desc: album.desc,
+          img: firstPhoto.src,
+          caption: firstPhoto.caption || album.desc,
+        });
+      }
+    });
+
+    return customHighlights.length > 0 ? customHighlights : MOMEN_HIGHLIGHTS;
+  }, [albums]);
+
   // Flat list of all photos for seamless cycling in Lightbox
   const allPhotos = useMemo(() => {
-    return MOMEN_ALBUMS.flatMap((album) => album.photos);
-  }, []);
+    return albums.flatMap((album) => album.photos || []);
+  }, [albums]);
 
   const currentPhotoIndex = useMemo(() => {
     if (!selectedPhoto) return -1;
@@ -23,13 +87,13 @@ export default function GaleriMomenPageContent() {
   }, [selectedPhoto, allPhotos]);
 
   const handlePrevPhoto = () => {
-    if (currentPhotoIndex === -1) return;
+    if (currentPhotoIndex === -1 || allPhotos.length === 0) return;
     const prevIdx = (currentPhotoIndex - 1 + allPhotos.length) % allPhotos.length;
     setSelectedPhoto(allPhotos[prevIdx]);
   };
 
   const handleNextPhoto = () => {
-    if (currentPhotoIndex === -1) return;
+    if (currentPhotoIndex === -1 || allPhotos.length === 0) return;
     const nextIdx = (currentPhotoIndex + 1) % allPhotos.length;
     setSelectedPhoto(allPhotos[nextIdx]);
   };
@@ -43,18 +107,21 @@ export default function GaleriMomenPageContent() {
       <GaleriMomenFilters
         activeFilter={activeFilter}
         onFilterChange={setActiveFilter}
+        filters={dynamicFilters}
       />
 
       {/* 3. Dark Minimalist Highlight Showcase */}
       <GaleriMomenHighlightShowcase
         onSelectPhoto={setSelectedPhoto}
         onFilterChange={setActiveFilter}
+        highlights={dynamicHighlights}
       />
 
       {/* 4. Full Albums Showcase */}
       <GaleriMomenAlbums
         activeFilter={activeFilter}
         onSelectPhoto={setSelectedPhoto}
+        albums={albums}
       />
 
       {/* 5. Lightbox Modal */}

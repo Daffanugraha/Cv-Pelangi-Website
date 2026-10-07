@@ -7,6 +7,7 @@
 import fs from "fs";
 import path from "path";
 import { CAREER_JOBS, CareerJob } from "@/data/careers";
+import { MOMEN_ALBUMS, MomenAlbum, MomenPhoto } from "@/lib/data/galeriMomen";
 
 // ---------------------------------------------------------------------------
 // Paths
@@ -193,5 +194,65 @@ export function updateJobItem(id: string, patch: Partial<CareerJobItem>) {
 export function deleteJobItem(id: string) {
   const jobs = getJobs().filter((j) => j.id !== id);
   saveJobs(jobs);
+}
+
+// ---------------------------------------------------------------------------
+// Momen CRUD (Momen & Kegiatan Pelangi UV)
+// ---------------------------------------------------------------------------
+export type MomenPhotoItem = MomenPhoto;
+
+export type MomenAlbumItem = {
+  id: string;
+  category: string;
+  title: string;
+  desc: string;
+  photos: MomenPhotoItem[];
+  isHighlight?: boolean;
+  createdAt?: string;
+  order?: number;
+};
+
+export function getMomenAlbums(): MomenAlbumItem[] {
+  const initialData: MomenAlbumItem[] = MOMEN_ALBUMS.map((album, idx) => ({
+    id: album.category || `momen-${idx}`,
+    category: album.category,
+    title: album.title,
+    desc: album.desc,
+    photos: album.photos,
+    isHighlight: true,
+    order: idx + 1,
+  }));
+  return readJSON<MomenAlbumItem[]>("momen", initialData);
+}
+
+export function saveMomenAlbums(albums: MomenAlbumItem[]) {
+  writeJSON("momen", albums);
+}
+
+export function addMomenAlbum(album: Omit<MomenAlbumItem, "id" | "createdAt">): MomenAlbumItem {
+  const albums = getMomenAlbums();
+  const idSlug = album.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+  const newAlbum: MomenAlbumItem = {
+    ...album,
+    id: `${idSlug || "momen"}-${Date.now().toString().slice(-4)}`,
+    category: album.category || idSlug || `momen-${Date.now()}`,
+    createdAt: new Date().toISOString(),
+    order: albums.length + 1,
+  };
+  albums.unshift(newAlbum);
+  saveMomenAlbums(albums);
+  return newAlbum;
+}
+
+export function updateMomenAlbum(id: string, patch: Partial<MomenAlbumItem>) {
+  const albums = getMomenAlbums().map((item) =>
+    item.id === id || item.category === id ? { ...item, ...patch } : item
+  );
+  saveMomenAlbums(albums);
+}
+
+export function deleteMomenAlbum(id: string) {
+  const albums = getMomenAlbums().filter((item) => item.id !== id && item.category !== id);
+  saveMomenAlbums(albums);
 }
 

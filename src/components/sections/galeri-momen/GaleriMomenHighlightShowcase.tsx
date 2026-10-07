@@ -6,18 +6,21 @@ import { MOMEN_HIGHLIGHTS, MomenHighlight, MomenPhoto } from "@/lib/data/galeriM
 interface GaleriMomenHighlightShowcaseProps {
   onSelectPhoto: (photo: MomenPhoto) => void;
   onFilterChange: (filterKey: string) => void;
+  highlights?: MomenHighlight[];
 }
 
 export default function GaleriMomenHighlightShowcase({
   onSelectPhoto,
   onFilterChange,
+  highlights = MOMEN_HIGHLIGHTS,
 }: GaleriMomenHighlightShowcaseProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
-  const total = MOMEN_HIGHLIGHTS.length;
-  const current = MOMEN_HIGHLIGHTS[currentIndex];
+  const activeHighlights = highlights.length > 0 ? highlights : MOMEN_HIGHLIGHTS;
+  const total = activeHighlights.length;
+  const current = activeHighlights[currentIndex] || activeHighlights[0];
 
   useEffect(() => {
     if (isPaused) return;
@@ -166,7 +169,7 @@ export default function GaleriMomenHighlightShowcase({
               {/* Dots Navigator */}
               <div className="mt-8 pt-4 border-t border-white/10 flex items-center justify-center sm:justify-start">
                 <div className="flex items-center gap-2">
-                  {MOMEN_HIGHLIGHTS.map((_, dotIdx) => (
+                  {activeHighlights.map((_, dotIdx) => (
                     <button
                       key={dotIdx}
                       type="button"

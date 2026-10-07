@@ -6,11 +6,13 @@ import { MOMEN_FILTERS } from "@/lib/data/galeriMomen";
 interface GaleriMomenFiltersProps {
   activeFilter: string;
   onFilterChange: (filterKey: string) => void;
+  filters?: { key: string; label: string }[];
 }
 
 export default function GaleriMomenFilters({
   activeFilter,
   onFilterChange,
+  filters = MOMEN_FILTERS,
 }: GaleriMomenFiltersProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
@@ -49,7 +51,7 @@ export default function GaleriMomenFilters({
               className="flex-1 overflow-x-auto overflow-y-hidden scrollbar-none relative select-none cursor-grab active:cursor-grabbing [mask-image:linear-gradient(to_right,transparent,black_3%,black_97%,transparent)]"
             >
               <div className="flex items-center gap-3 py-1.5 w-max select-none">
-                {MOMEN_FILTERS.map((tab) => {
+                {filters.map((tab) => {
                   const isActive = activeFilter === tab.key;
                   return (
                     <button

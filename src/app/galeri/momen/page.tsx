@@ -1,4 +1,7 @@
 import GaleriMomenPageContent from "@/components/sections/galeri-momen";
+import { getMomenAlbums } from "@/lib/admin/db";
+
+export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "Galeri Momen & Kegiatan CV Pelangi UV | Dokumentasi & Event",
@@ -7,5 +10,6 @@ export const metadata = {
 };
 
 export default function GaleriMomenPage() {
-  return <GaleriMomenPageContent />;
+  const albums = getMomenAlbums();
+  return <GaleriMomenPageContent initialAlbums={albums} />;
 }
