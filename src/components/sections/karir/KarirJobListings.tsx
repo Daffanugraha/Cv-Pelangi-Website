@@ -75,12 +75,6 @@ export default function KarirJobListings({ jobs, onApply }: KarirJobListingsProp
                   >
                     Divisi {job.division}
                   </span>
-                  <span className="px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-surface-neutral-alt text-text-muted border border-outline-variant/30">
-                    {job.type}
-                  </span>
-                  <span className="px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-surface-neutral-alt text-text-muted border border-outline-variant/30">
-                    📍 {job.location}
-                  </span>
                 </div>
                 <h3 className="font-heading font-bold text-lg sm:text-xl text-on-surface hover:text-bracket-border transition-colors">
                   {job.title}
