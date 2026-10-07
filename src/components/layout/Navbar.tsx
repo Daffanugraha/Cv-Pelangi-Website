@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { searchCatalog, navLinks } from "@/lib/data";
+import { searchCatalog, searchCategories, navLinks } from "@/lib/data";
 import { useLanguage } from "@/context/LanguageContext";
 
 function FlagID({ className = "w-4 h-3" }: { className?: string }) {
@@ -67,6 +67,7 @@ export default function Navbar() {
   const { language, setLanguage, t } = useLanguage();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [activeSearchTab, setActiveSearchTab] = useState<string>("semua");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isLangOpen, setIsLangOpen] = useState(false);
   const [isMobileLangOpen, setIsMobileLangOpen] = useState(false);
@@ -74,15 +75,20 @@ export default function Navbar() {
   const langDropdownRef = useRef<HTMLDivElement>(null);
   const mobileLangDropdownRef = useRef<HTMLDivElement>(null);
 
-  // Filter search items
-  const filteredSearch = searchQuery.trim()
-    ? searchCatalog.filter(
-        (item) =>
-          item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          item.desc.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          item.type.toLowerCase().includes(searchQuery.toLowerCase())
-      )
-    : [];
+  // Filter search items by query AND active tab
+  const filteredSearch = searchCatalog.filter((item) => {
+    const matchesQuery = !searchQuery.trim()
+      ? true
+      : item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.desc.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.type.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.tag.toLowerCase().includes(searchQuery.toLowerCase());
+
+    const matchesTab =
+      activeSearchTab === "semua" || item.categoryGroup === activeSearchTab;
+
+    return matchesQuery && matchesTab;
+  });
 
   const handleSelectSearchResult = (targetLink: string, e?: React.SyntheticEvent) => {
     if (typeof window === "undefined") return;
@@ -737,27 +743,32 @@ export default function Navbar() {
       {/* Search Modal - Clean & Modern */}
       {isSearchOpen && (
         <div
-          className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-start justify-center pt-16 sm:pt-24 px-4 transition-all duration-200"
+          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-start justify-center pt-14 sm:pt-20 px-3 sm:px-4 transition-all duration-200"
           onClick={(e) => {
             if (e.target === e.currentTarget) {
               setIsSearchOpen(false);
               setSearchQuery("");
+              setActiveSearchTab("semua");
             }
           }}
         >
-          <div className="w-full max-w-2xl bg-[#131418] border border-white/10 rounded-2xl shadow-2xl p-4 sm:p-5 relative text-white">
+          <div className="w-full max-w-2xl bg-[#141416] border border-white/15 rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.8)] p-4 sm:p-5 relative text-white anim-fade-in flex flex-col max-h-[88vh]">
             {/* Modal Header */}
-            <div className="flex items-center justify-between pb-3 mb-3 border-b border-white/10">
-              <span className="text-xs uppercase tracking-wider text-white/50 font-bold">
-                Pencarian Pelangi UV
-              </span>
+            <div className="flex items-center justify-between pb-3 mb-2.5 border-b border-white/10">
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-bracket-border"></span>
+                <span className="text-xs uppercase tracking-wider text-white/70 font-bold">
+                  Pencarian Multi-Kategori Pelangi UV
+                </span>
+              </div>
               <button
                 type="button"
                 onClick={() => {
                   setIsSearchOpen(false);
                   setSearchQuery("");
+                  setActiveSearchTab("semua");
                 }}
-                className="w-7 h-7 rounded-lg bg-white/5 hover:bg-white/10 text-white/60 hover:text-white flex items-center justify-center transition-all cursor-pointer"
+                className="w-7 h-7 rounded-lg bg-white/5 hover:bg-white/15 text-white/60 hover:text-white flex items-center justify-center transition-all cursor-pointer"
                 aria-label="Tutup pencarian"
               >
                 <span translate="no" className="material-symbols-outlined notranslate text-[18px]">
@@ -767,7 +778,7 @@ export default function Navbar() {
             </div>
 
             {/* Clean Search Input */}
-            <div className="relative flex items-center mb-3">
+            <div className="relative flex items-center mb-2.5">
               <span
                 translate="no"
                 className="material-symbols-outlined notranslate absolute left-3.5 text-white/40 text-[20px]"
@@ -785,8 +796,8 @@ export default function Navbar() {
                   }
                 }}
                 autoFocus
-                placeholder="Cari layanan, bahan baku, galeri, atau kontak..."
-                className="w-full h-11 pl-10 pr-9 rounded-xl bg-white/[0.04] border border-white/10 text-white placeholder-white/40 text-sm outline-none focus:border-bracket-border focus:bg-white/[0.07] transition-all"
+                placeholder="Cari layanan, bahan baku, artikel blog, lowongan karir, galeri..."
+                className="w-full h-11 pl-10 pr-9 rounded-xl bg-white/[0.04] border border-white/15 text-white placeholder-white/40 text-sm outline-none focus:border-bracket-border focus:bg-white/[0.07] transition-all"
                 autoComplete="off"
               />
               {searchQuery && (
@@ -802,20 +813,49 @@ export default function Navbar() {
               )}
             </div>
 
+            {/* Category Filter Chips */}
+            <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-2 pt-0.5 border-b border-white/10 shrink-0">
+              {searchCategories.map((cat) => (
+                <button
+                  key={cat.key}
+                  type="button"
+                  onClick={() => setActiveSearchTab(cat.key)}
+                  className={`px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap transition-all cursor-pointer ${
+                    activeSearchTab === cat.key
+                      ? "bg-bracket-border text-white shadow-xs"
+                      : "bg-white/5 hover:bg-white/10 text-white/65 hover:text-white border border-white/5"
+                  }`}
+                >
+                  {cat.label}
+                </button>
+              ))}
+            </div>
+
             {/* Results or Clean Quick Links */}
-            <div className="max-h-[380px] overflow-y-auto no-scrollbar space-y-2 pt-1">
-              {searchQuery.trim() ? (
+            <div className="overflow-y-auto no-scrollbar space-y-2 pt-2 flex-1 pr-0.5">
+              {searchQuery.trim() || activeSearchTab !== "semua" ? (
                 <div className="space-y-1.5">
-                  <p className="text-[11px] uppercase tracking-wider text-white/40 font-semibold px-1">
-                    Hasil Pencarian ({filteredSearch.length})
-                  </p>
+                  <div className="flex items-center justify-between px-1">
+                    <p className="text-[11px] uppercase tracking-wider text-white/40 font-semibold">
+                      Hasil Pencarian ({filteredSearch.length})
+                    </p>
+                    {activeSearchTab !== "semua" && (
+                      <span className="text-[11px] text-bracket-border capitalize font-medium">
+                        Kategori: {activeSearchTab}
+                      </span>
+                    )}
+                  </div>
+
                   {filteredSearch.length === 0 ? (
-                    <div className="p-6 text-center rounded-xl bg-white/[0.02] border border-white/5 text-white/50 text-xs">
-                      <p className="mb-1 text-white/80 font-medium">
-                        Tidak ada hasil yang sesuai dengan &quot;{searchQuery}&quot;
+                    <div className="p-8 text-center rounded-xl bg-white/[0.02] border border-white/5 text-white/50 text-xs">
+                      <span translate="no" className="material-symbols-outlined notranslate text-3xl text-white/20 mb-2 block">
+                        search_off
+                      </span>
+                      <p className="mb-1 text-white/80 font-medium text-sm">
+                        Tidak ada hasil yang sesuai dengan kriteria
                       </p>
-                      <p className="text-[11px] text-white/40">
-                        Coba kata kunci lain seperti: foil, uv, laminasi, lem, atau galeri.
+                      <p className="text-[12px] text-white/40 max-w-sm mx-auto">
+                        Coba gunakan kata kunci seperti &quot;foil&quot;, &quot;mesin&quot;, &quot;karir&quot;, &quot;laminasi&quot;, atau klik tab &quot;Semua&quot;.
                       </p>
                     </div>
                   ) : (
@@ -828,19 +868,41 @@ export default function Navbar() {
                         }}
                         className="flex items-center justify-between p-3 rounded-xl bg-white/[0.03] hover:bg-white/[0.08] border border-white/5 hover:border-white/15 transition-all group"
                       >
-                        <div className="min-w-0 pr-3">
-                          <div className="flex items-center gap-2">
-                            <p className="text-sm font-semibold text-white group-hover:text-bracket-border transition-colors truncate">
-                              {item.title}
-                            </p>
-                            <span className="text-[10px] uppercase font-medium px-2 py-0.5 rounded bg-white/5 text-white/60 border border-white/10 shrink-0">
-                              {item.tag}
+                        <div className="min-w-0 pr-3 flex items-start gap-3">
+                          {/* Category Icon */}
+                          <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center shrink-0 group-hover:bg-bracket-border/20 group-hover:border-bracket-border/40 transition-colors">
+                            <span translate="no" className="material-symbols-outlined notranslate text-[18px] text-white/60 group-hover:text-bracket-border">
+                              {item.categoryGroup === "layanan"
+                                ? "auto_awesome"
+                                : item.categoryGroup === "bahan"
+                                ? "inventory_2"
+                                : item.categoryGroup === "artikel"
+                                ? "article"
+                                : item.categoryGroup === "karir"
+                                ? "work"
+                                : item.categoryGroup === "galeri"
+                                ? "photo_library"
+                                : item.categoryGroup === "momen"
+                                ? "celebration"
+                                : "link"}
                             </span>
                           </div>
-                          <p className="text-xs text-white/50 truncate mt-0.5">
-                            {item.desc}
-                          </p>
+
+                          <div className="min-w-0">
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <p className="text-sm font-semibold text-white group-hover:text-bracket-border transition-colors truncate">
+                                {item.title}
+                              </p>
+                              <span className="text-[10px] uppercase font-semibold px-2 py-0.5 rounded-full bg-white/10 text-white/70 border border-white/10 shrink-0">
+                                {item.tag}
+                              </span>
+                            </div>
+                            <p className="text-xs text-white/50 truncate mt-0.5">
+                              {item.desc}
+                            </p>
+                          </div>
                         </div>
+
                         <span
                           translate="no"
                           className="material-symbols-outlined notranslate text-[18px] text-white/30 group-hover:text-bracket-border group-hover:translate-x-0.5 transition-all shrink-0"
@@ -853,75 +915,76 @@ export default function Navbar() {
                 </div>
               ) : (
                 <div className="space-y-4">
-                  {/* Clean Quick Nav Links */}
+                  {/* Quick Sections Grid */}
                   <div className="space-y-1.5">
                     <p className="text-[11px] uppercase tracking-wider text-white/40 font-semibold px-1">
-                      Menu &amp; Halaman Utama
+                      Jelajahi Berdasarkan Kategori
                     </p>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {[
                         {
                           title: "Layanan Jasa Finishing",
                           desc: "Hot Stamp Foil, Spot UV, Laminasi Thermal, Pond",
-                          link: "/layanan",
-                          tag: "Layanan",
+                          tab: "layanan",
+                          icon: "auto_awesome",
                         },
                         {
                           title: "Katalog Bahan Baku",
                           desc: "Master Roll Foil, Film BOPP, Lem, & Varnish",
-                          link: "/produk/bahan-baku",
-                          tag: "Bahan Baku",
+                          tab: "bahan",
+                          icon: "inventory_2",
+                        },
+                        {
+                          title: "Artikel Blog & Berita",
+                          desc: "Tips finishing cetak, info mesin, & kabar SPE",
+                          tab: "artikel",
+                          icon: "article",
+                        },
+                        {
+                          title: "Karir & Pelangi Life",
+                          desc: "Lowongan kerja terbuka & video dokumentasi",
+                          tab: "karir",
+                          icon: "work",
                         },
                         {
                           title: "Galeri Produk & Kemasan",
-                          desc: "Sampel kemasan kosmetik, dus farmasi, & hardbox",
-                          link: "/galeri/pengaplikasian-produk",
-                          tag: "Galeri",
+                          desc: "Sampel dus kosmetik, farmasi, & kemasan F&B",
+                          tab: "galeri",
+                          icon: "photo_library",
                         },
                         {
-                          title: "Dokumentasi Momen",
-                          desc: "Pameran Surabaya Printing Expo & kegiatan",
-                          link: "/galeri/momen",
-                          tag: "Momen",
-                        },
-                        {
-                          title: "Hubungi Kami / Konsultasi",
-                          desc: "Alamat bengkel Bizpark Sidoarjo & WhatsApp",
-                          link: "/kontak",
-                          tag: "Kontak",
-                        },
-                        {
-                          title: "Unduh Katalog Resmi (PDF)",
-                          desc: "Download langsung file PDF spesifikasi lengkap",
-                          link: "/katalog/katalog-pelangi-uv.pdf",
-                          tag: "Unduh PDF",
+                          title: "Momen & Dokumentasi",
+                          desc: "Surabaya Printing Expo & Employee Gathering",
+                          tab: "momen",
+                          icon: "celebration",
                         },
                       ].map((item, idx) => (
-                        <Link
+                        <button
                           key={idx}
-                          href={item.link}
-                          onClick={(e) => {
-                            handleSelectSearchResult(item.link, e);
-                          }}
-                          className="flex items-center justify-between p-2.5 rounded-xl bg-white/[0.03] hover:bg-white/[0.08] border border-white/5 hover:border-white/15 transition-all group text-left"
+                          type="button"
+                          onClick={() => setActiveSearchTab(item.tab)}
+                          className="flex items-center justify-between p-2.5 rounded-xl bg-white/[0.03] hover:bg-white/[0.08] border border-white/5 hover:border-white/15 transition-all group text-left cursor-pointer"
                         >
-                          <div className="min-w-0 pr-2">
-                            <div className="flex items-center gap-1.5">
+                          <div className="flex items-center gap-2.5 min-w-0 pr-2">
+                            <span translate="no" className="material-symbols-outlined notranslate text-[18px] text-white/40 group-hover:text-bracket-border shrink-0">
+                              {item.icon}
+                            </span>
+                            <div className="min-w-0">
                               <p className="text-xs font-semibold text-white group-hover:text-bracket-border transition-colors truncate">
                                 {item.title}
                               </p>
+                              <p className="text-[11px] text-white/50 truncate mt-0.5">
+                                {item.desc}
+                              </p>
                             </div>
-                            <p className="text-[11px] text-white/50 truncate mt-0.5">
-                              {item.desc}
-                            </p>
                           </div>
                           <span
                             translate="no"
-                            className="material-symbols-outlined notranslate text-[16px] text-white/30 group-hover:text-bracket-border group-hover:translate-x-0.5 transition-all shrink-0"
+                            className="material-symbols-outlined notranslate text-[16px] text-white/30 group-hover:text-bracket-border transition-all shrink-0"
                           >
-                            arrow_forward
+                            chevron_right
                           </span>
-                        </Link>
+                        </button>
                       ))}
                     </div>
                   </div>
@@ -929,25 +992,26 @@ export default function Navbar() {
                   {/* Clean Popular Search Keywords */}
                   <div className="pt-2 border-t border-white/10 space-y-2">
                     <p className="text-[11px] uppercase tracking-wider text-white/40 font-semibold px-1">
-                      Pencarian Populer
+                      Pencarian Cepat Populer
                     </p>
                     <div className="flex flex-wrap gap-1.5">
                       {[
+                        "Lowongan Karir",
                         "Hot Stamp Foil",
                         "Spot UV",
-                        "Laminating Thermal",
-                        "Cast and Cure",
+                        "Mesin Pond",
+                        "Printing Expo",
                         "BOPP Film",
                         "Lem Food Grade",
-                        "Window Patch",
-                        "Printing Expo",
-                        "Katalog",
+                        "Kemasan Kosmetik",
+                        "Pelangi Life",
+                        "Unduh PDF",
                       ].map((tag) => (
                         <button
                           key={tag}
                           type="button"
                           onClick={() => setSearchQuery(tag)}
-                          className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-bracket-border hover:text-white text-white/70 text-xs transition-colors cursor-pointer border border-white/10"
+                          className="px-2.5 py-1 rounded-full bg-white/5 hover:bg-bracket-border hover:text-white text-white/70 text-xs transition-colors cursor-pointer border border-white/10"
                         >
                           {tag}
                         </button>
@@ -959,7 +1023,7 @@ export default function Navbar() {
             </div>
 
             {/* Clean Modal Footer */}
-            <div className="pt-3 mt-3 border-t border-white/10 flex items-center justify-between text-[11px] text-white/40">
+            <div className="pt-3 mt-2 border-t border-white/10 flex items-center justify-between text-[11px] text-white/40 shrink-0">
               <span className="flex items-center gap-1.5">
                 <kbd className="px-1.5 py-0.5 rounded bg-white/10 border border-white/20 text-[10px] text-white/80">
                   ESC
