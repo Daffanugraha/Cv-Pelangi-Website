@@ -84,24 +84,24 @@ export default function KarirHero({
 
   return (
     <section className="w-full bg-navbar-black text-on-secondary relative pt-12 sm:pt-16 pb-16 sm:pb-20 border-b border-surface-canvas/10 overflow-hidden rounded-b-[40px] sm:rounded-b-[48px]">
-      {/* Background Gambar Galeri Momen (Employee Gathering & Kebersamaan Tim) */}
+      {/* Background Gambar Galeri Momen (Employee Gathering & Kebersamaan Tim) - Lebih Terang & Jelas */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <img
           src="/images/gathering-2023/gathering-2023-1.jpg"
           alt="Latar Belakang Galeri Momen & Kebersamaan Tim CV Pelangi UV"
-          className="w-full h-full object-cover object-center transform scale-105 brightness-[0.38] contrast-[1.12]"
+          className="w-full h-full object-cover object-center transform scale-105 brightness-[0.65] contrast-[1.10]"
         />
-        {/* Sinematik Gradient Overlays untuk Menjaga Keterbacaan Teks */}
-        <div className="absolute inset-0 bg-gradient-to-r from-navbar-black/95 via-navbar-black/60 to-navbar-black/90" />
-        <div className="absolute inset-0 bg-gradient-to-t from-navbar-black via-navbar-black/50 to-navbar-black/75" />
+        {/* Subtle Vignette & Gradient Overlays for Text Legibility (Seimbang & Lebih Terang) */}
+        <div className="absolute inset-0 bg-gradient-to-r from-navbar-black/85 via-navbar-black/40 to-navbar-black/80" />
+        <div className="absolute inset-0 bg-gradient-to-t from-navbar-black/95 via-transparent to-navbar-black/60" />
       </div>
 
       {/* Ambient Red Glow Accents */}
-      <div className="absolute -right-24 -top-24 w-96 h-96 rounded-full bg-bracket-border/20 blur-3xl pointer-events-none z-[1]" />
-      <div className="absolute -left-20 bottom-0 w-80 h-80 rounded-full bg-bracket-border/15 blur-3xl pointer-events-none z-[1]" />
+      <div className="absolute -right-24 -top-24 w-96 h-96 rounded-full bg-bracket-border/25 blur-3xl pointer-events-none z-[1]" />
+      <div className="absolute -left-20 bottom-0 w-80 h-80 rounded-full bg-bracket-border/20 blur-3xl pointer-events-none z-[1]" />
 
       {/* Subtle Pattern Grid Overlay */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none z-[1]" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none z-[1]" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Breadcrumb Navigation */}
@@ -109,7 +109,7 @@ export default function KarirHero({
           aria-label="Breadcrumb"
           className="flex items-center gap-2 mb-5 sm:mb-6 font-label-meta text-label-meta justify-center"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-surface-canvas/10 border border-surface-canvas/10 backdrop-blur-md">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-navbar-black/60 border border-white/15 backdrop-blur-md shadow-md">
             <Link
               href="/"
               className="hover:text-bracket-border transition-colors flex items-center gap-1 text-surface-dim uppercase tracking-wider text-[11px]"
@@ -129,19 +129,19 @@ export default function KarirHero({
         {/* Hero Title & Subtitle */}
         <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
           {/* Active Job Openings Badge */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-bracket-border/15 border border-bracket-border/30 text-bracket-border text-xs font-semibold mb-4 backdrop-blur-md">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-navbar-black/70 border border-bracket-border/40 text-bracket-border text-xs font-semibold mb-4 backdrop-blur-md shadow-md">
             <span className="w-2 h-2 rounded-full bg-bracket-border animate-pulse" />
-            <span>{totalOpenJobs} Posisi Terbuka untuk Anda</span>
+            <span className="text-white font-medium">{totalOpenJobs} Posisi Terbuka untuk Anda</span>
           </div>
 
-          <h1 className="font-headline-xl text-[28px] sm:text-[38px] md:text-headline-xl text-on-secondary tracking-tight font-extrabold mb-3 leading-tight">
+          <h1 className="font-headline-xl text-[28px] sm:text-[38px] md:text-headline-xl text-white tracking-tight font-extrabold mb-3 leading-tight drop-shadow-md">
             Peluang Karir &amp; Rekrutmen{" "}
-            <span translate="no" className="notranslate text-bracket-border">
+            <span translate="no" className="notranslate text-bracket-border drop-shadow-sm">
               Pelangi UV
             </span>
           </h1>
 
-          <p className="font-body-md text-[14px] sm:text-[15px] text-surface-dim leading-relaxed max-w-2xl mb-8">
+          <p className="font-body-md text-[14px] sm:text-[15px] text-white/90 leading-relaxed max-w-2xl mb-8 drop-shadow-sm">
             Bergabunglah bersama keluarga besar industri finishing cetak presisi terdepan sejak 2004 di Bizpark Sidoarjo. Bangun karir profesional Anda bersama lingkungan kerja yang solid dan berorientasi mutu.
           </p>
 
