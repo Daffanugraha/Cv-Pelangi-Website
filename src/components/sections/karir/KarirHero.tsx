@@ -128,22 +128,54 @@ export default function KarirHero({
 
         {/* Hero Title & Subtitle */}
         <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
-          {/* Active Job Openings Badge */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-navbar-black/70 border border-bracket-border/40 text-bracket-border text-xs font-semibold mb-4 backdrop-blur-md shadow-md">
-            <span className="w-2 h-2 rounded-full bg-bracket-border animate-pulse" />
-            <span className="text-white font-medium">{totalOpenJobs} Posisi Terbuka untuk Anda</span>
+          {/* Active Job Openings Eye-Catching Badge */}
+          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-navbar-black/75 border border-bracket-border/50 text-xs font-semibold mb-5 backdrop-blur-md shadow-lg group hover:border-bracket-border transition-all">
+            <span className="relative flex h-2.5 w-2.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-bracket-border opacity-75" />
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-bracket-border" />
+            </span>
+            <span className="text-white font-medium tracking-wide">
+              Rekrutmen Aktif &bull;{" "}
+              <span className="text-bracket-border font-bold">
+                {totalOpenJobs} Posisi Siap Dilamar
+              </span>
+            </span>
           </div>
 
-          <h1 className="font-headline-xl text-[28px] sm:text-[38px] md:text-headline-xl text-white tracking-tight font-extrabold mb-3 leading-tight drop-shadow-md">
-            Peluang Karir &amp; Rekrutmen{" "}
-            <span translate="no" className="notranslate text-bracket-border drop-shadow-sm">
+          {/* Catchy & Dynamic Main Headline */}
+          <h1 className="font-heading text-[30px] sm:text-[42px] md:text-[50px] font-black tracking-tight text-white mb-4 leading-[1.18] max-w-3xl drop-shadow-lg">
+            Bangun Karir &amp; Bertumbuh Bersama{" "}
+            <span className="inline-block bg-gradient-to-r from-bracket-border via-rose-400 to-amber-300 bg-clip-text text-transparent underline decoration-bracket-border/40 underline-offset-8">
               Pelangi UV
             </span>
           </h1>
 
-          <p className="font-body-md text-[14px] sm:text-[15px] text-white/90 leading-relaxed max-w-2xl mb-8 drop-shadow-sm">
-            Bergabunglah bersama keluarga besar industri finishing cetak presisi terdepan sejak 2004 di Bizpark Sidoarjo. Bangun karir profesional Anda bersama lingkungan kerja yang solid dan berorientasi mutu.
+          {/* Inspiring Subtitle */}
+          <p className="font-sans text-[14px] sm:text-[16px] text-white/95 leading-relaxed max-w-2xl mb-5 drop-shadow">
+            Wujudkan potensi terbaik Anda di pusat industri finishing cetak presisi Bizpark Sidoarjo. Temukan peluang karir profesional dalam lingkungan kerja yang solid, suportif, dan bertumbuh nyata.
           </p>
+
+          {/* Micro Value Pills (Keunggulan Budaya Kerja) */}
+          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-8 text-xs text-white/85">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/40 border border-white/10 backdrop-blur-sm">
+              <span translate="no" className="material-symbols-outlined notranslate text-[15px] text-amber-400">
+                apartment
+              </span>
+              Bizpark Sidoarjo
+            </span>
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/40 border border-white/10 backdrop-blur-sm">
+              <span translate="no" className="material-symbols-outlined notranslate text-[15px] text-bracket-border">
+                groups
+              </span>
+              Budaya Kerja Solid
+            </span>
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/40 border border-white/10 backdrop-blur-sm">
+              <span translate="no" className="material-symbols-outlined notranslate text-[15px] text-emerald-400">
+                trending_up
+              </span>
+              Peluang Berkembang
+            </span>
+          </div>
 
           {/* Search Container */}
           <div className="w-full max-w-2xl">
