@@ -28,7 +28,7 @@ export default function PengaplikasianHero() {
     return () => clearInterval(timer);
   }, []);
   return (
-    <section className="relative w-full overflow-hidden bg-navbar-black rounded-b-[40px] shadow-2xl pt-12 pb-20 border-b border-white/10">
+    <section className="relative w-full overflow-hidden bg-navbar-black pt-12 pb-14 sm:pb-16 border-b border-white/10">
       {/* Background Image with Gradient Overlay */}
       <div className="absolute inset-0 pointer-events-none">
         <img
@@ -41,7 +41,7 @@ export default function PengaplikasianHero() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
-          {/* Breadcrumb */}
+          {/* Breadcrumb Ringkas */}
           <nav
             aria-label="Breadcrumb"
             className="inline-flex items-center gap-2 text-xs text-surface-dim/80 bg-white/10 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/10 mb-6"
@@ -53,53 +53,44 @@ export default function PengaplikasianHero() {
               <span className="material-symbols-outlined text-[15px]">home</span>
               <span>Beranda</span>
             </Link>
-            <span className="material-symbols-outlined text-[14px]">chevron_right</span>
-            <Link href="/galeri" className="hover:text-bracket-border transition-colors">
-              Galeri
-            </Link>
-            <span className="material-symbols-outlined text-[14px]">chevron_right</span>
-            <span className="text-white font-medium">Pengaplikasian Produk</span>
+            <span className="text-white/30">/</span>
+            <span className="text-white/70">Galeri</span>
+            <span className="text-white/30">/</span>
+            <span className="text-bracket-border font-semibold">Pengaplikasian Produk</span>
           </nav>
 
-          {/* Headline */}
+          {/* Headline Utama Galeri */}
           <h1 className="font-heading font-extrabold tracking-tight text-white mb-4 text-3xl sm:text-4xl lg:text-5xl leading-tight">
             Galeri Pengaplikasian <span className="text-bracket-border">Produk Cetak</span>
           </h1>
 
-          {/* Headline Subtitle */}
-          <p className="text-surface-dim max-w-2xl leading-relaxed mb-8 text-base sm:text-lg text-center">
-            Solusi visualisasi hasil aplikasi finishing cetak presisi tinggi dari CV Pelangi UV — mulai dari{" "}
+          {/* Headline Subtitle yang Jelas & Informatif */}
+          <p className="text-surface-dim max-w-3xl leading-relaxed text-sm sm:text-base lg:text-lg text-center font-normal">
+            Katalog dan portofolio visualisasi hasil nyata finishing cetak presisi tinggi dari CV Pelangi UV — mulai dari{" "}
             <span
-              className={`font-semibold text-bracket-border inline transition-opacity duration-300 ease-in-out ${
+              className={`font-semibold text-accent-gold inline transition-opacity duration-300 ease-in-out ${
                 fade ? "opacity-0" : "opacity-100"
               }`}
             >
               {ROTATING_PACKAGING[currentIndex]}
             </span>{" "}
-            hingga beragam kemasan berstandar industri ekspor.
+            hingga beragam kemasan komersial dan korporat berstandar industri ekspor.
           </p>
 
-          {/* Action Buttons */}
-          <div className="flex flex-wrap items-center justify-center gap-3">
-            <a
-              href="https://wa.me/6282231019363?text=Halo%20Pelangi%20UV%2C%20saya%20tertarik%20dengan%20sampel%20fisik%20hasil%20finishing%20kemasan"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-bracket-border text-white font-semibold shadow-[0_8px_24px_rgba(246,84,86,0.4)] hover:bg-primary-container transition-all hover:scale-105 active:scale-95 text-sm"
-            >
-              <span className="material-symbols-outlined text-[18px]">inventory_2</span>
-              <span>Minta Swatch Sample Fisik</span>
-            </a>
-            <a
-              href="/katalog/katalog-pelangi-uv.pdf"
-              download="KATALOG PELANGI UV.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-white/10 hover:bg-white/20 text-white font-semibold border border-white/20 transition-all hover:scale-105 text-sm"
-            >
-              <span className="material-symbols-outlined text-[18px]">download</span>
-              <span>Unduh E-Katalog Hasil Cetak</span>
-            </a>
+          {/* Quick Category / Showcase Pills (Menjelaskan ini Galeri Sampel Fisik) */}
+          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mt-6">
+            <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-white/80 text-xs font-medium backdrop-blur-sm">
+              <span className="w-1.5 h-1.5 rounded-full bg-bracket-border" />
+              Kemasan &amp; Packaging Mewah
+            </span>
+            <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-white/80 text-xs font-medium backdrop-blur-sm">
+              <span className="w-1.5 h-1.5 rounded-full bg-accent-gold" />
+              Hot Stamping Foil &amp; Spot UV
+            </span>
+            <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-white/80 text-xs font-medium backdrop-blur-sm">
+              <span className="w-1.5 h-1.5 rounded-full bg-action-whatsapp" />
+              Pond &amp; Presisi Pasca-Cetak
+            </span>
           </div>
         </div>
       </div>
