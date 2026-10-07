@@ -170,7 +170,7 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 w-full transition-all duration-300 anim-nav-down">
       <div className="relative bg-[#111111] shadow-[0_8px_30px_rgba(0,0,0,0.5)]">
-        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-20 gap-2 xl:gap-3">
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-20 gap-3">
           {/* Logo */}
           <div className="flex items-center shrink-0">
             <Link
@@ -186,8 +186,8 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* Desktop Nav */}
-          <nav className="hidden xl:flex items-center gap-0.5 2xl:gap-1 whitespace-nowrap text-[13px] 2xl:text-[13.5px]">
+          {/* Desktop Nav - Centered */}
+          <nav className="hidden xl:flex flex-1 items-center justify-center gap-1 2xl:gap-2 whitespace-nowrap text-[13px] 2xl:text-[13.5px]">
             {/* 1. Tentang Kami */}
             <Link
               href="/#tentang-kami"
@@ -343,7 +343,7 @@ export default function Navbar() {
             <button
               type="button"
               onClick={() => setIsSearchOpen(true)}
-              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/15 text-white/70 hover:text-white text-xs transition-all cursor-pointer group active:scale-95"
+              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/15 text-white/70 hover:text-white text-xs transition-all cursor-pointer group active:scale-95"
               aria-label="Buka pencarian"
               title="Cari layanan, bahan, artikel"
             >
@@ -356,7 +356,7 @@ export default function Navbar() {
               <span className="hidden sm:inline font-medium text-white/70 group-hover:text-white text-[12px]">
                 {language === "EN" ? "Search..." : "Pencarian..."}
               </span>
-              <span className="hidden lg:inline-flex text-[10px] bg-white/10 text-white/50 px-1.5 py-0.5 rounded border border-white/10 font-mono">
+              <span className="hidden lg:inline-flex text-[10px] bg-white/10 text-white/50 px-1.5 py-0.5 rounded-full border border-white/10 font-mono">
                 ⌘K
               </span>
             </button>
@@ -366,7 +366,7 @@ export default function Navbar() {
               <button
                 type="button"
                 onClick={() => setIsLangOpen(!isLangOpen)}
-                className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/15 text-xs font-semibold text-white transition-all cursor-pointer active:scale-95"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/15 text-xs font-semibold text-white transition-all cursor-pointer active:scale-95"
                 aria-label="Pilih Bahasa / Select Language"
                 title="Pilih Bahasa / Select Language"
               >
@@ -447,13 +447,13 @@ export default function Navbar() {
               download="KATALOG PELANGI UV.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden 2xl:inline-flex items-center justify-center px-3 py-1.5 rounded-lg border border-white/20 text-white/90 hover:text-white hover:bg-white/10 hover:border-white/40 text-xs font-medium transition-all duration-200 active:scale-95 shrink-0 whitespace-nowrap"
+              className="hidden 2xl:inline-flex items-center justify-center px-4 py-1.5 rounded-full border border-white/25 text-white hover:bg-white/15 hover:border-white/50 text-xs font-medium transition-all duration-200 active:scale-95 shrink-0 whitespace-nowrap"
             >
               {t("nav_download_catalog")}
             </a>
             <Link
               href="/kontak#section-form"
-              className="hidden sm:inline-flex items-center justify-center px-3.5 py-1.5 rounded-lg bg-bracket-border text-white hover:bg-primary text-xs font-semibold shadow-sm transition-all duration-200 hover:scale-[1.02] active:scale-95 shrink-0 whitespace-nowrap"
+              className="hidden sm:inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-bracket-border text-white hover:bg-primary text-xs font-semibold shadow-[0_2px_12px_rgba(246,84,86,0.35)] transition-all duration-200 hover:scale-105 active:scale-95 shrink-0 whitespace-nowrap"
             >
               {t("nav_order_now")}
             </Link>
