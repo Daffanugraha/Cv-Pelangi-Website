@@ -57,7 +57,7 @@ export default function PengaplikasianGrid({
               <article
                 key={product.id}
                 onClick={() => onSelectProduct(product)}
-                className="group cursor-pointer bg-surface-container-lowest rounded-2xl overflow-hidden border border-surface-container-high shadow-sm hover:shadow-xl hover:border-bracket-border/40 transition-all duration-300 flex flex-col"
+                className="group cursor-pointer bg-surface-container-lowest rounded-[24px] overflow-hidden border border-surface-container/60 hover:border-bracket-border/40 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col"
               >
                 {/* Image Container with Badges */}
                 <div className="relative aspect-[16/10] overflow-hidden bg-surface-container">
