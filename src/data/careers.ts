@@ -19,6 +19,7 @@ export interface PelangiLifeReel {
   likes: string;
   thumbnail: string;
   instagramUrl: string;
+  videoSrc?: string;
   caption: string;
 }
 
@@ -33,6 +34,7 @@ export const PELANGI_LIFE_REELS: PelangiLifeReel[] = [
     likes: "1.4K",
     thumbnail: "/images/instagram/reel-4.jpg",
     instagramUrl: "https://www.instagram.com/reel/DdYdcznzLJY/",
+    videoSrc: "/videos/video-layanan.mp4",
     caption: "Kalibrasi suhu presisi plat tembaga dan foil emas mewah berkecepatan tinggi untuk kemasan kosmetik.",
   },
   {
@@ -44,7 +46,8 @@ export const PELANGI_LIFE_REELS: PelangiLifeReel[] = [
     views: "36.2K",
     likes: "2.1K",
     thumbnail: "/images/instagram/DdYdcznzLJY.jpg",
-    instagramUrl: "https://www.instagram.com/pelangi.uv/",
+    instagramUrl: "https://www.instagram.com/p/DdIes18TbKg/",
+    videoSrc: "/videos/video-beranda.mp4",
     caption: "Kompak, teliti, dan selalu semangat dalam menyelesaikan target pasca-cetak dengan integritas mutu.",
   },
   {
@@ -57,6 +60,7 @@ export const PELANGI_LIFE_REELS: PelangiLifeReel[] = [
     likes: "950",
     thumbnail: "/images/instagram/DdsU0jQTTiS.jpg",
     instagramUrl: "https://www.instagram.com/reel/DdsU0jQTTiS/",
+    videoSrc: "/videos/video-bahan-baku.mp4",
     caption: "Inspeksi detail lembaran plano: kilau spot UV tajam, register foil presisi tanpa meleset sedetik pun.",
   },
   {
@@ -69,6 +73,7 @@ export const PELANGI_LIFE_REELS: PelangiLifeReel[] = [
     likes: "1.8K",
     thumbnail: "/images/instagram/DdiyORrzfGw.jpg",
     instagramUrl: "https://www.instagram.com/reel/DdiyORrzfGw/",
+    videoSrc: "/videos/video-layanan.mp4",
     caption: "Workshop berfasilitas modern, sirkulasi udara optimal, dan sistem tata letak mesin yang aman dan ergonomis.",
   },
 ];
