@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import AdminShell from "../AdminShell";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import type { GalleryItem, LeadItem } from "@/lib/admin/db";
 
 interface StatCardProps {
@@ -15,22 +16,22 @@ interface StatCardProps {
 
 function StatCard({ icon, label, value, color, sub }: StatCardProps) {
   return (
-    <div className="bg-gray-900 border border-gray-800 rounded-2xl p-5">
+    <div className="bg-white border border-gray-200/80 rounded-2xl p-5 hover:border-bracket-border/40 transition-all shadow-xs group">
       <div className="flex items-center justify-between mb-3">
         <span className={`material-symbols-outlined text-2xl ${color}`}>{icon}</span>
       </div>
-      <p className="text-3xl font-bold text-white">{value}</p>
-      <p className="text-sm text-gray-400 mt-1">{label}</p>
-      {sub && <p className="text-xs text-gray-600 mt-0.5">{sub}</p>}
+      <p className="text-3xl font-heading font-extrabold text-gray-900 tracking-tight">{value}</p>
+      <p className="text-xs sm:text-sm text-gray-500 mt-1 font-sans">{label}</p>
+      {sub && <p className="text-xs text-gray-400 mt-1 font-mono">{sub}</p>}
     </div>
   );
 }
 
 const STATUS_LABELS: Record<string, { label: string; color: string }> = {
-  new: { label: "Baru", color: "bg-yellow-500/20 text-yellow-400" },
-  contacted: { label: "Sudah Dihubungi", color: "bg-blue-500/20 text-blue-400" },
-  sample_sent: { label: "Sampel Terkirim", color: "bg-purple-500/20 text-purple-400" },
-  closed: { label: "Closed / Order", color: "bg-emerald-500/20 text-emerald-400" },
+  new: { label: "Baru", color: "bg-red-50 text-red-700 border border-red-200" },
+  contacted: { label: "Sudah Dihubungi", color: "bg-blue-50 text-blue-700 border border-blue-200" },
+  sample_sent: { label: "Sampel Terkirim", color: "bg-purple-50 text-purple-700 border border-purple-200" },
+  closed: { label: "Closed / Order", color: "bg-emerald-50 text-emerald-700 border border-emerald-200" },
 };
 
 export default function DashboardPage() {
@@ -63,8 +64,8 @@ export default function DashboardPage() {
   if (loading) {
     return (
       <AdminShell>
-        <div className="flex items-center justify-center h-64 text-gray-500">
-          <div className="w-8 h-8 border-2 border-gray-700 border-t-violet-500 rounded-full animate-spin" />
+        <div className="flex items-center justify-center h-64 text-gray-400">
+          <div className="w-8 h-8 border-2 border-gray-200 border-t-bracket-border rounded-full animate-spin" />
         </div>
       </AdminShell>
     );
@@ -74,91 +75,122 @@ export default function DashboardPage() {
     <AdminShell>
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-white">Selamat datang 👋</h1>
-        <p className="text-gray-400 text-sm mt-1">Ini adalah ringkasan aktivitas website CV Pelangi UV hari ini.</p>
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-bracket-border/10 border border-bracket-border/20 text-bracket-border text-xs font-bold uppercase tracking-wider mb-2 font-mono">
+          Ikhtisar Aktivitas
+        </div>
+        <h1 className="text-2xl sm:text-3xl font-heading font-extrabold text-gray-900 tracking-tight">
+          Selamat datang kembali 👋
+        </h1>
+        <p className="text-gray-600 text-xs sm:text-sm mt-1 font-sans">
+          Ringkasan aktivitas website, pesan calon klien, dan koleksi galeri finishing CV Pelangi UV.
+        </p>
       </div>
 
       {/* Stats Grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <StatCard icon="photo_library" label="Foto di Galeri" value={gallery.length} color="text-violet-400" />
-        <StatCard icon="inbox" label="Total Lead Masuk" value={leads.length} color="text-blue-400" />
+        <StatCard
+          icon="photo_library"
+          label="Foto di Galeri"
+          value={gallery.length}
+          color="text-bracket-border"
+        />
+        <StatCard
+          icon="inbox"
+          label="Total Lead Masuk"
+          value={leads.length}
+          color="text-blue-600"
+        />
         <StatCard
           icon="mark_unread_chat_alt"
           label="Lead Baru"
           value={newLeads}
-          color="text-yellow-400"
+          color="text-bracket-border"
           sub={newLeads > 0 ? "Butuh follow-up segera!" : "Semua sudah direspon ✓"}
         />
         <StatCard
           icon="star"
           label="Foto Featured"
           value={gallery.filter((g) => g.featured).length}
-          color="text-emerald-400"
-          sub="Tampil di halaman utama"
+          color="text-amber-500"
+          sub="Tampil di katalog unggulan"
         />
       </div>
 
       {/* Two columns */}
       <div className="grid lg:grid-cols-2 gap-6">
         {/* Recent Leads */}
-        <div className="bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden">
-          <div className="flex items-center justify-between px-5 py-4 border-b border-gray-800">
-            <h2 className="font-semibold text-white">Lead Terbaru</h2>
-            <a href="/admin/leads" className="text-xs text-violet-400 hover:text-violet-300 transition">
+        <div className="bg-white border border-gray-200/80 rounded-2xl overflow-hidden shadow-xs">
+          <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100 bg-gray-50/50">
+            <h2 className="font-heading font-bold text-gray-900 text-base">Pesan Lead Terbaru</h2>
+            <Link
+              href="/admin/leads"
+              className="text-xs font-semibold text-bracket-border hover:underline transition"
+            >
               Lihat semua →
-            </a>
+            </Link>
           </div>
-          <div className="divide-y divide-gray-800">
+          <div className="divide-y divide-gray-100">
             {leads.slice(0, 5).map((lead) => {
-              const s = STATUS_LABELS[lead.status];
+              const s = STATUS_LABELS[lead.status] || STATUS_LABELS.new;
               return (
-                <div key={lead.id} className="px-5 py-3.5 flex items-center justify-between gap-3">
+                <div key={lead.id} className="px-5 py-3.5 flex items-center justify-between gap-3 hover:bg-gray-50/80 transition">
                   <div className="min-w-0">
-                    <p className="text-sm font-medium text-white truncate">{lead.name}</p>
-                    <p className="text-xs text-gray-500 truncate">{lead.company} • {lead.service}</p>
+                    <p className="text-sm font-semibold text-gray-900 truncate">{lead.name}</p>
+                    <p className="text-xs text-gray-500 truncate mt-0.5">
+                      {lead.company || "Perseorangan"} • {lead.service}
+                    </p>
                   </div>
-                  <span className={`flex-shrink-0 text-xs px-2.5 py-1 rounded-full font-medium ${s.color}`}>
+                  <span className={`shrink-0 text-[11px] px-2.5 py-1 rounded-full font-semibold ${s.color}`}>
                     {s.label}
                   </span>
                 </div>
               );
             })}
             {leads.length === 0 && (
-              <p className="text-center text-gray-600 text-sm py-8">Belum ada lead masuk.</p>
+              <p className="text-center text-gray-400 text-sm py-10 font-sans">
+                Belum ada pesan lead masuk saat ini.
+              </p>
             )}
           </div>
         </div>
 
         {/* Recent Gallery */}
-        <div className="bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden">
-          <div className="flex items-center justify-between px-5 py-4 border-b border-gray-800">
-            <h2 className="font-semibold text-white">Foto Galeri Terbaru</h2>
-            <a href="/admin/galeri" className="text-xs text-violet-400 hover:text-violet-300 transition">
+        <div className="bg-white border border-gray-200/80 rounded-2xl overflow-hidden shadow-xs">
+          <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100 bg-gray-50/50">
+            <h2 className="font-heading font-bold text-gray-900 text-base">Koleksi Galeri Terbaru</h2>
+            <Link
+              href="/admin/galeri"
+              className="text-xs font-semibold text-bracket-border hover:underline transition"
+            >
               Kelola galeri →
-            </a>
+            </Link>
           </div>
-          <div className="p-4 grid grid-cols-3 gap-2">
+          <div className="p-4 grid grid-cols-3 gap-3">
             {gallery.slice(0, 9).map((item) => (
-              <div key={item.id} className="aspect-square rounded-lg overflow-hidden bg-gray-800 relative group">
+              <div
+                key={item.id}
+                className="aspect-square rounded-xl overflow-hidden bg-gray-100 relative group border border-gray-200/80"
+              >
                 {item.imageUrl && (
-                  // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={item.imageUrl}
                     alt={item.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                 )}
                 {item.featured && (
-                  <div className="absolute top-1 right-1 w-4 h-4 bg-yellow-500 rounded-full flex items-center justify-center">
-                    <span className="material-symbols-outlined text-black text-xs">star</span>
+                  <div className="absolute top-1.5 right-1.5 w-5 h-5 bg-amber-400 rounded-full flex items-center justify-center shadow-xs">
+                    <span className="material-symbols-outlined text-black text-xs font-bold">star</span>
                   </div>
                 )}
               </div>
             ))}
             {gallery.length === 0 && (
-              <div className="col-span-3 py-8 text-center text-gray-600 text-sm">
+              <div className="col-span-3 py-10 text-center text-gray-400 text-sm">
                 Belum ada foto di galeri.<br />
-                <a href="/admin/galeri" className="text-violet-400 hover:underline">Upload foto pertama →</a>
+                <Link href="/admin/galeri" className="text-bracket-border hover:underline mt-1 inline-block font-semibold">
+                  Upload foto pertama →
+                </Link>
               </div>
             )}
           </div>

@@ -6,6 +6,7 @@
 
 import fs from "fs";
 import path from "path";
+import { CAREER_JOBS, CareerJob } from "@/data/careers";
 
 // ---------------------------------------------------------------------------
 // Paths
@@ -155,3 +156,42 @@ export function getSettings(): SiteSettings {
 export function saveSettings(settings: SiteSettings) {
   writeJSON("settings", settings);
 }
+
+// ---------------------------------------------------------------------------
+// Jobs CRUD (Lowongan Kerja)
+// ---------------------------------------------------------------------------
+export type CareerJobItem = CareerJob & {
+  createdAt?: string;
+};
+
+export function getJobs(): CareerJobItem[] {
+  return readJSON<CareerJobItem[]>("jobs", CAREER_JOBS);
+}
+
+export function saveJobs(jobs: CareerJobItem[]) {
+  writeJSON("jobs", jobs);
+}
+
+export function addJobItem(job: Omit<CareerJobItem, "id" | "createdAt">): CareerJobItem {
+  const jobs = getJobs();
+  const idSlug = job.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+  const newJob: CareerJobItem = {
+    ...job,
+    id: `${idSlug || "posisi"}-${Date.now().toString().slice(-4)}`,
+    createdAt: new Date().toISOString(),
+  };
+  jobs.unshift(newJob);
+  saveJobs(jobs);
+  return newJob;
+}
+
+export function updateJobItem(id: string, patch: Partial<CareerJobItem>) {
+  const jobs = getJobs().map((j) => (j.id === id ? { ...j, ...patch } : j));
+  saveJobs(jobs);
+}
+
+export function deleteJobItem(id: string) {
+  const jobs = getJobs().filter((j) => j.id !== id);
+  saveJobs(jobs);
+}
+

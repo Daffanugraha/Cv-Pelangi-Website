@@ -50,8 +50,8 @@ export default function AdminPengaturanPage() {
   if (loading) {
     return (
       <AdminShell>
-        <div className="flex items-center justify-center h-64">
-          <div className="w-8 h-8 border-2 border-gray-700 border-t-violet-500 rounded-full animate-spin" />
+        <div className="flex items-center justify-center h-64 text-gray-400">
+          <div className="w-8 h-8 border-2 border-gray-200 border-t-bracket-border rounded-full animate-spin" />
         </div>
       </AdminShell>
     );
@@ -62,100 +62,106 @@ export default function AdminPengaturanPage() {
       <div className="max-w-2xl">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-xl font-bold text-white">Pengaturan Website</h1>
-          <p className="text-gray-400 text-sm mt-0.5">Ubah konfigurasi website tanpa perlu menyentuh kode.</p>
+          <div className="inline-flex items-center gap-2 px-3 py-0.5 rounded-full bg-bracket-border/10 text-bracket-border text-xs font-bold uppercase tracking-wider mb-1 font-mono">
+            Konfigurasi Sistem
+          </div>
+          <h1 className="text-xl sm:text-2xl font-heading font-extrabold text-gray-900">Pengaturan Website Pelangi UV</h1>
+          <p className="text-gray-500 text-xs sm:text-sm mt-0.5 font-sans">Kelola parameter operasional, kontak hotline, dan pengumuman siaran website.</p>
         </div>
 
         {/* Success Toast */}
         {saved && (
-          <div className="mb-5 flex items-center gap-3 bg-emerald-950 border border-emerald-800 rounded-xl px-4 py-3">
-            <span className="material-symbols-outlined text-emerald-400">check_circle</span>
-            <p className="text-sm text-emerald-300 font-medium">Pengaturan berhasil disimpan!</p>
+          <div className="mb-5 flex items-center gap-3 bg-emerald-50 border border-emerald-200 rounded-2xl px-4 py-3 animate-fade-in shadow-xs">
+            <span className="material-symbols-outlined text-emerald-600">check_circle</span>
+            <p className="text-xs sm:text-sm text-emerald-800 font-semibold font-sans">Pengaturan berhasil disimpan ke sistem!</p>
           </div>
         )}
 
         {/* Section: Banner Pengumuman */}
-        <div className="bg-gray-900 border border-gray-800 rounded-2xl p-5 mb-4">
+        <div className="bg-white border border-gray-200/80 rounded-2xl p-5 sm:p-6 mb-5 shadow-xs">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h2 className="font-semibold text-white">Banner Pengumuman</h2>
-              <p className="text-xs text-gray-500 mt-0.5">Tampilkan teks pengumuman di bagian atas website.</p>
+              <h2 className="font-heading font-bold text-gray-900 text-base">Banner Siaran Pengumuman</h2>
+              <p className="text-xs text-gray-500 mt-0.5 font-sans">Tampilkan pita informasi prioritas di bagian atas seluruh halaman website.</p>
             </div>
             {/* Toggle */}
             <button
               onClick={() => set("bannerEnabled", !settings.bannerEnabled)}
-              className={`relative w-11 h-6 rounded-full transition-colors flex-shrink-0 ${
-                settings.bannerEnabled ? "bg-violet-600" : "bg-gray-700"
+              className={`relative w-12 h-6 rounded-full transition-colors shrink-0 cursor-pointer ${
+                settings.bannerEnabled ? "bg-bracket-border shadow-xs" : "bg-gray-300"
               }`}
             >
-              <span className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform ${
-                settings.bannerEnabled ? "translate-x-5" : "translate-x-0"
+              <span className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform shadow-xs ${
+                settings.bannerEnabled ? "translate-x-6" : "translate-x-0"
               }`} />
             </button>
           </div>
           {settings.bannerEnabled && (
-            <div>
-              <label className="block text-sm text-gray-300 mb-1.5">Teks Banner</label>
+            <div className="mt-3 pt-3 border-t border-gray-100 animate-fade-in">
+              <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5 font-mono">Teks Pengumuman</label>
               <textarea
                 value={settings.bannerText}
                 onChange={(e) => set("bannerText", e.target.value)}
                 rows={2}
-                className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-2.5 text-white text-sm placeholder-gray-500 focus:outline-none focus:border-violet-500 transition resize-none"
+                className="w-full bg-white border border-gray-300 rounded-xl px-4 py-2.5 text-gray-900 text-sm placeholder-gray-400 focus:outline-none focus:border-bracket-border focus:ring-1 focus:ring-bracket-border transition resize-none font-sans"
                 placeholder="Tulis pesan pengumuman di sini..."
               />
               {/* Preview */}
-              <div className="mt-3 bg-violet-600 text-white text-xs text-center py-2 px-4 rounded-lg">
-                📢 {settings.bannerText || "Teks banner akan tampil di sini."}
+              <div className="mt-3 bg-bracket-border text-white text-xs font-medium text-center py-2.5 px-4 rounded-xl shadow-xs flex items-center justify-center gap-2">
+                <span className="material-symbols-outlined text-sm">campaign</span>
+                <span>{settings.bannerText || "Teks banner akan tampil di sini."}</span>
               </div>
             </div>
           )}
         </div>
 
         {/* Section: Kontak & WhatsApp */}
-        <div className="bg-gray-900 border border-gray-800 rounded-2xl p-5 mb-4">
-          <h2 className="font-semibold text-white mb-4">Nomor WhatsApp Utama</h2>
+        <div className="bg-white border border-gray-200/80 rounded-2xl p-5 sm:p-6 mb-5 shadow-xs">
+          <h2 className="font-heading font-bold text-gray-900 text-base mb-1">Nomor WhatsApp Hotline Resmi</h2>
+          <p className="text-xs text-gray-500 mb-4 font-sans">Nomor tujuan untuk tombol konsultasi dan chat cepat di website.</p>
           <div>
-            <label className="block text-sm text-gray-300 mb-1.5">No. WA (format: 628xxx)</label>
+            <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5 font-mono">No. WhatsApp (Format: 628xxx)</label>
             <div className="relative">
-              <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-xl">chat</span>
+              <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-xl pointer-events-none">chat</span>
               <input
                 type="text"
                 value={settings.waNumber}
                 onChange={(e) => set("waNumber", e.target.value)}
-                className="w-full bg-gray-800 border border-gray-700 rounded-xl pl-10 pr-4 py-2.5 text-white text-sm placeholder-gray-500 focus:outline-none focus:border-violet-500 transition"
+                className="w-full bg-white border border-gray-300 rounded-xl pl-11 pr-4 py-2.5 text-gray-900 text-sm placeholder-gray-400 focus:outline-none focus:border-bracket-border focus:ring-1 focus:ring-bracket-border transition font-mono"
                 placeholder="6282231019363"
               />
             </div>
-            <p className="text-xs text-gray-600 mt-1.5">Contoh: 6282231019363 (tanpa tanda + atau spasi)</p>
+            <p className="text-xs text-gray-400 mt-1.5 font-mono">Contoh: 6282231019363 (tanpa tanda + atau spasi)</p>
           </div>
         </div>
 
         {/* Section: Jam Operasional */}
-        <div className="bg-gray-900 border border-gray-800 rounded-2xl p-5 mb-4">
-          <h2 className="font-semibold text-white mb-4">Jam Operasional Pabrik</h2>
+        <div className="bg-white border border-gray-200/80 rounded-2xl p-5 sm:p-6 mb-6 shadow-xs">
+          <h2 className="font-heading font-bold text-gray-900 text-base mb-1">Jam Operasional Fasilitas Pabrik</h2>
+          <p className="text-xs text-gray-500 mb-4 font-sans">Informasi jam kerja yang ditampilkan di footer dan halaman kontak.</p>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm text-gray-300 mb-1.5">Jam Kerja Normal</label>
+              <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5 font-mono">Jam Kerja Normal</label>
               <div className="relative">
-                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-xl">schedule</span>
+                <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-xl pointer-events-none">schedule</span>
                 <input
                   type="text"
                   value={settings.operationalHours}
                   onChange={(e) => set("operationalHours", e.target.value)}
-                  className="w-full bg-gray-800 border border-gray-700 rounded-xl pl-10 pr-4 py-2.5 text-white text-sm placeholder-gray-500 focus:outline-none focus:border-violet-500 transition"
+                  className="w-full bg-white border border-gray-300 rounded-xl pl-11 pr-4 py-2.5 text-gray-900 text-sm placeholder-gray-400 focus:outline-none focus:border-bracket-border focus:ring-1 focus:ring-bracket-border transition font-sans"
                   placeholder="Senin – Sabtu: 08.00 – 17.00 WIB"
                 />
               </div>
             </div>
             <div>
-              <label className="block text-sm text-gray-300 mb-1.5">Tanggal Libur / Tutup (opsional)</label>
+              <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5 font-mono">Jadwal Libur Produksi (Opsional)</label>
               <div className="relative">
-                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-xl">event_busy</span>
+                <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-xl pointer-events-none">event_busy</span>
                 <input
                   type="text"
                   value={settings.closedDates}
                   onChange={(e) => set("closedDates", e.target.value)}
-                  className="w-full bg-gray-800 border border-gray-700 rounded-xl pl-10 pr-4 py-2.5 text-white text-sm placeholder-gray-500 focus:outline-none focus:border-violet-500 transition"
+                  className="w-full bg-white border border-gray-300 rounded-xl pl-11 pr-4 py-2.5 text-gray-900 text-sm placeholder-gray-400 focus:outline-none focus:border-bracket-border focus:ring-1 focus:ring-bracket-border transition font-sans"
                   placeholder="cth: 1 Jan 2025, 31 Mar – 5 Apr 2025"
                 />
               </div>
@@ -167,17 +173,17 @@ export default function AdminPengaturanPage() {
         <button
           onClick={handleSave}
           disabled={saving}
-          className="w-full flex items-center justify-center gap-2 bg-violet-600 hover:bg-violet-500 disabled:opacity-50 text-white font-semibold py-3 rounded-2xl transition-colors"
+          className="w-full flex items-center justify-center gap-2 bg-bracket-border hover:bg-primary disabled:opacity-50 text-white font-bold py-3.5 rounded-2xl transition-all shadow-md shadow-bracket-border/20 cursor-pointer active:scale-98"
         >
           {saving ? (
             <>
               <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-              Menyimpan...
+              <span className="text-sm">Menyimpan Perubahan...</span>
             </>
           ) : (
             <>
               <span className="material-symbols-outlined">save</span>
-              Simpan Semua Pengaturan
+              <span className="text-sm">Simpan Semua Pengaturan</span>
             </>
           )}
         </button>

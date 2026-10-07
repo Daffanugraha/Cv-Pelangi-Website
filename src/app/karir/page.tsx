@@ -1,6 +1,9 @@
 import React from "react";
 import type { Metadata } from "next";
 import KarirPageContent from "@/components/sections/karir/KarirPageContent";
+import { getJobs } from "@/lib/admin/db";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Karir & Rekrutmen - CV Pelangi UV | Peluang Kerja Industri Percetakan",
@@ -18,5 +21,7 @@ export const metadata: Metadata = {
 };
 
 export default function KarirPage() {
-  return <KarirPageContent />;
+  const jobs = getJobs();
+  return <KarirPageContent initialJobs={jobs} />;
 }
+

@@ -1,20 +1,37 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import KarirHero from "./KarirHero";
 import PelangiLifeSection from "./PelangiLifeSection";
 import KarirJobListings from "./KarirJobListings";
 import KarirApplyModal from "./KarirApplyModal";
 import { CAREER_JOBS, CareerJob } from "@/data/careers";
 
-export default function KarirPageContent() {
+interface KarirPageContentProps {
+  initialJobs?: CareerJob[];
+}
+
+export default function KarirPageContent({ initialJobs }: KarirPageContentProps) {
+  const [jobs, setJobs] = useState<CareerJob[]>(initialJobs && initialJobs.length > 0 ? initialJobs : CAREER_JOBS);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedDivision, setSelectedDivision] = useState("ALL");
   const [selectedJobToApply, setSelectedJobToApply] = useState<CareerJob | null>(null);
 
+  // Sync with /api/jobs in case updated from admin
+  useEffect(() => {
+    fetch("/api/jobs")
+      .then((res) => res.ok ? res.json() : null)
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setJobs(data);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
   // Filter jobs based on search query & selected division
   const filteredJobs = useMemo(() => {
-    return CAREER_JOBS.filter((job) => {
+    return jobs.filter((job) => {
       const matchDivision =
         selectedDivision === "ALL" || job.division === selectedDivision;
       const matchSearch =
@@ -23,7 +40,7 @@ export default function KarirPageContent() {
         job.qualifications.some((q) => q.toLowerCase().includes(searchQuery.toLowerCase()));
       return matchDivision && matchSearch;
     });
-  }, [searchQuery, selectedDivision]);
+  }, [jobs, searchQuery, selectedDivision]);
 
   return (
     <div className="w-full min-h-screen bg-surface-canvas text-text-body font-sans antialiased selection:bg-bracket-border selection:text-white">
@@ -33,7 +50,7 @@ export default function KarirPageContent() {
         setSearchQuery={setSearchQuery}
         selectedDivision={selectedDivision}
         setSelectedDivision={setSelectedDivision}
-        totalOpenJobs={CAREER_JOBS.length}
+        totalOpenJobs={jobs.filter((j) => j.isOpen).length}
       />
 
       {/* 2. CV Pelangi Life (Instagram Reels Activities Section) */}
