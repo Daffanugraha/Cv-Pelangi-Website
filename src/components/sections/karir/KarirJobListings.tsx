@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { CareerJob } from "@/data/careers";
 
 interface KarirJobListingsProps {
@@ -10,6 +10,31 @@ interface KarirJobListingsProps {
 
 export default function KarirJobListings({ jobs, onApply }: KarirJobListingsProps) {
   const [expandedId, setExpandedId] = useState<string | null>(jobs[0]?.id || null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 4;
+
+  // Reset page saat filter/search pekerjaan berubah
+  useEffect(() => {
+    setCurrentPage(1);
+    setExpandedId(null);
+  }, [jobs]);
+
+  const totalPages = Math.ceil(jobs.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, jobs.length);
+
+  const paginatedJobs = useMemo(() => {
+    return jobs.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  }, [jobs, startIndex]);
+
+  const handlePageChange = (page: number) => {
+    if (page < 1 || page > totalPages) return;
+    setCurrentPage(page);
+    const targetEl = document.getElementById("posisi-terbuka");
+    if (targetEl) {
+      targetEl.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
 
   const toggleExpand = (id: string) => {
     setExpandedId(expandedId === id ? null : id);
@@ -50,7 +75,7 @@ export default function KarirJobListings({ jobs, onApply }: KarirJobListingsProp
 
   return (
     <div className="space-y-4">
-      {jobs.map((job) => {
+      {paginatedJobs.map((job) => {
         const isExpanded = expandedId === job.id;
         return (
           <div
@@ -157,6 +182,64 @@ export default function KarirJobListings({ jobs, onApply }: KarirJobListingsProp
           </div>
         );
       })}
+
+      {/* Pagination Controls */}
+      {totalPages > 1 && (
+        <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-surface-container mt-6">
+          <p className="text-xs text-text-muted font-sans order-2 sm:order-1">
+            Menampilkan <span className="font-semibold text-on-surface">{startIndex + 1}</span> -{" "}
+            <span className="font-semibold text-on-surface">{endIndex}</span> dari{" "}
+            <span className="font-semibold text-on-surface">{jobs.length}</span> posisi
+          </p>
+
+          <div className="flex items-center gap-1.5 order-1 sm:order-2">
+            <button
+              type="button"
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+              className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer ${
+                currentPage === 1
+                  ? "text-text-muted/40 bg-surface-container/30 cursor-not-allowed"
+                  : "text-text-body bg-surface-neutral-alt hover:bg-surface-container hover:text-on-surface"
+              }`}
+            >
+              <span className="material-symbols-outlined text-sm">chevron_left</span>
+              <span>Sebelumnya</span>
+            </button>
+
+            <div className="flex items-center gap-1">
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+                <button
+                  key={pageNum}
+                  type="button"
+                  onClick={() => handlePageChange(pageNum)}
+                  className={`w-8 h-8 rounded-lg text-xs font-semibold transition cursor-pointer flex items-center justify-center ${
+                    currentPage === pageNum
+                      ? "bg-bracket-border text-white shadow-xs"
+                      : "text-text-muted bg-surface-neutral-alt hover:bg-surface-container hover:text-on-surface"
+                  }`}
+                >
+                  {pageNum}
+                </button>
+              ))}
+            </div>
+
+            <button
+              type="button"
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer ${
+                currentPage === totalPages
+                  ? "text-text-muted/40 bg-surface-container/30 cursor-not-allowed"
+                  : "text-text-body bg-surface-neutral-alt hover:bg-surface-container hover:text-on-surface"
+              }`}
+            >
+              <span>Selanjutnya</span>
+              <span className="material-symbols-outlined text-sm">chevron_right</span>
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -58,7 +58,7 @@ export default function BlogGrid({
                 key={art.id}
                 className="flex flex-col h-full rounded-3xl bg-surface-canvas overflow-hidden border border-divider-tint/50 shadow-[0_10px_30px_-10px_rgba(246,84,86,0.08),0_4px_12px_rgba(0,0,0,0.03)] hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group"
               >
-                {/* Image Container with Category Badge */}
+                {/* Image Container Clean (Tanpa Tag Menempel) */}
                 <Link
                   href={`/blog/${art.slug}`}
                   className="relative h-56 w-full overflow-hidden bg-surface-container cursor-pointer block"
@@ -67,9 +67,6 @@ export default function BlogGrid({
                     className="w-full h-full bg-cover bg-center group-hover:scale-105 transition-transform duration-500"
                     style={{ backgroundImage: `url('${art.img}')` }}
                   />
-                  <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-surface-canvas/95 backdrop-blur-md text-bracket-border font-label-meta text-xs font-bold shadow-sm border border-divider-tint/40">
-                    {art.category}
-                  </span>
                 </Link>
 
                 {/* Content Area */}
@@ -77,6 +74,8 @@ export default function BlogGrid({
                   <div className="flex flex-col gap-3">
                     {/* Meta info */}
                     <div className="flex items-center gap-2 text-text-muted font-label-meta text-xs">
+                      <span className="text-bracket-border font-bold">{art.category}</span>
+                      <span>•</span>
                       <span>{art.date}</span>
                       <span>•</span>
                       <span>{art.views}</span>

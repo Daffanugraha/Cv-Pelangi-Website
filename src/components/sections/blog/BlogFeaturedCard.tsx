@@ -18,7 +18,7 @@ export default function BlogFeaturedCard({
       <div className="max-w-[1440px] mx-auto px-6 lg:px-20">
         <div className="w-full rounded-3xl bg-surface-canvas overflow-hidden border border-divider-tint/60 shadow-[0_10px_30px_-10px_rgba(246,84,86,0.12),0_4px_16px_rgba(0,0,0,0.04)] hover:shadow-2xl transition-all duration-300">
           <div className="grid grid-cols-1 lg:grid-cols-12 items-stretch">
-            {/* Image Column */}
+            {/* Image Column Clean */}
             <Link
               href={`/blog/${article.slug}`}
               className="lg:col-span-6 relative min-h-[320px] lg:min-h-[460px] overflow-hidden group cursor-pointer block"
@@ -28,14 +28,6 @@ export default function BlogFeaturedCard({
                 style={{ backgroundImage: `url('${article.img}')` }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-navbar-black/70 via-transparent to-transparent lg:hidden" />
-
-              {/* Badge Pilihan Redaksi */}
-              <div className="absolute top-4 left-4 bg-navbar-black/85 backdrop-blur-md px-4 py-2 rounded-full flex items-center gap-2 text-surface text-label-meta font-bold shadow-md">
-                <span translate="no" className="material-symbols-outlined notranslate text-accent-gold text-base">
-                  stars
-                </span>
-                <span>Pilihan Redaksi</span>
-              </div>
             </Link>
 
             {/* Content Column */}
@@ -43,6 +35,12 @@ export default function BlogFeaturedCard({
               <div className="flex flex-col gap-4">
                 {/* Category & Meta */}
                 <div className="flex flex-wrap items-center gap-3">
+                  <span className="px-3 py-1 rounded-full bg-navbar-black text-white font-label-meta text-xs font-bold flex items-center gap-1 shadow-xs">
+                    <span translate="no" className="material-symbols-outlined notranslate text-accent-gold text-xs">
+                      stars
+                    </span>
+                    <span>Pilihan Redaksi</span>
+                  </span>
                   <span className="px-3.5 py-1 rounded-full bg-surface-tint-light text-bracket-border font-label-meta text-xs font-bold border border-divider-tint/50">
                     {article.category}
                   </span>

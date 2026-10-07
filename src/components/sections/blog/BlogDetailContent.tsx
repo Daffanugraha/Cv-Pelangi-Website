@@ -328,14 +328,11 @@ export default function BlogDetailContent({ article }: BlogDetailContentProps) {
                       alt={rArt.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
-                    <span className="absolute top-3 left-3 px-3 py-1 rounded-full bg-surface-canvas/95 backdrop-blur-md text-bracket-border font-label-meta text-[11px] font-bold shadow-xs">
-                      {rArt.category}
-                    </span>
                   </div>
                   <div className="p-5 flex flex-col justify-between flex-grow">
                     <div>
                       <span className="text-[11px] text-text-muted block mb-1.5">
-                        {rArt.date} • {rArt.views}
+                        <span className="text-bracket-border font-bold mr-1">{rArt.category}</span>• {rArt.date} • {rArt.views}
                       </span>
                       <h4 className="text-sm sm:text-base font-bold text-navbar-black group-hover:text-bracket-border transition-colors line-clamp-2 leading-snug mb-2">
                         {rArt.title}

@@ -43,14 +43,13 @@ export default function BlogSection() {
                   alt={art.title}
                   src={art.img}
                 />
-                <span className="absolute top-space-sm right-space-sm px-space-sm py-space-2xs rounded-full bg-navbar-black/80 backdrop-blur-sm text-on-secondary font-label-meta text-label-meta font-medium">
-                  {art.category || art.tag}
-                </span>
               </div>
 
               <div className="p-space-lg flex flex-col justify-between flex-grow">
                 <div>
                   <div className="flex items-center gap-space-sm font-label-meta text-label-meta text-text-muted mb-2">
+                    <span className="text-bracket-border font-bold">{art.category || art.tag}</span>
+                    <span>•</span>
                     <span>{art.date}</span>
                     <span>•</span>
                     <span className="flex items-center gap-1">

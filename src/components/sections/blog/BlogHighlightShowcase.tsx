@@ -63,7 +63,7 @@ export default function BlogHighlightShowcase({
           <div className="flex items-center gap-3">
             <span className="w-2.5 h-2.5 rounded-full bg-bracket-border animate-pulse" />
             <h2 className="font-headline-xl text-lg sm:text-xl lg:text-2xl text-white font-bold tracking-tight">
-              Sorotan Artikel Terpilih
+              Wawasan Unggulan
             </h2>
           </div>
 
@@ -138,12 +138,6 @@ export default function BlogHighlightShowcase({
                 />
                 <div className="absolute inset-0 bg-black/20 group-hover/img:bg-black/0 transition-colors" />
 
-                {/* Badge Kategori Topik */}
-                <div className="absolute top-4 left-4 bg-black/75 backdrop-blur-md px-3.5 py-1.5 rounded-full flex items-center gap-2 text-white text-xs font-bold border border-white/15 shadow-md">
-                  <span className="w-2 h-2 rounded-full bg-bracket-border" />
-                  <span>{currentArticle.category}</span>
-                </div>
-
                 {/* Hover Zoom Prompt */}
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 bg-black/30">
                   <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white/95 text-bracket-border font-bold text-xs shadow-lg backdrop-blur-sm">
@@ -153,7 +147,7 @@ export default function BlogHighlightShowcase({
                     >
                       menu_book
                     </span>
-                    Baca Artikel Pilihan
+                    Baca Selengkapnya
                   </span>
                 </div>
               </Link>
@@ -168,6 +162,10 @@ export default function BlogHighlightShowcase({
               >
                 {/* Meta Bar */}
                 <div className="flex flex-wrap items-center gap-3 mb-3 text-xs text-zinc-400">
+                  <span className="px-2.5 py-0.5 rounded-full bg-bracket-border/20 text-bracket-border font-bold text-xs border border-bracket-border/30">
+                    {currentArticle.category}
+                  </span>
+                  <span className="w-1 h-1 rounded-full bg-white/20" />
                   <span className="flex items-center gap-1">
                     <span
                       translate="no"
