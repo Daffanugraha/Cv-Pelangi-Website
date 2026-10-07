@@ -75,20 +75,16 @@ export default function Navbar() {
   const langDropdownRef = useRef<HTMLDivElement>(null);
   const mobileLangDropdownRef = useRef<HTMLDivElement>(null);
 
-  // Filter search items by query AND active tab
-  const filteredSearch = searchCatalog.filter((item) => {
-    const matchesQuery = !searchQuery.trim()
-      ? true
-      : item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.desc.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.type.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.tag.toLowerCase().includes(searchQuery.toLowerCase());
-
-    const matchesTab =
-      activeSearchTab === "semua" || item.categoryGroup === activeSearchTab;
-
-    return matchesQuery && matchesTab;
-  });
+  // Simple clean search filter
+  const filteredSearch = searchQuery.trim()
+    ? searchCatalog.filter(
+        (item) =>
+          item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          item.desc.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          item.type.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          item.tag.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : [];
 
   const handleSelectSearchResult = (targetLink: string, e?: React.SyntheticEvent) => {
     if (typeof window === "undefined") return;
@@ -740,45 +736,20 @@ export default function Navbar() {
         </svg>
       </div>
 
-      {/* Search Modal - Clean & Modern */}
+      {/* Search Modal - Ultra Clean Spotlight */}
       {isSearchOpen && (
         <div
-          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-start justify-center pt-14 sm:pt-20 px-3 sm:px-4 transition-all duration-200"
+          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-start justify-center pt-20 sm:pt-28 px-4 transition-all duration-200"
           onClick={(e) => {
             if (e.target === e.currentTarget) {
               setIsSearchOpen(false);
               setSearchQuery("");
-              setActiveSearchTab("semua");
             }
           }}
         >
-          <div className="w-full max-w-2xl bg-[#141416] border border-white/15 rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.8)] p-4 sm:p-5 relative text-white anim-fade-in flex flex-col max-h-[88vh]">
-            {/* Modal Header */}
-            <div className="flex items-center justify-between pb-3 mb-2.5 border-b border-white/10">
-              <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-bracket-border"></span>
-                <span className="text-xs uppercase tracking-wider text-white/70 font-bold">
-                  Pencarian Multi-Kategori Pelangi UV
-                </span>
-              </div>
-              <button
-                type="button"
-                onClick={() => {
-                  setIsSearchOpen(false);
-                  setSearchQuery("");
-                  setActiveSearchTab("semua");
-                }}
-                className="w-7 h-7 rounded-lg bg-white/5 hover:bg-white/15 text-white/60 hover:text-white flex items-center justify-center transition-all cursor-pointer"
-                aria-label="Tutup pencarian"
-              >
-                <span translate="no" className="material-symbols-outlined notranslate text-[18px]">
-                  close
-                </span>
-              </button>
-            </div>
-
-            {/* Clean Search Input */}
-            <div className="relative flex items-center mb-2.5">
+          <div className="w-full max-w-xl bg-[#141416] border border-white/15 rounded-2xl shadow-[0_24px_70px_rgba(0,0,0,0.85)] p-3.5 sm:p-4 text-white anim-fade-in flex flex-col max-h-[80vh]">
+            {/* Clean Input Box */}
+            <div className="relative flex items-center">
               <span
                 translate="no"
                 className="material-symbols-outlined notranslate absolute left-3.5 text-white/40 text-[20px]"
@@ -796,246 +767,117 @@ export default function Navbar() {
                   }
                 }}
                 autoFocus
-                placeholder="Cari layanan, bahan baku, artikel blog, lowongan karir, galeri..."
-                className="w-full h-11 pl-10 pr-9 rounded-xl bg-white/[0.04] border border-white/15 text-white placeholder-white/40 text-sm outline-none focus:border-bracket-border focus:bg-white/[0.07] transition-all"
+                placeholder="Ketik apa saja... (layanan, bahan, artikel, karir, galeri)"
+                className="w-full h-11 pl-10 pr-9 rounded-xl bg-white/[0.04] border border-white/10 text-white placeholder-white/35 text-sm outline-none focus:border-bracket-border focus:bg-white/[0.07] transition-all"
                 autoComplete="off"
               />
-              {searchQuery && (
+              {searchQuery ? (
                 <button
                   type="button"
                   onClick={() => setSearchQuery("")}
                   className="absolute right-3 text-white/40 hover:text-white cursor-pointer"
+                  title="Hapus pencarian"
                 >
                   <span translate="no" className="material-symbols-outlined notranslate text-[16px]">
                     close
                   </span>
                 </button>
-              )}
-            </div>
-
-            {/* Category Filter Chips */}
-            <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-2 pt-0.5 border-b border-white/10 shrink-0">
-              {searchCategories.map((cat) => (
-                <button
-                  key={cat.key}
-                  type="button"
-                  onClick={() => setActiveSearchTab(cat.key)}
-                  className={`px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap transition-all cursor-pointer ${
-                    activeSearchTab === cat.key
-                      ? "bg-bracket-border text-white shadow-xs"
-                      : "bg-white/5 hover:bg-white/10 text-white/65 hover:text-white border border-white/5"
-                  }`}
-                >
-                  {cat.label}
-                </button>
-              ))}
-            </div>
-
-            {/* Results or Clean Quick Links */}
-            <div className="overflow-y-auto no-scrollbar space-y-2 pt-2 flex-1 pr-0.5">
-              {searchQuery.trim() || activeSearchTab !== "semua" ? (
-                <div className="space-y-1.5">
-                  <div className="flex items-center justify-between px-1">
-                    <p className="text-[11px] uppercase tracking-wider text-white/40 font-semibold">
-                      Hasil Pencarian ({filteredSearch.length})
-                    </p>
-                    {activeSearchTab !== "semua" && (
-                      <span className="text-[11px] text-bracket-border capitalize font-medium">
-                        Kategori: {activeSearchTab}
-                      </span>
-                    )}
-                  </div>
-
-                  {filteredSearch.length === 0 ? (
-                    <div className="p-8 text-center rounded-xl bg-white/[0.02] border border-white/5 text-white/50 text-xs">
-                      <span translate="no" className="material-symbols-outlined notranslate text-3xl text-white/20 mb-2 block">
-                        search_off
-                      </span>
-                      <p className="mb-1 text-white/80 font-medium text-sm">
-                        Tidak ada hasil yang sesuai dengan kriteria
-                      </p>
-                      <p className="text-[12px] text-white/40 max-w-sm mx-auto">
-                        Coba gunakan kata kunci seperti &quot;foil&quot;, &quot;mesin&quot;, &quot;karir&quot;, &quot;laminasi&quot;, atau klik tab &quot;Semua&quot;.
-                      </p>
-                    </div>
-                  ) : (
-                    filteredSearch.map((item, idx) => (
-                      <Link
-                        key={idx}
-                        href={item.link}
-                        onClick={(e) => {
-                          handleSelectSearchResult(item.link, e);
-                        }}
-                        className="flex items-center justify-between p-3 rounded-xl bg-white/[0.03] hover:bg-white/[0.08] border border-white/5 hover:border-white/15 transition-all group"
-                      >
-                        <div className="min-w-0 pr-3 flex items-start gap-3">
-                          {/* Category Icon */}
-                          <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center shrink-0 group-hover:bg-bracket-border/20 group-hover:border-bracket-border/40 transition-colors">
-                            <span translate="no" className="material-symbols-outlined notranslate text-[18px] text-white/60 group-hover:text-bracket-border">
-                              {item.categoryGroup === "layanan"
-                                ? "auto_awesome"
-                                : item.categoryGroup === "bahan"
-                                ? "inventory_2"
-                                : item.categoryGroup === "artikel"
-                                ? "article"
-                                : item.categoryGroup === "karir"
-                                ? "work"
-                                : item.categoryGroup === "galeri"
-                                ? "photo_library"
-                                : item.categoryGroup === "momen"
-                                ? "celebration"
-                                : "link"}
-                            </span>
-                          </div>
-
-                          <div className="min-w-0">
-                            <div className="flex items-center gap-2 flex-wrap">
-                              <p className="text-sm font-semibold text-white group-hover:text-bracket-border transition-colors truncate">
-                                {item.title}
-                              </p>
-                              <span className="text-[10px] uppercase font-semibold px-2 py-0.5 rounded-full bg-white/10 text-white/70 border border-white/10 shrink-0">
-                                {item.tag}
-                              </span>
-                            </div>
-                            <p className="text-xs text-white/50 truncate mt-0.5">
-                              {item.desc}
-                            </p>
-                          </div>
-                        </div>
-
-                        <span
-                          translate="no"
-                          className="material-symbols-outlined notranslate text-[18px] text-white/30 group-hover:text-bracket-border group-hover:translate-x-0.5 transition-all shrink-0"
-                        >
-                          arrow_forward
-                        </span>
-                      </Link>
-                    ))
-                  )}
-                </div>
               ) : (
-                <div className="space-y-4">
-                  {/* Quick Sections Grid */}
-                  <div className="space-y-1.5">
-                    <p className="text-[11px] uppercase tracking-wider text-white/40 font-semibold px-1">
-                      Jelajahi Berdasarkan Kategori
-                    </p>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                      {[
-                        {
-                          title: "Layanan Jasa Finishing",
-                          desc: "Hot Stamp Foil, Spot UV, Laminasi Thermal, Pond",
-                          tab: "layanan",
-                          icon: "auto_awesome",
-                        },
-                        {
-                          title: "Katalog Bahan Baku",
-                          desc: "Master Roll Foil, Film BOPP, Lem, & Varnish",
-                          tab: "bahan",
-                          icon: "inventory_2",
-                        },
-                        {
-                          title: "Artikel Blog & Berita",
-                          desc: "Tips finishing cetak, info mesin, & kabar SPE",
-                          tab: "artikel",
-                          icon: "article",
-                        },
-                        {
-                          title: "Karir & Pelangi Life",
-                          desc: "Lowongan kerja terbuka & video dokumentasi",
-                          tab: "karir",
-                          icon: "work",
-                        },
-                        {
-                          title: "Galeri Produk & Kemasan",
-                          desc: "Sampel dus kosmetik, farmasi, & kemasan F&B",
-                          tab: "galeri",
-                          icon: "photo_library",
-                        },
-                        {
-                          title: "Momen & Dokumentasi",
-                          desc: "Surabaya Printing Expo & Employee Gathering",
-                          tab: "momen",
-                          icon: "celebration",
-                        },
-                      ].map((item, idx) => (
-                        <button
-                          key={idx}
-                          type="button"
-                          onClick={() => setActiveSearchTab(item.tab)}
-                          className="flex items-center justify-between p-2.5 rounded-xl bg-white/[0.03] hover:bg-white/[0.08] border border-white/5 hover:border-white/15 transition-all group text-left cursor-pointer"
-                        >
-                          <div className="flex items-center gap-2.5 min-w-0 pr-2">
-                            <span translate="no" className="material-symbols-outlined notranslate text-[18px] text-white/40 group-hover:text-bracket-border shrink-0">
-                              {item.icon}
-                            </span>
-                            <div className="min-w-0">
-                              <p className="text-xs font-semibold text-white group-hover:text-bracket-border transition-colors truncate">
-                                {item.title}
-                              </p>
-                              <p className="text-[11px] text-white/50 truncate mt-0.5">
-                                {item.desc}
-                              </p>
-                            </div>
-                          </div>
-                          <span
-                            translate="no"
-                            className="material-symbols-outlined notranslate text-[16px] text-white/30 group-hover:text-bracket-border transition-all shrink-0"
-                          >
-                            chevron_right
-                          </span>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
+                <button
+                  type="button"
+                  onClick={() => setIsSearchOpen(false)}
+                  className="absolute right-2.5 text-[11px] text-white/40 hover:text-white px-1.5 py-0.5 rounded bg-white/5 border border-white/10 cursor-pointer"
+                >
+                  ESC
+                </button>
+              )}
+            </div>
 
-                  {/* Clean Popular Search Keywords */}
-                  <div className="pt-2 border-t border-white/10 space-y-2">
-                    <p className="text-[11px] uppercase tracking-wider text-white/40 font-semibold px-1">
-                      Pencarian Cepat Populer
+            {/* Results List */}
+            <div className="overflow-y-auto no-scrollbar space-y-1 mt-3 flex-1 max-h-[380px]">
+              {searchQuery.trim() ? (
+                filteredSearch.length === 0 ? (
+                  <div className="py-10 text-center text-white/40 text-xs">
+                    <p className="text-white/70 font-medium mb-1">
+                      Tidak ditemukan untuk &quot;{searchQuery}&quot;
                     </p>
-                    <div className="flex flex-wrap gap-1.5">
-                      {[
-                        "Lowongan Karir",
-                        "Hot Stamp Foil",
-                        "Spot UV",
-                        "Mesin Pond",
-                        "Printing Expo",
-                        "BOPP Film",
-                        "Lem Food Grade",
-                        "Kemasan Kosmetik",
-                        "Pelangi Life",
-                        "Unduh PDF",
-                      ].map((tag) => (
-                        <button
-                          key={tag}
-                          type="button"
-                          onClick={() => setSearchQuery(tag)}
-                          className="px-2.5 py-1 rounded-full bg-white/5 hover:bg-bracket-border hover:text-white text-white/70 text-xs transition-colors cursor-pointer border border-white/10"
-                        >
-                          {tag}
-                        </button>
-                      ))}
-                    </div>
+                    <p className="text-[11px] text-white/40">
+                      Coba kata kunci lain seperti: foil, uv, pond, laminasi, karir, expo...
+                    </p>
                   </div>
+                ) : (
+                  filteredSearch.map((item, idx) => (
+                    <Link
+                      key={idx}
+                      href={item.link}
+                      onClick={(e) => {
+                        handleSelectSearchResult(item.link, e);
+                      }}
+                      className="flex items-center justify-between px-3 py-2.5 rounded-xl hover:bg-white/[0.06] border border-transparent hover:border-white/10 transition-all group"
+                    >
+                      <div className="min-w-0 pr-3">
+                        <div className="flex items-center gap-2">
+                          <p className="text-sm font-medium text-white group-hover:text-bracket-border transition-colors truncate">
+                            {item.title}
+                          </p>
+                          <span className="text-[10px] uppercase font-semibold px-2 py-0.5 rounded-full bg-white/10 text-white/60 shrink-0">
+                            {item.tag}
+                          </span>
+                        </div>
+                        <p className="text-xs text-white/45 truncate mt-0.5">
+                          {item.desc}
+                        </p>
+                      </div>
+
+                      <span
+                        translate="no"
+                        className="material-symbols-outlined notranslate text-[16px] text-white/20 group-hover:text-bracket-border group-hover:translate-x-0.5 transition-all shrink-0"
+                      >
+                        arrow_forward
+                      </span>
+                    </Link>
+                  ))
+                )
+              ) : (
+                /* Minimalis Clean Shortcuts saat input masih kosong */
+                <div className="py-2 px-1 space-y-1">
+                  <p className="text-[11px] uppercase tracking-wider text-white/35 font-semibold px-2 mb-1.5">
+                    Rekomendasi Cepat
+                  </p>
+                  {[
+                    { title: "Hot Stamp Foil Gold & Silver", tag: "Layanan", link: "/layanan?service=hotstamp" },
+                    { title: "Spot UV Vernis Kilap", tag: "Layanan", link: "/layanan?service=spotuv" },
+                    { title: "Lowongan Karir Terbuka", tag: "Karir", link: "/karir" },
+                    { title: "Katalog Bahan Baku Finishing", tag: "Bahan Baku", link: "/produk/bahan-baku" },
+                    { title: "Artikel & Tips Finishing Cetak", tag: "Blog", link: "/blog" },
+                    { title: "Galeri Hasil Produk Kemasan", tag: "Galeri", link: "/galeri/pengaplikasian-produk" },
+                    { title: "Dokumentasi Printing Expo (SPE)", tag: "Momen", link: "/galeri/momen" },
+                    { title: "Unduh Katalog Resmi (PDF)", tag: "PDF", link: "/katalog/katalog-pelangi-uv.pdf" },
+                  ].map((item, idx) => (
+                    <Link
+                      key={idx}
+                      href={item.link}
+                      onClick={(e) => {
+                        handleSelectSearchResult(item.link, e);
+                      }}
+                      className="flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/[0.06] transition-all group"
+                    >
+                      <span className="text-xs text-white/80 group-hover:text-white transition-colors truncate">
+                        {item.title}
+                      </span>
+                      <span className="text-[10px] text-white/40 group-hover:text-bracket-border px-1.5 py-0.5 rounded bg-white/5 shrink-0 transition-colors">
+                        {item.tag}
+                      </span>
+                    </Link>
+                  ))}
                 </div>
               )}
             </div>
 
-            {/* Clean Modal Footer */}
-            <div className="pt-3 mt-2 border-t border-white/10 flex items-center justify-between text-[11px] text-white/40 shrink-0">
-              <span className="flex items-center gap-1.5">
-                <kbd className="px-1.5 py-0.5 rounded bg-white/10 border border-white/20 text-[10px] text-white/80">
-                  ESC
-                </kbd>{" "}
-                untuk menutup
-              </span>
-              <span className="flex items-center gap-1.5">
-                <kbd className="px-1.5 py-0.5 rounded bg-white/10 border border-white/20 text-[10px] text-white/80">
-                  Enter
-                </kbd>{" "}
-                untuk memilih
-              </span>
+            {/* Subtle Footer */}
+            <div className="pt-2.5 mt-2 border-t border-white/10 flex items-center justify-between text-[11px] text-white/35 px-1">
+              <span>Navigasi langsung ke halaman terkait</span>
+              <span>Tekan <kbd className="text-[10px] text-white/60 bg-white/5 px-1.5 py-0.5 rounded border border-white/10">ESC</kbd> untuk keluar</span>
             </div>
           </div>
         </div>
