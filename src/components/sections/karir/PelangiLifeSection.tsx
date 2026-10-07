@@ -5,11 +5,11 @@ import { PELANGI_LIFE_REELS, PelangiLifeReel } from "@/data/careers";
 
 export default function PelangiLifeSection() {
   const [activeReel, setActiveReel] = useState<PelangiLifeReel | null>(null);
-  const [playerMode, setPlayerMode] = useState<"video" | "embed">("video");
+  const [playerMode, setPlayerMode] = useState<"video" | "embed">("embed");
 
   const handleOpenReel = (reel: PelangiLifeReel) => {
     setActiveReel(reel);
-    setPlayerMode("video");
+    setPlayerMode("embed");
   };
 
   return (
