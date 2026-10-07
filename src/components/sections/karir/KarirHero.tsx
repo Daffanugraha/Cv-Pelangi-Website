@@ -18,7 +18,6 @@ export default function KarirHero({
   setSelectedDivision,
   totalOpenJobs,
 }: KarirHeroProps) {
-  const [activeTab, setActiveTab] = useState<"search" | "recommend">("search");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   // Typewriter animation phrases for search bar
@@ -74,8 +73,17 @@ export default function KarirHero({
     setIsDropdownOpen(false);
   };
 
+  const divisionsList = [
+    { id: "ALL", label: "Semua Posisi" },
+    { id: "Finance", label: "Finance & Pajak" },
+    { id: "Production", label: "Produksi & Mesin" },
+    { id: "Warehouse", label: "Gudang & Logistik" },
+    { id: "Marketing", label: "Marketing & Sales" },
+    { id: "Operational", label: "Operasional & Maintenance" },
+  ];
+
   return (
-    <section className="w-full bg-navbar-black text-on-secondary relative pt-12 sm:pt-16 pb-20 sm:pb-24 border-b border-surface-canvas/10 overflow-hidden rounded-b-[40px] sm:rounded-b-[48px]">
+    <section className="w-full bg-navbar-black text-on-secondary relative pt-12 sm:pt-16 pb-16 sm:pb-20 border-b border-surface-canvas/10 overflow-hidden rounded-b-[40px] sm:rounded-b-[48px]">
       {/* Ambient Red Glow Accents (Tanpa Video Background) */}
       <div className="absolute -right-24 -top-24 w-96 h-96 rounded-full bg-bracket-border/25 blur-3xl pointer-events-none z-[1]" />
       <div className="absolute -left-20 bottom-0 w-80 h-80 rounded-full bg-bracket-border/15 blur-3xl pointer-events-none z-[1]" />
@@ -87,7 +95,7 @@ export default function KarirHero({
         {/* Breadcrumb Navigation */}
         <nav
           aria-label="Breadcrumb"
-          className="flex items-center gap-2 mb-6 sm:mb-8 font-label-meta text-label-meta justify-center"
+          className="flex items-center gap-2 mb-5 sm:mb-6 font-label-meta text-label-meta justify-center"
         >
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-surface-canvas/10 border border-surface-canvas/10 backdrop-blur-md">
             <Link
@@ -108,333 +116,139 @@ export default function KarirHero({
 
         {/* Hero Title & Subtitle */}
         <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
-          <h1 className="font-headline-xl text-[30px] sm:text-[40px] md:text-headline-xl text-on-secondary tracking-tight font-extrabold mb-4 leading-tight">
+          {/* Active Job Openings Badge */}
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-bracket-border/15 border border-bracket-border/30 text-bracket-border text-xs font-semibold mb-4 backdrop-blur-md">
+            <span className="w-2 h-2 rounded-full bg-bracket-border animate-pulse" />
+            <span>{totalOpenJobs} Posisi Terbuka untuk Anda</span>
+          </div>
+
+          <h1 className="font-headline-xl text-[28px] sm:text-[38px] md:text-headline-xl text-on-secondary tracking-tight font-extrabold mb-3 leading-tight">
             Peluang Karir &amp; Rekrutmen{" "}
             <span translate="no" className="notranslate text-bracket-border">
               Pelangi UV
             </span>
           </h1>
 
-          <p className="font-body-md text-[14px] sm:text-[16px] text-surface-dim leading-relaxed max-w-3xl mb-8">
-            Bergabunglah bersama keluarga besar industri finishing cetak presisi terdepan sejak 2004 di Kompleks Pergudangan Bizpark Sidoarjo. Bangun karir profesional Anda bersama lingkungan kerja yang bertumbuh, solid, dan berorientasi mutu kualitas tinggi.
+          <p className="font-body-md text-[14px] sm:text-[15px] text-surface-dim leading-relaxed max-w-2xl mb-8">
+            Bergabunglah bersama keluarga besar industri finishing cetak presisi terdepan sejak 2004 di Bizpark Sidoarjo. Bangun karir profesional Anda bersama lingkungan kerja yang solid dan berorientasi mutu.
           </p>
 
-          {/* Search & Recommendation Container */}
-          <div className="w-full max-w-3xl">
-            {/* Tab Switchers */}
-            <div className="inline-flex items-center p-1 rounded-full bg-surface-canvas/10 border border-surface-canvas/10 backdrop-blur-md mb-4">
-              <button
-                type="button"
-                onClick={() => setActiveTab("search")}
-                className={`px-4 sm:px-5 py-1.5 rounded-full text-xs sm:text-[13px] font-semibold transition-all duration-300 flex items-center gap-1.5 cursor-pointer ${
-                  activeTab === "search"
-                    ? "bg-bracket-border text-on-primary shadow-sm"
-                    : "text-surface-dim hover:text-on-primary"
-                }`}
+          {/* Search Container */}
+          <div className="w-full max-w-2xl">
+            <div className="relative">
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  setIsDropdownOpen(false);
+                }}
+                className="relative flex items-center bg-surface-neutral-alt/10 border border-surface-canvas/20 rounded-2xl p-1.5 sm:p-2 backdrop-blur-md shadow-2xl focus-within:border-bracket-border transition-colors"
               >
-                <span translate="no" className="material-symbols-outlined notranslate text-[16px]">
+                <span
+                  translate="no"
+                  className="material-symbols-outlined notranslate text-bracket-border text-[22px] sm:text-[24px] ml-3 mr-2 shrink-0"
+                >
                   search
                 </span>
-                Cari Posisi
-              </button>
-              <button
-                type="button"
-                onClick={() => setActiveTab("recommend")}
-                className={`px-4 sm:px-5 py-1.5 rounded-full text-xs sm:text-[13px] font-semibold transition-all duration-300 flex items-center gap-1.5 cursor-pointer ${
-                  activeTab === "recommend"
-                    ? "bg-bracket-border text-on-primary shadow-sm"
-                    : "text-surface-dim hover:text-on-primary"
-                }`}
-              >
-                <span translate="no" className="material-symbols-outlined notranslate text-[16px]">
-                  bolt
-                </span>
-                Divisi Unggulan
-              </button>
-            </div>
-
-            {/* TAB 1: Search Panel */}
-            {activeTab === "search" && (
-              <div className="relative animate-fadeIn">
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    setIsDropdownOpen(false);
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => {
+                    setSearchQuery(e.target.value);
+                    setIsDropdownOpen(true);
                   }}
-                  className="relative flex items-center bg-surface-neutral-alt/10 border border-surface-canvas/20 rounded-2xl p-2 backdrop-blur-md shadow-2xl focus-within:border-bracket-border transition-colors"
-                >
-                  <span
-                    translate="no"
-                    className="material-symbols-outlined notranslate text-bracket-border text-[22px] sm:text-[24px] ml-3 mr-2 shrink-0"
-                  >
-                    search
-                  </span>
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => {
-                      setSearchQuery(e.target.value);
-                      setIsDropdownOpen(true);
-                    }}
-                    onFocus={() => setIsDropdownOpen(true)}
-                    placeholder={placeholderText}
-                    className="flex-1 bg-transparent border-none text-on-secondary placeholder-text-muted text-sm sm:text-base focus:outline-none py-2 px-1"
-                  />
-                  {searchQuery && (
-                    <button
-                      type="button"
-                      onClick={() => setSearchQuery("")}
-                      className="text-text-muted hover:text-white px-2 cursor-pointer"
-                    >
-                      <span translate="no" className="material-symbols-outlined notranslate text-[18px]">
-                        close
-                      </span>
-                    </button>
-                  )}
+                  onFocus={() => setIsDropdownOpen(true)}
+                  placeholder={placeholderText}
+                  className="flex-1 bg-transparent border-none text-on-secondary placeholder-text-muted text-sm sm:text-base focus:outline-none py-2 px-1"
+                />
+                {searchQuery && (
                   <button
-                    type="submit"
-                    className="px-4 sm:px-5 py-2.5 rounded-xl bg-bracket-border hover:bg-primary text-on-primary font-cta-pill text-xs sm:text-cta-pill transition-all shrink-0 flex items-center gap-1.5 shadow-md cursor-pointer"
+                    type="button"
+                    onClick={() => setSearchQuery("")}
+                    className="text-text-muted hover:text-white px-2 cursor-pointer"
+                    aria-label="Hapus pencarian"
                   >
-                    <span className="hidden sm:inline">Cari Karir</span>
                     <span translate="no" className="material-symbols-outlined notranslate text-[18px]">
-                      arrow_forward
+                      close
                     </span>
                   </button>
-                </form>
-
-                {/* Instant Suggestion Dropdown */}
-                {isDropdownOpen && (
-                  <div className="absolute left-0 right-0 top-full mt-2 bg-navbar-dark/95 backdrop-blur-md border border-divider-tint/40 shadow-2xl rounded-2xl p-3 z-50 text-left">
-                    <div className="flex items-center justify-between text-[11px] font-bold text-text-muted px-2 py-1 uppercase tracking-wider">
-                      <span>Pilih Kategori Divisi:</span>
-                      <button
-                        type="button"
-                        onClick={() => setIsDropdownOpen(false)}
-                        className="text-text-muted hover:text-white cursor-pointer"
-                      >
-                        Tutup
-                      </button>
-                    </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-1">
-                      {[
-                        { id: "ALL", title: "Semua Posisi Terbuka", desc: `${totalOpenJobs} lowongan aktif`, icon: "work" },
-                        { id: "Finance", title: "Finance & Pajak", desc: "Admin Pajak, Akuntansi, Brevet", icon: "account_balance" },
-                        { id: "Marketing", title: "Marketing & Sales", desc: "Account Executive B2B Percetakan", icon: "campaign" },
-                        { id: "Production", title: "Produksi & Mesin", desc: "Operator Spot UV, Foil, & Laminasi", icon: "precision_manufacturing" },
-                        { id: "Warehouse", title: "Gudang & Logistik", desc: "Checker Plano & Penataan FIFO", icon: "inventory_2" },
-                        { id: "Operational", title: "Operasional & Maintenance", desc: "Teknisi Mesin & Admin SPK", icon: "build" },
-                      ].map((item) => (
-                        <button
-                          key={item.id}
-                          type="button"
-                          onClick={() => handleSelectDivision(item.id)}
-                          className="text-left p-2.5 rounded-xl hover:bg-surface-canvas/10 border border-transparent hover:border-bracket-border/40 flex items-start gap-2.5 text-on-secondary transition-all cursor-pointer"
-                        >
-                          <span translate="no" className="material-symbols-outlined notranslate text-[20px] text-bracket-border shrink-0 mt-0.5">
-                            {item.icon}
-                          </span>
-                          <div>
-                            <div className="text-[13px] font-semibold text-on-secondary">
-                              {item.title}
-                            </div>
-                            <div className="text-[11px] text-surface-dim line-clamp-1">
-                              {item.desc}
-                            </div>
-                          </div>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
                 )}
-
-                {/* Popular Tags */}
-                <div className="flex flex-wrap items-center justify-center gap-2 mt-4">
-                  <span className="text-[12px] font-label-meta text-surface-dim/80 mr-1">
-                    Paling Dicari:
+                <button
+                  type="submit"
+                  className="px-4 sm:px-5 py-2.5 rounded-xl bg-bracket-border hover:bg-primary text-on-primary font-cta-pill text-xs sm:text-cta-pill transition-all shrink-0 flex items-center gap-1.5 shadow-md cursor-pointer"
+                >
+                  <span>Cari</span>
+                  <span translate="no" className="material-symbols-outlined notranslate text-[18px]">
+                    arrow_forward
                   </span>
-                  <button
-                    type="button"
-                    onClick={() => handleSelectDivision("Finance")}
-                    className={`px-3 py-1 rounded-full text-[12px] font-label-meta border transition-all cursor-pointer ${
-                      selectedDivision === "Finance"
-                        ? "bg-bracket-border text-on-primary border-bracket-border"
-                        : "bg-surface-canvas/10 hover:bg-bracket-border hover:text-on-primary text-surface-dim border-surface-canvas/10"
-                    }`}
-                  >
-                    Admin Pajak &amp; Finance
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => handleSelectDivision("Production")}
-                    className={`px-3 py-1 rounded-full text-[12px] font-label-meta border transition-all cursor-pointer ${
-                      selectedDivision === "Production"
-                        ? "bg-bracket-border text-on-primary border-bracket-border"
-                        : "bg-surface-canvas/10 hover:bg-bracket-border hover:text-on-primary text-surface-dim border-surface-canvas/10"
-                    }`}
-                  >
-                    Operator Mesin Finishing
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => handleSelectDivision("Warehouse")}
-                    className={`px-3 py-1 rounded-full text-[12px] font-label-meta border transition-all cursor-pointer ${
-                      selectedDivision === "Warehouse"
-                        ? "bg-bracket-border text-on-primary border-bracket-border"
-                        : "bg-surface-canvas/10 hover:bg-bracket-border hover:text-on-primary text-surface-dim border-surface-canvas/10"
-                    }`}
-                  >
-                    Checker Gudang
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => handleSelectDivision("Marketing")}
-                    className={`px-3 py-1 rounded-full text-[12px] font-label-meta border transition-all cursor-pointer ${
-                      selectedDivision === "Marketing"
-                        ? "bg-bracket-border text-on-primary border-bracket-border"
-                        : "bg-surface-canvas/10 hover:bg-bracket-border hover:text-on-primary text-surface-dim border-surface-canvas/10"
-                    }`}
-                  >
-                    Marketing Executive
-                  </button>
-                  {selectedDivision !== "ALL" && (
+                </button>
+              </form>
+
+              {/* Instant Suggestion Dropdown */}
+              {isDropdownOpen && (
+                <div className="absolute left-0 right-0 top-full mt-2 bg-navbar-dark/95 backdrop-blur-md border border-divider-tint/40 shadow-2xl rounded-2xl p-3 z-50 text-left">
+                  <div className="flex items-center justify-between text-[11px] font-bold text-text-muted px-2 py-1 uppercase tracking-wider">
+                    <span>Filter Kategori Cepat:</span>
                     <button
                       type="button"
-                      onClick={() => handleSelectDivision("ALL")}
-                      className="px-3 py-1 rounded-full text-[12px] font-label-meta text-bracket-border bg-bracket-border/10 border border-bracket-border/30 hover:bg-bracket-border hover:text-white transition-all cursor-pointer"
+                      onClick={() => setIsDropdownOpen(false)}
+                      className="text-text-muted hover:text-white cursor-pointer"
                     >
-                      Reset Filter
+                      Tutup
                     </button>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {/* TAB 2: Quick Recommendations */}
-            {activeTab === "recommend" && (
-              <div className="animate-fadeIn">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-left">
-                  {/* Rekomendasi 1: Finance */}
-                  <div
-                    onClick={() => handleSelectDivision("Finance")}
-                    className="p-3.5 rounded-2xl bg-surface-neutral-alt/10 border border-surface-canvas/20 backdrop-blur-md hover:border-bracket-border transition-all cursor-pointer group"
-                  >
-                    <div className="flex items-center justify-between mb-1.5">
-                      <span
-                        translate="no"
-                        className="notranslate px-2 py-0.5 rounded-md bg-action-whatsapp/20 text-action-whatsapp font-label-meta text-[11px] font-semibold flex items-center gap-1"
-                      >
-                        <span translate="no" className="material-symbols-outlined notranslate text-[13px]">
-                          verified
-                        </span>
-                        Finance &amp; Pajak
-                      </span>
-                    </div>
-                    <h4
-                      translate="no"
-                      className="notranslate font-headline-sm text-[14px] font-bold text-on-secondary group-hover:text-bracket-border transition-colors flex items-center justify-between"
-                    >
-                      Admin Pajak &amp; Keuangan
-                      <span translate="no" className="material-symbols-outlined notranslate text-[16px] text-surface-dim group-hover:text-bracket-border group-hover:translate-x-1 transition-all">
-                        arrow_forward
-                      </span>
-                    </h4>
-                    <p className="font-body-sm text-[12px] text-surface-dim mt-0.5 line-clamp-2">
-                      Pengelolaan PPh, PPN e-Faktur, Brevet A/B, serta rekonsiliasi database keuangan perusahaan.
-                    </p>
                   </div>
-
-                  {/* Rekomendasi 2: Production */}
-                  <div
-                    onClick={() => handleSelectDivision("Production")}
-                    className="p-3.5 rounded-2xl bg-surface-neutral-alt/10 border border-surface-canvas/20 backdrop-blur-md hover:border-bracket-border transition-all cursor-pointer group"
-                  >
-                    <div className="flex items-center justify-between mb-1.5">
-                      <span
-                        translate="no"
-                        className="notranslate px-2 py-0.5 rounded-md bg-accent-gold/20 text-accent-gold font-label-meta text-[11px] font-semibold flex items-center gap-1"
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 mt-1">
+                    {[
+                      { id: "ALL", title: "Semua Posisi", desc: `${totalOpenJobs} lowongan aktif`, icon: "work" },
+                      { id: "Finance", title: "Finance & Pajak", desc: "Admin Pajak, Akuntansi", icon: "account_balance" },
+                      { id: "Marketing", title: "Marketing & Sales", desc: "Account Executive B2B", icon: "campaign" },
+                      { id: "Production", title: "Produksi & Mesin", desc: "Operator Spot UV & Foil", icon: "precision_manufacturing" },
+                      { id: "Warehouse", title: "Gudang & Logistik", desc: "Checker Plano & FIFO", icon: "inventory_2" },
+                      { id: "Operational", title: "Operasional & SPK", desc: "Teknisi Mesin & Admin", icon: "build" },
+                    ].map((item) => (
+                      <button
+                        key={item.id}
+                        type="button"
+                        onClick={() => handleSelectDivision(item.id)}
+                        className="text-left p-2 rounded-xl hover:bg-surface-canvas/10 border border-transparent hover:border-bracket-border/40 flex items-start gap-2.5 text-on-secondary transition-all cursor-pointer"
                       >
-                        <span translate="no" className="material-symbols-outlined notranslate text-[13px]">
-                          star
+                        <span translate="no" className="material-symbols-outlined notranslate text-[18px] text-bracket-border shrink-0 mt-0.5">
+                          {item.icon}
                         </span>
-                        Produksi
-                      </span>
-                    </div>
-                    <h4
-                      translate="no"
-                      className="notranslate font-headline-sm text-[14px] font-bold text-on-secondary group-hover:text-bracket-border transition-colors flex items-center justify-between"
-                    >
-                      Operator Mesin Finishing
-                      <span translate="no" className="material-symbols-outlined notranslate text-[16px] text-surface-dim group-hover:text-bracket-border group-hover:translate-x-1 transition-all">
-                        arrow_forward
-                      </span>
-                    </h4>
-                    <p className="font-body-sm text-[12px] text-surface-dim mt-0.5 line-clamp-2">
-                      Pengoperasian mesin Spot UV, Hot Stamp Foil, &amp; Laminating Thermal berkecepatan tinggi.
-                    </p>
-                  </div>
-
-                  {/* Rekomendasi 3: Warehouse */}
-                  <div
-                    onClick={() => handleSelectDivision("Warehouse")}
-                    className="p-3.5 rounded-2xl bg-surface-neutral-alt/10 border border-surface-canvas/20 backdrop-blur-md hover:border-bracket-border transition-all cursor-pointer group"
-                  >
-                    <div className="flex items-center justify-between mb-1.5">
-                      <span
-                        translate="no"
-                        className="notranslate px-2 py-0.5 rounded-md bg-primary/20 text-primary font-label-meta text-[11px] font-semibold flex items-center gap-1"
-                      >
-                        <span translate="no" className="material-symbols-outlined notranslate text-[13px]">
-                          inventory_2
-                        </span>
-                        Gudang
-                      </span>
-                    </div>
-                    <h4
-                      translate="no"
-                      className="notranslate font-headline-sm text-[14px] font-bold text-on-secondary group-hover:text-bracket-border transition-colors flex items-center justify-between"
-                    >
-                      Checker Gudang &amp; Logistik
-                      <span translate="no" className="material-symbols-outlined notranslate text-[16px] text-surface-dim group-hover:text-bracket-border group-hover:translate-x-1 transition-all">
-                        arrow_forward
-                      </span>
-                    </h4>
-                    <p className="font-body-sm text-[12px] text-surface-dim mt-0.5 line-clamp-2">
-                      Pengecekan fisik lembaran plano cetakan, mutasi barang surat jalan, dan sistem penataan FIFO.
-                    </p>
-                  </div>
-
-                  {/* Rekomendasi 4: Marketing */}
-                  <div
-                    onClick={() => handleSelectDivision("Marketing")}
-                    className="p-3.5 rounded-2xl bg-surface-neutral-alt/10 border border-surface-canvas/20 backdrop-blur-md hover:border-bracket-border transition-all cursor-pointer group"
-                  >
-                    <div className="flex items-center justify-between mb-1.5">
-                      <span
-                        translate="no"
-                        className="notranslate px-2 py-0.5 rounded-md bg-bracket-border/20 text-bracket-border font-label-meta text-[11px] font-semibold flex items-center gap-1"
-                      >
-                        <span translate="no" className="material-symbols-outlined notranslate text-[13px]">
-                          campaign
-                        </span>
-                        Marketing
-                      </span>
-                    </div>
-                    <h4
-                      translate="no"
-                      className="notranslate font-headline-sm text-[14px] font-bold text-on-secondary group-hover:text-bracket-border transition-colors flex items-center justify-between"
-                    >
-                      Marketing &amp; Account Executive
-                      <span translate="no" className="material-symbols-outlined notranslate text-[16px] text-surface-dim group-hover:text-bracket-border group-hover:translate-x-1 transition-all">
-                        arrow_forward
-                      </span>
-                    </h4>
-                    <p className="font-body-sm text-[12px] text-surface-dim mt-0.5 line-clamp-2">
-                      Kemitraan B2B dengan industri percetakan dan packaging, presentasi swatch kit, &amp; estimasi order.
-                    </p>
+                        <div>
+                          <div className="text-[12px] font-semibold text-on-secondary">
+                            {item.title}
+                          </div>
+                          <div className="text-[11px] text-surface-dim line-clamp-1">
+                            {item.desc}
+                          </div>
+                        </div>
+                      </button>
+                    ))}
                   </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
+
+            {/* Division Filter Pills */}
+            <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 mt-4">
+              {divisionsList.map((div) => {
+                const isActive = selectedDivision === div.id;
+                return (
+                  <button
+                    key={div.id}
+                    type="button"
+                    onClick={() => handleSelectDivision(div.id)}
+                    className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-all cursor-pointer ${
+                      isActive
+                        ? "bg-bracket-border text-on-primary border-bracket-border shadow-sm"
+                        : "bg-surface-canvas/10 text-surface-dim hover:text-white hover:bg-surface-canvas/20 border-surface-canvas/10"
+                    }`}
+                  >
+                    {div.label}
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>

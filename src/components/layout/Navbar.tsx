@@ -876,7 +876,6 @@ export default function Navbar() {
 
             {/* Subtle Footer */}
             <div className="pt-2.5 mt-2 border-t border-white/10 flex items-center justify-between text-[11px] text-white/35 px-1">
-              <span>Navigasi langsung ke halaman terkait</span>
               <span>Tekan <kbd className="text-[10px] text-white/60 bg-white/5 px-1.5 py-0.5 rounded border border-white/10">ESC</kbd> untuk keluar</span>
             </div>
           </div>
