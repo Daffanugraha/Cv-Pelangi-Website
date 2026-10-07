@@ -135,8 +135,8 @@ export default function KarirHero({
             </span>
           </h1>
 
-          <p className="font-sans text-[14px] sm:text-[16px] text-white/90 leading-relaxed max-w-xl mb-8 drop-shadow-sm">
-            Temukan posisi yang sesuai dengan keahlian Anda dari {totalOpenJobs} lowongan terbuka dan bergabunglah bersama tim profesional kami.
+          <p className="font-sans text-[14px] sm:text-[16px] text-white/90 leading-relaxed max-w-2xl mb-8 drop-shadow-sm">
+            Mari bertumbuh dan bangun karir profesional Anda bersama kami di bidang layanan jasa finishing percetakan presisi. Temukan peluang yang tepat dari {totalOpenJobs} lowongan terbuka saat ini.
           </p>
 
           {/* Search Container */}
