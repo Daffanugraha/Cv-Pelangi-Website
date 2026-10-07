@@ -736,10 +736,10 @@ export default function Navbar() {
         </svg>
       </div>
 
-      {/* Search Modal - Ultra Clean Spotlight */}
+      {/* Search Modal - Tampil di bawah Navbar sehingga Navbar tetap terlihat utuh */}
       {isSearchOpen && (
         <div
-          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-start justify-center pt-20 sm:pt-28 px-4 transition-all duration-200"
+          className="fixed inset-x-0 bottom-0 top-20 z-40 bg-black/60 backdrop-blur-sm flex items-start justify-center pt-4 sm:pt-6 px-4 transition-all duration-200"
           onClick={(e) => {
             if (e.target === e.currentTarget) {
               setIsSearchOpen(false);
@@ -747,7 +747,7 @@ export default function Navbar() {
             }
           }}
         >
-          <div className="w-full max-w-xl bg-[#141416] border border-white/15 rounded-2xl shadow-[0_24px_70px_rgba(0,0,0,0.85)] p-3.5 sm:p-4 text-white anim-fade-in flex flex-col max-h-[80vh]">
+          <div className="w-full max-w-xl bg-[#141416] border border-white/15 rounded-2xl shadow-[0_24px_70px_rgba(0,0,0,0.85)] p-3.5 sm:p-4 text-white anim-fade-in flex flex-col max-h-[calc(100vh-120px)]">
             {/* Clean Input Box */}
             <div className="relative flex items-center">
               <span
