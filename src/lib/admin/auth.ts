@@ -11,15 +11,18 @@ const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ?? "pelangiuv2024";
 const AUTH_COOKIE = "admin_token";
 const AUTH_TOKEN = `${ADMIN_USERNAME}:${ADMIN_PASSWORD}`;
 
-export function verifyCredentials(username: string, password: string): boolean {
-  return username === ADMIN_USERNAME && password === ADMIN_PASSWORD;
+export function verifyCredentials(username?: string, password?: string): boolean {
+  if (!username || !password) return false;
+  const cleanUser = username.trim().toLowerCase();
+  const cleanPass = password.trim();
+  return cleanUser === ADMIN_USERNAME.toLowerCase() && cleanPass === ADMIN_PASSWORD;
 }
 
 export function setAuthCookie() {
   const cookieStore = cookies();
   cookieStore.set(AUTH_COOKIE, AUTH_TOKEN, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: false, // Compatible with both local HTTP and Cloudflare Tunnel HTTPS proxy
     sameSite: "lax",
     maxAge: 60 * 60 * 24 * 7, // 7 days
     path: "/",

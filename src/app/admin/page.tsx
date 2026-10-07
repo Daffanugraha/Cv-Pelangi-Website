@@ -20,17 +20,26 @@ export default function AdminLoginPage() {
     const res = await fetch("/api/admin/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password }),
+      body: JSON.stringify({
+        username: username.trim(),
+        password: password.trim(),
+      }),
     });
 
     const data = await res.json();
     setLoading(false);
 
     if (data.ok) {
-      router.push("/admin/dashboard");
+      window.location.href = "/admin/dashboard";
     } else {
       setError(data.error ?? "Login gagal. Periksa kembali username & password Anda.");
     }
+  }
+
+  function handleAutoFill() {
+    setUsername("admin");
+    setPassword("pelangiuv2024");
+    setError("");
   }
 
   return (
@@ -137,6 +146,16 @@ export default function AdminLoginPage() {
                   <span className="text-sm">Masuk ke Dashboard</span>
                 </>
               )}
+            </button>
+
+            {/* Quick Fill Button */}
+            <button
+              type="button"
+              onClick={handleAutoFill}
+              className="w-full mt-2.5 py-2 px-3 rounded-xl border border-white/10 hover:border-white/20 bg-white/5 hover:bg-white/10 text-gray-300 text-xs font-mono transition flex items-center justify-center gap-1.5 cursor-pointer"
+            >
+              <span className="material-symbols-outlined text-sm text-bracket-border">key</span>
+              <span>Isi Otomatis Akun Admin (admin / pelangiuv2024)</span>
             </button>
           </form>
 
