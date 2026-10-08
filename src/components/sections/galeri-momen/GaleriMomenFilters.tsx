@@ -48,7 +48,8 @@ export default function GaleriMomenFilters({
             {/* Marquee Filter Container */}
             <div
               ref={containerRef}
-              className="flex-1 overflow-x-auto overflow-y-hidden scrollbar-none relative select-none cursor-grab active:cursor-grabbing [mask-image:linear-gradient(to_right,transparent,black_3%,black_97%,transparent)]"
+              style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+              className="flex-1 overflow-x-auto overflow-y-hidden scrollbar-none no-scrollbar relative select-none cursor-grab active:cursor-grabbing [mask-image:linear-gradient(to_right,transparent,black_3%,black_97%,transparent)]"
             >
               <div className="flex items-center gap-3 py-1.5 w-max select-none">
                 {filters.map((tab) => {

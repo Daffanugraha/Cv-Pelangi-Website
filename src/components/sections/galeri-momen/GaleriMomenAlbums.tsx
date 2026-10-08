@@ -221,7 +221,8 @@ function AlbumCarouselTrack({ album, onSelectPhoto }: AlbumCarouselTrackProps) {
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
-          className="relative w-full overflow-x-auto overflow-y-hidden scrollbar-none [mask-image:linear-gradient(to_right,transparent,black_2%,black_98%,transparent)] select-none cursor-grab active:cursor-grabbing"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+          className="relative w-full overflow-x-auto overflow-y-hidden scrollbar-none no-scrollbar [mask-image:linear-gradient(to_right,transparent,black_2%,black_98%,transparent)] select-none cursor-grab active:cursor-grabbing"
         >
           <div
             ref={trackRef}
