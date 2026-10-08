@@ -124,7 +124,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
       {/* Main Content Area (Clean White & Light Canvas seperti Website CV Pelangi UV) */}
       <main className="flex-1 lg:ml-60 min-h-screen flex flex-col bg-[#F8F9FA]">
         {/* Top Bar Header */}
-        <header className="sticky top-0 z-20 bg-white/95 backdrop-blur-md border-b border-gray-200/80 px-4 sm:px-6 py-3 flex items-center justify-between gap-4 shadow-xs">
+        <header className="sticky top-0 z-20 bg-white/95 backdrop-blur-md border-b border-gray-200/80 px-4 sm:px-6 py-3 flex items-center justify-between gap-4 shadow-sm">
           <div className="flex items-center gap-3">
             <button
               className="lg:hidden p-2 rounded-xl text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition cursor-pointer"
@@ -142,7 +142,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-semibold shadow-2xs">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-semibold shadow-sm">
               <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               <span>Sistem Aktif</span>
             </div>

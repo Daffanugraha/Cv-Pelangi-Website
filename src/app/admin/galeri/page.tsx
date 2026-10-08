@@ -132,13 +132,12 @@ export default function AdminGaleriPage() {
   return (
     <AdminShell>
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-2 border-b border-gray-200">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-0.5 rounded-full bg-bracket-border/10 text-bracket-border text-xs font-bold uppercase tracking-wider mb-1 font-mono">
-            Katalog Visual
-          </div>
-          <h1 className="text-xl sm:text-2xl font-heading font-extrabold text-gray-900">Galeri Hasil Cetak &amp; Finishing</h1>
-          <p className="text-gray-500 text-xs sm:text-sm mt-0.5">{items.length} foto tersimpan dalam database</p>
+          <h1 className="text-xl sm:text-2xl font-heading font-extrabold text-gray-900">
+            Galeri Hasil Cetak &amp; Finishing
+          </h1>
+          <p className="text-gray-500 text-xs sm:text-sm mt-0.5">{items.length} foto tersimpan</p>
         </div>
         <button
           onClick={() => { resetForm(); setShowForm(true); }}
@@ -173,7 +172,7 @@ export default function AdminGaleriPage() {
                   </div>
                 )}
                 {uploading && (
-                  <div className="absolute inset-0 bg-white/80 backdrop-blur-xs flex items-center justify-center">
+                  <div className="absolute inset-0 bg-white/80 backdrop-blur-sm flex items-center justify-center">
                     <div className="w-8 h-8 border-2 border-gray-200 border-t-bracket-border rounded-full animate-spin" />
                   </div>
                 )}
@@ -255,7 +254,7 @@ export default function AdminGaleriPage() {
 
       {/* Gallery Grid */}
       {items.length === 0 ? (
-        <div className="bg-white border border-gray-200/80 rounded-2xl p-12 text-center shadow-xs">
+        <div className="bg-white border border-gray-200/80 rounded-2xl p-12 text-center shadow-sm">
           <span className="material-symbols-outlined text-5xl text-gray-300">photo_library</span>
           <p className="text-gray-700 font-semibold mt-3">Belum ada foto di galeri.</p>
           <p className="text-gray-400 text-xs sm:text-sm mt-1">Klik tombol &ldquo;Upload Foto Baru&rdquo; untuk menambahkan portofolio pertama.</p>
@@ -263,7 +262,7 @@ export default function AdminGaleriPage() {
       ) : (
         <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {items.map((item) => (
-            <div key={item.id} className="group bg-white border border-gray-200/80 rounded-2xl overflow-hidden hover:border-bracket-border/50 hover:shadow-md transition-all shadow-xs flex flex-col">
+            <div key={item.id} className="group bg-white border border-gray-200/80 rounded-2xl overflow-hidden hover:border-bracket-border/50 hover:shadow-md transition-all shadow-sm flex flex-col">
               {/* Image */}
               <div className="aspect-video bg-gray-100 relative overflow-hidden">
                 {item.imageUrl && (
@@ -274,7 +273,7 @@ export default function AdminGaleriPage() {
                   />
                 )}
                 {item.featured && (
-                  <div className="absolute top-2 left-2 flex items-center gap-1 bg-amber-400 text-black text-[11px] font-bold px-2.5 py-0.5 rounded-full shadow-xs">
+                  <div className="absolute top-2 left-2 flex items-center gap-1 bg-amber-400 text-black text-[11px] font-bold px-2.5 py-0.5 rounded-full shadow-sm">
                     <span className="material-symbols-outlined text-xs font-bold">star</span>
                     Unggulan
                   </div>
@@ -329,7 +328,7 @@ export default function AdminGaleriPage() {
 
       {/* Delete Confirm Modal */}
       {deleteId && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center z-50 p-4">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-white border border-gray-200 rounded-2xl p-6 max-w-sm w-full shadow-2xl">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-xl bg-red-50 border border-red-100 flex items-center justify-center shrink-0">
@@ -343,7 +342,7 @@ export default function AdminGaleriPage() {
             <div className="flex gap-3 mt-5">
               <button
                 onClick={() => handleDelete(deleteId)}
-                className="flex-1 bg-red-600 hover:bg-red-700 text-white text-xs sm:text-sm font-bold py-2.5 rounded-xl transition shadow-xs cursor-pointer active:scale-95"
+                className="flex-1 bg-red-600 hover:bg-red-700 text-white text-xs sm:text-sm font-bold py-2.5 rounded-xl transition shadow-sm cursor-pointer active:scale-95"
               >
                 Ya, Hapus
               </button>

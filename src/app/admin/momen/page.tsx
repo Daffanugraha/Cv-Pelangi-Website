@@ -323,9 +323,6 @@ export default function AdminMomenPage() {
                 Momen & Kegiatan
               </h1>
             </div>
-            <p className="text-sm text-gray-500 mt-1 font-sans">
-              Kelola album kegiatan, pameran, event, dan dokumentasi foto beserta caption & deskripsi yang tampil otomatis di website.
-            </p>
           </div>
 
           <button
@@ -339,7 +336,7 @@ export default function AdminMomenPage() {
 
         {/* Stats Row */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="bg-white border border-gray-200/80 rounded-2xl p-5 shadow-xs">
+          <div className="bg-white border border-gray-200/80 rounded-2xl p-5 shadow-sm">
             <div className="flex items-center justify-between mb-2">
               <span className="material-symbols-outlined text-2xl text-bracket-border">photo_library</span>
               <span className="text-xs font-mono font-semibold px-2 py-0.5 rounded-full bg-red-50 text-bracket-border">
@@ -350,7 +347,7 @@ export default function AdminMomenPage() {
             <p className="text-xs text-gray-500 mt-1">Total Album Kegiatan</p>
           </div>
 
-          <div className="bg-white border border-gray-200/80 rounded-2xl p-5 shadow-xs">
+          <div className="bg-white border border-gray-200/80 rounded-2xl p-5 shadow-sm">
             <div className="flex items-center justify-between mb-2">
               <span className="material-symbols-outlined text-2xl text-blue-600">image</span>
               <span className="text-xs font-mono font-semibold px-2 py-0.5 rounded-full bg-blue-50 text-blue-700">
@@ -361,7 +358,7 @@ export default function AdminMomenPage() {
             <p className="text-xs text-gray-500 mt-1">Total Foto Tersimpan</p>
           </div>
 
-          <div className="bg-white border border-gray-200/80 rounded-2xl p-5 shadow-xs">
+          <div className="bg-white border border-gray-200/80 rounded-2xl p-5 shadow-sm">
             <div className="flex items-center justify-between mb-2">
               <span className="material-symbols-outlined text-2xl text-emerald-600">visibility</span>
               <span className="text-xs font-mono font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700">
@@ -376,7 +373,7 @@ export default function AdminMomenPage() {
         </div>
 
         {/* Search & Filter Bar */}
-        <div className="bg-white border border-gray-200/80 rounded-2xl p-4 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="bg-white border border-gray-200/80 rounded-2xl p-4 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="relative w-full sm:w-96">
             <span className="material-symbols-outlined text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2 text-lg">
               search
@@ -404,7 +401,7 @@ export default function AdminMomenPage() {
             <p className="text-sm text-gray-500">Memuat album momen & kegiatan...</p>
           </div>
         ) : filteredAlbums.length === 0 ? (
-          <div className="bg-white border border-gray-200/80 rounded-2xl p-12 text-center shadow-xs">
+          <div className="bg-white border border-gray-200/80 rounded-2xl p-12 text-center shadow-sm">
             <span className="material-symbols-outlined text-5xl text-gray-300 mb-3">
               image_not_supported
             </span>
@@ -414,7 +411,7 @@ export default function AdminMomenPage() {
             </p>
             <button
               onClick={openAddModal}
-              className="mt-4 inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-bracket-border text-white text-xs font-semibold hover:bg-bracket-border/90 transition shadow-xs"
+              className="mt-4 inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-bracket-border text-white text-xs font-semibold hover:bg-bracket-border/90 transition shadow-sm"
             >
               <span className="material-symbols-outlined text-base">add</span>
               <span>Tambah Momen Sekarang</span>
@@ -425,7 +422,7 @@ export default function AdminMomenPage() {
             {filteredAlbums.map((album) => (
               <div
                 key={album.id || album.category}
-                className="bg-white border border-gray-200/80 rounded-2xl p-5 sm:p-6 shadow-xs hover:border-bracket-border/30 transition-all flex flex-col justify-between group"
+                className="bg-white border border-gray-200/80 rounded-2xl p-5 sm:p-6 shadow-sm hover:border-bracket-border/30 transition-all flex flex-col justify-between group"
               >
                 <div>
                   {/* Card Header: Title, Category Badge, Action Buttons */}
@@ -517,7 +514,7 @@ export default function AdminMomenPage() {
 
         {/* Modal Form Tambah / Edit Momen */}
         {isModalOpen && (
-          <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
+          <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
             <div className="bg-white rounded-2xl max-w-4xl w-full border border-gray-200 shadow-2xl flex flex-col max-h-[92vh] overflow-hidden animate-scale-up">
               {/* Modal Header */}
               <div className="p-5 border-b border-gray-200 flex items-center justify-between bg-gray-50/80 shrink-0">
@@ -637,7 +634,7 @@ export default function AdminMomenPage() {
                     <button
                       type="button"
                       onClick={handleAddPhotoSlot}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-900 hover:bg-black text-white text-xs font-medium transition cursor-pointer shadow-xs"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-900 hover:bg-black text-white text-xs font-medium transition cursor-pointer shadow-sm"
                     >
                       <span className="material-symbols-outlined text-sm">add</span>
                       <span>+ Tambah Foto</span>
@@ -726,7 +723,7 @@ export default function AdminMomenPage() {
                             </div>
 
                             {/* Upload button */}
-                            <label className="mt-2 block w-full text-center px-2 py-1 rounded-lg border border-gray-300 hover:border-bracket-border hover:text-bracket-border bg-white text-[11px] font-medium text-gray-700 cursor-pointer transition shadow-xs">
+                            <label className="mt-2 block w-full text-center px-2 py-1 rounded-lg border border-gray-300 hover:border-bracket-border hover:text-bracket-border bg-white text-[11px] font-medium text-gray-700 cursor-pointer transition shadow-sm">
                               <span className="inline-flex items-center gap-1">
                                 <span className="material-symbols-outlined text-xs">upload</span>
                                 <span>Unggah Berkas</span>
@@ -832,7 +829,7 @@ export default function AdminMomenPage() {
                   type="button"
                   onClick={handleSave}
                   disabled={saving}
-                  className="inline-flex items-center gap-1.5 px-5 py-2 rounded-xl bg-bracket-border hover:bg-bracket-border/90 text-white text-xs font-semibold transition shadow-xs disabled:opacity-50 cursor-pointer"
+                  className="inline-flex items-center gap-1.5 px-5 py-2 rounded-xl bg-bracket-border hover:bg-bracket-border/90 text-white text-xs font-semibold transition shadow-sm disabled:opacity-50 cursor-pointer"
                 >
                   {saving ? (
                     <>

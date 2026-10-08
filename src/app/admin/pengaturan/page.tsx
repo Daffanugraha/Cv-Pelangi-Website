@@ -61,24 +61,20 @@ export default function AdminPengaturanPage() {
     <AdminShell>
       <div className="max-w-2xl">
         {/* Header */}
-        <div className="mb-8">
-          <div className="inline-flex items-center gap-2 px-3 py-0.5 rounded-full bg-bracket-border/10 text-bracket-border text-xs font-bold uppercase tracking-wider mb-1 font-mono">
-            Konfigurasi Sistem
-          </div>
-          <h1 className="text-xl sm:text-2xl font-heading font-extrabold text-gray-900">Pengaturan Website Pelangi UV</h1>
-          <p className="text-gray-500 text-xs sm:text-sm mt-0.5 font-sans">Kelola parameter operasional, kontak hotline, dan pengumuman siaran website.</p>
+        <div className="mb-6 pb-2 border-b border-gray-200">
+          <h1 className="text-xl sm:text-2xl font-heading font-extrabold text-gray-900">Pengaturan Website</h1>
         </div>
 
         {/* Success Toast */}
         {saved && (
-          <div className="mb-5 flex items-center gap-3 bg-emerald-50 border border-emerald-200 rounded-2xl px-4 py-3 animate-fade-in shadow-xs">
+          <div className="mb-5 flex items-center gap-3 bg-emerald-50 border border-emerald-200 rounded-2xl px-4 py-3 animate-fade-in shadow-sm">
             <span className="material-symbols-outlined text-emerald-600">check_circle</span>
             <p className="text-xs sm:text-sm text-emerald-800 font-semibold font-sans">Pengaturan berhasil disimpan ke sistem!</p>
           </div>
         )}
 
         {/* Section: Banner Pengumuman */}
-        <div className="bg-white border border-gray-200/80 rounded-2xl p-5 sm:p-6 mb-5 shadow-xs">
+        <div className="bg-white border border-gray-200/80 rounded-2xl p-5 sm:p-6 mb-5 shadow-sm">
           <div className="flex items-center justify-between mb-4">
             <div>
               <h2 className="font-heading font-bold text-gray-900 text-base">Banner Siaran Pengumuman</h2>
@@ -88,10 +84,10 @@ export default function AdminPengaturanPage() {
             <button
               onClick={() => set("bannerEnabled", !settings.bannerEnabled)}
               className={`relative w-12 h-6 rounded-full transition-colors shrink-0 cursor-pointer ${
-                settings.bannerEnabled ? "bg-bracket-border shadow-xs" : "bg-gray-300"
+                settings.bannerEnabled ? "bg-bracket-border shadow-sm" : "bg-gray-300"
               }`}
             >
-              <span className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform shadow-xs ${
+              <span className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform shadow-sm ${
                 settings.bannerEnabled ? "translate-x-6" : "translate-x-0"
               }`} />
             </button>
@@ -107,7 +103,7 @@ export default function AdminPengaturanPage() {
                 placeholder="Tulis pesan pengumuman di sini..."
               />
               {/* Preview */}
-              <div className="mt-3 bg-bracket-border text-white text-xs font-medium text-center py-2.5 px-4 rounded-xl shadow-xs flex items-center justify-center gap-2">
+              <div className="mt-3 bg-bracket-border text-white text-xs font-medium text-center py-2.5 px-4 rounded-xl shadow-sm flex items-center justify-center gap-2">
                 <span className="material-symbols-outlined text-sm">campaign</span>
                 <span>{settings.bannerText || "Teks banner akan tampil di sini."}</span>
               </div>
@@ -116,7 +112,7 @@ export default function AdminPengaturanPage() {
         </div>
 
         {/* Section: Kontak & WhatsApp */}
-        <div className="bg-white border border-gray-200/80 rounded-2xl p-5 sm:p-6 mb-5 shadow-xs">
+        <div className="bg-white border border-gray-200/80 rounded-2xl p-5 sm:p-6 mb-5 shadow-sm">
           <h2 className="font-heading font-bold text-gray-900 text-base mb-1">Nomor WhatsApp Hotline Resmi</h2>
           <p className="text-xs text-gray-500 mb-4 font-sans">Nomor tujuan untuk tombol konsultasi dan chat cepat di website.</p>
           <div>
@@ -136,7 +132,7 @@ export default function AdminPengaturanPage() {
         </div>
 
         {/* Section: Jam Operasional */}
-        <div className="bg-white border border-gray-200/80 rounded-2xl p-5 sm:p-6 mb-6 shadow-xs">
+        <div className="bg-white border border-gray-200/80 rounded-2xl p-5 sm:p-6 mb-6 shadow-sm">
           <h2 className="font-heading font-bold text-gray-900 text-base mb-1">Jam Operasional Fasilitas Pabrik</h2>
           <p className="text-xs text-gray-500 mb-4 font-sans">Informasi jam kerja yang ditampilkan di footer dan halaman kontak.</p>
           <div className="space-y-4">

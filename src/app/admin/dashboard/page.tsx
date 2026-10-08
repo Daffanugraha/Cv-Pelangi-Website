@@ -16,7 +16,7 @@ interface StatCardProps {
 
 function StatCard({ icon, label, value, color, sub }: StatCardProps) {
   return (
-    <div className="bg-white border border-gray-200/80 rounded-2xl p-5 hover:border-bracket-border/40 transition-all shadow-xs group">
+    <div className="bg-white border border-gray-200/80 rounded-2xl p-5 hover:border-bracket-border/40 transition-all shadow-sm group">
       <div className="flex items-center justify-between mb-3">
         <span className={`material-symbols-outlined text-2xl ${color}`}>{icon}</span>
       </div>
@@ -80,16 +80,10 @@ export default function DashboardPage() {
   return (
     <AdminShell>
       {/* Header */}
-      <div className="mb-8">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-bracket-border/10 border border-bracket-border/20 text-bracket-border text-xs font-bold uppercase tracking-wider mb-2 font-mono">
-          Ikhtisar Aktivitas
-        </div>
+      <div className="mb-6 pb-2 border-b border-gray-200">
         <h1 className="text-2xl sm:text-3xl font-heading font-extrabold text-gray-900 tracking-tight">
-          Selamat datang kembali 👋
+          Dashboard Ikhtisar
         </h1>
-        <p className="text-gray-600 text-xs sm:text-sm mt-1 font-sans">
-          Ringkasan aktivitas website, pesan calon klien, dan koleksi galeri finishing CV Pelangi UV.
-        </p>
       </div>
 
       {/* Stats Grid */}
@@ -125,7 +119,7 @@ export default function DashboardPage() {
       {/* Two columns */}
       <div className="grid lg:grid-cols-2 gap-6">
         {/* Recent Leads */}
-        <div className="bg-white border border-gray-200/80 rounded-2xl overflow-hidden shadow-xs">
+        <div className="bg-white border border-gray-200/80 rounded-2xl overflow-hidden shadow-sm">
           <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100 bg-gray-50/50">
             <h2 className="font-heading font-bold text-gray-900 text-base">Pesan Lead Terbaru</h2>
             <Link
@@ -161,7 +155,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Recent Gallery */}
-        <div className="bg-white border border-gray-200/80 rounded-2xl overflow-hidden shadow-xs">
+        <div className="bg-white border border-gray-200/80 rounded-2xl overflow-hidden shadow-sm">
           <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100 bg-gray-50/50">
             <h2 className="font-heading font-bold text-gray-900 text-base">Koleksi Galeri Terbaru</h2>
             <Link
@@ -185,7 +179,7 @@ export default function DashboardPage() {
                   />
                 )}
                 {item.featured && (
-                  <div className="absolute top-1.5 right-1.5 w-5 h-5 bg-amber-400 rounded-full flex items-center justify-center shadow-xs">
+                  <div className="absolute top-1.5 right-1.5 w-5 h-5 bg-amber-400 rounded-full flex items-center justify-center shadow-sm">
                     <span className="material-symbols-outlined text-black text-xs font-bold">star</span>
                   </div>
                 )}

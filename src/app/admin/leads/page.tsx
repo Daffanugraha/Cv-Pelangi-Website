@@ -79,14 +79,11 @@ export default function AdminLeadsPage() {
   return (
     <AdminShell>
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-2 border-b border-gray-200">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-0.5 rounded-full bg-bracket-border/10 text-bracket-border text-xs font-bold uppercase tracking-wider mb-1 font-mono">
-            Inbox CRM Calon Klien
-          </div>
           <h1 className="text-xl sm:text-2xl font-heading font-extrabold text-gray-900">Kotak Masuk Lead</h1>
           <p className="text-gray-500 text-xs sm:text-sm mt-0.5 font-sans">
-            {leads.filter((l) => l.status === "new").length} lead baru butuh ditindaklanjuti segera
+            {leads.filter((l) => l.status === "new").length} lead baru
           </p>
         </div>
       </div>
@@ -97,8 +94,8 @@ export default function AdminLeadsPage() {
           onClick={() => setFilterStatus("all")}
           className={`px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition cursor-pointer ${
             filterStatus === "all"
-              ? "bg-bracket-border text-white shadow-xs font-bold"
-              : "bg-white text-gray-600 hover:text-gray-900 border border-gray-200 hover:bg-gray-50 shadow-2xs"
+              ? "bg-bracket-border text-white shadow-sm font-bold"
+              : "bg-white text-gray-600 hover:text-gray-900 border border-gray-200 hover:bg-gray-50 shadow-sm"
           }`}
         >
           Semua ({leads.length})
@@ -109,8 +106,8 @@ export default function AdminLeadsPage() {
             onClick={() => setFilterStatus(s.value)}
             className={`px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition cursor-pointer ${
               filterStatus === s.value
-                ? "bg-bracket-border text-white shadow-xs font-bold"
-                : "bg-white text-gray-600 hover:text-gray-900 border border-gray-200 hover:bg-gray-50 shadow-2xs"
+                ? "bg-bracket-border text-white shadow-sm font-bold"
+                : "bg-white text-gray-600 hover:text-gray-900 border border-gray-200 hover:bg-gray-50 shadow-sm"
             }`}
           >
             {s.label} ({leads.filter((l) => l.status === s.value).length})
@@ -119,7 +116,7 @@ export default function AdminLeadsPage() {
       </div>
 
       {/* Table / List */}
-      <div className="bg-white border border-gray-200/80 rounded-2xl overflow-hidden shadow-xs">
+      <div className="bg-white border border-gray-200/80 rounded-2xl overflow-hidden shadow-sm">
         {filtered.length === 0 ? (
           <div className="text-center py-16 text-gray-400">
             <span className="material-symbols-outlined text-5xl">inbox</span>
@@ -172,7 +169,7 @@ export default function AdminLeadsPage() {
 
       {/* Detail Drawer Modal */}
       {selected && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-end sm:items-center justify-center sm:justify-end z-50 p-0 sm:p-4 animate-fade-in">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center sm:justify-end z-50 p-0 sm:p-4 animate-fade-in">
           <div className="bg-white border border-gray-200 rounded-t-3xl sm:rounded-3xl w-full sm:max-w-md max-h-[90vh] overflow-y-auto shadow-2xl">
             {/* Drawer Header */}
             <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100 sticky top-0 bg-white z-10">
@@ -195,7 +192,7 @@ export default function AdminLeadsPage() {
                   href={`https://wa.me/${selected.phone.replace(/\D/g, "").replace(/^0/, "62")}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-bold px-3 py-2.5 rounded-xl transition shadow-xs cursor-pointer active:scale-95"
+                  className="flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-bold px-3 py-2.5 rounded-xl transition shadow-sm cursor-pointer active:scale-95"
                 >
                   <span className="material-symbols-outlined text-lg">chat</span>
                   Hubungi WA
@@ -273,14 +270,14 @@ export default function AdminLeadsPage() {
 
       {/* Delete Confirm Modal */}
       {deleteId && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center z-[60] p-4">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[60] p-4">
           <div className="bg-white border border-gray-200 rounded-2xl p-6 max-w-sm w-full shadow-2xl">
             <p className="font-heading font-bold text-gray-900 text-base mb-1">Hapus Lead Ini?</p>
             <p className="text-xs text-gray-500 mb-5">Data lead akan dihapus secara permanen dari server.</p>
             <div className="flex gap-3">
               <button
                 onClick={() => handleDelete(deleteId)}
-                className="flex-1 bg-red-600 hover:bg-red-700 text-white text-xs sm:text-sm font-bold py-2.5 rounded-xl transition cursor-pointer active:scale-95 shadow-xs"
+                className="flex-1 bg-red-600 hover:bg-red-700 text-white text-xs sm:text-sm font-bold py-2.5 rounded-xl transition cursor-pointer active:scale-95 shadow-sm"
               >
                 Ya, Hapus
               </button>

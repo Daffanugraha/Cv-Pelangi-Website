@@ -42,6 +42,12 @@ export default function AdminKarirPage() {
   const [responsibilities, setResponsibilities] = useState<string[]>([]);
   const [newRespInput, setNewRespInput] = useState("");
 
+  // Expandable details for job cards to avoid text dumping
+  const [expandedJobIds, setExpandedJobIds] = useState<Record<string, boolean>>({});
+  const toggleExpandJob = (id: string) => {
+    setExpandedJobIds((prev) => ({ ...prev, [id]: !prev[id] }));
+  };
+
   // Delete Confirm Modal
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
@@ -286,23 +292,18 @@ export default function AdminKarirPage() {
       <div className="space-y-6 max-w-7xl mx-auto pb-12 font-sans">
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-gray-200">
-        <div>
-          <div className="flex items-center gap-2">
-            <span className="material-symbols-outlined text-[#F65456] text-2xl">work</span>
-            <h1 className="font-heading font-extrabold text-2xl sm:text-3xl text-gray-900 tracking-tight">
-              Manajemen Karir &amp; Rekrutmen
-            </h1>
-          </div>
-          <p className="text-xs sm:text-sm text-gray-500 mt-1">
-            Kelola lowongan pekerjaan CV Pelangi UV dan pantau berkas lamaran kandidat yang masuk secara terorganisir.
-          </p>
+        <div className="flex items-center gap-2.5">
+          <span className="material-symbols-outlined text-[#F65456] text-2xl">work</span>
+          <h1 className="font-heading font-extrabold text-2xl sm:text-3xl text-gray-900 tracking-tight">
+            Manajemen Karir &amp; Rekrutmen
+          </h1>
         </div>
 
         <div className="flex items-center gap-2.5">
           <Link
             href="/karir"
             target="_blank"
-            className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-gray-300 bg-white hover:bg-gray-50 text-xs sm:text-sm font-semibold text-gray-700 transition shadow-xs"
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl border border-gray-300 bg-white hover:bg-gray-50 text-xs sm:text-sm font-semibold text-gray-700 transition shadow-sm"
           >
             <span className="material-symbols-outlined text-base">visibility</span>
             <span>Lihat Halaman Karir</span>
@@ -312,7 +313,7 @@ export default function AdminKarirPage() {
             <button
               type="button"
               onClick={handleOpenCreate}
-              className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-[#F65456] hover:bg-[#d94143] text-white text-xs sm:text-sm font-bold transition shadow-sm active:scale-95 cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#F65456] hover:bg-[#d94143] text-white text-xs sm:text-sm font-bold transition shadow-sm active:scale-95 cursor-pointer"
             >
               <span className="material-symbols-outlined text-base">add</span>
               <span>Tambah Lowongan</span>
@@ -322,13 +323,13 @@ export default function AdminKarirPage() {
       </div>
 
       {/* Main Tab Switcher */}
-      <div className="flex items-center gap-2 p-1.5 bg-gray-100/90 rounded-2xl w-fit border border-gray-200">
+      <div className="flex items-center gap-2 p-1 bg-gray-100 rounded-2xl w-fit border border-gray-200">
         <button
           type="button"
           onClick={() => setActiveTab("jobs")}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition cursor-pointer ${
+          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition cursor-pointer ${
             activeTab === "jobs"
-              ? "bg-white text-gray-900 shadow-xs border border-gray-200/80"
+              ? "bg-white text-gray-900 shadow-sm border border-gray-200"
               : "text-gray-600 hover:text-gray-900 hover:bg-gray-200/50"
           }`}
         >
@@ -339,16 +340,16 @@ export default function AdminKarirPage() {
         <button
           type="button"
           onClick={() => setActiveTab("applicants")}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition cursor-pointer ${
+          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition cursor-pointer ${
             activeTab === "applicants"
-              ? "bg-[#F65456] text-white shadow-xs"
+              ? "bg-[#F65456] text-white shadow-sm"
               : "text-gray-600 hover:text-gray-900 hover:bg-gray-200/50"
           }`}
         >
           <span className="material-symbols-outlined text-base">people</span>
           <span>Berkas Pelamar Masuk ({applicants.length})</span>
           {newApplicantCount > 0 && (
-            <span className="px-2 py-0.5 rounded-full bg-white text-[#F65456] text-[10px] font-bold border border-red-200 shadow-xs">
+            <span className="px-2 py-0.5 rounded-full bg-white text-[#F65456] text-[10px] font-bold border border-red-200 shadow-sm">
               {newApplicantCount} Baru
             </span>
           )}
@@ -359,33 +360,33 @@ export default function AdminKarirPage() {
       {/* TAB 1: DAFTAR LOWONGAN */}
       {/* ======================================================== */}
       {activeTab === "jobs" ? (
-        <div className="space-y-6">
+        <div className="space-y-5">
           {/* Stats Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div className="p-4 rounded-2xl bg-white border border-gray-200 shadow-xs flex items-center justify-between">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+            <div className="p-4 rounded-2xl bg-white border border-gray-200 shadow-sm flex items-center justify-between">
               <div>
-                <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">Total Posisi</p>
-                <p className="text-2xl font-heading font-extrabold text-gray-900 mt-1">{jobs.length}</p>
+                <p className="text-[11px] font-bold text-gray-500 uppercase tracking-wider font-mono">Total Posisi</p>
+                <p className="text-2xl font-heading font-extrabold text-gray-900 mt-0.5">{jobs.length}</p>
               </div>
               <div className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center text-gray-600">
                 <span className="material-symbols-outlined">badge</span>
               </div>
             </div>
 
-            <div className="p-4 rounded-2xl bg-white border border-green-200 shadow-xs flex items-center justify-between">
+            <div className="p-4 rounded-2xl bg-white border border-green-200 shadow-sm flex items-center justify-between">
               <div>
-                <p className="text-xs font-bold text-green-700 uppercase tracking-wider">Lowongan Dibuka</p>
-                <p className="text-2xl font-heading font-extrabold text-green-700 mt-1">{openCount}</p>
+                <p className="text-[11px] font-bold text-green-700 uppercase tracking-wider font-mono">Dibuka</p>
+                <p className="text-2xl font-heading font-extrabold text-green-700 mt-0.5">{openCount}</p>
               </div>
               <div className="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center text-green-600">
                 <span className="material-symbols-outlined">check_circle</span>
               </div>
             </div>
 
-            <div className="p-4 rounded-2xl bg-white border border-amber-200 shadow-xs flex items-center justify-between">
+            <div className="p-4 rounded-2xl bg-white border border-amber-200 shadow-sm flex items-center justify-between">
               <div>
-                <p className="text-xs font-bold text-amber-700 uppercase tracking-wider">Lowongan Ditutup</p>
-                <p className="text-2xl font-heading font-extrabold text-amber-700 mt-1">{closedCount}</p>
+                <p className="text-[11px] font-bold text-amber-700 uppercase tracking-wider font-mono">Ditutup</p>
+                <p className="text-2xl font-heading font-extrabold text-amber-700 mt-0.5">{closedCount}</p>
               </div>
               <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center text-amber-600">
                 <span className="material-symbols-outlined">lock</span>
@@ -394,7 +395,7 @@ export default function AdminKarirPage() {
           </div>
 
           {/* Filter & Search Bar */}
-          <div className="p-4 rounded-2xl bg-white border border-gray-200 shadow-xs flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
+          <div className="p-3.5 rounded-2xl bg-white border border-gray-200 shadow-sm flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
             <div className="relative flex-1 max-w-md">
               <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg">
                 search
@@ -444,18 +445,18 @@ export default function AdminKarirPage() {
               <p className="text-base font-bold text-gray-700">Tidak ada lowongan ditemukan</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 gap-4">
+            <div className="grid grid-cols-1 gap-3.5">
               {filteredJobs.map((job) => (
                 <div
                   key={job.id}
-                  className={`p-5 rounded-2xl bg-white border transition shadow-xs hover:shadow-md ${
+                  className={`p-4 sm:p-5 rounded-2xl bg-white border transition shadow-sm hover:shadow-md ${
                     job.isOpen ? "border-gray-200" : "border-gray-200 bg-gray-50/60 opacity-80"
                   }`}
                 >
-                  <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-gray-100">
-                    <div className="space-y-1.5">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div className="space-y-1">
                       <div className="flex flex-wrap items-center gap-2">
-                        <span className={`px-2.5 py-0.5 rounded-full text-xs font-bold ${
+                        <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${
                           job.isOpen
                             ? "bg-green-100 text-green-800 border border-green-200"
                             : "bg-gray-200 text-gray-700 border border-gray-300"
@@ -468,12 +469,12 @@ export default function AdminKarirPage() {
                         <span className="text-xs text-gray-500 font-medium">
                           &bull; {job.type}
                         </span>
-                        <span className="text-xs text-gray-500 font-medium">
+                        <span className="text-xs text-gray-500 font-medium hidden md:inline">
                           &bull; {job.location}
                         </span>
                       </div>
 
-                      <h3 className="font-heading font-extrabold text-lg text-gray-900">
+                      <h3 className="font-heading font-extrabold text-base sm:text-lg text-gray-900">
                         {job.title}
                       </h3>
                     </div>
@@ -482,19 +483,19 @@ export default function AdminKarirPage() {
                       <button
                         type="button"
                         onClick={() => handleToggleStatus(job)}
-                        className={`px-3 py-1.5 rounded-xl text-xs font-bold border transition ${
+                        className={`px-3 py-1.5 rounded-xl text-xs font-bold border transition cursor-pointer ${
                           job.isOpen
                             ? "bg-amber-50 text-amber-800 border-amber-200 hover:bg-amber-100"
                             : "bg-green-50 text-green-800 border-green-200 hover:bg-green-100"
                         }`}
                       >
-                        {job.isOpen ? "Tutup Lowongan" : "Buka Lowongan"}
+                        {job.isOpen ? "Tutup" : "Buka"}
                       </button>
 
                       <button
                         type="button"
                         onClick={() => handleOpenEdit(job)}
-                        className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-bold bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 transition"
+                        className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-bold bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 transition cursor-pointer"
                       >
                         <span className="material-symbols-outlined text-sm">edit</span>
                         Edit
@@ -503,7 +504,7 @@ export default function AdminKarirPage() {
                       <button
                         type="button"
                         onClick={() => setDeletingId(job.id)}
-                        className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-bold text-red-600 bg-red-50 border border-red-200 hover:bg-red-100 transition"
+                        className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-bold text-red-600 bg-red-50 border border-red-200 hover:bg-red-100 transition cursor-pointer"
                       >
                         <span className="material-symbols-outlined text-sm">delete</span>
                         Hapus
@@ -511,31 +512,54 @@ export default function AdminKarirPage() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 pt-1">
-                    <div className="p-3.5 rounded-xl bg-gray-50 border border-gray-100">
-                      <p className="text-xs font-bold text-gray-900 mb-2 flex items-center gap-1.5">
-                        <span className="material-symbols-outlined text-[#F65456] text-base">checklist</span>
-                        Kualifikasi ({job.qualifications?.length || 0}):
-                      </p>
-                      <ul className="space-y-1 text-xs text-gray-600 list-disc list-inside">
-                        {job.qualifications?.map((q, idx) => (
-                          <li key={idx} className="leading-relaxed">{q}</li>
-                        ))}
-                      </ul>
+                  {/* Summary Bar & Toggle Detail */}
+                  <div className="flex flex-wrap items-center justify-between gap-2 mt-3 pt-3 border-t border-gray-100">
+                    <div className="flex items-center gap-3 text-xs text-gray-500 font-medium">
+                      <span>{job.qualifications?.length || 0} Kualifikasi</span>
+                      <span>&bull;</span>
+                      <span>{job.responsibilities?.length || 0} Tanggung Jawab</span>
                     </div>
 
-                    <div className="p-3.5 rounded-xl bg-gray-50 border border-gray-100">
-                      <p className="text-xs font-bold text-gray-900 mb-2 flex items-center gap-1.5">
-                        <span className="material-symbols-outlined text-blue-600 text-base">assignment</span>
-                        Tanggung Jawab ({job.responsibilities?.length || 0}):
-                      </p>
-                      <ul className="space-y-1 text-xs text-gray-600 list-disc list-inside">
-                        {job.responsibilities?.map((r, idx) => (
-                          <li key={idx} className="leading-relaxed">{r}</li>
-                        ))}
-                      </ul>
-                    </div>
+                    <button
+                      type="button"
+                      onClick={() => toggleExpandJob(job.id)}
+                      className="text-xs font-semibold text-gray-600 hover:text-[#F65456] flex items-center gap-1 transition cursor-pointer"
+                    >
+                      <span>{expandedJobIds[job.id] ? "Sembunyikan Rincian" : "Lihat Rincian"}</span>
+                      <span className="material-symbols-outlined text-sm">
+                        {expandedJobIds[job.id] ? "expand_less" : "expand_more"}
+                      </span>
+                    </button>
                   </div>
+
+                  {/* Expandable Details (Hanya muncul jika di-klik, bukan text dump) */}
+                  {expandedJobIds[job.id] && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 mt-3 pt-3 border-t border-gray-100 animate-fade-in">
+                      <div className="p-3.5 rounded-xl bg-gray-50 border border-gray-200">
+                        <p className="text-xs font-bold text-gray-900 mb-2 flex items-center gap-1.5">
+                          <span className="material-symbols-outlined text-[#F65456] text-base">checklist</span>
+                          Kualifikasi ({job.qualifications?.length || 0}):
+                        </p>
+                        <ul className="space-y-1 text-xs text-gray-600 list-disc list-inside">
+                          {job.qualifications?.map((q, idx) => (
+                            <li key={idx} className="leading-relaxed">{q}</li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      <div className="p-3.5 rounded-xl bg-gray-50 border border-gray-200">
+                        <p className="text-xs font-bold text-gray-900 mb-2 flex items-center gap-1.5">
+                          <span className="material-symbols-outlined text-blue-600 text-base">assignment</span>
+                          Tanggung Jawab ({job.responsibilities?.length || 0}):
+                        </p>
+                        <ul className="space-y-1 text-xs text-gray-600 list-disc list-inside">
+                          {job.responsibilities?.map((r, idx) => (
+                            <li key={idx} className="leading-relaxed">{r}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -548,29 +572,29 @@ export default function AdminKarirPage() {
         <div className="space-y-6">
           {/* Summary KPIs Row */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-            <div className="p-4 rounded-2xl bg-white border border-gray-200 shadow-xs">
+            <div className="p-4 rounded-2xl bg-white border border-gray-200 shadow-sm">
               <p className="text-[11px] font-bold text-gray-500 uppercase font-mono">Total Pelamar</p>
               <p className="text-2xl font-heading font-extrabold text-gray-900 mt-1">{applicants.length}</p>
             </div>
 
-            <div className="p-4 rounded-2xl bg-white border border-red-200 shadow-xs">
+            <div className="p-4 rounded-2xl bg-white border border-red-200 shadow-sm">
               <p className="text-[11px] font-bold text-[#F65456] uppercase font-mono">Berkas Baru</p>
               <p className="text-2xl font-heading font-extrabold text-[#F65456] mt-1">{newApplicantCount}</p>
             </div>
 
-            <div className="p-4 rounded-2xl bg-white border border-blue-200 shadow-xs">
+            <div className="p-4 rounded-2xl bg-white border border-blue-200 shadow-sm">
               <p className="text-[11px] font-bold text-blue-700 uppercase font-mono">Tahap Interview</p>
               <p className="text-2xl font-heading font-extrabold text-blue-700 mt-1">{interviewCount}</p>
             </div>
 
-            <div className="p-4 rounded-2xl bg-white border border-emerald-200 shadow-xs">
+            <div className="p-4 rounded-2xl bg-white border border-emerald-200 shadow-sm">
               <p className="text-[11px] font-bold text-emerald-700 uppercase font-mono">Diterima</p>
               <p className="text-2xl font-heading font-extrabold text-emerald-700 mt-1">{acceptedCount}</p>
             </div>
           </div>
 
           {/* Search & Filter Bar Pelamar */}
-          <div className="p-4 rounded-2xl bg-white border border-gray-200 shadow-xs flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
+          <div className="p-4 rounded-2xl bg-white border border-gray-200 shadow-sm flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
             <div className="relative flex-1 max-w-md">
               <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg">
                 search
@@ -613,7 +637,7 @@ export default function AdminKarirPage() {
               {filteredApplicants.map((applicant) => (
                 <div
                   key={applicant.id}
-                  className="p-4 sm:p-5 rounded-2xl bg-white border border-gray-200 hover:border-gray-300 shadow-xs transition flex flex-col lg:flex-row lg:items-center justify-between gap-4"
+                  className="p-4 sm:p-5 rounded-2xl bg-white border border-gray-200 hover:border-gray-300 shadow-sm transition flex flex-col lg:flex-row lg:items-center justify-between gap-4"
                 >
                   {/* Kolom 1: Profil Dasar Pelamar */}
                   <div className="flex-1 min-w-0 space-y-2">
@@ -701,7 +725,7 @@ export default function AdminKarirPage() {
                         setSelectedApplicant(applicant);
                         setDetailTab("identitas");
                       }}
-                      className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#121316] hover:bg-black text-white text-xs font-bold transition shadow-xs cursor-pointer active:scale-95"
+                      className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#121316] hover:bg-black text-white text-xs font-bold transition shadow-sm cursor-pointer active:scale-95"
                     >
                       <span className="material-symbols-outlined text-sm">visibility</span>
                       <span>Rincian Berkas</span>
@@ -712,7 +736,7 @@ export default function AdminKarirPage() {
                       href={`https://wa.me/${applicant.phone.replace(/^0/, "62")}?text=Halo%20${encodeURIComponent(applicant.name)}%2C%20kami%20dari%20Tim%20HRD%20CV%20Pelangi%20UV%20terkait%20lamaran%20posisi%20*${encodeURIComponent(applicant.jobTitle)}*...`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition shadow-xs"
+                      className="inline-flex items-center gap-1 px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition shadow-sm"
                       title="Hubungi via WhatsApp"
                     >
                       <span className="material-symbols-outlined text-sm">chat</span>
@@ -754,7 +778,7 @@ export default function AdminKarirPage() {
       {/* MODAL DETAIL LENGKAP PROFIL PELAMAR (PROPORSI RAPI) */}
       {/* ======================================================== */}
       {selectedApplicant && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6 overflow-y-auto animate-fade-in">
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6 overflow-y-auto animate-fade-in">
           <div className="relative w-full max-w-4xl bg-white rounded-3xl shadow-2xl border border-gray-200 overflow-hidden my-auto max-h-[92vh] flex flex-col">
             {/* Modal Header */}
             <div className="p-5 sm:p-6 bg-[#121316] text-white flex items-start justify-between border-b border-white/10 shrink-0">
@@ -808,7 +832,7 @@ export default function AdminKarirPage() {
                 onClick={() => setDetailTab("identitas")}
                 className={`px-3 py-2 rounded-xl transition shrink-0 ${
                   detailTab === "identitas"
-                    ? "bg-white text-gray-900 shadow-xs"
+                    ? "bg-white text-gray-900 shadow-sm"
                     : "text-gray-600 hover:bg-gray-200/60"
                 }`}
               >
@@ -820,7 +844,7 @@ export default function AdminKarirPage() {
                 onClick={() => setDetailTab("pengalaman")}
                 className={`px-3 py-2 rounded-xl transition shrink-0 ${
                   detailTab === "pengalaman"
-                    ? "bg-white text-gray-900 shadow-xs"
+                    ? "bg-white text-gray-900 shadow-sm"
                     : "text-gray-600 hover:bg-gray-200/60"
                 }`}
               >
@@ -832,7 +856,7 @@ export default function AdminKarirPage() {
                 onClick={() => setDetailTab("komitmen")}
                 className={`px-3 py-2 rounded-xl transition shrink-0 ${
                   detailTab === "komitmen"
-                    ? "bg-white text-gray-900 shadow-xs"
+                    ? "bg-white text-gray-900 shadow-sm"
                     : "text-gray-600 hover:bg-gray-200/60"
                 }`}
               >
@@ -844,7 +868,7 @@ export default function AdminKarirPage() {
                 onClick={() => setDetailTab("skill")}
                 className={`px-3 py-2 rounded-xl transition shrink-0 ${
                   detailTab === "skill"
-                    ? "bg-white text-gray-900 shadow-xs"
+                    ? "bg-white text-gray-900 shadow-sm"
                     : "text-gray-600 hover:bg-gray-200/60"
                 }`}
               >
@@ -856,7 +880,7 @@ export default function AdminKarirPage() {
                 onClick={() => setDetailTab("berkas")}
                 className={`px-3 py-2 rounded-xl transition shrink-0 ${
                   detailTab === "berkas"
-                    ? "bg-white text-gray-900 shadow-xs"
+                    ? "bg-white text-gray-900 shadow-sm"
                     : "text-gray-600 hover:bg-gray-200/60"
                 }`}
               >
@@ -1111,7 +1135,7 @@ export default function AdminKarirPage() {
                   href={`https://wa.me/${selectedApplicant.phone.replace(/^0/, "62")}?text=Halo%20${encodeURIComponent(selectedApplicant.name)}%2C%20kami%20dari%20Tim%20HRD%20CV%20Pelangi%20UV...`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-1.5 transition shadow-xs"
+                  className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-1.5 transition shadow-sm"
                 >
                   <span className="material-symbols-outlined text-sm">chat</span>
                   <span>Hubungi WA</span>
@@ -1134,7 +1158,7 @@ export default function AdminKarirPage() {
       {/* MODAL TEMPLATE PENOLAKAN / GAGAL SELEKSI */}
       {/* ======================================================== */}
       {rejectionTarget && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto animate-fade-in">
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto animate-fade-in">
           <div className="relative w-full max-w-xl bg-white rounded-3xl shadow-2xl border border-gray-200 overflow-hidden my-6 flex flex-col">
             <div className="p-5 border-b border-gray-100 flex items-center justify-between bg-red-50/50">
               <div className="flex items-center gap-2.5">
@@ -1219,7 +1243,7 @@ CV Pelangi UV`}
                     href={`https://wa.me/${rejectionTarget.phone.replace(/^0/, "62")}?text=${encodeURIComponent(`Halo Bapak/Ibu *${rejectionTarget.name}*,\n\nTerima kasih atas minat dan antusiasme Anda dalam melamar posisi *${rejectionTarget.jobTitle}* di CV Pelangi UV.\n\nSetelah melalui proses peninjauan berkas yang seksama oleh Tim Rekrutmen kami, mohon maaf saat ini kualifikasi yang kami butuhkan belum sesuai dengan profil Anda.\n\nData lamaran Anda akan tetap kami simpan di database talent kami untuk kemungkinan peluang karir di masa mendatang apabila ada posisi yang sesuai.\n\nKami sangat menghargai waktu dan usaha yang Anda berikan, serta mendoakan kesuksesan untuk perjalanan karir Anda selanjutnya.\n\nSalam hangat,\n*Tim HRD & Rekrutmen CV Pelangi UV*`)}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold flex items-center gap-1.5 transition shadow-xs"
+                    className="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold flex items-center gap-1.5 transition shadow-sm"
                   >
                     <span className="material-symbols-outlined text-sm">chat</span>
                     <span>Kirim WhatsApp</span>
@@ -1235,7 +1259,7 @@ CV Pelangi UV`}
       {/* MODAL TAMBAH / EDIT LOWONGAN */}
       {/* ======================================================== */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
           <div className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl border border-gray-200 overflow-hidden my-8 max-h-[90vh] flex flex-col">
             <div className="p-5 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
               <div className="flex items-center gap-2.5">
@@ -1437,7 +1461,7 @@ CV Pelangi UV`}
 
       {/* MODAL HAPUS LOWONGAN */}
       {deletingId && (
-        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="w-full max-w-sm bg-white rounded-3xl p-6 shadow-2xl border border-gray-200 text-center space-y-4">
             <div className="w-12 h-12 rounded-full bg-red-100 text-red-600 flex items-center justify-center mx-auto">
               <span className="material-symbols-outlined text-2xl">delete</span>
