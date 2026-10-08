@@ -7,6 +7,37 @@ import { CareerJobItem, JobApplicantItem } from "@/lib/admin/db";
 
 const DIVISIONS = ["Finance", "Marketing", "Operational", "Production", "Warehouse"] as const;
 
+type ApplicantSortOption = "newest" | "oldest" | "name_asc" | "name_desc" | "status";
+
+// Helper format hari, tanggal, dan jam WIB pelamar
+function formatApplicantDateTime(iso?: string) {
+  if (!iso) return { day: "-", date: "-", time: "-", full: "-" };
+  try {
+    const d = new Date(iso);
+    if (isNaN(d.getTime())) return { day: "-", date: "-", time: "-", full: "-" };
+    const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+    const dayName = days[d.getDay()];
+    const dateFormatted = d.toLocaleDateString("id-ID", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
+    const timeFormatted =
+      d.toLocaleTimeString("id-ID", {
+        hour: "2-digit",
+        minute: "2-digit",
+      }).replace(".", ":") + " WIB";
+    return {
+      day: dayName,
+      date: dateFormatted,
+      time: timeFormatted,
+      full: `${dayName}, ${dateFormatted} • ${timeFormatted}`,
+    };
+  } catch {
+    return { day: "-", date: "-", time: "-", full: "-" };
+  }
+}
+
 export default function AdminKarirPage() {
   const [activeTab, setActiveTab] = useState<"jobs" | "applicants">("jobs");
   const [jobs, setJobs] = useState<CareerJobItem[]>([]);
@@ -18,9 +49,11 @@ export default function AdminKarirPage() {
   const [filterDivision, setFilterDivision] = useState<string>("ALL");
   const [filterStatus, setFilterStatus] = useState<string>("ALL");
 
-  // Filter Applicants
+  // Filter & Sort Applicants
   const [applicantSearch, setApplicantSearch] = useState("");
   const [applicantFilterStatus, setApplicantFilterStatus] = useState<string>("ALL");
+  const [applicantFilterJob, setApplicantFilterJob] = useState<string>("ALL");
+  const [applicantSort, setApplicantSort] = useState<ApplicantSortOption>("newest");
   const [selectedApplicant, setSelectedApplicant] = useState<JobApplicantItem | null>(null);
   const [detailTab, setDetailTab] = useState<"identitas" | "pengalaman" | "komitmen" | "skill" | "berkas">("identitas");
 
@@ -140,6 +173,29 @@ export default function AdminKarirPage() {
     });
   }, [jobs, searchQuery, filterDivision, filterStatus]);
 
+  // Hitung jumlah pelamar per posisi pekerjaan
+  const jobApplicantStats = useMemo(() => {
+    const stats: Record<string, { total: number; newCount: number }> = {};
+    for (const app of applicants) {
+      const key = (app.jobTitle || app.jobId || "Lainnya").trim();
+      if (!stats[key]) stats[key] = { total: 0, newCount: 0 };
+      stats[key].total += 1;
+      if (app.status === "new") stats[key].newCount += 1;
+    }
+    return stats;
+  }, [applicants]);
+
+  const getApplicantCountForJob = (job: CareerJobItem) => {
+    if (jobApplicantStats[job.title]) return jobApplicantStats[job.title];
+    if (jobApplicantStats[job.id]) return jobApplicantStats[job.id];
+    const match = Object.entries(jobApplicantStats).find(
+      ([k]) =>
+        k.toLowerCase() === job.title.toLowerCase() ||
+        k.toLowerCase() === job.id.toLowerCase()
+    );
+    return match ? match[1] : { total: 0, newCount: 0 };
+  };
+
   // Filter Applicants Memo
   const filteredApplicants = useMemo(() => {
     return applicants.filter((app) => {
@@ -154,9 +210,55 @@ export default function AdminKarirPage() {
       const matchStatus =
         applicantFilterStatus === "ALL" || app.status === applicantFilterStatus;
 
-      return matchSearch && matchStatus;
+      const matchJob =
+        applicantFilterJob === "ALL" ||
+        app.jobTitle.toLowerCase() === applicantFilterJob.toLowerCase() ||
+        app.jobId === applicantFilterJob;
+
+      return matchSearch && matchStatus && matchJob;
     });
-  }, [applicants, applicantSearch, applicantFilterStatus]);
+  }, [applicants, applicantSearch, applicantFilterStatus, applicantFilterJob]);
+
+  // Sort Applicants Memo (Waktu Submit Terbaru/Terlama, Nama A-Z / Z-A, Status)
+  const sortedApplicants = useMemo(() => {
+    const list = [...filteredApplicants];
+    switch (applicantSort) {
+      case "newest":
+        list.sort(
+          (a, b) =>
+            new Date(b.createdAt || 0).getTime() -
+            new Date(a.createdAt || 0).getTime()
+        );
+        break;
+      case "oldest":
+        list.sort(
+          (a, b) =>
+            new Date(a.createdAt || 0).getTime() -
+            new Date(b.createdAt || 0).getTime()
+        );
+        break;
+      case "name_asc":
+        list.sort((a, b) => a.name.localeCompare(b.name, "id-ID"));
+        break;
+      case "name_desc":
+        list.sort((a, b) => b.name.localeCompare(a.name, "id-ID"));
+        break;
+      case "status": {
+        const order: Record<string, number> = {
+          new: 0,
+          reviewed: 1,
+          interview: 2,
+          accepted: 3,
+          rejected: 4,
+        };
+        list.sort(
+          (a, b) => (order[a.status] ?? 99) - (order[b.status] ?? 99)
+        );
+        break;
+      }
+    }
+    return list;
+  }, [filteredApplicants, applicantSort]);
 
   // Stats
   const openCount = jobs.filter((j) => j.isOpen).length;
@@ -479,7 +581,34 @@ export default function AdminKarirPage() {
                       </h3>
                     </div>
 
-                    <div className="flex items-center gap-2 shrink-0">
+                    <div className="flex flex-wrap items-center gap-2 shrink-0">
+                      {(() => {
+                        const stats = getApplicantCountForJob(job);
+                        return (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setApplicantFilterJob(job.title);
+                              setActiveTab("applicants");
+                            }}
+                            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border transition cursor-pointer active:scale-95 ${
+                              stats.total > 0
+                                ? "bg-red-50 text-[#F65456] border-red-200 hover:bg-red-100"
+                                : "bg-gray-50 text-gray-600 border-gray-200 hover:bg-gray-100"
+                            }`}
+                            title={`Lihat ${stats.total} pelamar untuk posisi ${job.title}`}
+                          >
+                            <span className="material-symbols-outlined text-sm">groups</span>
+                            <span>{stats.total} Pelamar</span>
+                            {stats.newCount > 0 && (
+                              <span className="px-1.5 py-0.5 rounded-full text-[10px] font-extrabold bg-[#F65456] text-white">
+                                +{stats.newCount} baru
+                              </span>
+                            )}
+                          </button>
+                        );
+                      })()}
+
                       <button
                         type="button"
                         onClick={() => handleToggleStatus(job)}
@@ -593,7 +722,86 @@ export default function AdminKarirPage() {
             </div>
           </div>
 
-          {/* Search & Filter Bar Pelamar */}
+          {/* Breakdown / Filter Cepat per Posisi Lowongan */}
+          <div className="p-4 rounded-2xl bg-white border border-gray-200 shadow-sm space-y-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-[#F65456] text-lg">work</span>
+                <h3 className="font-heading font-extrabold text-sm text-gray-900">
+                  Pelamar per Posisi Lowongan
+                </h3>
+              </div>
+              {applicantFilterJob !== "ALL" && (
+                <button
+                  type="button"
+                  onClick={() => setApplicantFilterJob("ALL")}
+                  className="text-xs font-bold text-[#F65456] hover:underline cursor-pointer flex items-center gap-1"
+                >
+                  <span className="material-symbols-outlined text-sm">restart_alt</span>
+                  Tampilkan Semua Posisi
+                </button>
+              )}
+            </div>
+
+            <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
+              <button
+                type="button"
+                onClick={() => setApplicantFilterJob("ALL")}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition cursor-pointer shrink-0 border ${
+                  applicantFilterJob === "ALL"
+                    ? "bg-[#121316] text-white border-[#121316] shadow-sm"
+                    : "bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100"
+                }`}
+              >
+                Semua Posisi ({applicants.length})
+              </button>
+
+              {jobs.map((job) => {
+                const stats = getApplicantCountForJob(job);
+                const isSelected =
+                  applicantFilterJob.toLowerCase() === job.title.toLowerCase() ||
+                  applicantFilterJob === job.id;
+                return (
+                  <button
+                    key={job.id}
+                    type="button"
+                    onClick={() =>
+                      setApplicantFilterJob(isSelected ? "ALL" : job.title)
+                    }
+                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition cursor-pointer shrink-0 border ${
+                      isSelected
+                        ? "bg-[#F65456] text-white border-[#F65456] shadow-sm"
+                        : "bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100"
+                    }`}
+                  >
+                    <span>{job.title}</span>
+                    <span
+                      className={`px-1.5 py-0.5 rounded-full text-[10px] font-extrabold font-mono ${
+                        isSelected
+                          ? "bg-white/20 text-white"
+                          : stats.total > 0
+                          ? "bg-red-50 text-[#F65456] border border-red-200"
+                          : "bg-gray-200 text-gray-600"
+                      }`}
+                    >
+                      {stats.total}
+                    </span>
+                    {stats.newCount > 0 && (
+                      <span
+                        className={`px-1.5 py-0.5 rounded-full text-[10px] font-extrabold ${
+                          isSelected ? "bg-white text-[#F65456]" : "bg-[#F65456] text-white"
+                        }`}
+                      >
+                        +{stats.newCount}
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Search, Filter & Sorting Bar Pelamar */}
           <div className="p-4 rounded-2xl bg-white border border-gray-200 shadow-sm flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
             <div className="relative flex-1 max-w-md">
               <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg">
@@ -608,12 +816,26 @@ export default function AdminKarirPage() {
               />
             </div>
 
-            <div className="flex items-center gap-2">
-              <span className="text-xs text-gray-500 font-medium">Filter Status:</span>
+            <div className="flex flex-wrap items-center gap-2">
+              {/* Dropdown Posisi */}
+              <select
+                value={applicantFilterJob}
+                onChange={(e) => setApplicantFilterJob(e.target.value)}
+                className="px-3 py-2 text-xs sm:text-sm bg-gray-50 border border-gray-200 rounded-xl text-gray-700 font-semibold focus:outline-none focus:border-[#F65456]"
+              >
+                <option value="ALL">Semua Posisi</option>
+                {jobs.map((job) => (
+                  <option key={job.id} value={job.title}>
+                    {job.title}
+                  </option>
+                ))}
+              </select>
+
+              {/* Dropdown Filter Status */}
               <select
                 value={applicantFilterStatus}
                 onChange={(e) => setApplicantFilterStatus(e.target.value)}
-                className="px-3.5 py-2 text-xs sm:text-sm bg-gray-50 border border-gray-200 rounded-xl text-gray-700 font-semibold focus:outline-none focus:border-[#F65456]"
+                className="px-3 py-2 text-xs sm:text-sm bg-gray-50 border border-gray-200 rounded-xl text-gray-700 font-semibold focus:outline-none focus:border-[#F65456]"
               >
                 <option value="ALL">Semua Status ({applicants.length})</option>
                 <option value="new">Baru ({newApplicantCount})</option>
@@ -622,19 +844,35 @@ export default function AdminKarirPage() {
                 <option value="accepted">Diterima ({acceptedCount})</option>
                 <option value="rejected">Ditolak</option>
               </select>
+
+              {/* Dropdown Urutkan / Sort */}
+              <div className="flex items-center gap-1 bg-gray-50 border border-gray-200 rounded-xl px-2.5 py-1">
+                <span className="material-symbols-outlined text-gray-400 text-base">sort</span>
+                <select
+                  value={applicantSort}
+                  onChange={(e) => setApplicantSort(e.target.value as ApplicantSortOption)}
+                  className="bg-transparent text-xs sm:text-sm font-semibold text-gray-700 focus:outline-none cursor-pointer pr-1"
+                >
+                  <option value="newest">🕒 Submit: Terbaru</option>
+                  <option value="oldest">⏳ Submit: Terlama</option>
+                  <option value="name_asc">🔤 Nama: A → Z</option>
+                  <option value="name_desc">🔤 Nama: Z → A</option>
+                  <option value="status">📊 Status Seleksi</option>
+                </select>
+              </div>
             </div>
           </div>
 
           {/* List Pelamar - Card Rapi & Proporsional */}
-          {filteredApplicants.length === 0 ? (
+          {sortedApplicants.length === 0 ? (
             <div className="p-12 text-center bg-white rounded-2xl border border-gray-200 text-gray-500">
               <span className="material-symbols-outlined text-4xl text-gray-300 mb-2">person_search</span>
               <p className="text-base font-bold text-gray-700">Tidak ada berkas pelamar yang cocok</p>
-              <p className="text-xs text-gray-500 mt-1">Coba sesuaikan filter status atau kata kunci pencarian.</p>
+              <p className="text-xs text-gray-500 mt-1">Coba sesuaikan filter status, filter posisi, atau kata kunci pencarian.</p>
             </div>
           ) : (
             <div className="space-y-3.5">
-              {filteredApplicants.map((applicant) => (
+              {sortedApplicants.map((applicant) => (
                 <div
                   key={applicant.id}
                   className="p-4 sm:p-5 rounded-2xl bg-white border border-gray-200 hover:border-gray-300 shadow-sm transition flex flex-col lg:flex-row lg:items-center justify-between gap-4"
@@ -662,8 +900,8 @@ export default function AdminKarirPage() {
                       </span>
                     </div>
 
-                    {/* Sub-info: Pendidikan & Kontak */}
-                    <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-gray-500">
+                    {/* Sub-info: Pendidikan, Kontak, & Waktu Submit */}
+                    <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-gray-500">
                       <span className="flex items-center gap-1 text-gray-700">
                         <span className="material-symbols-outlined text-sm text-gray-400">school</span>
                         <span>{applicant.education || "-"} {applicant.educationMajor ? `(${applicant.educationMajor})` : ""}</span>
@@ -681,13 +919,21 @@ export default function AdminKarirPage() {
                         </span>
                       )}
 
-                      <span className="text-[11px] text-gray-400 font-mono">
-                        {new Date(applicant.createdAt).toLocaleDateString("id-ID", {
-                          day: "numeric",
-                          month: "short",
-                          year: "numeric",
-                        })}
-                      </span>
+                      {/* Waktu Submit Lengkap: Hari, Tanggal, dan Jam WIB */}
+                      {(() => {
+                        const dt = formatApplicantDateTime(applicant.createdAt);
+                        return (
+                          <span
+                            className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg bg-gray-100 text-gray-800 text-[11px] font-mono font-medium border border-gray-200"
+                            title={`Waktu Masuk: ${dt.full}`}
+                          >
+                            <span className="material-symbols-outlined text-xs text-[#F65456]">schedule</span>
+                            <span>{dt.day}, {dt.date}</span>
+                            <span className="text-gray-400 font-bold">•</span>
+                            <span className="font-bold text-gray-900">{dt.time}</span>
+                          </span>
+                        );
+                      })()}
                     </div>
                   </div>
 
@@ -805,15 +1051,17 @@ export default function AdminKarirPage() {
                   {selectedApplicant.age ? ` (${selectedApplicant.age} Tahun)` : ""}
                 </h3>
 
-                <p className="text-gray-400 text-xs mt-1 font-mono">
-                  Diajukan pada: {new Date(selectedApplicant.createdAt).toLocaleDateString("id-ID", {
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
-                </p>
+                {(() => {
+                  const dt = formatApplicantDateTime(selectedApplicant.createdAt);
+                  return (
+                    <div className="flex items-center gap-1.5 text-xs text-gray-300 mt-1.5 font-mono">
+                      <span className="material-symbols-outlined text-sm text-[#F65456]">schedule</span>
+                      <span>
+                        Diajukan pada: <strong className="text-white font-bold">{dt.day}, {dt.date}</strong> pukul <strong className="text-white font-bold">{dt.time}</strong>
+                      </span>
+                    </div>
+                  );
+                })()}
               </div>
 
               <button
