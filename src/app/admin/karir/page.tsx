@@ -2,16 +2,19 @@
 
 import { useEffect, useState, useMemo } from "react";
 import Link from "next/link";
-import { CareerJobItem } from "@/lib/admin/db";
+import { CareerJobItem, JobApplicantItem } from "@/lib/admin/db";
 
 const DIVISIONS = ["Finance", "Marketing", "Operational", "Production", "Warehouse"] as const;
 
 export default function AdminKarirPage() {
+  const [activeTab, setActiveTab] = useState<"jobs" | "applicants">("jobs");
   const [jobs, setJobs] = useState<CareerJobItem[]>([]);
+  const [applicants, setApplicants] = useState<JobApplicantItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterDivision, setFilterDivision] = useState<string>("ALL");
   const [filterStatus, setFilterStatus] = useState<string>("ALL");
+  const [applicantFilterStatus, setApplicantFilterStatus] = useState<string>("ALL");
 
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -37,13 +40,20 @@ export default function AdminKarirPage() {
   async function fetchJobs() {
     try {
       setLoading(true);
-      const res = await fetch("/api/admin/jobs");
-      if (res.ok) {
-        const data = await res.json();
+      const [jobsRes, appRes] = await Promise.all([
+        fetch("/api/admin/jobs"),
+        fetch("/api/admin/applicants"),
+      ]);
+      if (jobsRes.ok) {
+        const data = await jobsRes.json();
         setJobs(data);
       }
+      if (appRes.ok) {
+        const appData = await appRes.json();
+        setApplicants(Array.isArray(appData) ? appData : []);
+      }
     } catch (err) {
-      console.error("Gagal memuat lowongan:", err);
+      console.error("Gagal memuat lowongan atau pelamar:", err);
     } finally {
       setLoading(false);
     }
@@ -52,6 +62,37 @@ export default function AdminKarirPage() {
   useEffect(() => {
     fetchJobs();
   }, []);
+
+  async function handleUpdateApplicantStatus(id: string, status: JobApplicantItem["status"]) {
+    try {
+      const res = await fetch("/api/admin/applicants", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, status }),
+      });
+      if (res.ok) {
+        setApplicants((prev) =>
+          prev.map((a) => (a.id === id ? { ...a, status } : a))
+        );
+      }
+    } catch (err) {
+      console.error("Gagal update status pelamar:", err);
+    }
+  }
+
+  async function handleDeleteApplicant(id: string, name: string) {
+    if (!confirm(`Hapus berkas pelamar ${name}?`)) return;
+    try {
+      const res = await fetch(`/api/admin/applicants?id=${encodeURIComponent(id)}`, {
+        method: "DELETE",
+      });
+      if (res.ok) {
+        setApplicants((prev) => prev.filter((a) => a.id !== id));
+      }
+    } catch (err) {
+      console.error("Gagal hapus pelamar:", err);
+    }
+  }
 
   function handleOpenCreate() {
     setEditingJob(null);
@@ -239,7 +280,43 @@ export default function AdminKarirPage() {
         </div>
       </div>
 
-      {/* Stats Cards */}
+      {/* Tab Switcher */}
+      <div className="flex items-center gap-2 border-b border-gray-200 pb-1">
+        <button
+          type="button"
+          onClick={() => setActiveTab("jobs")}
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition cursor-pointer ${
+            activeTab === "jobs"
+              ? "bg-[#F65456] text-white shadow-sm"
+              : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+          }`}
+        >
+          <span className="material-symbols-outlined text-base">work</span>
+          <span>Daftar Lowongan ({jobs.length})</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setActiveTab("applicants")}
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition cursor-pointer ${
+            activeTab === "applicants"
+              ? "bg-[#F65456] text-white shadow-sm"
+              : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+          }`}
+        >
+          <span className="material-symbols-outlined text-base">people</span>
+          <span>Berkas Pelamar Masuk ({applicants.length})</span>
+          {applicants.filter((a) => a.status === "new").length > 0 && (
+            <span className="px-2 py-0.5 rounded-full bg-white text-[#F65456] text-[10px] font-bold border border-red-200 shadow-xs">
+              {applicants.filter((a) => a.status === "new").length} Baru
+            </span>
+          )}
+        </button>
+      </div>
+
+      {activeTab === "jobs" ? (
+        <>
+          {/* Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="p-4 rounded-2xl bg-white border border-gray-200 shadow-xs flex items-center justify-between">
           <div>
@@ -426,6 +503,242 @@ export default function AdminKarirPage() {
               </div>
             </div>
           ))}
+        </div>
+      )}
+      </>
+      ) : (
+        /* APPLICANTS TAB CONTENT */
+        <div className="space-y-5">
+          {/* Applicants Summary Row */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="p-4 rounded-2xl bg-white border border-gray-200 shadow-xs flex items-center justify-between">
+              <div>
+                <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">Total Pelamar</p>
+                <p className="text-2xl font-heading font-extrabold text-gray-900 mt-1">{applicants.length}</p>
+              </div>
+              <div className="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center text-purple-600">
+                <span className="material-symbols-outlined">person</span>
+              </div>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-white border border-red-200 shadow-xs flex items-center justify-between">
+              <div>
+                <p className="text-xs font-bold text-[#F65456] uppercase tracking-wider">Berkas Baru</p>
+                <p className="text-2xl font-heading font-extrabold text-[#F65456] mt-1">
+                  {applicants.filter((a) => a.status === "new").length}
+                </p>
+              </div>
+              <div className="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center text-[#F65456]">
+                <span className="material-symbols-outlined">mark_email_unread</span>
+              </div>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-white border border-blue-200 shadow-xs flex items-center justify-between">
+              <div>
+                <p className="text-xs font-bold text-blue-700 uppercase tracking-wider">Tahap Interview</p>
+                <p className="text-2xl font-heading font-extrabold text-blue-700 mt-1">
+                  {applicants.filter((a) => a.status === "interview").length}
+                </p>
+              </div>
+              <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600">
+                <span className="material-symbols-outlined">groups</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Applicants Filter Bar */}
+          <div className="p-4 rounded-2xl bg-white border border-gray-200 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div className="text-xs text-gray-600 font-mono">
+              Menampilkan <span className="font-bold text-gray-900">{applicants.length}</span> berkas pelamar
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-gray-500 font-medium">Filter Status:</span>
+              <select
+                value={applicantFilterStatus}
+                onChange={(e) => setApplicantFilterStatus(e.target.value)}
+                className="px-3 py-1.5 text-xs bg-gray-50 border border-gray-200 rounded-xl text-gray-700 font-semibold focus:outline-none focus:border-[#F65456]"
+              >
+                <option value="ALL">Semua Status</option>
+                <option value="new">Baru</option>
+                <option value="reviewed">Ditinjau</option>
+                <option value="interview">Jadwal Interview</option>
+                <option value="accepted">Diterima</option>
+                <option value="rejected">Ditolak</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Applicants List */}
+          {applicants.length === 0 ? (
+            <div className="p-12 text-center bg-white rounded-2xl border border-gray-200 text-gray-500">
+              <span className="material-symbols-outlined text-4xl text-gray-300 mb-2">inbox</span>
+              <p className="text-base font-bold text-gray-700">Belum Ada Pelamar Masuk</p>
+              <p className="text-xs text-gray-500 mt-1">
+                Data pelamar yang mengirimkan formulir di halaman Karir akan otomatis tersimpan di sini.
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 gap-4">
+              {applicants
+                .filter((a) =>
+                  applicantFilterStatus === "ALL" ? true : a.status === applicantFilterStatus
+                )
+                .map((applicant) => (
+                  <div
+                    key={applicant.id}
+                    className="p-5 sm:p-6 rounded-2xl bg-white border border-gray-200 shadow-xs space-y-4 hover:border-gray-300 transition"
+                  >
+                    {/* Applicant Header */}
+                    <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 pb-4 border-b border-gray-100">
+                      <div>
+                        <div className="flex flex-wrap items-center gap-2">
+                          <h3 className="font-heading font-extrabold text-lg text-gray-900">
+                            {applicant.name}
+                          </h3>
+                          {applicant.age && (
+                            <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-blue-50 text-blue-700 border border-blue-200">
+                              {applicant.age} Tahun
+                            </span>
+                          )}
+                          <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-red-50 text-[#F65456] border border-red-100">
+                            Posisi: {applicant.jobTitle}
+                          </span>
+                        </div>
+                        <p className="text-xs text-gray-400 mt-1 font-mono">
+                          Melamar pada: {new Date(applicant.createdAt).toLocaleDateString("id-ID", {
+                            day: "numeric",
+                            month: "long",
+                            year: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
+                        </p>
+                      </div>
+
+                      {/* Status Selector & Actions */}
+                      <div className="flex flex-wrap items-center gap-2 self-start sm:self-auto">
+                        <select
+                          value={applicant.status}
+                          onChange={(e) =>
+                            handleUpdateApplicantStatus(applicant.id, e.target.value as any)
+                          }
+                          className={`px-3 py-1.5 rounded-xl text-xs font-bold border transition outline-none cursor-pointer ${
+                            applicant.status === "new"
+                              ? "bg-red-50 text-red-700 border-red-200"
+                              : applicant.status === "interview"
+                              ? "bg-blue-50 text-blue-700 border-blue-200"
+                              : applicant.status === "accepted"
+                              ? "bg-emerald-50 text-emerald-700 border-emerald-200"
+                              : applicant.status === "rejected"
+                              ? "bg-gray-100 text-gray-600 border-gray-200"
+                              : "bg-amber-50 text-amber-700 border-amber-200"
+                          }`}
+                        >
+                          <option value="new">● Baru</option>
+                          <option value="reviewed">Ditinjau</option>
+                          <option value="interview">Jadwal Interview</option>
+                          <option value="accepted">Diterima</option>
+                          <option value="rejected">Ditolak</option>
+                        </select>
+
+                        <a
+                          href={`https://wa.me/${applicant.phone.replace(/^0/, "62")}?text=Halo%20${encodeURIComponent(applicant.name)}%2C%20kami%20dari%20Tim%20HRD%20CV%20Pelangi%20UV%20terkait%20lamaran%20pekerjaan%20posisi%20*${encodeURIComponent(applicant.jobTitle)}*...`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition shadow-xs"
+                        >
+                          <span className="material-symbols-outlined text-sm">chat</span>
+                          <span>WhatsApp</span>
+                        </a>
+
+                        <button
+                          type="button"
+                          onClick={() => handleDeleteApplicant(applicant.id, applicant.name)}
+                          className="w-8 h-8 rounded-xl border border-gray-200 hover:bg-red-50 hover:text-red-600 text-gray-400 flex items-center justify-center transition"
+                          title="Hapus berkas pelamar"
+                        >
+                          <span className="material-symbols-outlined text-base">delete</span>
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Contacts & Personal Info */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 text-xs bg-gray-50/70 p-3.5 rounded-xl border border-gray-100 font-sans">
+                      <div>
+                        <span className="text-gray-400 block font-mono text-[11px]">No. WhatsApp / HP:</span>
+                        <span className="font-bold text-gray-900 font-mono">{applicant.phone}</span>
+                      </div>
+                      <div>
+                        <span className="text-gray-400 block font-mono text-[11px]">No. Referensi / Darurat:</span>
+                        <span className="font-bold text-blue-700 font-mono">
+                          {applicant.referencePhone || "-"}
+                        </span>
+                      </div>
+                      <div>
+                        <span className="text-gray-400 block font-mono text-[11px]">Pendidikan Terakhir:</span>
+                        <span className="font-bold text-gray-900">{applicant.education || "-"}</span>
+                      </div>
+                      <div>
+                        <span className="text-gray-400 block font-mono text-[11px]">Domisili:</span>
+                        <span className="font-bold text-gray-900">{applicant.address || "-"}</span>
+                      </div>
+                    </div>
+
+                    {/* Work Experience */}
+                    <div className="p-3.5 rounded-xl bg-blue-50/40 border border-blue-100 text-xs space-y-1">
+                      <p className="font-bold text-blue-900 flex items-center gap-1.5 font-mono">
+                        <span className="material-symbols-outlined text-blue-600 text-sm">work</span>
+                        Riwayat &amp; Pengalaman Kerja:
+                      </p>
+                      <p className="text-gray-800 leading-relaxed whitespace-pre-line pl-5">
+                        {applicant.experience || "Fresh Graduate / Siap dilatih"}
+                      </p>
+                    </div>
+
+                    {/* Strengths & Weaknesses */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                      {/* Kelebihan */}
+                      <div className="p-3.5 rounded-xl bg-emerald-50/50 border border-emerald-100 space-y-1">
+                        <p className="font-bold text-emerald-900 flex items-center gap-1.5 font-mono">
+                          <span className="material-symbols-outlined text-emerald-600 text-sm">thumb_up</span>
+                          Kelebihan Diri (Strengths):
+                        </p>
+                        <p className="text-gray-800 leading-relaxed whitespace-pre-line pl-5">
+                          {applicant.strengths || "-"}
+                        </p>
+                      </div>
+
+                      {/* Kekurangan */}
+                      <div className="p-3.5 rounded-xl bg-amber-50/50 border border-amber-100 space-y-1">
+                        <p className="font-bold text-amber-900 flex items-center gap-1.5 font-mono">
+                          <span className="material-symbols-outlined text-amber-600 text-sm">tune</span>
+                          Kekurangan Diri &amp; Solusi Mengatasi:
+                        </p>
+                        <p className="text-gray-800 leading-relaxed whitespace-pre-line pl-5">
+                          {applicant.weaknesses || "-"}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* CV Document Attachment Link */}
+                    {(applicant.cvUrl || applicant.fileName) && (
+                      <div className="flex items-center gap-2 pt-1 text-xs">
+                        <span className="material-symbols-outlined text-purple-600 text-base">attach_file</span>
+                        <span className="text-gray-600 font-medium">Lampiran Berkas:</span>
+                        <a
+                          href={applicant.cvUrl || "#"}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="font-bold text-bracket-border hover:underline truncate max-w-md"
+                        >
+                          {applicant.fileName || applicant.cvUrl}
+                        </a>
+                      </div>
+                    )}
+                  </div>
+                ))}
+            </div>
+          )}
         </div>
       )}
 

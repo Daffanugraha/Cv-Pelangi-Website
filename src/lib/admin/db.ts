@@ -256,3 +256,64 @@ export function deleteMomenAlbum(id: string) {
   saveMomenAlbums(albums);
 }
 
+// ---------------------------------------------------------------------------
+// Applicants CRUD (Data Pelamar Karir)
+// ---------------------------------------------------------------------------
+export interface JobApplicantItem {
+  id: string;
+  jobId: string;
+  jobTitle: string;
+  name: string;
+  age: number | string;
+  phone: string;
+  referencePhone?: string;
+  email?: string;
+  address: string;
+  education?: string;
+  experience: string;
+  strengths: string;
+  weaknesses: string;
+  cvUrl?: string;
+  fileName?: string;
+  status: "new" | "reviewed" | "interview" | "rejected" | "accepted";
+  createdAt: string;
+}
+
+export function getApplicants(): JobApplicantItem[] {
+  return readJSON<JobApplicantItem[]>("applicants", []);
+}
+
+export function saveApplicants(items: JobApplicantItem[]) {
+  writeJSON("applicants", items);
+}
+
+export function addApplicant(
+  item: Omit<JobApplicantItem, "id" | "createdAt" | "status">
+): JobApplicantItem {
+  const applicants = getApplicants();
+  const newApplicant: JobApplicantItem = {
+    ...item,
+    id: `app_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+    status: "new",
+    createdAt: new Date().toISOString(),
+  };
+  applicants.unshift(newApplicant);
+  saveApplicants(applicants);
+  return newApplicant;
+}
+
+export function updateApplicantStatus(
+  id: string,
+  status: JobApplicantItem["status"]
+) {
+  const applicants = getApplicants().map((a) =>
+    a.id === id ? { ...a, status } : a
+  );
+  saveApplicants(applicants);
+}
+
+export function deleteApplicant(id: string) {
+  const applicants = getApplicants().filter((a) => a.id !== id);
+  saveApplicants(applicants);
+}
+
