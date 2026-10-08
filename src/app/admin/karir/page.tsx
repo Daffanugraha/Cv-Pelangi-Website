@@ -722,88 +722,110 @@ export default function AdminKarirPage() {
             </div>
           </div>
 
-          {/* Breakdown / Filter Cepat per Posisi Lowongan */}
-          <div className="p-4 rounded-2xl bg-white border border-gray-200 shadow-sm space-y-3">
-            <div className="flex items-center justify-between">
+          {/* Rekap Pelamar per Posisi Lowongan (Grid Card Ringkas & Elegan) */}
+          <div className="p-4 sm:p-5 rounded-2xl bg-white border border-gray-200 shadow-sm space-y-3">
+            <div className="flex flex-wrap items-center justify-between gap-2">
               <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-[#F65456] text-lg">work</span>
-                <h3 className="font-heading font-extrabold text-sm text-gray-900">
-                  Pelamar per Posisi Lowongan
+                <span className="material-symbols-outlined text-[#F65456] text-xl">work</span>
+                <h3 className="font-heading font-extrabold text-sm sm:text-base text-gray-900">
+                  Rekap Pelamar per Posisi Lowongan
                 </h3>
               </div>
+
               {applicantFilterJob !== "ALL" && (
                 <button
                   type="button"
                   onClick={() => setApplicantFilterJob("ALL")}
-                  className="text-xs font-bold text-[#F65456] hover:underline cursor-pointer flex items-center gap-1"
+                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold text-[#F65456] bg-red-50 hover:bg-red-100 transition cursor-pointer"
                 >
                   <span className="material-symbols-outlined text-sm">restart_alt</span>
-                  Tampilkan Semua Posisi
+                  Reset (Tampilkan Semua Posisi)
                 </button>
               )}
             </div>
 
-            <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
+            {/* Grid Posisi Compact */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 pt-1">
+              {/* Tombol Semua Posisi */}
               <button
                 type="button"
                 onClick={() => setApplicantFilterJob("ALL")}
-                className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition cursor-pointer shrink-0 border ${
+                className={`p-3 rounded-xl border text-left transition flex items-center justify-between gap-2 cursor-pointer ${
                   applicantFilterJob === "ALL"
                     ? "bg-[#121316] text-white border-[#121316] shadow-sm"
-                    : "bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100"
+                    : "bg-gray-50/70 hover:bg-gray-100 text-gray-700 border-gray-200"
                 }`}
               >
-                Semua Posisi ({applicants.length})
+                <div className="min-w-0">
+                  <p className="text-xs font-bold truncate">Semua Posisi</p>
+                  <p className={`text-[11px] ${applicantFilterJob === "ALL" ? "text-gray-300" : "text-gray-500"}`}>
+                    Total seluruh berkas masuk
+                  </p>
+                </div>
+                <span className={`px-2 py-0.5 rounded-lg text-xs font-mono font-extrabold shrink-0 ${
+                  applicantFilterJob === "ALL"
+                    ? "bg-white/20 text-white"
+                    : "bg-gray-200 text-gray-800"
+                }`}>
+                  {applicants.length}
+                </span>
               </button>
 
+              {/* Looping Tiap Posisi */}
               {jobs.map((job) => {
                 const stats = getApplicantCountForJob(job);
                 const isSelected =
                   applicantFilterJob.toLowerCase() === job.title.toLowerCase() ||
                   applicantFilterJob === job.id;
+
                 return (
                   <button
                     key={job.id}
                     type="button"
-                    onClick={() =>
-                      setApplicantFilterJob(isSelected ? "ALL" : job.title)
-                    }
-                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition cursor-pointer shrink-0 border ${
+                    onClick={() => setApplicantFilterJob(isSelected ? "ALL" : job.title)}
+                    className={`p-3 rounded-xl border text-left transition flex items-center justify-between gap-2 cursor-pointer ${
                       isSelected
                         ? "bg-[#F65456] text-white border-[#F65456] shadow-sm"
-                        : "bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100"
+                        : "bg-gray-50/70 hover:bg-gray-100 text-gray-700 border-gray-200"
                     }`}
                   >
-                    <span>{job.title}</span>
-                    <span
-                      className={`px-1.5 py-0.5 rounded-full text-[10px] font-extrabold font-mono ${
+                    <div className="min-w-0 flex-1">
+                      <p className="text-xs font-bold truncate" title={job.title}>
+                        {job.title}
+                      </p>
+                      <p className={`text-[11px] truncate ${isSelected ? "text-white/80" : "text-gray-500"}`}>
+                        {job.division} &bull; {job.isOpen ? "Aktif" : "Ditutup"}
+                      </p>
+                    </div>
+
+                    <div className="flex items-center gap-1 shrink-0">
+                      <span className={`px-2 py-0.5 rounded-lg text-xs font-mono font-extrabold ${
                         isSelected
                           ? "bg-white/20 text-white"
                           : stats.total > 0
                           ? "bg-red-50 text-[#F65456] border border-red-200"
                           : "bg-gray-200 text-gray-600"
-                      }`}
-                    >
-                      {stats.total}
-                    </span>
-                    {stats.newCount > 0 && (
-                      <span
-                        className={`px-1.5 py-0.5 rounded-full text-[10px] font-extrabold ${
-                          isSelected ? "bg-white text-[#F65456]" : "bg-[#F65456] text-white"
-                        }`}
-                      >
-                        +{stats.newCount}
+                      }`}>
+                        {stats.total}
                       </span>
-                    )}
+                      {stats.newCount > 0 && (
+                        <span className={`px-1.5 py-0.5 rounded-md text-[10px] font-extrabold ${
+                          isSelected ? "bg-white text-[#F65456]" : "bg-[#F65456] text-white"
+                        }`}>
+                          +{stats.newCount}
+                        </span>
+                      )}
+                    </div>
                   </button>
                 );
               })}
             </div>
           </div>
 
-          {/* Search, Filter & Sorting Bar Pelamar */}
+          {/* Search, Filter & Sorting Bar Pelamar (Proporsional & Sejajar) */}
           <div className="p-4 rounded-2xl bg-white border border-gray-200 shadow-sm flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
-            <div className="relative flex-1 max-w-md">
+            {/* Input Pencarian */}
+            <div className="relative flex-1">
               <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg">
                 search
               </span>
@@ -811,24 +833,28 @@ export default function AdminKarirPage() {
                 type="text"
                 value={applicantSearch}
                 onChange={(e) => setApplicantSearch(e.target.value)}
-                placeholder="Cari nama kandidat, nomor HP, posisi..."
-                className="w-full pl-9 pr-4 py-2.5 text-xs sm:text-sm bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-[#F65456]"
+                placeholder="Cari nama pelamar, nomor HP, email..."
+                className="w-full pl-9 pr-4 py-2 text-xs sm:text-sm bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-[#F65456]"
               />
             </div>
 
+            {/* Filter Group */}
             <div className="flex flex-wrap items-center gap-2">
               {/* Dropdown Posisi */}
               <select
                 value={applicantFilterJob}
                 onChange={(e) => setApplicantFilterJob(e.target.value)}
-                className="px-3 py-2 text-xs sm:text-sm bg-gray-50 border border-gray-200 rounded-xl text-gray-700 font-semibold focus:outline-none focus:border-[#F65456]"
+                className="px-3 py-2 text-xs sm:text-sm bg-gray-50 border border-gray-200 rounded-xl text-gray-700 font-semibold focus:outline-none focus:border-[#F65456] max-w-[200px] truncate"
               >
-                <option value="ALL">Semua Posisi</option>
-                {jobs.map((job) => (
-                  <option key={job.id} value={job.title}>
-                    {job.title}
-                  </option>
-                ))}
+                <option value="ALL">Semua Posisi ({applicants.length})</option>
+                {jobs.map((job) => {
+                  const stats = getApplicantCountForJob(job);
+                  return (
+                    <option key={job.id} value={job.title}>
+                      {job.title} ({stats.total})
+                    </option>
+                  );
+                })}
               </select>
 
               {/* Dropdown Filter Status */}
@@ -837,184 +863,220 @@ export default function AdminKarirPage() {
                 onChange={(e) => setApplicantFilterStatus(e.target.value)}
                 className="px-3 py-2 text-xs sm:text-sm bg-gray-50 border border-gray-200 rounded-xl text-gray-700 font-semibold focus:outline-none focus:border-[#F65456]"
               >
-                <option value="ALL">Semua Status ({applicants.length})</option>
+                <option value="ALL">Semua Status</option>
                 <option value="new">Baru ({newApplicantCount})</option>
                 <option value="reviewed">Ditinjau</option>
-                <option value="interview">Jadwal Interview ({interviewCount})</option>
+                <option value="interview">Interview ({interviewCount})</option>
                 <option value="accepted">Diterima ({acceptedCount})</option>
                 <option value="rejected">Ditolak</option>
               </select>
 
               {/* Dropdown Urutkan / Sort */}
-              <div className="flex items-center gap-1 bg-gray-50 border border-gray-200 rounded-xl px-2.5 py-1">
-                <span className="material-symbols-outlined text-gray-400 text-base">sort</span>
-                <select
-                  value={applicantSort}
-                  onChange={(e) => setApplicantSort(e.target.value as ApplicantSortOption)}
-                  className="bg-transparent text-xs sm:text-sm font-semibold text-gray-700 focus:outline-none cursor-pointer pr-1"
-                >
-                  <option value="newest">🕒 Submit: Terbaru</option>
-                  <option value="oldest">⏳ Submit: Terlama</option>
-                  <option value="name_asc">🔤 Nama: A → Z</option>
-                  <option value="name_desc">🔤 Nama: Z → A</option>
-                  <option value="status">📊 Status Seleksi</option>
-                </select>
-              </div>
+              <select
+                value={applicantSort}
+                onChange={(e) => setApplicantSort(e.target.value as ApplicantSortOption)}
+                className="px-3 py-2 text-xs sm:text-sm bg-gray-50 border border-gray-200 rounded-xl text-gray-700 font-semibold focus:outline-none focus:border-[#F65456]"
+              >
+                <option value="newest">🕒 Terbaru</option>
+                <option value="oldest">⏳ Terlama</option>
+                <option value="name_asc">🔤 Nama: A → Z</option>
+                <option value="name_desc">🔤 Nama: Z → A</option>
+                <option value="status">📊 Status</option>
+              </select>
             </div>
           </div>
 
-          {/* List Pelamar - Card Rapi & Proporsional */}
+          {/* List Pelamar - Card ATS Profesional 3 Tingkat */}
           {sortedApplicants.length === 0 ? (
             <div className="p-12 text-center bg-white rounded-2xl border border-gray-200 text-gray-500">
               <span className="material-symbols-outlined text-4xl text-gray-300 mb-2">person_search</span>
               <p className="text-base font-bold text-gray-700">Tidak ada berkas pelamar yang cocok</p>
-              <p className="text-xs text-gray-500 mt-1">Coba sesuaikan filter status, filter posisi, atau kata kunci pencarian.</p>
+              <p className="text-xs text-gray-500 mt-1">Coba sesuaikan filter status, posisi, atau kata kunci pencarian.</p>
             </div>
           ) : (
-            <div className="space-y-3.5">
-              {sortedApplicants.map((applicant) => (
-                <div
-                  key={applicant.id}
-                  className="p-4 sm:p-5 rounded-2xl bg-white border border-gray-200 hover:border-gray-300 shadow-sm transition flex flex-col lg:flex-row lg:items-center justify-between gap-4"
-                >
-                  {/* Kolom 1: Profil Dasar Pelamar */}
-                  <div className="flex-1 min-w-0 space-y-2">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <h3 className="font-heading font-extrabold text-base sm:text-lg text-gray-900 truncate">
-                        {applicant.name}
-                      </h3>
-                      {applicant.age && (
-                        <span className="px-2 py-0.5 rounded-full text-[11px] font-bold font-mono bg-gray-100 text-gray-700">
-                          {applicant.age} Thn
-                        </span>
-                      )}
-                      <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-red-50 text-[#F65456] border border-red-100">
-                        {applicant.jobTitle}
-                      </span>
-                      <span className={`px-2 py-0.5 rounded-full text-[11px] font-bold font-mono ${
-                        applicant.hasExperience === "yes"
-                          ? "bg-blue-50 text-blue-700 border border-blue-200"
-                          : "bg-emerald-50 text-emerald-700 border border-emerald-200"
-                      }`}>
-                        {applicant.hasExperience === "yes" ? "Pernah Bekerja" : "Fresh Graduate"}
-                      </span>
+            <div className="space-y-4">
+              {sortedApplicants.map((applicant) => {
+                const dt = formatApplicantDateTime(applicant.createdAt);
+                const initials = applicant.name
+                  ? applicant.name
+                      .split(" ")
+                      .filter(Boolean)
+                      .slice(0, 2)
+                      .map((n) => n[0])
+                      .join("")
+                      .toUpperCase()
+                  : "PL";
+
+                return (
+                  <div
+                    key={applicant.id}
+                    className="bg-white rounded-2xl border border-gray-200 hover:border-gray-300 shadow-sm transition hover:shadow-md overflow-hidden"
+                  >
+                    {/* Tingkat 1: Header Card (Profil Utama + Waktu Submit Lengkap) */}
+                    <div className="p-4 sm:p-5 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-gradient-to-r from-gray-50/60 to-white">
+                      <div className="flex items-center gap-3 min-w-0">
+                        {/* Avatar Inisial */}
+                        <div className="w-10 h-10 rounded-xl bg-[#121316] text-white font-heading font-extrabold text-sm flex items-center justify-center shrink-0 shadow-sm tracking-wider">
+                          {initials}
+                        </div>
+
+                        {/* Nama, Usia, Posisi, Status Pengalaman */}
+                        <div className="min-w-0">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <h3 className="font-heading font-extrabold text-base sm:text-lg text-gray-900 truncate">
+                              {applicant.name}
+                            </h3>
+                            {applicant.age && (
+                              <span className="px-2 py-0.5 rounded-full text-[11px] font-bold font-mono bg-gray-100 text-gray-600">
+                                {applicant.age} Thn
+                              </span>
+                            )}
+                            <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-red-50 text-[#F65456] border border-red-100">
+                              {applicant.jobTitle}
+                            </span>
+                            <span
+                              className={`px-2 py-0.5 rounded-full text-[11px] font-bold ${
+                                applicant.hasExperience === "yes"
+                                  ? "bg-blue-50 text-blue-700 border border-blue-200"
+                                  : "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                              }`}
+                            >
+                              {applicant.hasExperience === "yes" ? "Pernah Bekerja" : "Fresh Graduate"}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Badge Waktu Submit (Kanan Atas, Tidak Pernah Turun Baris) */}
+                      <div
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gray-100/90 border border-gray-200 text-xs font-mono text-gray-700 whitespace-nowrap self-start sm:self-auto shrink-0"
+                        title={`Waktu Masuk: ${dt.full}`}
+                      >
+                        <span className="material-symbols-outlined text-[#F65456] text-sm">schedule</span>
+                        <span className="font-semibold">{dt.day}, {dt.date}</span>
+                        <span className="text-gray-400 font-bold">•</span>
+                        <span className="font-extrabold text-gray-900">{dt.time}</span>
+                      </div>
                     </div>
 
-                    {/* Sub-info: Pendidikan, Kontak, & Waktu Submit */}
-                    <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-gray-500">
-                      <span className="flex items-center gap-1 text-gray-700">
-                        <span className="material-symbols-outlined text-sm text-gray-400">school</span>
-                        <span>{applicant.education || "-"} {applicant.educationMajor ? `(${applicant.educationMajor})` : ""}</span>
-                      </span>
-
-                      <span className="flex items-center gap-1 font-mono text-gray-700">
-                        <span className="material-symbols-outlined text-sm text-gray-400">call</span>
-                        <span>{applicant.phone}</span>
-                      </span>
-
-                      {applicant.email && (
-                        <span className="flex items-center gap-1 text-gray-700 truncate max-w-[200px]">
-                          <span className="material-symbols-outlined text-sm text-gray-400">mail</span>
-                          <span>{applicant.email}</span>
-                        </span>
-                      )}
-
-                      {/* Waktu Submit Lengkap: Hari, Tanggal, dan Jam WIB */}
-                      {(() => {
-                        const dt = formatApplicantDateTime(applicant.createdAt);
-                        return (
-                          <span
-                            className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg bg-gray-100 text-gray-800 text-[11px] font-mono font-medium border border-gray-200"
-                            title={`Waktu Masuk: ${dt.full}`}
-                          >
-                            <span className="material-symbols-outlined text-xs text-[#F65456]">schedule</span>
-                            <span>{dt.day}, {dt.date}</span>
-                            <span className="text-gray-400 font-bold">•</span>
-                            <span className="font-bold text-gray-900">{dt.time}</span>
+                    {/* Tingkat 2: Grid Data Terstruktur (Pendidikan, HP, Email) */}
+                    <div className="p-4 sm:p-5 grid grid-cols-1 md:grid-cols-3 gap-3.5 text-xs bg-white">
+                      <div className="flex items-center gap-2.5 min-w-0">
+                        <span className="material-symbols-outlined text-gray-400 text-lg shrink-0">school</span>
+                        <div className="min-w-0">
+                          <span className="text-gray-400 text-[11px] block font-mono">Pendidikan Terakhir</span>
+                          <span className="font-semibold text-gray-800 truncate block">
+                            {applicant.education || "-"} {applicant.educationMajor ? `(${applicant.educationMajor})` : ""}
                           </span>
-                        );
-                      })()}
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-2.5 min-w-0">
+                        <span className="material-symbols-outlined text-gray-400 text-lg shrink-0">call</span>
+                        <div className="min-w-0">
+                          <span className="text-gray-400 text-[11px] block font-mono">WhatsApp / HP</span>
+                          <span className="font-mono font-bold text-gray-800 truncate block">
+                            {applicant.phone}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-2.5 min-w-0">
+                        <span className="material-symbols-outlined text-gray-400 text-lg shrink-0">mail</span>
+                        <div className="min-w-0">
+                          <span className="text-gray-400 text-[11px] block font-mono">Email</span>
+                          <span className="font-medium text-gray-800 truncate block">
+                            {applicant.email || "-"}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Tingkat 3: Footer Action Bar (Status Selector & Tombol Aksi Sejajar) */}
+                    <div className="px-4 py-3 sm:px-5 bg-gray-50/70 border-t border-gray-100 flex flex-wrap items-center justify-between gap-3">
+                      {/* Status Selector */}
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-semibold text-gray-500">Status Seleksi:</span>
+                        <select
+                          value={applicant.status}
+                          onChange={(e) =>
+                            handleUpdateApplicantStatus(applicant, e.target.value as any)
+                          }
+                          className={`px-3 py-1.5 rounded-xl text-xs font-bold border transition outline-none cursor-pointer ${
+                            applicant.status === "new"
+                              ? "bg-red-50 text-red-700 border-red-200"
+                              : applicant.status === "interview"
+                              ? "bg-blue-50 text-blue-700 border-blue-200"
+                              : applicant.status === "accepted"
+                              ? "bg-emerald-50 text-emerald-700 border-emerald-200"
+                              : applicant.status === "rejected"
+                              ? "bg-gray-100 text-gray-600 border-gray-200"
+                              : "bg-amber-50 text-amber-700 border-amber-200"
+                          }`}
+                        >
+                          <option value="new">● Berkas Baru</option>
+                          <option value="reviewed">Ditinjau</option>
+                          <option value="interview">Jadwal Interview</option>
+                          <option value="accepted">Diterima</option>
+                          <option value="rejected">Ditolak</option>
+                        </select>
+                      </div>
+
+                      {/* Tombol Aksi */}
+                      <div className="flex flex-wrap items-center gap-2">
+                        {/* Tombol WhatsApp */}
+                        <a
+                          href={`https://wa.me/${applicant.phone.replace(/^0/, "62")}?text=Halo%20${encodeURIComponent(applicant.name)}%2C%20kami%20dari%20Tim%20HRD%20CV%20Pelangi%20UV%20terkait%20lamaran%20posisi%20*${encodeURIComponent(applicant.jobTitle)}*...`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition shadow-sm cursor-pointer"
+                          title="Hubungi via WhatsApp"
+                        >
+                          <span className="material-symbols-outlined text-sm">chat</span>
+                          <span>Hubungi WA</span>
+                        </a>
+
+                        {/* Tombol Template Tolak */}
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setRejectionTarget(applicant);
+                            setCopiedReject(false);
+                          }}
+                          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl border border-gray-300 hover:bg-gray-100 text-gray-700 text-xs font-semibold transition cursor-pointer"
+                          title="Template Penolakan"
+                        >
+                          <span className="material-symbols-outlined text-sm text-gray-500">mail</span>
+                          <span>Template Tolak</span>
+                        </button>
+
+                        {/* Tombol Hapus */}
+                        <button
+                          type="button"
+                          onClick={() => handleDeleteApplicant(applicant.id, applicant.name)}
+                          className="w-8 h-8 rounded-xl border border-gray-200 hover:bg-red-50 hover:text-red-600 text-gray-400 flex items-center justify-center transition cursor-pointer"
+                          title="Hapus berkas"
+                        >
+                          <span className="material-symbols-outlined text-sm">delete</span>
+                        </button>
+
+                        {/* Tombol Utama: Lihat Rincian Berkas */}
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setSelectedApplicant(applicant);
+                            setDetailTab("identitas");
+                          }}
+                          className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#121316] hover:bg-black text-white text-xs font-bold transition shadow-sm cursor-pointer active:scale-95 ml-1"
+                        >
+                          <span className="material-symbols-outlined text-sm">visibility</span>
+                          <span>Lihat Rincian Berkas</span>
+                        </button>
+                      </div>
                     </div>
                   </div>
-
-                  {/* Kolom 2: Status & Tombol Aksi (Proporsional & Sejajar) */}
-                  <div className="flex flex-wrap items-center gap-2 shrink-0 pt-2 lg:pt-0 border-t lg:border-t-0 border-gray-100">
-                    {/* Status Dropdown */}
-                    <select
-                      value={applicant.status}
-                      onChange={(e) =>
-                        handleUpdateApplicantStatus(applicant, e.target.value as any)
-                      }
-                      className={`px-3 py-2 rounded-xl text-xs font-bold border transition outline-none cursor-pointer ${
-                        applicant.status === "new"
-                          ? "bg-red-50 text-red-700 border-red-200"
-                          : applicant.status === "interview"
-                          ? "bg-blue-50 text-blue-700 border-blue-200"
-                          : applicant.status === "accepted"
-                          ? "bg-emerald-50 text-emerald-700 border-emerald-200"
-                          : applicant.status === "rejected"
-                          ? "bg-gray-100 text-gray-600 border-gray-200"
-                          : "bg-amber-50 text-amber-700 border-amber-200"
-                      }`}
-                    >
-                      <option value="new">● Baru</option>
-                      <option value="reviewed">Ditinjau</option>
-                      <option value="interview">Jadwal Interview</option>
-                      <option value="accepted">Diterima</option>
-                      <option value="rejected">Ditolak</option>
-                    </select>
-
-                    {/* Tombol Lihat Detail Lengkap */}
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setSelectedApplicant(applicant);
-                        setDetailTab("identitas");
-                      }}
-                      className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#121316] hover:bg-black text-white text-xs font-bold transition shadow-sm cursor-pointer active:scale-95"
-                    >
-                      <span className="material-symbols-outlined text-sm">visibility</span>
-                      <span>Rincian Berkas</span>
-                    </button>
-
-                    {/* Tombol WhatsApp */}
-                    <a
-                      href={`https://wa.me/${applicant.phone.replace(/^0/, "62")}?text=Halo%20${encodeURIComponent(applicant.name)}%2C%20kami%20dari%20Tim%20HRD%20CV%20Pelangi%20UV%20terkait%20lamaran%20posisi%20*${encodeURIComponent(applicant.jobTitle)}*...`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition shadow-sm"
-                      title="Hubungi via WhatsApp"
-                    >
-                      <span className="material-symbols-outlined text-sm">chat</span>
-                      <span className="hidden sm:inline">WA</span>
-                    </a>
-
-                    {/* Tombol Template Tolak */}
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setRejectionTarget(applicant);
-                        setCopiedReject(false);
-                      }}
-                      className="inline-flex items-center gap-1 px-3 py-2 rounded-xl border border-gray-300 hover:bg-gray-100 text-gray-700 text-xs font-semibold transition"
-                      title="Template Penolakan"
-                    >
-                      <span className="material-symbols-outlined text-sm text-gray-500">unsubscribe</span>
-                      <span className="hidden sm:inline">Tolak</span>
-                    </button>
-
-                    {/* Tombol Hapus */}
-                    <button
-                      type="button"
-                      onClick={() => handleDeleteApplicant(applicant.id, applicant.name)}
-                      className="w-9 h-9 rounded-xl border border-gray-200 hover:bg-red-50 hover:text-red-600 text-gray-400 flex items-center justify-center transition"
-                      title="Hapus berkas"
-                    >
-                      <span className="material-symbols-outlined text-base">delete</span>
-                    </button>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>
