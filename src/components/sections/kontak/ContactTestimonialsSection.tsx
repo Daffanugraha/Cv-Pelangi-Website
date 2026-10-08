@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import Link from "next/link";
 import { contactTestimonials, ContactTestimonial } from "@/lib/data";
 
 export default function ContactTestimonialsSection() {
@@ -440,18 +439,6 @@ export default function ContactTestimonialsSection() {
                 Tingkat Kepuasan Pelanggan
               </p>
             </div>
-          </div>
-
-          <div className="pt-4 flex flex-wrap items-center gap-3">
-            <Link
-              href="/#galeri"
-              className="py-3 px-6 rounded-full bg-slate-900 hover:bg-slate-800 text-white font-cta-pill text-xs font-semibold flex items-center gap-2 border border-slate-700 shadow-sm transition-all"
-            >
-              <span translate="no" className="material-symbols-outlined notranslate text-[18px] text-amber-400">
-                photo_library
-              </span>{" "}
-              Lihat Galeri Hasil Cetak
-            </Link>
           </div>
         </div>
       </div>
