@@ -23,7 +23,7 @@ export default function GaleriMomenHighlightShowcase({
   const current = activeHighlights[currentIndex] || activeHighlights[0];
 
   useEffect(() => {
-    if (isPaused) return;
+    if (total <= 1) return;
 
     timerRef.current = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % total);
@@ -32,14 +32,23 @@ export default function GaleriMomenHighlightShowcase({
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [isPaused, total]);
+  }, [total, currentIndex]);
+
+  const resetTimer = () => {
+    if (timerRef.current) clearInterval(timerRef.current);
+    timerRef.current = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % total);
+    }, 4500);
+  };
 
   const handlePrev = () => {
     setCurrentIndex((prev) => (prev - 1 + total) % total);
+    resetTimer();
   };
 
   const handleNext = () => {
     setCurrentIndex((prev) => (prev + 1) % total);
+    resetTimer();
   };
 
   const handleViewAlbum = (filterKey: string) => {
@@ -95,8 +104,6 @@ export default function GaleriMomenHighlightShowcase({
 
         {/* Main Dark Card */}
         <div
-          onMouseEnter={() => setIsPaused(true)}
-          onMouseLeave={() => setIsPaused(false)}
           className="group relative rounded-2xl overflow-hidden bg-[#141518] border border-white/10 shadow-2xl transition-all duration-300"
         >
           {/* Progress Bar */}

@@ -47,11 +47,12 @@ function AlbumCarouselTrack({ album, onSelectPhoto }: AlbumCarouselTrackProps) {
       return track.scrollWidth / 2 || 1000;
     };
 
-    // Auto-scroll loop tenang & pas (0.32px per frame: dinamis namun tidak terburu-buru)
+    // Auto-scroll loop tenang & pas (tetap jalan perlahan saat hover agar tidak macet)
     const tick = () => {
-      if (!isDraggingRef.current && !isHoveredRef.current) {
+      if (!isDraggingRef.current) {
         const half = getHalfWidth();
-        currentScrollPos += 0.32; // Kecepatan proporsional ideal
+        const speed = isHoveredRef.current ? 0.12 : 0.4;
+        currentScrollPos += speed;
         if (currentScrollPos >= half) {
           currentScrollPos -= half;
         }
@@ -69,30 +70,27 @@ function AlbumCarouselTrack({ album, onSelectPhoto }: AlbumCarouselTrackProps) {
     };
   }, [duplicatedPhotos]);
 
-  const handleScrollWrap = () => {
+  const handlePrev = () => {
     const container = containerRef.current;
     const track = trackRef.current;
     if (!container || !track) return;
     const half = track.scrollWidth / 2 || 1000;
 
-    if (container.scrollLeft >= half * 1.8) {
-      container.scrollLeft -= half;
-    } else if (container.scrollLeft <= 10) {
+    if (container.scrollLeft <= 380) {
       container.scrollLeft += half;
     }
-  };
-
-  const handlePrev = () => {
-    const container = containerRef.current;
-    if (!container) return;
-    handleScrollWrap();
     container.scrollBy({ left: -380, behavior: "smooth" });
   };
 
   const handleNext = () => {
     const container = containerRef.current;
-    if (!container) return;
-    handleScrollWrap();
+    const track = trackRef.current;
+    if (!container || !track) return;
+    const half = track.scrollWidth / 2 || 1000;
+
+    if (container.scrollLeft >= half - 380) {
+      container.scrollLeft -= half;
+    }
     container.scrollBy({ left: 380, behavior: "smooth" });
   };
 

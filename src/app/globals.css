@@ -15,12 +15,16 @@
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
     font-family: var(--font-inter, 'Inter', sans-serif);
+    overflow-x: clip;
+    max-width: 100%;
   }
   body {
     background-color: #fcf9f8;
     color: #555555;
     font-family: var(--font-inter, 'Inter', sans-serif);
-    overflow-x: hidden;
+    overflow-x: clip;
+    max-width: 100%;
+    min-height: 100vh;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
