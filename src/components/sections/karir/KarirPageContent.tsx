@@ -12,21 +12,29 @@ interface KarirPageContentProps {
 }
 
 export default function KarirPageContent({ initialJobs }: KarirPageContentProps) {
-  const [jobs, setJobs] = useState<CareerJob[]>(initialJobs && initialJobs.length > 0 ? initialJobs : CAREER_JOBS);
+  const [jobs, setJobs] = useState<CareerJob[]>(Array.isArray(initialJobs) ? initialJobs : CAREER_JOBS);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedDivision, setSelectedDivision] = useState("ALL");
   const [selectedJobToApply, setSelectedJobToApply] = useState<CareerJob | null>(null);
 
-  // Sync with /api/jobs in case updated from admin
+  // Sync with /api/jobs in case updated or deleted from admin
   useEffect(() => {
-    fetch("/api/jobs")
-      .then((res) => res.ok ? res.json() : null)
-      .then((data) => {
-        if (Array.isArray(data) && data.length > 0) {
-          setJobs(data);
-        }
-      })
-      .catch(() => {});
+    const fetchLatestJobs = () => {
+      fetch("/api/jobs")
+        .then((res) => (res.ok ? res.json() : null))
+        .then((data) => {
+          if (Array.isArray(data)) {
+            setJobs(data);
+          }
+        })
+        .catch(() => {});
+    };
+
+    fetchLatestJobs();
+
+    // Sync otomatis ketika tab browser kembali fokus
+    window.addEventListener("focus", fetchLatestJobs);
+    return () => window.removeEventListener("focus", fetchLatestJobs);
   }, []);
 
   // Filter jobs based on search query & selected division

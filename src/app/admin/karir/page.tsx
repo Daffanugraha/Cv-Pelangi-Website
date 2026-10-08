@@ -268,6 +268,8 @@ export default function AdminKarirPage() {
     try {
       const res = await fetch(`/api/admin/jobs?id=${encodeURIComponent(id)}`, {
         method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }),
       });
 
       if (res.ok) {

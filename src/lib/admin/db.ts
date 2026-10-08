@@ -190,11 +190,40 @@ export function addJobItem(job: Omit<CareerJobItem, "id" | "createdAt">): Career
 export function updateJobItem(id: string, patch: Partial<CareerJobItem>) {
   const jobs = getJobs().map((j) => (j.id === id ? { ...j, ...patch } : j));
   saveJobs(jobs);
+
+  if (isPostgresConfigured()) {
+    const existing = jobs.find((j) => j.id === id);
+    if (existing) {
+      query(
+        `UPDATE career_jobs SET
+          title = $1, division = $2, type = $3, location = $4,
+          qualifications = $5, responsibilities = $6, is_open = $7,
+          updated_at = NOW()
+        WHERE id = $8`,
+        [
+          existing.title,
+          existing.division,
+          existing.type,
+          existing.location,
+          JSON.stringify(existing.qualifications || []),
+          JSON.stringify(existing.responsibilities || []),
+          existing.isOpen !== false,
+          id,
+        ]
+      ).catch((err) => console.warn("[Postgres Update Job Error]:", err.message));
+    }
+  }
 }
 
 export function deleteJobItem(id: string) {
   const jobs = getJobs().filter((j) => j.id !== id);
   saveJobs(jobs);
+
+  if (isPostgresConfigured()) {
+    query("DELETE FROM career_jobs WHERE id = $1", [id]).catch((err) =>
+      console.warn("[Postgres Delete Job Error]:", err.message)
+    );
+  }
 }
 
 // ---------------------------------------------------------------------------
