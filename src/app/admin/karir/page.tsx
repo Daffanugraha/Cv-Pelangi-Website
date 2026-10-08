@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useMemo } from "react";
 import Link from "next/link";
+import AdminShell from "../AdminShell";
 import { CareerJobItem, JobApplicantItem } from "@/lib/admin/db";
 
 const DIVISIONS = ["Finance", "Marketing", "Operational", "Production", "Warehouse"] as const;
@@ -279,7 +280,8 @@ export default function AdminKarirPage() {
   }
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto pb-12 font-sans">
+    <AdminShell>
+      <div className="space-y-6 max-w-7xl mx-auto pb-12 font-sans">
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-gray-200">
         <div>
@@ -1465,6 +1467,7 @@ CV Pelangi UV`}
           </div>
         </div>
       )}
-    </div>
+      </div>
+    </AdminShell>
   );
 }
