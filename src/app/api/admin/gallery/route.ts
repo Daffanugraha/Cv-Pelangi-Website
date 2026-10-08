@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { isAuthenticated } from "@/lib/admin/auth";
 import { getGallery, addGalleryItem, deleteGalleryItem, updateGalleryItem } from "@/lib/admin/db";
 
+export const dynamic = "force-dynamic";
+
 function unauthorized() {
   return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 }
@@ -9,7 +11,12 @@ function unauthorized() {
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const type = searchParams.get("type") || undefined;
-  return NextResponse.json(getGallery(type));
+  const items = getGallery(type);
+  return NextResponse.json(items, {
+    headers: {
+      "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+    },
+  });
 }
 
 export async function POST(req: NextRequest) {

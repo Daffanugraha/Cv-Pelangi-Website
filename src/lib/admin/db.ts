@@ -99,9 +99,9 @@ export function addGalleryItem(item: Omit<GalleryItem, "id" | "createdAt" | "ord
     ...item,
     id: `g_${Date.now()}`,
     createdAt: new Date().toISOString(),
-    order: items.length,
+    order: 0,
   };
-  items.push(newItem);
+  items.unshift(newItem);
   saveGallery(items);
   return newItem;
 }

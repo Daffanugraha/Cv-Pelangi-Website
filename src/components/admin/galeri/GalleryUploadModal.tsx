@@ -29,7 +29,7 @@ interface GalleryUploadModalProps {
   item: GalleryItem | null;
   defaultGalleryType?: "beranda" | "produk";
   onClose: () => void;
-  onSuccess: () => void;
+  onSuccess: (message: string, savedType: "beranda" | "produk") => void;
 }
 
 export default function GalleryUploadModal({
@@ -164,7 +164,12 @@ export default function GalleryUploadModal({
         return;
       }
 
-      onSuccess();
+      onSuccess(
+        item
+          ? `Perubahan ${galleryType === "beranda" ? "Media Beranda" : "Foto Produk"} berhasil disimpan!`
+          : `${galleryType === "beranda" ? "Media Galeri Beranda" : "Foto Pengaplikasian Produk"} berhasil ditambahkan!`,
+        galleryType
+      );
       onClose();
     } catch (err) {
       console.error(err);

@@ -23,6 +23,7 @@ function GaleriContent() {
   const [items, setItems] = useState<GalleryItem[]>([]);
   const [momenAlbums, setMomenAlbums] = useState<MomenAlbumItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [feedbackMsg, setFeedbackMsg] = useState("");
 
   // Search & Filter
   const [search, setSearch] = useState("");
@@ -40,8 +41,8 @@ function GaleriContent() {
     setLoading(true);
     try {
       const [galRes, momRes] = await Promise.all([
-        fetch("/api/admin/gallery"),
-        fetch("/api/admin/momen"),
+        fetch("/api/admin/gallery", { cache: "no-store" }),
+        fetch("/api/admin/momen", { cache: "no-store" }),
       ]);
 
       if (galRes.status === 401 || momRes.status === 401) {
@@ -149,6 +150,22 @@ function GaleriContent() {
 
   return (
     <div className="space-y-6">
+      {/* Toast Feedback */}
+      {feedbackMsg && (
+        <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs sm:text-sm font-semibold flex items-center justify-between shadow-xs animate-fade-in">
+          <div className="flex items-center gap-2">
+            <span className="material-symbols-outlined text-emerald-600">check_circle</span>
+            <span>{feedbackMsg}</span>
+          </div>
+          <button
+            onClick={() => setFeedbackMsg("")}
+            className="text-emerald-500 hover:text-emerald-700 cursor-pointer"
+          >
+            <span className="material-symbols-outlined text-lg">close</span>
+          </button>
+        </div>
+      )}
+
       {/* Header */}
       <AdminPageHeader
         title="Manajemen Galeri & Portofolio"
@@ -464,7 +481,14 @@ function GaleriContent() {
         item={editItem}
         defaultGalleryType={activeTab === "beranda" ? "beranda" : "produk"}
         onClose={() => setIsModalOpen(false)}
-        onSuccess={fetchGallery}
+        onSuccess={(msg, savedType) => {
+          setFeedbackMsg(msg);
+          setTimeout(() => setFeedbackMsg(""), 4000);
+          fetchGallery();
+          if (savedType !== activeTab) {
+            router.push(`/admin/galeri?tab=${savedType}`);
+          }
+        }}
       />
 
       {/* Delete Confirm Modal */}

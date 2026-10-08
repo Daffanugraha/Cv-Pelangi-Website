@@ -24,33 +24,45 @@ export default function PengaplikasianPageContent() {
   const [extraGallery, setExtraGallery] = useState<GalleryProduct[]>([]);
 
   useEffect(() => {
-    fetch("/api/admin/gallery")
+    fetch("/api/admin/gallery", { cache: "no-store" })
       .then((res) => (res.ok ? res.json() : []))
       .then((data: any[]) => {
         if (Array.isArray(data) && data.length > 0) {
-          const mapped: GalleryProduct[] = data.map((item) => ({
-            id: item.id,
-            category: "kosmetik",
-            categoryLabel: item.category || "Kemasan Khusus",
-            title: item.title,
-            desc: `${item.technique} — hasil finishing presisi tinggi CV Pelangi UV.`,
-            tag: item.technique || "Custom Finishing",
-            badges: [item.technique, item.category, "Custom Spec"].filter(Boolean),
-            finishing: item.technique,
-            material: "Sesuai permintaan percetakan mitra",
-            notes: "Diproduksi dengan kalibrasi ketat di pabrik Bizpark Sidoarjo.",
-            highlight: "Presisi Pabrik Bizpark",
-            img: item.imageUrl,
-          }));
+          const mapped: GalleryProduct[] = data
+            .filter((item) => !item.galleryType || item.galleryType === "produk")
+            .map((item) => {
+              const catLower = (item.category || "").toLowerCase();
+              let catKey: "kosmetik" | "makanan" | "buku" | "identity" | "paperbag" | "rokok" = "kosmetik";
+              if (catLower.includes("food") || catLower.includes("makan")) catKey = "makanan";
+              else if (catLower.includes("book") || catLower.includes("buku") || catLower.includes("hardcover")) catKey = "buku";
+              else if (catLower.includes("bag") || catLower.includes("paper")) catKey = "paperbag";
+              else if (catLower.includes("rokok")) catKey = "rokok";
+              else if (catLower.includes("ident") || catLower.includes("kartu")) catKey = "identity";
+
+              return {
+                id: item.id,
+                category: catKey,
+                categoryLabel: item.category || "Kemasan Khusus",
+                title: item.title,
+                desc: `${item.technique || "Finishing Khusus"} — hasil finishing presisi tinggi CV Pelangi UV.`,
+                tag: item.technique || "Custom Finishing",
+                badges: [item.technique, item.category, "Custom Spec"].filter(Boolean),
+                finishing: item.technique || "Spot UV / Hot Stamp",
+                material: "Sesuai permintaan percetakan mitra",
+                notes: "Diproduksi dengan kalibrasi ketat di pabrik Bizpark Sidoarjo.",
+                highlight: "Presisi Pabrik Bizpark",
+                img: item.imageUrl,
+              };
+            });
           setExtraGallery(mapped);
         }
       })
       .catch(() => {});
   }, []);
 
-  // 3. Combined products
+  // 3. Combined products: item baru admin muncul paling awal di halaman pertama
   const allProducts = useMemo(() => {
-    return [...DEFAULT_GALLERY_PRODUCTS, ...extraGallery];
+    return [...extraGallery, ...DEFAULT_GALLERY_PRODUCTS];
   }, [extraGallery]);
 
   const filteredProducts = useMemo(() => {
