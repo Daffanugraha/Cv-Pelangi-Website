@@ -264,18 +264,42 @@ export interface JobApplicantItem {
   jobId: string;
   jobTitle: string;
   name: string;
-  age: number | string;
+  age?: number | string;
+  birthPlaceDate?: string;
+  maritalStatus?: "Single" | "Menikah" | string;
   phone: string;
-  referencePhone?: string;
-  referenceRelation?: string;
   email?: string;
   address: string;
   education?: string;
   educationMajor?: string;
   hasExperience?: "yes" | "no";
-  experience: string;
+
+  // Referensi kantor sebelumnya
+  reference1?: string; // Nama - No Tlp - Jabatan
+  reference2?: string; // Nama - No Tlp - Jabatan
+  referencePhone?: string; // Legacy fallback
+  referenceRelation?: string;
+
+  // Riwayat Pengalaman Kerja 1, 2, 3
+  experience1?: string;
+  experience2?: string;
+  experience3?: string;
+  experience: string; // Combined summary
+
+  // Komitmen & Fasilitas
+  readyNoWorkNoPay?: "Ya" | "Tidak" | string;
+  readyOvertime?: "Ya" | "Tidak" | string;
+  expectedSalary?: string;
+  expectedFacilities?: string;
+
+  // Evaluasi Diri
+  threeWeaknesses?: string;
+  threeStrengths?: string;
+  fiveSkills?: string;
   strengths: string;
   weaknesses: string;
+
+  // Berkas
   cvUrl?: string;
   fileName?: string;
   status: "new" | "reviewed" | "interview" | "rejected" | "accepted";

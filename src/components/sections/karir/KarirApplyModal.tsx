@@ -9,33 +9,53 @@ interface KarirApplyModalProps {
 }
 
 export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) {
-  // Step State: 1 = Identitas & Pendidikan, 2 = Pengalaman & Referensi, 3 = Profil Diri & Berkas
+  // Step State: 1 = Identitas & Pendidikan, 2 = Pengalaman Kerja & Referensi, 3 = Komitmen, Evaluasi Diri & Berkas
   const [currentStep, setCurrentStep] = useState<1 | 2 | 3>(1);
 
   const [formData, setFormData] = useState({
-    // Step 1: Identitas & Pendidikan
+    // Step 1: Identitas Pribadi & Pendidikan
     name: "",
-    age: "",
+    birthPlace: "",
+    birthDate: "",
+    maritalStatus: "Single" as "Single" | "Menikah",
     phone: "",
     email: "",
     address: "",
     education: "SMK",
     educationMajor: "",
 
-    // Step 2: Pengalaman Kerja & Referensi
-    hasExperience: "no" as "yes" | "no",
-    companyName: "",
-    jobRole: "",
-    workDuration: "",
-    experience: "",
-    internshipExperience: "",
-    referenceName: "",
-    referenceRelation: "Atasan / Supervisor",
-    referencePhone: "",
+    // Step 2: Pengalaman Kerja & Referensi Kantor Sebelumnya
+    hasExperience: "yes" as "yes" | "no",
+    // Pengalaman Kerja 1
+    exp1Company: "",
+    exp1Period: "", // Bulan & Tahun Masuk - Keluar
+    exp1Role: "",
+    // Pengalaman Kerja 2
+    exp2Company: "",
+    exp2Period: "",
+    exp2Role: "",
+    // Pengalaman Kerja 3
+    exp3Company: "",
+    exp3Period: "",
+    exp3Role: "",
+    // Catatan Fresh Graduate
+    internshipNote: "",
 
-    // Step 3: Karakter Diri & Berkas
-    strengths: "",
-    weaknesses: "",
+    // Nomor Referensi Kantor Sebelumnya
+    reference1: "", // Nama - No Tlp - Jabatan
+    reference2: "", // Nama - No Tlp - Jabatan
+    emergencyContact: "", // Untuk Fresh Graduate (Nama - No Tlp - Hubungan)
+
+    // Step 3: Komitmen Kerja, Evaluasi Diri & Berkas
+    readyNoWorkNoPay: "Ya" as "Ya" | "Tidak",
+    readyOvertime: "Ya" as "Ya" | "Tidak",
+    expectedSalary: "",
+    expectedFacilities: "",
+
+    threeWeaknesses: "",
+    threeStrengths: "",
+    fiveSkills: "",
+
     cvUrl: "",
     agreement: true,
   });
@@ -48,52 +68,64 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
 
   if (!job) return null;
 
-  // Format WhatsApp message text
+  // Generate pesan WhatsApp HRD terstruktur rapi
   const generateWhatsAppMessage = () => {
-    let msg = `Halo HRD CV Pelangi UV,\nSaya ingin mengirimkan berkas lamaran kerja untuk posisi:\n*${job.title}* (Divisi ${job.division})\n\n`;
+    let msg = `Halo HRD CV Pelangi UV,\nSaya ingin mengajukan lamaran kerja untuk posisi:\n*${job.title}* (Divisi ${job.division})\n\n`;
 
-    msg += `📋 *DATA PRIBADI & PENDIDIKAN*\n`;
+    msg += `📋 *DATA PRIBADI PELAMAR*\n`;
     msg += `• Nama Lengkap: ${formData.name}\n`;
-    if (formData.age) msg += `• Usia: ${formData.age} Tahun\n`;
-    msg += `• No. WhatsApp: ${formData.phone}\n`;
+    const ttl = [formData.birthPlace, formData.birthDate].filter(Boolean).join(", ");
+    if (ttl) msg += `• Tempat/Tgl Lahir: ${ttl}\n`;
+    msg += `• Status Pernikahan: ${formData.maritalStatus === "Menikah" ? "Menikah" : "Single (Belum Menikah)"}\n`;
+    msg += `• No. WhatsApp / HP: ${formData.phone}\n`;
     if (formData.email) msg += `• Email: ${formData.email}\n`;
-    if (formData.address) msg += `• Domisili: ${formData.address}\n`;
-
+    msg += `• Alamat Domisili: ${formData.address}\n`;
     const eduDisplay = formData.educationMajor
-      ? `${formData.education} - Jurusan ${formData.educationMajor}`
+      ? `${formData.education} - ${formData.educationMajor}`
       : formData.education;
-    msg += `• Pendidikan: ${eduDisplay}\n\n`;
+    msg += `• Pendidikan & Jurusan: ${eduDisplay}\n\n`;
 
-    msg += `💼 *STATUS & RIWAYAT KERJA*\n`;
+    msg += `💼 *RIWAYAT PENGALAMAN KERJA*\n`;
     if (formData.hasExperience === "yes") {
-      msg += `• Status: Pernah Bekerja\n`;
-      if (formData.companyName || formData.jobRole) {
-        msg += `• Posisi/Perusahaan: ${formData.jobRole || "-"} (${formData.companyName || "-"})\n`;
+      if (formData.exp1Company) {
+        msg += `1. ${formData.exp1Company} (${formData.exp1Period || "-"}): ${formData.exp1Role || "-"}\n`;
       }
-      if (formData.workDuration) msg += `• Durasi: ${formData.workDuration}\n`;
-      if (formData.experience) msg += `• Detail Pengalaman:\n${formData.experience}\n`;
-      if (formData.referencePhone) {
-        msg += `• Kontak Referensi Kerja: ${formData.referencePhone} (${formData.referenceName ? formData.referenceName + " - " : ""}${formData.referenceRelation})\n`;
+      if (formData.exp2Company) {
+        msg += `2. ${formData.exp2Company} (${formData.exp2Period || "-"}): ${formData.exp2Role || "-"}\n`;
       }
+      if (formData.exp3Company) {
+        msg += `3. ${formData.exp3Company} (${formData.exp3Period || "-"}): ${formData.exp3Role || "-"}\n`;
+      }
+      if (!formData.exp1Company && !formData.exp2Company && !formData.exp3Company) {
+        msg += `(Pernah bekerja di industri terkait)\n`;
+      }
+
+      msg += `\n📞 *NOMOR REFERENSI KANTOR SEBELUMNYA*\n`;
+      if (formData.reference1) msg += `• Ref 1: ${formData.reference1}\n`;
+      if (formData.reference2) msg += `• Ref 2: ${formData.reference2}\n`;
     } else {
-      msg += `• Status: Fresh Graduate / Belum Pernah Bekerja (Siap Dilatih)\n`;
-      if (formData.internshipExperience) {
-        msg += `• Catatan/Magang PKL: ${formData.internshipExperience}\n`;
-      }
-      if (formData.referencePhone) {
-        msg += `• Kontak Darurat / Kerabat: ${formData.referencePhone} (${formData.referenceName ? formData.referenceName + " - " : ""}${formData.referenceRelation})\n`;
-      }
+      msg += `• Status: Fresh Graduate / Siap Dilatih Training\n`;
+      if (formData.internshipNote) msg += `• Catatan Magang/PKL: ${formData.internshipNote}\n`;
+      if (formData.emergencyContact) msg += `• Kontak Darurat/Keluarga: ${formData.emergencyContact}\n`;
     }
     msg += `\n`;
 
-    msg += `⭐ *KELEBIHAN DIRI*\n${formData.strengths || "-"}\n\n`;
-    msg += `🔍 *KEKURANGAN DIRI & CARA MENGATASINYA*\n${formData.weaknesses || "-"}\n\n`;
+    msg += `⚖️ *KOMITMEN KERJA & EKSPEKTASI*\n`;
+    msg += `• Bersedia No Work No Pay: ${formData.readyNoWorkNoPay}\n`;
+    msg += `• Bersedia Lembur: ${formData.readyOvertime}\n`;
+    if (formData.expectedSalary) msg += `• Gaji yang Diinginkan: ${formData.expectedSalary}\n`;
+    if (formData.expectedFacilities) msg += `• Fasilitas yang Diinginkan: ${formData.expectedFacilities}\n`;
+    msg += `\n`;
+
+    msg += `⭐ *3 KELEBIHAN DIRI*\n${formData.threeStrengths || "-"}\n\n`;
+    msg += `🔍 *3 KEKURANGAN DIRI*\n${formData.threeWeaknesses || "-"}\n\n`;
+    msg += `🛠️ *MINIMAL 5 SKILL YANG DIMILIKI*\n${formData.fiveSkills || "-"}\n\n`;
 
     if (formData.cvUrl) {
-      msg += `📎 *LINK CV / PORTOFOLIO*\n${formData.cvUrl}\n\n`;
+      msg += `📎 *BERKAS CV / IJAZAH / KTP / SERTIFIKAT*\n${formData.cvUrl}\n\n`;
     }
 
-    msg += `Demikian data diri dan kualifikasi saya. Mohon informasi jadwal interview atau tahap selanjutnya. Terima kasih!`;
+    msg += `Demikian profil lengkap saya. Mohon informasi jadwal interview atau tes selanjutnya. Terima kasih!`;
     return encodeURIComponent(msg);
   };
 
@@ -112,7 +144,7 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
         setFormData((prev) => ({ ...prev, cvUrl: data.url }));
       }
     } catch (err) {
-      console.warn("Upload file fallback:", err);
+      console.warn("Upload fallback error:", err);
     } finally {
       setIsUploadingFile(false);
     }
@@ -122,11 +154,7 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
   const handleNextStep1 = () => {
     setErrorMsg("");
     if (!formData.name.trim()) {
-      setErrorMsg("Silakan isi nama lengkap Anda.");
-      return;
-    }
-    if (!formData.age.trim() || Number(formData.age) < 17 || Number(formData.age) > 65) {
-      setErrorMsg("Silakan isi usia yang valid (minimal 17 tahun).");
+      setErrorMsg("Nama lengkap wajib diisi.");
       return;
     }
     if (!formData.phone.trim()) {
@@ -134,10 +162,9 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
       return;
     }
     if (!formData.address.trim()) {
-      setErrorMsg("Alamat domisili saat ini wajib diisi.");
+      setErrorMsg("Alamat lengkap domisili wajib diisi.");
       return;
     }
-    // Jika SMK atau Perguruan Tinggi, anjurkan jurusan
     if (
       ["SMK", "SMA", "Diploma (D3/D4)", "Sarjana (S1)"].includes(formData.education) &&
       !formData.educationMajor.trim()
@@ -145,7 +172,6 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
       setErrorMsg("Silakan cantumkan jurusan / program studi pendidikan Anda.");
       return;
     }
-
     setCurrentStep(2);
   };
 
@@ -153,8 +179,12 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
   const handleNextStep2 = () => {
     setErrorMsg("");
     if (formData.hasExperience === "yes") {
-      if (!formData.experience.trim() && !formData.jobRole.trim()) {
-        setErrorMsg("Silakan ceritakan sedikit posisi atau tugas yang pernah Anda kerjakan.");
+      if (!formData.exp1Company.trim() && !formData.exp1Role.trim()) {
+        setErrorMsg("Silakan isi minimal Pengalaman Kerja 1 (Perusahaan, periode, dan posisi).");
+        return;
+      }
+      if (!formData.reference1.trim()) {
+        setErrorMsg("Silakan cantumkan minimal 1 nomor referensi di kantor sebelumnya (Nama - No Tlp - Jabatan).");
         return;
       }
     }
@@ -166,60 +196,101 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
     if (e) e.preventDefault();
     setErrorMsg("");
 
-    if (!formData.strengths.trim()) {
-      setErrorMsg("Silakan isi kelebihan utama diri Anda.");
+    if (!formData.threeStrengths.trim()) {
+      setErrorMsg("Silakan sebutkan 3 kelebihan Anda.");
       return;
     }
-    if (!formData.weaknesses.trim()) {
-      setErrorMsg("Silakan sebutkan kekurangan diri dan cara Anda mengatasinya.");
+    if (!formData.threeWeaknesses.trim()) {
+      setErrorMsg("Silakan sebutkan 3 kekurangan Anda.");
+      return;
+    }
+    if (!formData.fiveSkills.trim()) {
+      setErrorMsg("Silakan sebutkan minimal 5 skill yang Anda miliki.");
       return;
     }
 
     setIsSubmitting(true);
 
-    // Susun riwayat teks gabungan pengalaman
+    const ttl = [formData.birthPlace, formData.birthDate].filter(Boolean).join(", ");
+
+    // Susun ringkasan pengalaman
     let finalExperience = "";
     if (formData.hasExperience === "yes") {
       const parts = [];
-      if (formData.jobRole) parts.push(`Posisi: ${formData.jobRole}`);
-      if (formData.companyName) parts.push(`Perusahaan: ${formData.companyName}`);
-      if (formData.workDuration) parts.push(`Lama Kerja: ${formData.workDuration}`);
-      if (formData.experience) parts.push(`Deskripsi: ${formData.experience}`);
+      if (formData.exp1Company) {
+        parts.push(`[1] ${formData.exp1Company} (${formData.exp1Period || "-"}): ${formData.exp1Role || "-"}`);
+      }
+      if (formData.exp2Company) {
+        parts.push(`[2] ${formData.exp2Company} (${formData.exp2Period || "-"}): ${formData.exp2Role || "-"}`);
+      }
+      if (formData.exp3Company) {
+        parts.push(`[3] ${formData.exp3Company} (${formData.exp3Period || "-"}): ${formData.exp3Role || "-"}`);
+      }
       finalExperience = parts.join(" | ");
     } else {
-      finalExperience = formData.internshipExperience
-        ? `Fresh Graduate / Belum Pernah Bekerja. Catatan Magang/PKL: ${formData.internshipExperience}`
-        : "Fresh Graduate / Belum Pernah Bekerja (Siap Dilatih)";
+      finalExperience = formData.internshipNote
+        ? `Fresh Graduate / Belum Pernah Bekerja. Magang/PKL: ${formData.internshipNote}`
+        : "Fresh Graduate / Belum Pernah Bekerja (Siap Mengikuti Pelatihan)";
     }
+
+    const payload = {
+      jobId: job.id,
+      jobTitle: job.title,
+      name: formData.name,
+      birthPlaceDate: ttl,
+      maritalStatus: formData.maritalStatus,
+      phone: formData.phone,
+      email: formData.email,
+      address: formData.address,
+      education: formData.education,
+      educationMajor: formData.educationMajor,
+      hasExperience: formData.hasExperience,
+
+      // Pengalaman & Referensi
+      experience1: formData.exp1Company
+        ? `${formData.exp1Company} (${formData.exp1Period || "-"}) - ${formData.exp1Role || "-"}`
+        : "",
+      experience2: formData.exp2Company
+        ? `${formData.exp2Company} (${formData.exp2Period || "-"}) - ${formData.exp2Role || "-"}`
+        : "",
+      experience3: formData.exp3Company
+        ? `${formData.exp3Company} (${formData.exp3Period || "-"}) - ${formData.exp3Role || "-"}`
+        : "",
+      experience: finalExperience,
+
+      reference1: formData.reference1,
+      reference2: formData.reference2,
+      referencePhone: formData.reference1 || formData.emergencyContact,
+      referenceRelation: formData.hasExperience === "yes" ? "Atasan Kantor Sebelumnya" : "Keluarga / Kerabat",
+
+      // Komitmen & Gaji
+      readyNoWorkNoPay: formData.readyNoWorkNoPay,
+      readyOvertime: formData.readyOvertime,
+      expectedSalary: formData.expectedSalary,
+      expectedFacilities: formData.expectedFacilities,
+
+      // Evaluasi & Skill
+      threeWeaknesses: formData.threeWeaknesses,
+      threeStrengths: formData.threeStrengths,
+      fiveSkills: formData.fiveSkills,
+      strengths: formData.threeStrengths,
+      weaknesses: formData.threeWeaknesses,
+
+      // Berkas
+      cvUrl: formData.cvUrl,
+      fileName: selectedFile?.name || "",
+    };
 
     try {
       const res = await fetch("/api/career-apply", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          jobId: job.id,
-          jobTitle: job.title,
-          name: formData.name,
-          age: formData.age,
-          phone: formData.phone,
-          referencePhone: formData.referencePhone,
-          referenceRelation: `${formData.referenceName ? formData.referenceName + " - " : ""}${formData.referenceRelation}`,
-          email: formData.email,
-          address: formData.address,
-          education: formData.education,
-          educationMajor: formData.educationMajor,
-          hasExperience: formData.hasExperience,
-          experience: finalExperience,
-          strengths: formData.strengths,
-          weaknesses: formData.weaknesses,
-          cvUrl: formData.cvUrl,
-          fileName: selectedFile?.name || "",
-        }),
+        body: JSON.stringify(payload),
       });
 
       if (!res.ok) {
         const d = await res.json();
-        setErrorMsg(d.error || "Gagal mengirim formulir.");
+        setErrorMsg(d.error || "Gagal menyimpan berkas lamaran.");
         setIsSubmitting(false);
         return;
       }
@@ -227,7 +298,7 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
       setIsSuccess(true);
     } catch (err) {
       console.error(err);
-      setErrorMsg("Terjadi gangguan jaringan saat mengirim data.");
+      setErrorMsg("Terjadi gangguan jaringan saat mengirim formulir.");
     } finally {
       setIsSubmitting(false);
     }
@@ -235,7 +306,6 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
 
   const waHref = `https://wa.me/6282231019363?text=${generateWhatsAppMessage()}`;
 
-  // Apakah jurusan perlu ditampilkan
   const showMajorField = ["SMK", "SMA", "Diploma (D3/D4)", "Sarjana (S1)"].includes(
     formData.education
   );
@@ -246,7 +316,7 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-2xl bg-surface-canvas rounded-3xl shadow-2xl border border-surface-container-high overflow-hidden my-4 max-h-[94vh] flex flex-col"
+        className="relative w-full max-w-3xl bg-surface-canvas rounded-3xl shadow-2xl border border-surface-container-high overflow-hidden my-4 max-h-[95vh] flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header Modal */}
@@ -256,10 +326,10 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
               Divisi {job.division}
             </div>
             <h3 className="font-heading font-extrabold text-lg sm:text-2xl text-white">
-              Formulir Rekrutmen Pelamar
+              Formulir Rekrutmen Calon Karyawan
             </h3>
             <p className="text-gray-400 text-xs sm:text-sm mt-0.5">
-              Posisi: <span className="text-white font-bold">{job.title}</span>
+              Posisi yang Dilamar: <span className="text-white font-bold">{job.title}</span>
             </p>
           </div>
           <button
@@ -272,7 +342,7 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
           </button>
         </div>
 
-        {/* 3-STEP PROGRESS WIZARD BAR */}
+        {/* 3-STEP PROGRESS BAR WIZARD */}
         {!isSuccess && (
           <div className="px-5 sm:px-8 py-3 bg-gray-50 border-b border-gray-200 shrink-0">
             <div className="flex items-center justify-between">
@@ -301,14 +371,14 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
                   {currentStep > 1 ? "✓" : "1"}
                 </div>
                 <div className="hidden sm:block text-left">
-                  <p className="text-[11px] uppercase tracking-wider font-mono">Tahap 1</p>
-                  <p className="text-xs font-bold leading-tight">Data &amp; Pendidikan</p>
+                  <p className="text-[10px] uppercase tracking-wider font-mono">Tahap 1</p>
+                  <p className="text-xs font-bold leading-tight">Identitas &amp; Pendidikan</p>
                 </div>
               </div>
 
               {/* Line 1-2 */}
               <div
-                className={`flex-1 h-0.5 mx-2.5 sm:mx-4 transition ${
+                className={`flex-1 h-0.5 mx-2 sm:mx-4 transition ${
                   currentStep >= 2 ? "bg-emerald-600" : "bg-gray-200"
                 }`}
               />
@@ -338,14 +408,14 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
                   {currentStep > 2 ? "✓" : "2"}
                 </div>
                 <div className="hidden sm:block text-left">
-                  <p className="text-[11px] uppercase tracking-wider font-mono">Tahap 2</p>
-                  <p className="text-xs font-bold leading-tight">Pengalaman Kerja</p>
+                  <p className="text-[10px] uppercase tracking-wider font-mono">Tahap 2</p>
+                  <p className="text-xs font-bold leading-tight">Pengalaman &amp; Referensi</p>
                 </div>
               </div>
 
               {/* Line 2-3 */}
               <div
-                className={`flex-1 h-0.5 mx-2.5 sm:mx-4 transition ${
+                className={`flex-1 h-0.5 mx-2 sm:mx-4 transition ${
                   currentStep >= 3 ? "bg-emerald-600" : "bg-gray-200"
                 }`}
               />
@@ -366,8 +436,8 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
                   3
                 </div>
                 <div className="hidden sm:block text-left">
-                  <p className="text-[11px] uppercase tracking-wider font-mono">Tahap 3</p>
-                  <p className="text-xs font-bold leading-tight">Profil &amp; Berkas</p>
+                  <p className="text-[10px] uppercase tracking-wider font-mono">Tahap 3</p>
+                  <p className="text-xs font-bold leading-tight">Komitmen, Skill &amp; Berkas</p>
                 </div>
               </div>
             </div>
@@ -383,20 +453,20 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
                 <span className="material-symbols-outlined text-3xl">check_circle</span>
               </div>
               <h4 className="font-heading font-bold text-2xl text-gray-900">
-                Lamaran Berhasil Terkirim!
+                Formulir Lamaran Berhasil Diterima!
               </h4>
               <p className="text-gray-600 text-sm max-w-md mx-auto leading-relaxed">
-                Terima kasih, <strong className="text-gray-900">{formData.name}</strong>. Berkas lamaran Anda untuk posisi <strong className="text-gray-900">{job.title}</strong> telah tersimpan di sistem seleksi rekrutmen CV Pelangi UV.
+                Terima kasih, <strong className="text-gray-900">{formData.name}</strong>. Berkas lamaran Anda untuk posisi <strong className="text-gray-900">{job.title}</strong> telah tersimpan di sistem HRD CV Pelangi UV.
               </p>
 
               {/* Fast-Track WhatsApp CTA */}
               <div className="p-5 rounded-2xl bg-emerald-50/70 border border-emerald-200 max-w-md mx-auto text-left space-y-2.5 mt-4">
                 <div className="flex items-center gap-2 text-emerald-800 font-bold text-xs uppercase font-mono">
                   <span className="material-symbols-outlined text-sm">bolt</span>
-                  <span>Jalur Cepat (Fast-Track HRD)</span>
+                  <span>Jalur Cepat (Fast-Track HRD WhatsApp)</span>
                 </div>
                 <p className="text-xs text-emerald-950 leading-relaxed">
-                  Ingin respon lebih cepat? Anda dapat langsung mengirimkan ringkasan data lamaran ke WhatsApp Tim HRD CV Pelangi UV:
+                  Ingin respon lebih cepat? Teruskan ringkasan data lamaran lengkap Anda langsung ke kontak WhatsApp HRD:
                 </p>
                 <a
                   href={waHref}
@@ -405,7 +475,7 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
                   className="w-full mt-2 py-3 px-4 rounded-xl bg-action-whatsapp hover:bg-action-whatsapp-hover text-white text-xs font-bold flex items-center justify-center gap-2 shadow-sm transition active:scale-95"
                 >
                   <span className="material-symbols-outlined text-base">chat</span>
-                  <span>Kirim Ringkasan Lamaran ke WhatsApp HRD</span>
+                  <span>Kirim Data Lamaran ke WhatsApp HRD</span>
                 </a>
               </div>
 
@@ -429,63 +499,113 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
               )}
 
               {/* ======================================================== */}
-              {/* PAGE 1: IDENTITAS & PENDIDIKAN */}
+              {/* PAGE 1: IDENTITAS PRIBADI & PENDIDIKAN */}
               {/* ======================================================== */}
               {currentStep === 1 && (
                 <div className="space-y-4 animate-fade-in">
-                  <div className="pb-2 border-b border-gray-100">
-                    <h4 className="text-sm font-bold text-gray-900 flex items-center gap-2 font-mono">
-                      <span className="material-symbols-outlined text-bracket-border text-lg">badge</span>
-                      Langkah 1 dari 3: Data Pribadi &amp; Pendidikan
-                    </h4>
-                    <p className="text-xs text-gray-500 mt-0.5">
-                      Lengkapi data identitas diri dan latar belakang pendidikan terakhir Anda.
-                    </p>
+                  <div className="pb-2 border-b border-gray-100 flex items-center justify-between">
+                    <div>
+                      <h4 className="text-sm font-bold text-gray-900 flex items-center gap-2 font-mono">
+                        <span className="material-symbols-outlined text-bracket-border text-lg">badge</span>
+                        Halaman 1: Identitas Pribadi &amp; Pendidikan
+                      </h4>
+                      <p className="text-xs text-gray-500 mt-0.5">
+                        Lengkapi informasi dasar diri, kontak aktif, dan latar belakang pendidikan.
+                      </p>
+                    </div>
                   </div>
 
-                  {/* Nama Lengkap & Usia */}
+                  {/* Posisi yang Dilamar (Readonly Badge) */}
+                  <div className="p-3 rounded-xl bg-gray-50 border border-gray-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <span className="text-xs font-mono font-bold text-gray-500 uppercase">
+                      Posisi yang Dilamar:
+                    </span>
+                    <span className="text-xs font-bold text-bracket-border bg-red-50 px-3 py-1 rounded-lg border border-red-100">
+                      {job.title} ({job.division})
+                    </span>
+                  </div>
+
+                  {/* Nama Lengkap */}
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-700 mb-1">
+                      NAMA LENGKAP <span className="text-bracket-border">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      placeholder="Masukkan nama lengkap sesuai KTP"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-gray-200 focus:border-bracket-border focus:ring-1 focus:ring-bracket-border text-sm text-gray-900 outline-none transition"
+                    />
+                  </div>
+
+                  {/* Tempat Tanggal Lahir & Status Pernikahan */}
                   <div className="grid grid-cols-1 sm:grid-cols-12 gap-3.5">
-                    <div className="sm:col-span-8">
+                    {/* Tempat Lahir */}
+                    <div className="sm:col-span-4">
                       <label className="block text-xs font-semibold text-gray-700 mb-1">
-                        Nama Lengkap <span className="text-bracket-border">*</span>
+                        TEMPAT LAHIR
                       </label>
                       <input
                         type="text"
-                        required
-                        value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        placeholder="Masukkan nama lengkap sesuai KTP"
+                        value={formData.birthPlace}
+                        onChange={(e) => setFormData({ ...formData, birthPlace: e.target.value })}
+                        placeholder="Contoh: Sidoarjo"
                         className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-gray-200 focus:border-bracket-border focus:ring-1 focus:ring-bracket-border text-sm text-gray-900 outline-none transition"
                       />
                     </div>
 
+                    {/* Tanggal Lahir */}
                     <div className="sm:col-span-4">
                       <label className="block text-xs font-semibold text-gray-700 mb-1">
-                        Usia / Umur <span className="text-bracket-border">*</span>
+                        TANGGAL LAHIR
                       </label>
-                      <div className="relative">
-                        <input
-                          type="number"
-                          min={17}
-                          max={65}
-                          required
-                          value={formData.age}
-                          onChange={(e) => setFormData({ ...formData, age: e.target.value })}
-                          placeholder="Contoh: 21"
-                          className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-gray-200 focus:border-bracket-border focus:ring-1 focus:ring-bracket-border text-sm text-gray-900 outline-none transition pr-14"
-                        />
-                        <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs text-gray-400 font-mono">
-                          Tahun
-                        </span>
+                      <input
+                        type="date"
+                        value={formData.birthDate}
+                        onChange={(e) => setFormData({ ...formData, birthDate: e.target.value })}
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-gray-200 focus:border-bracket-border focus:ring-1 focus:ring-bracket-border text-sm text-gray-900 outline-none transition font-mono"
+                      />
+                    </div>
+
+                    {/* Status Pernikahan */}
+                    <div className="sm:col-span-4">
+                      <label className="block text-xs font-semibold text-gray-700 mb-1">
+                        STATUS PERNIKAHAN <span className="text-bracket-border">*</span>
+                      </label>
+                      <div className="grid grid-cols-2 gap-2">
+                        <button
+                          type="button"
+                          onClick={() => setFormData({ ...formData, maritalStatus: "Single" })}
+                          className={`py-2 px-3 rounded-xl text-xs font-bold border transition text-center cursor-pointer ${
+                            formData.maritalStatus === "Single"
+                              ? "bg-bracket-border text-white border-bracket-border shadow-xs"
+                              : "bg-white text-gray-700 border-gray-200 hover:bg-gray-50"
+                          }`}
+                        >
+                          Single
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setFormData({ ...formData, maritalStatus: "Menikah" })}
+                          className={`py-2 px-3 rounded-xl text-xs font-bold border transition text-center cursor-pointer ${
+                            formData.maritalStatus === "Menikah"
+                              ? "bg-bracket-border text-white border-bracket-border shadow-xs"
+                              : "bg-white text-gray-700 border-gray-200 hover:bg-gray-50"
+                          }`}
+                        >
+                          Menikah
+                        </button>
                       </div>
                     </div>
                   </div>
 
-                  {/* Kontak WhatsApp & Email */}
+                  {/* Nomor Kontak WhatsApp & Email */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                     <div>
                       <label className="block text-xs font-semibold text-gray-700 mb-1">
-                        Nomor WhatsApp / HP Aktif <span className="text-bracket-border">*</span>
+                        NOMOR TELEPON / WHATSAPP <span className="text-bracket-border">*</span>
                       </label>
                       <input
                         type="tel"
@@ -495,14 +615,11 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
                         placeholder="Contoh: 081234567890"
                         className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-gray-200 focus:border-bracket-border focus:ring-1 focus:ring-bracket-border text-sm text-gray-900 outline-none transition font-mono"
                       />
-                      <span className="text-[10px] text-gray-400 mt-1 block">
-                        Pastikan nomor aktif untuk pemanggilan interview.
-                      </span>
                     </div>
 
                     <div>
                       <label className="block text-xs font-semibold text-gray-700 mb-1">
-                        Alamat Email (Opsional)
+                        ALAMAT EMAIL
                       </label>
                       <input
                         type="email"
@@ -514,23 +631,28 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
                     </div>
                   </div>
 
-                  {/* Domisili */}
+                  {/* Alamat Lengkap */}
                   <div>
                     <label className="block text-xs font-semibold text-gray-700 mb-1">
-                      Alamat Domisili Saat Ini <span className="text-bracket-border">*</span>
+                      ALAMAT LENGKAP (DOMISILI SAAT INI) <span className="text-bracket-border">*</span>
                     </label>
-                    <input
-                      type="text"
+                    <textarea
+                      rows={2}
                       required
                       value={formData.address}
                       onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                      placeholder="Contoh: Jl. Brigjend Katamso, Waru, Sidoarjo / Surabaya"
+                      placeholder="Jalan, RT/RW, Kelurahan, Kecamatan, Kota/Kabupaten (Contoh: Jl. Tropodo II No. 10, Waru, Sidoarjo)"
                       className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-gray-200 focus:border-bracket-border focus:ring-1 focus:ring-bracket-border text-sm text-gray-900 outline-none transition"
                     />
                   </div>
 
-                  {/* PENDIDIKAN & JURUSAN (KONDISIONAL) */}
+                  {/* 1. PENDIDIKAN TERAKHIR DAN JURUSAN */}
                   <div className="p-4 rounded-2xl bg-gray-50/80 border border-gray-200/80 space-y-3">
+                    <div className="flex items-center gap-1.5 text-xs font-bold text-gray-900 font-mono uppercase">
+                      <span className="material-symbols-outlined text-sm text-bracket-border">school</span>
+                      <span>1. Pendidikan Terakhir dan Jurusan</span>
+                    </div>
+
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                       <div>
                         <label className="block text-xs font-semibold text-gray-700 mb-1">
@@ -552,7 +674,7 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
                         </select>
                       </div>
 
-                      {/* Field Jurusan (Muncul jika SMK/SMA/Diploma/Sarjana) */}
+                      {/* Jurusan */}
                       {showMajorField ? (
                         <div className="animate-fade-in">
                           <label className="block text-xs font-semibold text-gray-700 mb-1">
@@ -576,7 +698,7 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
                           />
                         </div>
                       ) : (
-                        <div className="flex items-center text-xs text-gray-500 pt-6">
+                        <div className="flex items-center text-xs text-gray-400 pt-6">
                           <span>Informasi jenjang telah disesuaikan.</span>
                         </div>
                       )}
@@ -605,28 +727,27 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
               )}
 
               {/* ======================================================== */}
-              {/* PAGE 2: PENGALAMAN KERJA & REFERENSI */}
+              {/* PAGE 2: PENGALAMAN KERJA 1, 2, 3 & NOMOR REFERENSI */}
               {/* ======================================================== */}
               {currentStep === 2 && (
                 <div className="space-y-4 animate-fade-in">
                   <div className="pb-2 border-b border-gray-100">
                     <h4 className="text-sm font-bold text-gray-900 flex items-center gap-2 font-mono">
                       <span className="material-symbols-outlined text-blue-600 text-lg">work_history</span>
-                      Langkah 2 dari 3: Pengalaman Kerja &amp; Referensi
+                      Halaman 2: Pengalaman Kerja &amp; Nomor Referensi Kantor Sebelumnya
                     </h4>
                     <p className="text-xs text-gray-500 mt-0.5">
-                      Apakah Anda pernah bekerja sebelumnya atau fresh graduate?
+                      Sebutkan riwayat perusahaan sebelumnya serta nomor kontak referensi atasan.
                     </p>
                   </div>
 
-                  {/* PILIHAN: SUDAH KERJA ATAU FRESH GRADUATE (YA / TIDAK) */}
+                  {/* Pertanyaan Pilihan: Pernah Kerja vs Fresh Graduate */}
                   <div>
-                    <label className="block text-xs font-bold text-gray-800 mb-2 font-mono uppercase tracking-wider">
-                      Apakah Anda sudah memiliki pengalaman kerja sebelumnya? <span className="text-bracket-border">*</span>
+                    <label className="block text-xs font-bold text-gray-800 mb-2 font-mono uppercase">
+                      Apakah Anda memiliki pengalaman kerja sebelumnya? <span className="text-bracket-border">*</span>
                     </label>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      {/* Opsi 1: Ya, Pernah Bekerja */}
                       <button
                         type="button"
                         onClick={() => setFormData({ ...formData, hasExperience: "yes" })}
@@ -651,13 +772,12 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
                           <p className="text-xs font-bold text-gray-900">
                             Ya, Sudah Pernah Bekerja
                           </p>
-                          <p className="text-[11px] text-gray-500 mt-0.5 leading-relaxed">
-                            Memiliki riwayat pekerjaan di percetakan, pabrik, atau bidang lainnya.
+                          <p className="text-[11px] text-gray-500 mt-0.5">
+                            Memiliki pengalaman kerja di perusahaan sebelumnya.
                           </p>
                         </div>
                       </button>
 
-                      {/* Opsi 2: Belum Pernah / Fresh Graduate */}
                       <button
                         type="button"
                         onClick={() => setFormData({ ...formData, hasExperience: "no" })}
@@ -682,176 +802,234 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
                           <p className="text-xs font-bold text-gray-900">
                             Belum Pernah / Fresh Graduate
                           </p>
-                          <p className="text-[11px] text-gray-500 mt-0.5 leading-relaxed">
-                            Lulusan baru yang belum pernah bekerja, siap belajar dan mengikuti training.
+                          <p className="text-[11px] text-gray-500 mt-0.5">
+                            Lulusan baru, belum pernah bekerja secara formal.
                           </p>
                         </div>
                       </button>
                     </div>
                   </div>
 
-                  {/* KONDISI 1: JIKA PERNAH BEKERJA (YA) -> MUNCULKAN FORM PENGALAMAN & REFERENSI KERJA */}
+                  {/* KONDISIONAL: JIKA PERNAH BEKERJA */}
                   {formData.hasExperience === "yes" ? (
-                    <div className="space-y-3.5 p-4 rounded-2xl bg-blue-50/40 border border-blue-200/80 animate-fade-in">
-                      <div className="flex items-center gap-1.5 text-blue-900 font-bold text-xs uppercase font-mono">
-                        <span className="material-symbols-outlined text-sm">business_center</span>
-                        <span>Detail Riwayat Pekerjaan Terakhir</span>
-                      </div>
-
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <div>
-                          <label className="block text-xs font-semibold text-gray-700 mb-1">
-                            Nama Perusahaan / Tempat Kerja
-                          </label>
-                          <input
-                            type="text"
-                            value={formData.companyName}
-                            onChange={(e) =>
-                              setFormData({ ...formData, companyName: e.target.value })
-                            }
-                            placeholder="Contoh: PT Percetakan Jaya Makmur"
-                            className="w-full px-3 py-2 rounded-xl bg-white border border-gray-200 focus:border-blue-500 text-xs text-gray-900 outline-none"
-                          />
+                    <div className="space-y-4 animate-fade-in">
+                      {/* 2. PENGALAMAN KERJA 1 */}
+                      <div className="p-4 rounded-2xl bg-blue-50/40 border border-blue-200/80 space-y-3">
+                        <div className="flex items-center gap-2 text-xs font-bold text-blue-900 font-mono">
+                          <span className="material-symbols-outlined text-sm">business</span>
+                          <span>2. Pengalaman Kerja 1 (Wajib Diisi):</span>
                         </div>
-
-                        <div>
-                          <label className="block text-xs font-semibold text-gray-700 mb-1">
-                            Posisi / Jabatan
-                          </label>
-                          <input
-                            type="text"
-                            value={formData.jobRole}
-                            onChange={(e) =>
-                              setFormData({ ...formData, jobRole: e.target.value })
-                            }
-                            placeholder="Contoh: Operator Mesin Pond / Helper Finshing"
-                            className="w-full px-3 py-2 rounded-xl bg-white border border-gray-200 focus:border-blue-500 text-xs text-gray-900 outline-none"
-                          />
-                        </div>
-                      </div>
-
-                      <div>
-                        <label className="block text-xs font-semibold text-gray-700 mb-1">
-                          Lama Bekerja / Periode
-                        </label>
-                        <input
-                          type="text"
-                          value={formData.workDuration}
-                          onChange={(e) =>
-                            setFormData({ ...formData, workDuration: e.target.value })
-                          }
-                          placeholder="Contoh: 1,5 Tahun (2022 - 2024)"
-                          className="w-full px-3 py-2 rounded-xl bg-white border border-gray-200 focus:border-blue-500 text-xs text-gray-900 outline-none"
-                        />
-                      </div>
-
-                      <div>
-                        <label className="block text-xs font-semibold text-gray-700 mb-1">
-                          Ringkasan Tugas &amp; Pengalaman <span className="text-bracket-border">*</span>
-                        </label>
-                        <textarea
-                          rows={3}
-                          value={formData.experience}
-                          onChange={(e) =>
-                            setFormData({ ...formData, experience: e.target.value })
-                          }
-                          placeholder="Jelaskan jenis mesin atau pekerjaan yang Anda tangani, contoh: Mengoperasikan mesin pond otomatis, setting pisau, sortir kualitas lembar cetak foil, dsb."
-                          className="w-full px-3 py-2 rounded-xl bg-white border border-gray-200 focus:border-blue-500 text-xs text-gray-900 outline-none leading-relaxed"
-                        />
-                      </div>
-
-                      {/* KONTAK REFERENSI ATASAN KERJA */}
-                      <div className="pt-2 border-t border-blue-200/60 space-y-2">
-                        <label className="block text-xs font-bold text-blue-950 font-mono">
-                          Kontak Referensi Kerja (Atasan / HRD Tempat Lama)
-                        </label>
                         <p className="text-[11px] text-gray-500">
-                          Orang yang dapat mengonfirmasi kinerja Anda di tempat kerja sebelumnya (opsional namun diprioritaskan).
+                          Sebutkan Perusahaan sebelumnya, bulan &amp; tahun masuk dan keluar, serta posisi Anda.
                         </p>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                          <div>
+                        <div className="grid grid-cols-1 sm:grid-cols-12 gap-3">
+                          <div className="sm:col-span-6">
                             <input
                               type="text"
-                              value={formData.referenceName}
+                              value={formData.exp1Company}
                               onChange={(e) =>
-                                setFormData({ ...formData, referenceName: e.target.value })
+                                setFormData({ ...formData, exp1Company: e.target.value })
                               }
-                              placeholder="Nama Atasan / Supervisor (misal: Bpk. Bambang)"
+                              placeholder="Nama Perusahaan (misal: PT Percetakan Jaya)"
                               className="w-full px-3 py-2 rounded-xl bg-white border border-gray-200 focus:border-blue-500 text-xs text-gray-900 outline-none"
                             />
                           </div>
-                          <div>
+                          <div className="sm:col-span-6">
                             <input
-                              type="tel"
-                              value={formData.referencePhone}
+                              type="text"
+                              value={formData.exp1Period}
                               onChange={(e) =>
-                                setFormData({ ...formData, referencePhone: e.target.value })
+                                setFormData({ ...formData, exp1Period: e.target.value })
                               }
-                              placeholder="Nomor HP / WA Atasan (08xx)"
+                              placeholder="Bulan & Tahun Masuk - Keluar (misal: Jan 2022 - Des 2023)"
                               className="w-full px-3 py-2 rounded-xl bg-white border border-gray-200 focus:border-blue-500 text-xs text-gray-900 outline-none font-mono"
+                            />
+                          </div>
+                          <div className="sm:col-span-12">
+                            <input
+                              type="text"
+                              value={formData.exp1Role}
+                              onChange={(e) =>
+                                setFormData({ ...formData, exp1Role: e.target.value })
+                              }
+                              placeholder="Posisi & Uraian Tugas Singkat (misal: Operator Mesin Pond - Setting pisau & sortir)"
+                              className="w-full px-3 py-2 rounded-xl bg-white border border-gray-200 focus:border-blue-500 text-xs text-gray-900 outline-none"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* 3. PENGALAMAN KERJA 2 */}
+                      <div className="p-4 rounded-2xl bg-gray-50 border border-gray-200 space-y-3">
+                        <div className="flex items-center gap-2 text-xs font-bold text-gray-800 font-mono">
+                          <span className="material-symbols-outlined text-sm">business</span>
+                          <span>3. Pengalaman Kerja 2 (Jika Ada):</span>
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-12 gap-3">
+                          <div className="sm:col-span-6">
+                            <input
+                              type="text"
+                              value={formData.exp2Company}
+                              onChange={(e) =>
+                                setFormData({ ...formData, exp2Company: e.target.value })
+                              }
+                              placeholder="Nama Perusahaan ke-2"
+                              className="w-full px-3 py-2 rounded-xl bg-white border border-gray-200 focus:border-blue-500 text-xs text-gray-900 outline-none"
+                            />
+                          </div>
+                          <div className="sm:col-span-6">
+                            <input
+                              type="text"
+                              value={formData.exp2Period}
+                              onChange={(e) =>
+                                setFormData({ ...formData, exp2Period: e.target.value })
+                              }
+                              placeholder="Bulan & Tahun Masuk - Keluar"
+                              className="w-full px-3 py-2 rounded-xl bg-white border border-gray-200 focus:border-blue-500 text-xs text-gray-900 outline-none font-mono"
+                            />
+                          </div>
+                          <div className="sm:col-span-12">
+                            <input
+                              type="text"
+                              value={formData.exp2Role}
+                              onChange={(e) =>
+                                setFormData({ ...formData, exp2Role: e.target.value })
+                              }
+                              placeholder="Posisi & Tugas Singkat"
+                              className="w-full px-3 py-2 rounded-xl bg-white border border-gray-200 focus:border-blue-500 text-xs text-gray-900 outline-none"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* 4. PENGALAMAN KERJA 3 */}
+                      <div className="p-4 rounded-2xl bg-gray-50 border border-gray-200 space-y-3">
+                        <div className="flex items-center gap-2 text-xs font-bold text-gray-800 font-mono">
+                          <span className="material-symbols-outlined text-sm">business</span>
+                          <span>4. Pengalaman Kerja 3 (Jika Ada):</span>
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-12 gap-3">
+                          <div className="sm:col-span-6">
+                            <input
+                              type="text"
+                              value={formData.exp3Company}
+                              onChange={(e) =>
+                                setFormData({ ...formData, exp3Company: e.target.value })
+                              }
+                              placeholder="Nama Perusahaan ke-3"
+                              className="w-full px-3 py-2 rounded-xl bg-white border border-gray-200 focus:border-blue-500 text-xs text-gray-900 outline-none"
+                            />
+                          </div>
+                          <div className="sm:col-span-6">
+                            <input
+                              type="text"
+                              value={formData.exp3Period}
+                              onChange={(e) =>
+                                setFormData({ ...formData, exp3Period: e.target.value })
+                              }
+                              placeholder="Bulan & Tahun Masuk - Keluar"
+                              className="w-full px-3 py-2 rounded-xl bg-white border border-gray-200 focus:border-blue-500 text-xs text-gray-900 outline-none font-mono"
+                            />
+                          </div>
+                          <div className="sm:col-span-12">
+                            <input
+                              type="text"
+                              value={formData.exp3Role}
+                              onChange={(e) =>
+                                setFormData({ ...formData, exp3Role: e.target.value })
+                              }
+                              placeholder="Posisi & Tugas Singkat"
+                              className="w-full px-3 py-2 rounded-xl bg-white border border-gray-200 focus:border-blue-500 text-xs text-gray-900 outline-none"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* NOMOR REFERENSI DI KANTOR SEBELUMNYA (1 & 2) */}
+                      <div className="p-4 rounded-2xl bg-amber-50/50 border border-amber-200 space-y-3">
+                        <div className="flex items-center gap-1.5 text-xs font-bold text-amber-950 font-mono">
+                          <span className="material-symbols-outlined text-sm text-amber-600">contact_phone</span>
+                          <span>NOMOR REFERENSI DI KANTOR SEBELUMNYA (NAMA - NO TLP - JABATAN)</span>
+                        </div>
+                        <p className="text-[11px] text-gray-600">
+                          Sebutkan kontak atasan atau rekan kerja di kantor sebelumnya yang dapat mengonfirmasi kinerja Anda.
+                        </p>
+
+                        <div className="space-y-2.5">
+                          <div>
+                            <label className="block text-xs font-semibold text-gray-700 mb-1">
+                              Referensi Kantor Sebelumnya 1 <span className="text-bracket-border">*</span>
+                            </label>
+                            <input
+                              type="text"
+                              required
+                              value={formData.reference1}
+                              onChange={(e) =>
+                                setFormData({ ...formData, reference1: e.target.value })
+                              }
+                              placeholder="Contoh: Bpk. Heru - 08123456789 - Spv Produksi PT ABC"
+                              className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-gray-200 focus:border-bracket-border text-xs text-gray-900 outline-none font-mono"
+                            />
+                          </div>
+
+                          <div>
+                            <label className="block text-xs font-semibold text-gray-700 mb-1">
+                              Referensi Kantor Sebelumnya 2 (Opsional)
+                            </label>
+                            <input
+                              type="text"
+                              value={formData.reference2}
+                              onChange={(e) =>
+                                setFormData({ ...formData, reference2: e.target.value })
+                              }
+                              placeholder="Contoh: Ibu Rina - 08198765432 - HRD PT XYZ"
+                              className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-gray-200 focus:border-bracket-border text-xs text-gray-900 outline-none font-mono"
                             />
                           </div>
                         </div>
                       </div>
                     </div>
                   ) : (
-                    /* KONDISI 2: FRESH GRADUATE (TIDAK ADA PENGALAMAN) -> TIDAK MUNCUL FORM PENGALAMAN */
-                    <div className="space-y-3.5 p-4 rounded-2xl bg-emerald-50/50 border border-emerald-200/80 animate-fade-in">
-                      <div className="flex items-center gap-2 text-emerald-800 font-bold text-xs uppercase font-mono">
-                        <span className="material-symbols-outlined text-base">school</span>
-                        <span>Fresh Graduate / Siap Mengikuti Training</span>
-                      </div>
-                      <p className="text-xs text-emerald-950 leading-relaxed">
-                        CV Pelangi UV membuka kesempatan bagi lulusan baru yang berkeinginan kuat untuk berkembang di bidang finishing percetakan presisi (UV coating, laminasi doff/glossy, hot stamping foil, pond).
-                      </p>
-
-                      <div>
-                        <label className="block text-xs font-semibold text-gray-700 mb-1">
-                          Pengalaman Magang (PKL) / Proyek Sekolah (Bila ada)
-                        </label>
-                        <textarea
-                          rows={2}
-                          value={formData.internshipExperience}
-                          onChange={(e) =>
-                            setFormData({ ...formData, internshipExperience: e.target.value })
-                          }
-                          placeholder="Contoh: Pernah PKL di percetakan XYZ selama 3 bulan, atau memiliki ketertarikan tinggi pada mesin industri..."
-                          className="w-full px-3 py-2 rounded-xl bg-white border border-gray-200 focus:border-emerald-500 text-xs text-gray-900 outline-none leading-relaxed"
-                        />
-                      </div>
-
-                      {/* KONTAK DARURAT / KELUARGA */}
-                      <div className="pt-2 border-t border-emerald-200/60 space-y-2">
-                        <label className="block text-xs font-bold text-emerald-950 font-mono">
-                          Kontak Darurat / Kerabat (Keluarga)
-                        </label>
-                        <p className="text-[11px] text-gray-500">
-                          Nomor kontak orang tua atau keluarga yang dapat dihubungi dalam keadaan penting.
-                        </p>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                          <div>
-                            <input
-                              type="text"
-                              value={formData.referenceName}
-                              onChange={(e) =>
-                                setFormData({ ...formData, referenceName: e.target.value })
-                              }
-                              placeholder="Nama Kerabat (misal: Ibu Sri / Orang Tua)"
-                              className="w-full px-3 py-2 rounded-xl bg-white border border-gray-200 focus:border-emerald-500 text-xs text-gray-900 outline-none"
-                            />
-                          </div>
-                          <div>
-                            <input
-                              type="tel"
-                              value={formData.referencePhone}
-                              onChange={(e) =>
-                                setFormData({ ...formData, referencePhone: e.target.value })
-                              }
-                              placeholder="Nomor HP Keluarga (08xx)"
-                              className="w-full px-3 py-2 rounded-xl bg-white border border-gray-200 focus:border-emerald-500 text-xs text-gray-900 outline-none font-mono"
-                            />
-                          </div>
+                    /* KONDISIONAL: JIKA FRESH GRADUATE / BELUM PERNAH KERJA */
+                    <div className="space-y-4 animate-fade-in">
+                      <div className="p-4 rounded-2xl bg-emerald-50/60 border border-emerald-200 space-y-2.5">
+                        <div className="flex items-center gap-2 text-emerald-900 font-bold text-xs uppercase font-mono">
+                          <span className="material-symbols-outlined text-sm">school</span>
+                          <span>Program Pelatihan &amp; Training Kerja CV Pelangi UV</span>
                         </div>
+                        <p className="text-xs text-emerald-950 leading-relaxed">
+                          CV Pelangi UV menyambut calon tenaga kerja yang baru lulus. Anda akan mendapatkan bimbingan teknis langsung terkait mesin finishing cetak presisi (Spot UV, Laminasi, Hot Stamping Foil).
+                        </p>
+                        <div>
+                          <label className="block text-xs font-semibold text-gray-700 mb-1">
+                            Catatan Pengalaman Magang (PKL) / Organisasi Sekolah (Jika Ada):
+                          </label>
+                          <textarea
+                            rows={3}
+                            value={formData.internshipNote}
+                            onChange={(e) =>
+                              setFormData({ ...formData, internshipNote: e.target.value })
+                            }
+                            placeholder="Contoh: Pernah PKL selama 3 bulan di percetakan, aktif di ekstrakurikuler bengkel / komputer..."
+                            className="w-full px-3 py-2 rounded-xl bg-white border border-gray-200 focus:border-emerald-500 text-xs text-gray-900 outline-none leading-relaxed"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Kontak Darurat / Keluarga */}
+                      <div className="p-4 rounded-2xl bg-gray-50 border border-gray-200 space-y-2">
+                        <label className="block text-xs font-bold text-gray-800 font-mono">
+                          Kontak Darurat / Keluarga (NAMA - NO TLP - HUBUNGAN)
+                        </label>
+                        <input
+                          type="text"
+                          value={formData.emergencyContact}
+                          onChange={(e) =>
+                            setFormData({ ...formData, emergencyContact: e.target.value })
+                          }
+                          placeholder="Contoh: Bpk. Sastro (Orang Tua) - 08123456789"
+                          className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-gray-200 focus:border-bracket-border text-xs text-gray-900 outline-none font-mono"
+                        />
                       </div>
                     </div>
                   )}
@@ -871,7 +1049,7 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
                       onClick={handleNextStep2}
                       className="px-6 py-2.5 rounded-xl bg-bracket-border hover:bg-bracket-border/90 text-xs font-bold text-white transition shadow-sm flex items-center gap-2 cursor-pointer active:scale-95"
                     >
-                      <span>Lanjut ke Profil Diri</span>
+                      <span>Lanjut ke Komitmen &amp; Skill</span>
                       <span className="material-symbols-outlined text-sm">arrow_forward</span>
                     </button>
                   </div>
@@ -879,67 +1057,205 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
               )}
 
               {/* ======================================================== */}
-              {/* PAGE 3: PROFIL DIRI (KELEBIHAN & KEKURANGAN) & BERKAS CV */}
+              {/* PAGE 3: KOMITMEN KERJA, EVALUASI DIRI, SKILL & BERKAS */}
               {/* ======================================================== */}
               {currentStep === 3 && (
                 <div className="space-y-4 animate-fade-in">
                   <div className="pb-2 border-b border-gray-100">
                     <h4 className="text-sm font-bold text-gray-900 flex items-center gap-2 font-mono">
-                      <span className="material-symbols-outlined text-purple-600 text-lg">psychology</span>
-                      Langkah 3 dari 3: Profil Diri &amp; Lampiran CV
+                      <span className="material-symbols-outlined text-purple-600 text-lg">fact_check</span>
+                      Halaman 3: Komitmen Kerja, Evaluasi Diri &amp; Berkas Dokumen
                     </h4>
                     <p className="text-xs text-gray-500 mt-0.5">
-                      Ceritakan karakter kerja Anda secara jujur dan lampirkan berkas CV bila ada.
+                      Jawab pertanyaan komitmen kerja, sebutkan kelebihan, kekurangan, minimal 5 skill, serta berkas Anda.
                     </p>
                   </div>
 
-                  {/* Kelebihan & Kekurangan */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                    {/* Kelebihan */}
-                    <div>
-                      <label className="block text-xs font-semibold text-gray-700 mb-1 flex items-center gap-1.5">
-                        <span className="material-symbols-outlined text-emerald-600 text-sm">thumb_up</span>
-                        <span>Kelebihan Utama (Strengths) <span className="text-bracket-border">*</span></span>
-                      </label>
-                      <textarea
-                        rows={3}
-                        required
-                        value={formData.strengths}
-                        onChange={(e) => setFormData({ ...formData, strengths: e.target.value })}
-                        placeholder="Contoh: Sangat teliti dalam menghitung jumlah lembar cetak, cepat beradaptasi dengan mesin baru, disiplin waktu, bertanggung jawab..."
-                        className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-gray-200 focus:border-bracket-border focus:ring-1 focus:ring-bracket-border text-xs sm:text-sm text-gray-900 outline-none transition leading-relaxed"
-                      />
+                  {/* 1-4. PERTANYAAN KOMITMEN KERJA & GAJI */}
+                  <div className="p-4 rounded-2xl bg-gray-50/80 border border-gray-200 space-y-3.5">
+                    <div className="flex items-center gap-1.5 text-xs font-bold text-gray-900 font-mono uppercase">
+                      <span className="material-symbols-outlined text-sm text-bracket-border">gavel</span>
+                      <span>Pertanyaan Komitmen Kerja &amp; Harapan Gaji</span>
                     </div>
 
-                    {/* Kekurangan */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                      {/* 1. No Work No Pay */}
+                      <div>
+                        <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+                          1. Apakah anda bersedia bekerja dengan system No Work No Pay ? <span className="text-bracket-border">*</span>
+                        </label>
+                        <div className="grid grid-cols-2 gap-2">
+                          <button
+                            type="button"
+                            onClick={() => setFormData({ ...formData, readyNoWorkNoPay: "Ya" })}
+                            className={`py-2 px-3 rounded-xl text-xs font-bold border transition text-center cursor-pointer ${
+                              formData.readyNoWorkNoPay === "Ya"
+                                ? "bg-emerald-600 text-white border-emerald-600 shadow-xs"
+                                : "bg-white text-gray-700 border-gray-200 hover:bg-gray-50"
+                            }`}
+                          >
+                            Ya, Bersedia
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setFormData({ ...formData, readyNoWorkNoPay: "Tidak" })}
+                            className={`py-2 px-3 rounded-xl text-xs font-bold border transition text-center cursor-pointer ${
+                              formData.readyNoWorkNoPay === "Tidak"
+                                ? "bg-red-600 text-white border-red-600 shadow-xs"
+                                : "bg-white text-gray-700 border-gray-200 hover:bg-gray-50"
+                            }`}
+                          >
+                            Tidak Bersedia
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* 2. Bersedia Lembur */}
+                      <div>
+                        <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+                          2. Apakah anda bersedia bekerja lembur ? <span className="text-bracket-border">*</span>
+                        </label>
+                        <div className="grid grid-cols-2 gap-2">
+                          <button
+                            type="button"
+                            onClick={() => setFormData({ ...formData, readyOvertime: "Ya" })}
+                            className={`py-2 px-3 rounded-xl text-xs font-bold border transition text-center cursor-pointer ${
+                              formData.readyOvertime === "Ya"
+                                ? "bg-emerald-600 text-white border-emerald-600 shadow-xs"
+                                : "bg-white text-gray-700 border-gray-200 hover:bg-gray-50"
+                            }`}
+                          >
+                            Ya, Bersedia
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setFormData({ ...formData, readyOvertime: "Tidak" })}
+                            className={`py-2 px-3 rounded-xl text-xs font-bold border transition text-center cursor-pointer ${
+                              formData.readyOvertime === "Tidak"
+                                ? "bg-red-600 text-white border-red-600 shadow-xs"
+                                : "bg-white text-gray-700 border-gray-200 hover:bg-gray-50"
+                            }`}
+                          >
+                            Tidak Bersedia
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* 3. Gaji yang Diinginkan */}
+                      <div>
+                        <label className="block text-xs font-semibold text-gray-700 mb-1">
+                          3. Berapa Gaji yang anda inginkan ? <span className="text-bracket-border">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          value={formData.expectedSalary}
+                          onChange={(e) =>
+                            setFormData({ ...formData, expectedSalary: e.target.value })
+                          }
+                          placeholder="Contoh: Rp 3.500.000 / UMK / Nego"
+                          className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-gray-200 focus:border-bracket-border text-xs text-gray-900 outline-none"
+                        />
+                      </div>
+
+                      {/* 4. Fasilitas yang Diinginkan */}
+                      <div>
+                        <label className="block text-xs font-semibold text-gray-700 mb-1">
+                          4. Fasilitas apa saja yang anda inginkan ?
+                        </label>
+                        <input
+                          type="text"
+                          value={formData.expectedFacilities}
+                          onChange={(e) =>
+                            setFormData({ ...formData, expectedFacilities: e.target.value })
+                          }
+                          placeholder="Contoh: BPJS Kesehatan, Mess Karyawan, Makan Siang"
+                          className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-gray-200 focus:border-bracket-border text-xs text-gray-900 outline-none"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* EVALUASI DIRI: 3 KEKURANGAN, 3 KELEBIHAN, MINIMAL 5 SKILL */}
+                  <div className="p-4 rounded-2xl bg-purple-50/40 border border-purple-200/80 space-y-3.5">
+                    <div className="flex items-center gap-1.5 text-xs font-bold text-purple-950 font-mono uppercase">
+                      <span className="material-symbols-outlined text-sm text-purple-600">psychology</span>
+                      <span>Evaluasi Karakter &amp; Kemampuan Diri</span>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                      {/* 1. Tiga Kekurangan */}
+                      <div>
+                        <label className="block text-xs font-semibold text-gray-700 mb-1 flex items-center gap-1">
+                          <span className="material-symbols-outlined text-amber-600 text-sm">tune</span>
+                          <span>1. Sebutkan 3 kekurangan anda <span className="text-bracket-border">*</span></span>
+                        </label>
+                        <textarea
+                          rows={3}
+                          required
+                          value={formData.threeWeaknesses}
+                          onChange={(e) =>
+                            setFormData({ ...formData, threeWeaknesses: e.target.value })
+                          }
+                          placeholder="Contoh:&#10;1. Kurang teliti jika tergesa-gesa (diatasi dengan checklist)&#10;2. Belum fasih mesin baru (diatasi cepat bertanya)&#10;3. Sering cemas di awal tugas..."
+                          className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-gray-200 focus:border-bracket-border text-xs text-gray-900 outline-none leading-relaxed"
+                        />
+                      </div>
+
+                      {/* 2. Tiga Kelebihan */}
+                      <div>
+                        <label className="block text-xs font-semibold text-gray-700 mb-1 flex items-center gap-1">
+                          <span className="material-symbols-outlined text-emerald-600 text-sm">thumb_up</span>
+                          <span>2. Sebutkan 3 kelebihan anda <span className="text-bracket-border">*</span></span>
+                        </label>
+                        <textarea
+                          rows={3}
+                          required
+                          value={formData.threeStrengths}
+                          onChange={(e) =>
+                            setFormData({ ...formData, threeStrengths: e.target.value })
+                          }
+                          placeholder="Contoh:&#10;1. Sangat disiplin waktu dan rajin&#10;2. Cepat beradaptasi dan belajar mesin industri&#10;3. Kuat bekerja tim dan bertanggung jawab..."
+                          className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-gray-200 focus:border-bracket-border text-xs text-gray-900 outline-none leading-relaxed"
+                        />
+                      </div>
+                    </div>
+
+                    {/* 3. Minimal 5 Skill */}
                     <div>
-                      <label className="block text-xs font-semibold text-gray-700 mb-1 flex items-center gap-1.5">
-                        <span className="material-symbols-outlined text-amber-600 text-sm">tune</span>
-                        <span>Kekurangan Diri &amp; Solusinya <span className="text-bracket-border">*</span></span>
+                      <label className="block text-xs font-semibold text-gray-700 mb-1 flex items-center gap-1">
+                        <span className="material-symbols-outlined text-blue-600 text-sm">star</span>
+                        <span>3. Sebutkan skill yang anda miliki minimal 5 <span className="text-bracket-border">*</span></span>
                       </label>
                       <textarea
                         rows={3}
                         required
-                        value={formData.weaknesses}
-                        onChange={(e) => setFormData({ ...formData, weaknesses: e.target.value })}
-                        placeholder="Contoh: Saya terkadang mudah lupa jika instruksi terlalu banyak sekaligus, sehingga saya selalu mencatat dan membuat checklist tugas harian..."
-                        className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-gray-200 focus:border-bracket-border focus:ring-1 focus:ring-bracket-border text-xs sm:text-sm text-gray-900 outline-none transition leading-relaxed"
+                        value={formData.fiveSkills}
+                        onChange={(e) =>
+                          setFormData({ ...formData, fiveSkills: e.target.value })
+                        }
+                        placeholder="Contoh:&#10;1. Mengoperasikan mesin percetakan/pond&#10;2. Ketelitian sortir cacat cetak & foil&#10;3. Komunikasi & koordinasi tim&#10;4. Manajemen waktu kerja&#10;5. Perawatan dasar & pelumasan mesin"
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-gray-200 focus:border-bracket-border text-xs text-gray-900 outline-none leading-relaxed"
                       />
                     </div>
                   </div>
 
-                  {/* Lampiran Dokumen CV / Drive */}
-                  <div className="p-3.5 rounded-2xl bg-gray-50/80 border border-gray-200/80 space-y-3">
-                    <label className="block text-xs font-bold text-gray-800 font-mono">
-                      Lampiran Dokumen CV / Portofolio (Opsional)
-                    </label>
+                  {/* 6. UPLOAD CV, IJAZAH, KTP, SERTIFIKAT LAINNYA */}
+                  <div className="p-4 rounded-2xl bg-gray-50/80 border border-gray-200 space-y-3">
+                    <div className="flex items-center gap-1.5 text-xs font-bold text-gray-800 font-mono uppercase">
+                      <span className="material-symbols-outlined text-sm text-bracket-border">folder_zip</span>
+                      <span>6. Upload CV, Ijazah, KTP, Sertifikat lainnya</span>
+                    </div>
+                    <p className="text-[11px] text-gray-500">
+                      Anda dapat mengunggah file gabungan (PDF / ZIP) atau mencantumkan link folder Google Drive publik.
+                    </p>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 items-start">
                       {/* Upload File */}
                       <div className="border border-dashed border-gray-300 hover:border-bracket-border rounded-xl p-3 text-center bg-white transition cursor-pointer relative">
                         <input
                           type="file"
-                          accept=".pdf,.docx,.doc,image/*"
+                          accept=".pdf,.zip,.rar,.docx,.doc,image/*"
                           onChange={(e) => {
                             const f = e.target.files?.[0];
                             if (f) handleFileUpload(f);
@@ -948,48 +1264,35 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
                         />
                         <div className="flex flex-col items-center justify-center gap-1">
                           <span className="material-symbols-outlined text-bracket-border text-2xl">
-                            upload_file
+                            cloud_upload
                           </span>
-                          <p className="text-xs font-semibold text-gray-800 truncate max-w-[180px]">
-                            {selectedFile ? selectedFile.name : "Unggah File CV"}
+                          <p className="text-xs font-semibold text-gray-800 truncate max-w-[200px]">
+                            {selectedFile ? selectedFile.name : "Pilih File Dokumen (PDF / ZIP)"}
                           </p>
-                          <p className="text-[10px] text-gray-400">PDF atau DOCX (Maks 10MB)</p>
+                          <p className="text-[10px] text-gray-400">CV, KTP, Ijazah, Sertifikat (Maks 15MB)</p>
                         </div>
                       </div>
 
                       {/* Google Drive Link */}
                       <div>
+                        <label className="block text-xs font-semibold text-gray-700 mb-1">
+                          Atau Tautan Google Drive Dokumen:
+                        </label>
                         <input
                           type="url"
                           value={formData.cvUrl}
                           onChange={(e) => setFormData({ ...formData, cvUrl: e.target.value })}
-                          placeholder="Atau link Google Drive / LinkedIn..."
+                          placeholder="https://drive.google.com/drive/folders/..."
                           className="w-full px-3 py-2 rounded-xl bg-white border border-gray-200 focus:border-bracket-border text-xs text-gray-900 outline-none font-mono"
                         />
                         <span className="text-[10px] text-gray-400 mt-1 block">
-                          Pastikan link Drive sudah dibuka akses &quot;Siapa saja memiliki link&quot;.
+                          Pastikan link Google Drive diatur ke &quot;Siapa saja memiliki link&quot;.
                         </span>
                       </div>
                     </div>
                   </div>
 
-                  {/* Ringkasan Singkat */}
-                  <div className="p-3 rounded-xl bg-gray-100/70 border border-gray-200 text-[11px] text-gray-600 space-y-1">
-                    <div className="flex items-center justify-between">
-                      <span className="font-bold text-gray-800">
-                        {formData.name} ({formData.age} Tahun)
-                      </span>
-                      <span className="text-bracket-border font-bold">{job.title}</span>
-                    </div>
-                    <p className="truncate">
-                      Pendidikan: {formData.education} {formData.educationMajor ? `(${formData.educationMajor})` : ""} &bull; Domisili: {formData.address}
-                    </p>
-                    <p>
-                      Status: {formData.hasExperience === "yes" ? "Pernah Bekerja" : "Fresh Graduate"}
-                    </p>
-                  </div>
-
-                  {/* Tombol Navigasi Page 3 & Submit */}
+                  {/* Tombol Navigasi Page 3 & Submit Final */}
                   <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-gray-100">
                     <button
                       type="button"
@@ -1001,7 +1304,7 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
                     </button>
 
                     <div className="flex items-center gap-2.5 w-full sm:w-auto justify-end">
-                      {/* Jalur Cepat WA */}
+                      {/* Jalur Cepat WhatsApp */}
                       <a
                         href={waHref}
                         target="_blank"
@@ -1009,10 +1312,10 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
                         className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition shadow-sm active:scale-95"
                       >
                         <span className="material-symbols-outlined text-sm">chat</span>
-                        <span>Fast-Track WA</span>
+                        <span>Fast-Track WA HRD</span>
                       </a>
 
-                      {/* Tombol Submit Utama */}
+                      {/* Tombol Submit Server */}
                       <button
                         type="button"
                         onClick={() => handleSubmitFinal()}
@@ -1024,12 +1327,12 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
                             <span className="material-symbols-outlined animate-spin text-sm">
                               progress_activity
                             </span>
-                            <span>Menyimpan...</span>
+                            <span>Menyimpan Berkas...</span>
                           </>
                         ) : (
                           <>
                             <span className="material-symbols-outlined text-sm">send</span>
-                            <span>Kirim Lamaran</span>
+                            <span>Kirim Lamaran Lengkap</span>
                           </>
                         )}
                       </button>

@@ -665,35 +665,36 @@ export default function AdminKarirPage() {
                     {/* Contacts & Personal Info */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 text-xs bg-gray-50/70 p-3.5 rounded-xl border border-gray-100 font-sans">
                       <div>
+                        <span className="text-gray-400 block font-mono text-[11px]">Tempat, Tgl Lahir:</span>
+                        <span className="font-bold text-gray-900">{applicant.birthPlaceDate || "-"}</span>
+                      </div>
+                      <div>
+                        <span className="text-gray-400 block font-mono text-[11px]">Status Pernikahan:</span>
+                        <span className="font-bold text-gray-900">{applicant.maritalStatus || "Single"}</span>
+                      </div>
+                      <div>
                         <span className="text-gray-400 block font-mono text-[11px]">No. WhatsApp / HP:</span>
                         <span className="font-bold text-gray-900 font-mono">{applicant.phone}</span>
                       </div>
                       <div>
-                        <span className="text-gray-400 block font-mono text-[11px]">No. Referensi / Darurat:</span>
-                        <span className="font-bold text-blue-700 font-mono">
-                          {applicant.referencePhone || "-"}
-                        </span>
-                        {applicant.referenceRelation && (
-                          <span className="text-[10px] text-gray-500 block truncate font-sans">
-                            ({applicant.referenceRelation})
-                          </span>
-                        )}
+                        <span className="text-gray-400 block font-mono text-[11px]">Email:</span>
+                        <span className="font-bold text-gray-900 truncate block">{applicant.email || "-"}</span>
                       </div>
-                      <div>
-                        <span className="text-gray-400 block font-mono text-[11px]">Pendidikan &amp; Jurusan:</span>
+                      <div className="md:col-span-2">
+                        <span className="text-gray-400 block font-mono text-[11px]">Pendidikan Terakhir &amp; Jurusan:</span>
                         <span className="font-bold text-gray-900">
                           {applicant.education || "-"}
                           {applicant.educationMajor ? ` (${applicant.educationMajor})` : ""}
                         </span>
                       </div>
-                      <div>
-                        <span className="text-gray-400 block font-mono text-[11px]">Domisili:</span>
+                      <div className="md:col-span-2">
+                        <span className="text-gray-400 block font-mono text-[11px]">Alamat Domisili:</span>
                         <span className="font-bold text-gray-900">{applicant.address || "-"}</span>
                       </div>
                     </div>
 
                     {/* Work Experience */}
-                    <div className={`p-3.5 rounded-xl border text-xs space-y-1 ${
+                    <div className={`p-3.5 rounded-xl border text-xs space-y-2 ${
                       applicant.hasExperience === "yes"
                         ? "bg-blue-50/40 border-blue-100"
                         : "bg-emerald-50/40 border-emerald-100"
@@ -705,7 +706,7 @@ export default function AdminKarirPage() {
                           <span className="material-symbols-outlined text-sm">
                             {applicant.hasExperience === "yes" ? "work" : "school"}
                           </span>
-                          <span>Riwayat &amp; Pengalaman:</span>
+                          <span>Riwayat Pengalaman Kerja:</span>
                         </p>
                         <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold font-mono ${
                           applicant.hasExperience === "yes"
@@ -715,32 +716,95 @@ export default function AdminKarirPage() {
                           {applicant.hasExperience === "yes" ? "Pernah Bekerja" : "Fresh Graduate"}
                         </span>
                       </div>
-                      <p className="text-gray-800 leading-relaxed whitespace-pre-line pl-5 pt-1">
-                        {applicant.experience || "Fresh Graduate / Siap dilatih"}
+                      <p className="text-gray-800 leading-relaxed whitespace-pre-line pl-2 pt-0.5">
+                        {applicant.experience || "Fresh Graduate / Siap mengikuti pelatihan kerja"}
                       </p>
+
+                      {/* Nomor Referensi Kantor Sebelumnya */}
+                      {(applicant.reference1 || applicant.reference2 || applicant.referencePhone) && (
+                        <div className="pt-2 border-t border-black/5 text-[11px] space-y-1">
+                          <span className="font-bold text-gray-700 block font-mono">
+                            Nomor Referensi Kantor Sebelumnya:
+                          </span>
+                          {applicant.reference1 && (
+                            <p className="text-gray-800 font-mono pl-2">
+                              • Ref 1: <span className="font-semibold">{applicant.reference1}</span>
+                            </p>
+                          )}
+                          {applicant.reference2 && (
+                            <p className="text-gray-800 font-mono pl-2">
+                              • Ref 2: <span className="font-semibold">{applicant.reference2}</span>
+                            </p>
+                          )}
+                          {!applicant.reference1 && !applicant.reference2 && applicant.referencePhone && (
+                            <p className="text-gray-800 font-mono pl-2">
+                              • Kontak: <span className="font-semibold">{applicant.referencePhone}</span> ({applicant.referenceRelation || "Darurat"})
+                            </p>
+                          )}
+                        </div>
+                      )}
                     </div>
 
-                    {/* Strengths & Weaknesses */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-                      {/* Kelebihan */}
-                      <div className="p-3.5 rounded-xl bg-emerald-50/50 border border-emerald-100 space-y-1">
-                        <p className="font-bold text-emerald-900 flex items-center gap-1.5 font-mono">
+                    {/* Komitmen Kerja & Harapan Gaji */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2.5 p-3 rounded-xl bg-gray-50 border border-gray-200 text-xs">
+                      <div>
+                        <span className="text-gray-400 block font-mono text-[10px]">No Work No Pay:</span>
+                        <span className={`font-bold ${applicant.readyNoWorkNoPay === "Ya" ? "text-emerald-700" : "text-red-600"}`}>
+                          {applicant.readyNoWorkNoPay || "Ya"}
+                        </span>
+                      </div>
+                      <div>
+                        <span className="text-gray-400 block font-mono text-[10px]">Bersedia Lembur:</span>
+                        <span className={`font-bold ${applicant.readyOvertime === "Ya" ? "text-emerald-700" : "text-red-600"}`}>
+                          {applicant.readyOvertime || "Ya"}
+                        </span>
+                      </div>
+                      <div>
+                        <span className="text-gray-400 block font-mono text-[10px]">Gaji yang Diinginkan:</span>
+                        <span className="font-bold text-gray-900">
+                          {applicant.expectedSalary || "-"}
+                        </span>
+                      </div>
+                      <div>
+                        <span className="text-gray-400 block font-mono text-[10px]">Fasilitas yang Diinginkan:</span>
+                        <span className="font-bold text-gray-900 truncate block">
+                          {applicant.expectedFacilities || "-"}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Evaluasi Diri (3 Kelebihan, 3 Kekurangan, 5 Skill) */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+                      {/* 3 Kelebihan */}
+                      <div className="p-3 rounded-xl bg-emerald-50/50 border border-emerald-100 space-y-1">
+                        <p className="font-bold text-emerald-900 flex items-center gap-1 font-mono">
                           <span className="material-symbols-outlined text-emerald-600 text-sm">thumb_up</span>
-                          Kelebihan Diri (Strengths):
+                          3 Kelebihan Diri:
                         </p>
-                        <p className="text-gray-800 leading-relaxed whitespace-pre-line pl-5">
-                          {applicant.strengths || "-"}
+                        <p className="text-gray-800 leading-relaxed whitespace-pre-line pl-1">
+                          {applicant.threeStrengths || applicant.strengths || "-"}
                         </p>
                       </div>
 
-                      {/* Kekurangan */}
-                      <div className="p-3.5 rounded-xl bg-amber-50/50 border border-amber-100 space-y-1">
-                        <p className="font-bold text-amber-900 flex items-center gap-1.5 font-mono">
+                      {/* 3 Kekurangan */}
+                      <div className="p-3 rounded-xl bg-amber-50/50 border border-amber-100 space-y-1">
+                        <p className="font-bold text-amber-900 flex items-center gap-1 font-mono">
                           <span className="material-symbols-outlined text-amber-600 text-sm">tune</span>
-                          Kekurangan Diri &amp; Solusi Mengatasi:
+                          3 Kekurangan Diri:
                         </p>
-                        <p className="text-gray-800 leading-relaxed whitespace-pre-line pl-5">
-                          {applicant.weaknesses || "-"}
+                        <p className="text-gray-800 leading-relaxed whitespace-pre-line pl-1">
+                          {applicant.threeWeaknesses || applicant.weaknesses || "-"}
+                        </p>
+                      </div>
+
+                      {/* Minimal 5 Skill */}
+                      <div className="p-3 rounded-xl bg-purple-50/50 border border-purple-100 space-y-1">
+                        <p className="font-bold text-purple-900 flex items-center gap-1 font-mono">
+                          <span className="material-symbols-outlined text-purple-600 text-sm">star</span>
+                          Skill yang Dimiliki:
+                        </p>
+                        <p className="text-gray-800 leading-relaxed whitespace-pre-line pl-1">
+                          {applicant.fiveSkills || "-"}
                         </p>
                       </div>
                     </div>
