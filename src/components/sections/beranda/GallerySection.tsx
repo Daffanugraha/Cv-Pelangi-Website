@@ -14,22 +14,50 @@ export default function GallerySection() {
   const [videos, setVideos] = useState<VideoItem[]>(galleryVideos);
   const [activeVideo, setActiveVideo] = useState<VideoItem | null>(null);
 
-  // Ambil data video terbaru dari API Instagram secara background
+  // Ambil data video/media terbaru dari Beranda gallery admin & API Instagram
   useEffect(() => {
-    async function loadLatestReels() {
+    async function loadLatestMedia() {
       try {
-        const res = await fetch("/api/instagram");
-        if (res.ok) {
-          const json = await res.json();
+        const [instaRes, adminRes] = await Promise.all([
+          fetch("/api/instagram").catch(() => null),
+          fetch("/api/admin/gallery?type=beranda").catch(() => null),
+        ]);
+
+        let baseVideos: VideoItem[] = galleryVideos;
+        if (instaRes && instaRes.ok) {
+          const json = await instaRes.json();
           if (json.data && Array.isArray(json.data) && json.data.length > 0) {
-            setVideos(json.data);
+            baseVideos = json.data;
           }
         }
+
+        if (adminRes && adminRes.ok) {
+          const adminItems = await adminRes.json();
+          if (Array.isArray(adminItems) && adminItems.length > 0) {
+            const mappedAdmin: VideoItem[] = adminItems.map((item: any) => ({
+              id: item.id,
+              title: item.title,
+              tag: item.tag || item.category || "Showcase",
+              desc: item.technique || "Sorotan Galeri CV Pelangi UV",
+              img: item.imageUrl,
+              videoUrl: item.videoUrl || "",
+              duration: "00:45",
+              views: "1.2K",
+              source: "instagram",
+              capacity: "CV Pelangi UV Showcase",
+              embedUrl: item.videoUrl || "",
+            }));
+            setVideos([...mappedAdmin, ...baseVideos]);
+            return;
+          }
+        }
+
+        setVideos(baseVideos);
       } catch (err) {
-        console.warn("Gagal memuat feed Instagram:", err);
+        console.warn("Gagal memuat galeri beranda:", err);
       }
     }
-    loadLatestReels();
+    loadLatestMedia();
   }, []);
 
   // Kunci scroll body saat modal video terbuka

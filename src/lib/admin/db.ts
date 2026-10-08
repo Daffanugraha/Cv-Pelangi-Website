@@ -8,6 +8,7 @@ import fs from "fs";
 import path from "path";
 import { CAREER_JOBS, CareerJob } from "@/data/careers";
 import { MOMEN_ALBUMS, MomenAlbum, MomenPhoto } from "@/lib/data/galeriMomen";
+import { featuredArticle, articlesData, ArticleItem } from "@/lib/data/articles";
 import { query, isPostgresConfigured } from "@/lib/db/postgres";
 
 // ---------------------------------------------------------------------------
@@ -54,6 +55,9 @@ export interface GalleryItem {
   createdAt: string;
   order: number;
   featured: boolean;
+  galleryType?: "beranda" | "produk";
+  videoUrl?: string;
+  tag?: string;
 }
 
 export interface LeadItem {
@@ -79,8 +83,10 @@ export interface SiteSettings {
 // ---------------------------------------------------------------------------
 // Gallery CRUD
 // ---------------------------------------------------------------------------
-export function getGallery(): GalleryItem[] {
-  return readJSON<GalleryItem[]>("gallery", []);
+export function getGallery(type?: string): GalleryItem[] {
+  const items = readJSON<GalleryItem[]>("gallery", []);
+  if (!type || type === "all") return items;
+  return items.filter((i) => (i.galleryType || "produk") === type);
 }
 
 export function saveGallery(items: GalleryItem[]) {
@@ -449,5 +455,62 @@ export function deleteApplicant(id: string) {
       console.warn("[Postgres Delete Applicant Error]:", err.message)
     );
   }
+}
+
+// ---------------------------------------------------------------------------
+// Blog Articles CRUD (Berita & Artikel Publikasi)
+// ---------------------------------------------------------------------------
+export type BlogArticleItem = ArticleItem;
+
+export function getBlogArticles(): BlogArticleItem[] {
+  const initial = [featuredArticle, ...articlesData];
+  return readJSON<BlogArticleItem[]>("blog", initial);
+}
+
+export function saveBlogArticles(articles: BlogArticleItem[]) {
+  writeJSON("blog", articles);
+}
+
+export function addBlogArticle(
+  item: Omit<BlogArticleItem, "id">
+): BlogArticleItem {
+  const articles = getBlogArticles();
+  const idSlug =
+    item.slug ||
+    item.title
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+  const newArticle: BlogArticleItem = {
+    ...item,
+    id: `art_${Date.now()}`,
+    slug: idSlug || `berita-${Date.now()}`,
+    date:
+      item.date ||
+      new Date().toLocaleDateString("id-ID", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      }),
+    views: item.views || "1 Views",
+    commentsCount: item.commentsCount || "0 Komentar",
+  };
+  articles.unshift(newArticle);
+  saveBlogArticles(articles);
+  return newArticle;
+}
+
+export function updateBlogArticle(id: string, patch: Partial<BlogArticleItem>) {
+  const articles = getBlogArticles().map((a) =>
+    a.id === id || a.slug === id ? { ...a, ...patch } : a
+  );
+  saveBlogArticles(articles);
+}
+
+export function deleteBlogArticle(id: string) {
+  const articles = getBlogArticles().filter(
+    (a) => a.id !== id && a.slug !== id
+  );
+  saveBlogArticles(articles);
 }
 

@@ -16,6 +16,8 @@ export default function GalleryPhotoCard({
   onEdit,
   onDelete,
 }: GalleryPhotoCardProps) {
+  const isBeranda = item.galleryType === "beranda";
+
   return (
     <div className="group bg-white border border-gray-200/90 rounded-2xl overflow-hidden hover:border-[#F65456]/40 hover:shadow-md transition-all shadow-xs flex flex-col">
       {/* Image Container */}
@@ -32,10 +34,25 @@ export default function GalleryPhotoCard({
             <span className="material-symbols-outlined text-3xl">image</span>
           </div>
         )}
-        {item.featured && (
-          <div className="absolute top-2.5 left-2.5 flex items-center gap-1 bg-amber-400 text-black text-[11px] font-bold px-2.5 py-0.5 rounded-full shadow-sm">
-            <span className="material-symbols-outlined text-xs font-bold">star</span>
-            Unggulan
+
+        <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5 flex-wrap">
+          {item.featured && (
+            <div className="flex items-center gap-1 bg-amber-400 text-black text-[11px] font-bold px-2.5 py-0.5 rounded-full shadow-sm">
+              <span className="material-symbols-outlined text-xs font-bold">star</span>
+              Unggulan
+            </div>
+          )}
+          {isBeranda && (
+            <div className="flex items-center gap-1 bg-black/75 backdrop-blur-md text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full shadow-sm">
+              <span className="material-symbols-outlined text-xs text-[#F65456]">home</span>
+              Beranda
+            </div>
+          )}
+        </div>
+
+        {item.videoUrl && (
+          <div className="absolute bottom-2.5 right-2.5 w-7 h-7 rounded-full bg-[#F65456] text-white flex items-center justify-center shadow-md">
+            <span className="material-symbols-outlined text-sm">play_arrow</span>
           </div>
         )}
       </div>
@@ -48,10 +65,10 @@ export default function GalleryPhotoCard({
           </p>
           <div className="flex items-center gap-1.5 mt-2 flex-wrap">
             <span className="text-[11px] bg-red-50 text-[#F65456] border border-red-100 px-2.5 py-0.5 rounded-full font-bold">
-              {item.category}
+              {item.category || (isBeranda ? "Sorotan" : "Umum")}
             </span>
             <span className="text-[11px] bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full font-medium">
-              {item.technique}
+              {item.technique || (isBeranda ? "Showcase Video/Foto" : "Finishing Cetak")}
             </span>
           </div>
         </div>
@@ -75,7 +92,7 @@ export default function GalleryPhotoCard({
         <button
           type="button"
           onClick={() => onEdit(item)}
-          title="Edit foto"
+          title="Edit media"
           className="flex-1 py-2.5 text-xs text-gray-600 hover:bg-gray-100 hover:text-gray-900 flex items-center justify-center gap-1 transition border-l border-gray-100 cursor-pointer"
         >
           <span className="material-symbols-outlined text-base">edit</span>
@@ -84,7 +101,7 @@ export default function GalleryPhotoCard({
         <button
           type="button"
           onClick={() => onDelete(item.id)}
-          title="Hapus foto"
+          title="Hapus media"
           className="flex-1 py-2.5 text-xs text-gray-400 hover:bg-red-50 hover:text-red-600 flex items-center justify-center gap-1 transition border-l border-gray-100 cursor-pointer"
         >
           <span className="material-symbols-outlined text-base">delete</span>

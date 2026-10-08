@@ -1,30 +1,39 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect, Suspense } from "react";
 
-const navItems = [
-  { href: "/admin/dashboard", icon: "dashboard", label: "Dashboard" },
-  { href: "/admin/karir", icon: "work", label: "Lowongan Karir" },
-  { href: "/admin/pelamar", icon: "badge", label: "Berkas Pelamar" },
-  { href: "/admin/momen", icon: "collections_bookmark", label: "Momen & Kegiatan" },
-  { href: "/admin/galeri", icon: "photo_library", label: "Galeri Foto" },
-  { href: "/admin/leads", icon: "inbox", label: "Kotak Masuk Lead" },
-  { href: "/admin/pengaturan", icon: "settings", label: "Pengaturan Site" },
-];
-
-export default function AdminShell({ children }: { children: React.ReactNode }) {
+function ShellInner({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const router = useRouter();
+
   const [loggingOut, setLoggingOut] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  // Accordion state
+  const isCareerActive =
+    pathname.startsWith("/admin/karir") || pathname.startsWith("/admin/pelamar");
+  const isGalleryActive =
+    pathname.startsWith("/admin/galeri") || pathname.startsWith("/admin/momen");
+
+  const [careerExpanded, setCareerExpanded] = useState(isCareerActive);
+  const [galleryExpanded, setGalleryExpanded] = useState(isGalleryActive);
+
+  // Keep expanded if route changes to child
+  useEffect(() => {
+    if (isCareerActive) setCareerExpanded(true);
+    if (isGalleryActive) setGalleryExpanded(true);
+  }, [isCareerActive, isGalleryActive]);
 
   async function handleLogout() {
     setLoggingOut(true);
     await fetch("/api/admin/auth/logout", { method: "POST" });
     router.push("/admin");
   }
+
+  const currentTab = searchParams.get("tab");
 
   const SidebarContent = () => (
     <div className="flex flex-col h-full bg-[#111216] text-white">
@@ -42,7 +51,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
             <p className="font-heading font-extrabold text-white text-sm leading-tight tracking-tight">
               CV Pelangi UV
             </p>
-            <p className="text-bracket-border text-[11px] font-mono font-bold uppercase tracking-wider">
+            <p className="text-[#F65456] text-[11px] font-mono font-bold uppercase tracking-wider">
               Admin Panel
             </p>
           </div>
@@ -54,30 +63,218 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
         <div className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest text-gray-400 font-mono">
           Menu Utama
         </div>
-        {navItems.map((item) => {
-          const active = pathname === item.href || pathname.startsWith(item.href + "/");
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              onClick={() => setSidebarOpen(false)}
-              className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all cursor-pointer ${
-                active
-                  ? "bg-bracket-border text-white shadow-md shadow-bracket-border/30 font-bold"
-                  : "text-gray-300 hover:bg-white/10 hover:text-white"
-              }`}
-            >
+
+        {/* 1. Dashboard */}
+        <Link
+          href="/admin/dashboard"
+          onClick={() => setSidebarOpen(false)}
+          className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all cursor-pointer ${
+            pathname === "/admin/dashboard"
+              ? "bg-[#F65456] text-white shadow-md shadow-[#F65456]/30 font-bold"
+              : "text-gray-300 hover:bg-white/10 hover:text-white"
+          }`}
+        >
+          <span
+            className={`material-symbols-outlined text-xl ${
+              pathname === "/admin/dashboard" ? "text-white" : "text-gray-400"
+            }`}
+          >
+            dashboard
+          </span>
+          <span>Dashboard</span>
+        </Link>
+
+        {/* 2. Karir (Collapsible Group: Lowongan & Berkas Lamaran) */}
+        <div className="space-y-1">
+          <button
+            type="button"
+            onClick={() => setCareerExpanded((prev) => !prev)}
+            className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all cursor-pointer ${
+              isCareerActive
+                ? "bg-white/10 text-white font-bold"
+                : "text-gray-300 hover:bg-white/10 hover:text-white"
+            }`}
+          >
+            <div className="flex items-center gap-3">
               <span
                 className={`material-symbols-outlined text-xl ${
-                  active ? "text-white" : "text-gray-400"
+                  isCareerActive ? "text-[#F65456]" : "text-gray-400"
                 }`}
               >
-                {item.icon}
+                work
               </span>
-              <span>{item.label}</span>
-            </Link>
-          );
-        })}
+              <span>Karir & Pelamar</span>
+            </div>
+            <span
+              className={`material-symbols-outlined text-lg transition-transform duration-200 text-gray-400 ${
+                careerExpanded ? "rotate-180" : ""
+              }`}
+            >
+              expand_more
+            </span>
+          </button>
+
+          {careerExpanded && (
+            <div className="pl-4 pr-1 py-1 space-y-1 animate-fade-in border-l-2 border-white/10 ml-5">
+              <Link
+                href="/admin/karir"
+                onClick={() => setSidebarOpen(false)}
+                className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                  pathname === "/admin/karir"
+                    ? "bg-[#F65456] text-white shadow-sm font-bold"
+                    : "text-gray-300 hover:bg-white/10 hover:text-white"
+                }`}
+              >
+                <span className="material-symbols-outlined text-base">format_list_bulleted</span>
+                <span>Lowongan Karir</span>
+              </Link>
+              <Link
+                href="/admin/pelamar"
+                onClick={() => setSidebarOpen(false)}
+                className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                  pathname === "/admin/pelamar"
+                    ? "bg-[#F65456] text-white shadow-sm font-bold"
+                    : "text-gray-300 hover:bg-white/10 hover:text-white"
+                }`}
+              >
+                <span className="material-symbols-outlined text-base">badge</span>
+                <span>Berkas Lamaran</span>
+              </Link>
+            </div>
+          )}
+        </div>
+
+        {/* 3. Galeri (Collapsible Group: Beranda, Momen, Pengaplikasian Produk) */}
+        <div className="space-y-1">
+          <button
+            type="button"
+            onClick={() => setGalleryExpanded((prev) => !prev)}
+            className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all cursor-pointer ${
+              isGalleryActive
+                ? "bg-white/10 text-white font-bold"
+                : "text-gray-300 hover:bg-white/10 hover:text-white"
+            }`}
+          >
+            <div className="flex items-center gap-3">
+              <span
+                className={`material-symbols-outlined text-xl ${
+                  isGalleryActive ? "text-[#F65456]" : "text-gray-400"
+                }`}
+              >
+                photo_library
+              </span>
+              <span>Kelola Galeri</span>
+            </div>
+            <span
+              className={`material-symbols-outlined text-lg transition-transform duration-200 text-gray-400 ${
+                galleryExpanded ? "rotate-180" : ""
+              }`}
+            >
+              expand_more
+            </span>
+          </button>
+
+          {galleryExpanded && (
+            <div className="pl-4 pr-1 py-1 space-y-1 animate-fade-in border-l-2 border-white/10 ml-5">
+              <Link
+                href="/admin/galeri?tab=beranda"
+                onClick={() => setSidebarOpen(false)}
+                className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                  pathname === "/admin/galeri" && currentTab === "beranda"
+                    ? "bg-[#F65456] text-white shadow-sm font-bold"
+                    : "text-gray-300 hover:bg-white/10 hover:text-white"
+                }`}
+              >
+                <span className="material-symbols-outlined text-base">home</span>
+                <span>Galeri di Beranda</span>
+              </Link>
+              <Link
+                href="/admin/momen"
+                onClick={() => setSidebarOpen(false)}
+                className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                  pathname === "/admin/momen"
+                    ? "bg-[#F65456] text-white shadow-sm font-bold"
+                    : "text-gray-300 hover:bg-white/10 hover:text-white"
+                }`}
+              >
+                <span className="material-symbols-outlined text-base">collections_bookmark</span>
+                <span>Galeri Momen</span>
+              </Link>
+              <Link
+                href="/admin/galeri?tab=produk"
+                onClick={() => setSidebarOpen(false)}
+                className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                  pathname === "/admin/galeri" && currentTab !== "beranda"
+                    ? "bg-[#F65456] text-white shadow-sm font-bold"
+                    : "text-gray-300 hover:bg-white/10 hover:text-white"
+                }`}
+              >
+                <span className="material-symbols-outlined text-base">inventory_2</span>
+                <span>Pengaplikasian Produk</span>
+              </Link>
+            </div>
+          )}
+        </div>
+
+        {/* 4. Berita & Blog */}
+        <Link
+          href="/admin/blog"
+          onClick={() => setSidebarOpen(false)}
+          className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all cursor-pointer ${
+            pathname.startsWith("/admin/blog")
+              ? "bg-[#F65456] text-white shadow-md shadow-[#F65456]/30 font-bold"
+              : "text-gray-300 hover:bg-white/10 hover:text-white"
+          }`}
+        >
+          <span
+            className={`material-symbols-outlined text-xl ${
+              pathname.startsWith("/admin/blog") ? "text-white" : "text-gray-400"
+            }`}
+          >
+            newspaper
+          </span>
+          <span>Berita & Blog</span>
+        </Link>
+
+        {/* 5. Kotak Masuk Lead */}
+        <Link
+          href="/admin/leads"
+          onClick={() => setSidebarOpen(false)}
+          className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all cursor-pointer ${
+            pathname.startsWith("/admin/leads")
+              ? "bg-[#F65456] text-white shadow-md shadow-[#F65456]/30 font-bold"
+              : "text-gray-300 hover:bg-white/10 hover:text-white"
+          }`}
+        >
+          <span
+            className={`material-symbols-outlined text-xl ${
+              pathname.startsWith("/admin/leads") ? "text-white" : "text-gray-400"
+            }`}
+          >
+            inbox
+          </span>
+          <span>Kotak Masuk Lead</span>
+        </Link>
+
+        {/* 6. Pengaturan Site */}
+        <Link
+          href="/admin/pengaturan"
+          onClick={() => setSidebarOpen(false)}
+          className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all cursor-pointer ${
+            pathname.startsWith("/admin/pengaturan")
+              ? "bg-[#F65456] text-white shadow-md shadow-[#F65456]/30 font-bold"
+              : "text-gray-300 hover:bg-white/10 hover:text-white"
+          }`}
+        >
+          <span
+            className={`material-symbols-outlined text-xl ${
+              pathname.startsWith("/admin/pengaturan") ? "text-white" : "text-gray-400"
+            }`}
+          >
+            settings
+          </span>
+          <span>Pengaturan Site</span>
+        </Link>
       </nav>
 
       {/* Footer Actions */}
@@ -103,56 +300,74 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
     </div>
   );
 
-  const currentNav = navItems.find((n) => pathname.startsWith(n.href));
-
   return (
     <div className="flex min-h-screen bg-[#F8F9FA] text-gray-900 font-sans">
       {/* Desktop Sidebar (Navy/Black Pelangi theme) */}
-      <aside className="hidden lg:flex flex-col w-60 bg-[#111216] border-r border-gray-800 fixed inset-y-0 left-0 z-30 shadow-xl">
+      <aside className="hidden lg:flex flex-col w-64 bg-[#111216] border-r border-gray-800 fixed inset-y-0 left-0 z-30 shadow-xl">
         <SidebarContent />
       </aside>
 
       {/* Mobile Sidebar Overlay */}
       {sidebarOpen && (
         <div className="fixed inset-0 z-40 lg:hidden">
-          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={() => setSidebarOpen(false)} />
-          <aside className="relative flex flex-col w-60 h-full bg-[#111216] border-r border-gray-800">
+          <div
+            className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+            onClick={() => setSidebarOpen(false)}
+          />
+          <aside className="relative flex flex-col w-64 h-full bg-[#111216] border-r border-gray-800">
             <SidebarContent />
           </aside>
         </div>
       )}
 
-      {/* Main Content Area (Clean White & Light Canvas seperti Website CV Pelangi UV) */}
-      <main className="flex-1 lg:ml-60 min-h-screen flex flex-col bg-[#F8F9FA]">
-        {/* Top Bar Header */}
-        <header className="sticky top-0 z-20 bg-white/95 backdrop-blur-md border-b border-gray-200/80 px-4 sm:px-6 py-3 flex items-center justify-between gap-4 shadow-sm">
+      {/* Main Content Area */}
+      <div className="flex-1 lg:pl-64 flex flex-col min-w-0">
+        {/* Top Navbar */}
+        <header className="h-16 bg-white border-b border-gray-200/90 flex items-center justify-between px-4 sm:px-6 sticky top-0 z-20 shadow-xs">
           <div className="flex items-center gap-3">
             <button
-              className="lg:hidden p-2 rounded-xl text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition cursor-pointer"
               onClick={() => setSidebarOpen(true)}
+              className="lg:hidden p-2 rounded-xl text-gray-600 hover:bg-gray-100 cursor-pointer"
               aria-label="Buka Menu"
             >
               <span className="material-symbols-outlined text-2xl">menu</span>
             </button>
             <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-bracket-border" />
-              <span className="font-heading font-bold text-sm sm:text-base text-gray-900">
-                {currentNav?.label ?? "Panel Admin"}
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="text-xs font-mono font-bold text-gray-500 uppercase tracking-wider">
+                Sistem Aktif
               </span>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-semibold shadow-sm">
-              <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span>Sistem Aktif</span>
+            <div className="text-right hidden sm:block">
+              <p className="text-xs font-bold text-gray-900 font-mono">Administrator</p>
+              <p className="text-[11px] text-gray-500">CV Pelangi UV</p>
+            </div>
+            <div className="w-9 h-9 rounded-xl bg-gray-100 border border-gray-200 flex items-center justify-center font-bold text-[#F65456] text-sm">
+              AD
             </div>
           </div>
         </header>
 
-        {/* Dynamic Page Content */}
-        <div className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">{children}</div>
-      </main>
+        {/* Page Content */}
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">{children}</main>
+      </div>
     </div>
+  );
+}
+
+export default function AdminShell({ children }: { children: React.ReactNode }) {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-[#F8F9FA] flex items-center justify-center">
+          <div className="w-8 h-8 border-2 border-gray-200 border-t-[#F65456] rounded-full animate-spin" />
+        </div>
+      }
+    >
+      <ShellInner>{children}</ShellInner>
+    </Suspense>
   );
 }

@@ -17,10 +17,23 @@ import BlogReaderModal from "./BlogReaderModal";
 const ITEMS_PER_PAGE = 6;
 
 export default function BlogPageContent() {
+  const [articlesList, setArticlesList] = useState<ArticleItem[]>([featuredArticle, ...articlesData]);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState<string>("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedArticle, setSelectedArticle] = useState<ArticleItem | null>(null);
+
+  // Ambil artikel dinamis dari database admin jika tersedia
+  React.useEffect(() => {
+    fetch("/api/blog")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setArticlesList(data);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   // Ambil 1 artikel sorotan per topik
   const highlightArticles = useMemo(() => {
@@ -31,7 +44,7 @@ export default function BlogPageContent() {
 
   // Filter articles based on category and search query
   const filteredArticles = useMemo(() => {
-    let list = [featuredArticle, ...articlesData];
+    let list = [...articlesList];
 
     // Filter by Category
     if (activeCategory !== "all") {

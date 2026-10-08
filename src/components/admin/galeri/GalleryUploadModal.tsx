@@ -27,6 +27,7 @@ export const GALLERY_TECHNIQUES = [
 interface GalleryUploadModalProps {
   isOpen: boolean;
   item: GalleryItem | null;
+  defaultGalleryType?: "beranda" | "produk";
   onClose: () => void;
   onSuccess: () => void;
 }
@@ -34,13 +35,17 @@ interface GalleryUploadModalProps {
 export default function GalleryUploadModal({
   isOpen,
   item,
+  defaultGalleryType = "produk",
   onClose,
   onSuccess,
 }: GalleryUploadModalProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [galleryType, setGalleryType] = useState<"beranda" | "produk">(defaultGalleryType);
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState(GALLERY_CATEGORIES[0]);
   const [technique, setTechnique] = useState(GALLERY_TECHNIQUES[0]);
+  const [tag, setTag] = useState("Sorotan");
+  const [videoUrl, setVideoUrl] = useState("");
   const [featured, setFeatured] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
   const [fileName, setFileName] = useState("");
@@ -53,24 +58,30 @@ export default function GalleryUploadModal({
     if (!isOpen) return;
 
     if (item) {
+      setGalleryType(item.galleryType || defaultGalleryType);
       setTitle(item.title);
       setCategory(item.category || GALLERY_CATEGORIES[0]);
       setTechnique(item.technique || GALLERY_TECHNIQUES[0]);
+      setTag(item.tag || item.category || "Sorotan");
+      setVideoUrl(item.videoUrl || "");
       setFeatured(!!item.featured);
       setImageUrl(item.imageUrl || "");
       setFileName(item.fileName || "");
       setPreviewUrl(item.imageUrl || "");
     } else {
+      setGalleryType(defaultGalleryType);
       setTitle("");
       setCategory(GALLERY_CATEGORIES[0]);
       setTechnique(GALLERY_TECHNIQUES[0]);
+      setTag("Sorotan Produksi");
+      setVideoUrl("");
       setFeatured(false);
       setImageUrl("");
       setFileName("");
       setPreviewUrl("");
     }
     setError("");
-  }, [isOpen, item]);
+  }, [isOpen, item, defaultGalleryType]);
 
   async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -107,7 +118,7 @@ export default function GalleryUploadModal({
 
   async function handleSave() {
     if (!title.trim()) {
-      setError("Judul foto portofolio wajib diisi.");
+      setError("Judul foto/media wajib diisi.");
       return;
     }
     if (!imageUrl.trim()) {
@@ -121,11 +132,14 @@ export default function GalleryUploadModal({
     try {
       const payload = {
         title: title.trim(),
-        category,
-        technique,
+        category: galleryType === "beranda" ? tag : category,
+        technique: galleryType === "beranda" ? "Showcase Beranda" : technique,
+        tag: tag.trim(),
+        videoUrl: videoUrl.trim(),
         featured,
         imageUrl: imageUrl.trim(),
         fileName,
+        galleryType,
       };
 
       let res;
@@ -166,8 +180,16 @@ export default function GalleryUploadModal({
     <AdminModal
       isOpen={isOpen}
       onClose={onClose}
-      title={item ? "Edit Data Foto Portofolio" : "Upload Portofolio Foto Baru"}
-      subtitle="Unggah hasil cetak dan tentukan teknik finishing serta kategorinya."
+      title={
+        item
+          ? `Edit ${galleryType === "beranda" ? "Media Galeri Beranda" : "Portofolio Produk"}`
+          : `Tambah ${galleryType === "beranda" ? "Media Galeri Beranda" : "Foto Pengaplikasian Produk"}`
+      }
+      subtitle={
+        galleryType === "beranda"
+          ? "Media yang ditambahkan di sini akan tampil di section Galeri halaman Beranda."
+          : "Unggah hasil cetak dan tentukan teknik finishing serta kategori kemasan."
+      }
       maxWidth="3xl"
       footer={
         <div className="w-full flex items-center justify-end gap-2.5">
@@ -208,11 +230,41 @@ export default function GalleryUploadModal({
           </div>
         )}
 
+        {/* Gallery Type Selector (If creating new) */}
+        {!item && (
+          <div className="p-1 bg-gray-100 rounded-xl flex gap-1">
+            <button
+              type="button"
+              onClick={() => setGalleryType("produk")}
+              className={`flex-1 py-2 text-xs font-bold rounded-lg transition cursor-pointer flex items-center justify-center gap-1.5 ${
+                galleryType === "produk"
+                  ? "bg-white text-gray-900 shadow-xs"
+                  : "text-gray-500 hover:text-gray-900"
+              }`}
+            >
+              <span className="material-symbols-outlined text-sm">inventory_2</span>
+              <span>1. Galeri Pengaplikasian Produk</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setGalleryType("beranda")}
+              className={`flex-1 py-2 text-xs font-bold rounded-lg transition cursor-pointer flex items-center justify-center gap-1.5 ${
+                galleryType === "beranda"
+                  ? "bg-[#F65456] text-white shadow-xs"
+                  : "text-gray-500 hover:text-gray-900"
+              }`}
+            >
+              <span className="material-symbols-outlined text-sm">home</span>
+              <span>2. Galeri di Beranda</span>
+            </button>
+          </div>
+        )}
+
         <div className="grid lg:grid-cols-2 gap-5 items-start">
           {/* Upload Area */}
           <div>
             <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5 font-mono">
-              Berkas Foto <span className="text-red-500">*</span>
+              Berkas Foto / Thumbnail <span className="text-red-500">*</span>
             </label>
             <div
               onClick={() => fileInputRef.current?.click()}
@@ -266,50 +318,90 @@ export default function GalleryUploadModal({
           <div className="space-y-4">
             <div>
               <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1 font-mono">
-                Judul Foto <span className="text-red-500">*</span>
+                Judul {galleryType === "beranda" ? "Media / Sorotan" : "Foto Portofolio"}{" "}
+                <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                placeholder="cth. Rigid Box Parfum Hot Stamp Gold"
+                placeholder={
+                  galleryType === "beranda"
+                    ? "cth. Mesin Spot UV Otomatis Bizpark Waru"
+                    : "cth. Rigid Box Parfum Hot Stamp Gold"
+                }
                 className="w-full bg-white border border-gray-300 rounded-xl px-3.5 py-2 text-gray-900 text-xs sm:text-sm focus:outline-none focus:border-[#F65456] transition"
               />
             </div>
 
-            <div>
-              <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1 font-mono">
-                Kategori Produk
-              </label>
-              <select
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                className="w-full bg-white border border-gray-300 rounded-xl px-3.5 py-2 text-gray-900 text-xs sm:text-sm focus:outline-none focus:border-[#F65456] transition"
-              >
-                {GALLERY_CATEGORIES.map((c) => (
-                  <option key={c} value={c}>
-                    {c}
-                  </option>
-                ))}
-              </select>
-            </div>
+            {galleryType === "beranda" ? (
+              <>
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1 font-mono">
+                    Tag / Label Sorotan
+                  </label>
+                  <input
+                    type="text"
+                    value={tag}
+                    onChange={(e) => setTag(e.target.value)}
+                    placeholder="cth. Spot UV, Hot Foil, Mesin Otomatis"
+                    className="w-full bg-white border border-gray-300 rounded-xl px-3.5 py-2 text-gray-900 text-xs sm:text-sm focus:outline-none focus:border-[#F65456] transition"
+                  />
+                </div>
 
-            <div>
-              <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1 font-mono">
-                Teknik Finishing
-              </label>
-              <select
-                value={technique}
-                onChange={(e) => setTechnique(e.target.value)}
-                className="w-full bg-white border border-gray-300 rounded-xl px-3.5 py-2 text-gray-900 text-xs sm:text-sm focus:outline-none focus:border-[#F65456] transition"
-              >
-                {GALLERY_TECHNIQUES.map((t) => (
-                  <option key={t} value={t}>
-                    {t}
-                  </option>
-                ))}
-              </select>
-            </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1 font-mono">
+                    Link Video / Reels (Opsional)
+                  </label>
+                  <input
+                    type="text"
+                    value={videoUrl}
+                    onChange={(e) => setVideoUrl(e.target.value)}
+                    placeholder="cth. https://instagram.com/reel/... atau link MP4"
+                    className="w-full bg-white border border-gray-300 rounded-xl px-3.5 py-2 text-gray-900 text-xs sm:text-sm focus:outline-none focus:border-[#F65456] transition font-mono"
+                  />
+                  <p className="text-[11px] text-gray-400 mt-1">
+                    Jika diisi, pengunjung di Beranda dapat memutar video ini.
+                  </p>
+                </div>
+              </>
+            ) : (
+              <>
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1 font-mono">
+                    Kategori Kemasan
+                  </label>
+                  <select
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                    className="w-full bg-white border border-gray-300 rounded-xl px-3.5 py-2 text-gray-900 text-xs sm:text-sm focus:outline-none focus:border-[#F65456] transition"
+                  >
+                    {GALLERY_CATEGORIES.map((c) => (
+                      <option key={c} value={c}>
+                        {c}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1 font-mono">
+                    Teknik Finishing
+                  </label>
+                  <select
+                    value={technique}
+                    onChange={(e) => setTechnique(e.target.value)}
+                    className="w-full bg-white border border-gray-300 rounded-xl px-3.5 py-2 text-gray-900 text-xs sm:text-sm focus:outline-none focus:border-[#F65456] transition"
+                  >
+                    {GALLERY_TECHNIQUES.map((t) => (
+                      <option key={t} value={t}>
+                        {t}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </>
+            )}
 
             <label className="flex items-center gap-2.5 cursor-pointer select-none pt-1">
               <input
@@ -320,7 +412,7 @@ export default function GalleryUploadModal({
               />
               <span className="text-xs sm:text-sm text-gray-700 font-semibold flex items-center gap-1">
                 <span className="material-symbols-outlined text-amber-500 text-base">star</span>
-                Tampilkan sebagai foto unggulan di website
+                Tampilkan sebagai media unggulan prioritas
               </span>
             </label>
           </div>

@@ -6,9 +6,10 @@ function unauthorized() {
   return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 }
 
-export async function GET() {
-  if (!isAuthenticated()) return unauthorized();
-  return NextResponse.json(getGallery());
+export async function GET(req: NextRequest) {
+  const { searchParams } = new URL(req.url);
+  const type = searchParams.get("type") || undefined;
+  return NextResponse.json(getGallery(type));
 }
 
 export async function POST(req: NextRequest) {
@@ -21,6 +22,9 @@ export async function POST(req: NextRequest) {
     imageUrl: body.imageUrl ?? "",
     fileName: body.fileName ?? "",
     featured: body.featured ?? false,
+    galleryType: body.galleryType || "produk",
+    videoUrl: body.videoUrl ?? "",
+    tag: body.tag ?? "",
   });
   return NextResponse.json(item, { status: 201 });
 }
