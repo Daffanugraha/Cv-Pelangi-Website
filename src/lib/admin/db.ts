@@ -299,7 +299,9 @@ export interface JobApplicantItem {
   strengths: string;
   weaknesses: string;
 
-  // Berkas
+  // Berkas & Portofolio
+  hasPortfolio?: "yes" | "no";
+  portfolioUrl?: string;
   cvUrl?: string;
   fileName?: string;
   status: "new" | "reviewed" | "interview" | "rejected" | "accepted";

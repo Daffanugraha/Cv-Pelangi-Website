@@ -37,6 +37,10 @@ export default function AdminKarirPage() {
   // Delete Confirm Modal
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
+  // Template Penolakan / Gagal Seleksi Modal
+  const [rejectionTarget, setRejectionTarget] = useState<JobApplicantItem | null>(null);
+  const [copiedReject, setCopiedReject] = useState(false);
+
   async function fetchJobs() {
     try {
       setLoading(true);
@@ -63,17 +67,21 @@ export default function AdminKarirPage() {
     fetchJobs();
   }, []);
 
-  async function handleUpdateApplicantStatus(id: string, status: JobApplicantItem["status"]) {
+  async function handleUpdateApplicantStatus(applicant: JobApplicantItem, status: JobApplicantItem["status"]) {
     try {
       const res = await fetch("/api/admin/applicants", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id, status }),
+        body: JSON.stringify({ id: applicant.id, status }),
       });
       if (res.ok) {
         setApplicants((prev) =>
-          prev.map((a) => (a.id === id ? { ...a, status } : a))
+          prev.map((a) => (a.id === applicant.id ? { ...a, status } : a))
         );
+        if (status === "rejected") {
+          setRejectionTarget(applicant);
+          setCopiedReject(false);
+        }
       }
     } catch (err) {
       console.error("Gagal update status pelamar:", err);
@@ -620,7 +628,7 @@ export default function AdminKarirPage() {
                         <select
                           value={applicant.status}
                           onChange={(e) =>
-                            handleUpdateApplicantStatus(applicant.id, e.target.value as any)
+                            handleUpdateApplicantStatus(applicant, e.target.value as any)
                           }
                           className={`px-3 py-1.5 rounded-xl text-xs font-bold border transition outline-none cursor-pointer ${
                             applicant.status === "new"
@@ -640,6 +648,19 @@ export default function AdminKarirPage() {
                           <option value="accepted">Diterima</option>
                           <option value="rejected">Ditolak</option>
                         </select>
+
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setRejectionTarget(applicant);
+                            setCopiedReject(false);
+                          }}
+                          className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl border border-gray-200 hover:bg-gray-50 text-gray-700 text-xs font-semibold transition"
+                          title="Buka Template Penolakan / Gagal Seleksi"
+                        >
+                          <span className="material-symbols-outlined text-sm text-gray-500">unsubscribe</span>
+                          <span>Template Tolak</span>
+                        </button>
 
                         <a
                           href={`https://wa.me/${applicant.phone.replace(/^0/, "62")}?text=Halo%20${encodeURIComponent(applicant.name)}%2C%20kami%20dari%20Tim%20HRD%20CV%20Pelangi%20UV%20terkait%20lamaran%20pekerjaan%20posisi%20*${encodeURIComponent(applicant.jobTitle)}*...`}
@@ -813,7 +834,7 @@ export default function AdminKarirPage() {
                     {(applicant.cvUrl || applicant.fileName) && (
                       <div className="flex items-center gap-2 pt-1 text-xs">
                         <span className="material-symbols-outlined text-purple-600 text-base">attach_file</span>
-                        <span className="text-gray-600 font-medium">Lampiran Berkas:</span>
+                        <span className="text-gray-600 font-medium">Lampiran Berkas (CV/KTP/Ijazah):</span>
                         <a
                           href={applicant.cvUrl || "#"}
                           target="_blank"
@@ -821,6 +842,22 @@ export default function AdminKarirPage() {
                           className="font-bold text-bracket-border hover:underline truncate max-w-md"
                         >
                           {applicant.fileName || applicant.cvUrl}
+                        </a>
+                      </div>
+                    )}
+
+                    {/* Portofolio Karya Link */}
+                    {applicant.hasPortfolio === "yes" && applicant.portfolioUrl && (
+                      <div className="flex items-center gap-2 pt-1 text-xs">
+                        <span className="material-symbols-outlined text-emerald-600 text-base">collections_bookmark</span>
+                        <span className="text-gray-600 font-medium">Portofolio Karya:</span>
+                        <a
+                          href={applicant.portfolioUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="font-bold text-emerald-700 hover:underline truncate max-w-md"
+                        >
+                          {applicant.portfolioUrl}
                         </a>
                       </div>
                     )}
@@ -1091,6 +1128,117 @@ export default function AdminKarirPage() {
               >
                 Ya, Hapus
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* TEMPLATE PENOLAKAN / GAGAL SELEKSI MODAL */}
+      {rejectionTarget && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto animate-fade-in">
+          <div className="relative w-full max-w-xl bg-white rounded-3xl shadow-2xl border border-gray-200 overflow-hidden my-6 flex flex-col">
+            {/* Modal Header */}
+            <div className="p-5 border-b border-gray-100 flex items-center justify-between bg-red-50/50">
+              <div className="flex items-center gap-2.5">
+                <div className="w-10 h-10 rounded-xl bg-red-100 text-red-700 flex items-center justify-center">
+                  <span className="material-symbols-outlined text-xl">unsubscribe</span>
+                </div>
+                <div>
+                  <h3 className="font-heading font-extrabold text-base text-gray-900">
+                    Template Penolakan Lamaran (Gagal Seleksi)
+                  </h3>
+                  <p className="text-xs text-gray-500 font-mono">
+                    Kandidat: {rejectionTarget.name} &bull; {rejectionTarget.jobTitle}
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setRejectionTarget(null)}
+                className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 flex items-center justify-center text-lg"
+              >
+                &times;
+              </button>
+            </div>
+
+            {/* Template Body */}
+            <div className="p-6 space-y-4 font-sans text-xs">
+              <p className="text-gray-600">
+                Gunakan template pesan sopan &amp; profesional ini untuk mengabarkan hasil seleksi kepada pelamar via WhatsApp atau Email:
+              </p>
+
+              {/* Template Text Area Box */}
+              <div className="p-4 rounded-2xl bg-gray-50 border border-gray-200 text-gray-800 whitespace-pre-line leading-relaxed font-sans max-h-60 overflow-y-auto">
+{`Yth. Bapak/Ibu ${rejectionTarget.name},
+
+Terima kasih atas minat dan antusiasme Anda dalam melamar posisi ${rejectionTarget.jobTitle} di CV Pelangi UV.
+
+Setelah melalui proses peninjauan berkas yang seksama oleh Tim Rekrutmen kami, mohon maaf saat ini kualifikasi yang kami butuhkan belum sesuai dengan profil Anda, atau posisi tersebut telah terisi oleh kandidat lain.
+
+Data lamaran Anda akan tetap kami simpan di database talent kami untuk kemungkinan peluang karir di masa mendatang apabila ada posisi yang sesuai.
+
+Kami sangat menghargai waktu dan usaha yang telah Anda berikan, serta mendoakan kesuksesan untuk perjalanan karir Anda selanjutnya.
+
+Salam hangat,
+Tim HRD & Rekrutmen
+CV Pelangi UV`}
+              </div>
+
+              {/* Kontak Pelamar */}
+              <div className="grid grid-cols-2 gap-3 p-3 rounded-xl bg-gray-100/70 border border-gray-200 font-mono text-[11px]">
+                <div>
+                  <span className="text-gray-500 block">Nomor WhatsApp:</span>
+                  <span className="font-bold text-gray-900">{rejectionTarget.phone}</span>
+                </div>
+                <div>
+                  <span className="text-gray-500 block">Alamat Email:</span>
+                  <span className="font-bold text-gray-900 truncate block">{rejectionTarget.email || "-"}</span>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="pt-2 flex flex-wrap items-center justify-between gap-2.5">
+                {/* Salin Teks */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    const text = `Yth. Bapak/Ibu ${rejectionTarget.name},\n\nTerima kasih atas minat dan antusiasme Anda dalam melamar posisi ${rejectionTarget.jobTitle} di CV Pelangi UV.\n\nSetelah melalui proses peninjauan berkas yang seksama oleh Tim Rekrutmen kami, mohon maaf saat ini kualifikasi yang kami butuhkan belum sesuai dengan profil Anda, atau posisi tersebut telah terisi oleh kandidat lain.\n\nData lamaran Anda akan tetap kami simpan di database talent kami untuk kemungkinan peluang karir di masa mendatang apabila ada posisi yang sesuai.\n\nKami sangat menghargai waktu dan usaha yang telah Anda berikan, serta mendoakan kesuksesan untuk perjalanan karir Anda selanjutnya.\n\nSalam hangat,\nTim HRD & Rekrutmen\nCV Pelangi UV`;
+                    navigator.clipboard.writeText(text);
+                    setCopiedReject(true);
+                    setTimeout(() => setCopiedReject(false), 2500);
+                  }}
+                  className="px-4 py-2.5 rounded-xl border border-gray-300 hover:bg-gray-100 text-gray-700 font-bold transition flex items-center gap-1.5 cursor-pointer"
+                >
+                  <span className="material-symbols-outlined text-sm">
+                    {copiedReject ? "done" : "content_copy"}
+                  </span>
+                  <span>{copiedReject ? "Tersalin!" : "Salin Pesan"}</span>
+                </button>
+
+                <div className="flex items-center gap-2">
+                  {/* Kirim via Email */}
+                  {rejectionTarget.email && (
+                    <a
+                      href={`mailto:${rejectionTarget.email}?subject=Informasi Hasil Seleksi Rekrutmen - CV Pelangi UV&body=${encodeURIComponent(`Yth. Bapak/Ibu ${rejectionTarget.name},\n\nTerima kasih atas minat dan antusiasme Anda dalam melamar posisi ${rejectionTarget.jobTitle} di CV Pelangi UV.\n\nSetelah melalui proses peninjauan berkas yang seksama oleh Tim Rekrutmen kami, mohon maaf saat ini kualifikasi yang kami butuhkan belum sesuai dengan profil Anda.\n\nData lamaran Anda akan tetap kami simpan di database talent kami untuk kemungkinan peluang karir di masa mendatang.\n\nSalam hangat,\nTim HRD & Rekrutmen\nCV Pelangi UV`)}`}
+                      className="px-4 py-2.5 rounded-xl bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200 font-bold flex items-center gap-1.5 transition"
+                    >
+                      <span className="material-symbols-outlined text-sm">mail</span>
+                      <span>Kirim Email</span>
+                    </a>
+                  )}
+
+                  {/* Kirim via WhatsApp */}
+                  <a
+                    href={`https://wa.me/${rejectionTarget.phone.replace(/^0/, "62")}?text=${encodeURIComponent(`Halo Bapak/Ibu *${rejectionTarget.name}*,\n\nTerima kasih atas minat dan antusiasme Anda dalam melamar posisi *${rejectionTarget.jobTitle}* di CV Pelangi UV.\n\nSetelah melalui proses peninjauan berkas yang seksama oleh Tim Rekrutmen kami, mohon maaf saat ini kualifikasi yang kami butuhkan belum sesuai dengan profil Anda.\n\nData lamaran Anda akan tetap kami simpan di database talent kami untuk kemungkinan peluang karir di masa mendatang apabila ada posisi yang sesuai.\n\nKami sangat menghargai waktu dan usaha yang Anda berikan, serta mendoakan kesuksesan untuk perjalanan karir Anda selanjutnya.\n\nSalam hangat,\n*Tim HRD & Rekrutmen CV Pelangi UV*`)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold flex items-center gap-1.5 transition shadow-xs"
+                  >
+                    <span className="material-symbols-outlined text-sm">chat</span>
+                    <span>Kirim WhatsApp</span>
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         </div>

@@ -55,6 +55,9 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
     threeStrengths: "",
     fiveSkills: "",
 
+    // Dokumen & Portofolio
+    hasPortfolio: "no" as "yes" | "no",
+    portfolioUrl: "",
     cvUrl: "",
   });
 
@@ -69,7 +72,9 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
   ]);
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [selectedPortfolioFile, setSelectedPortfolioFile] = useState<File | null>(null);
   const [isUploadingFile, setIsUploadingFile] = useState(false);
+  const [isUploadingPortfolio, setIsUploadingPortfolio] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
@@ -122,7 +127,7 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
     );
   };
 
-  // Upload Berkas
+  // Upload Berkas CV / Dokumen
   const handleFileUpload = async (file: File) => {
     setSelectedFile(file);
     setIsUploadingFile(true);
@@ -144,6 +149,28 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
     }
   };
 
+  // Upload File Portofolio
+  const handlePortfolioUpload = async (file: File) => {
+    setSelectedPortfolioFile(file);
+    setIsUploadingPortfolio(true);
+    try {
+      const fd = new FormData();
+      fd.append("file", file);
+      const res = await fetch("/api/admin/upload", {
+        method: "POST",
+        body: fd,
+      });
+      const data = await res.json();
+      if (res.ok && data.url) {
+        setFormData((prev) => ({ ...prev, portfolioUrl: data.url }));
+      }
+    } catch (err) {
+      console.warn("Upload portfolio error:", err);
+    } finally {
+      setIsUploadingPortfolio(false);
+    }
+  };
+
   // Format Pesan WhatsApp HRD
   const generateWhatsAppMessage = () => {
     let msg = `Halo HRD CV Pelangi UV,\nSaya mengajukan lamaran pekerjaan untuk posisi:\n*${job.title}* (${job.division})\n\n`;
@@ -154,7 +181,7 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
     if (ttl) msg += `• TTL: ${ttl}\n`;
     msg += `• Status: ${formData.maritalStatus === "Menikah" ? "Menikah" : "Single"}\n`;
     msg += `• WhatsApp/HP: ${formData.phone}\n`;
-    if (formData.email) msg += `• Email: ${formData.email}\n`;
+    msg += `• Email: ${formData.email}\n`;
     msg += `• Alamat: ${formData.address}\n`;
     const edu = formData.educationMajor
       ? `${formData.education} (${formData.educationMajor})`
@@ -195,6 +222,10 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
     if (formData.threeWeaknesses) msg += `🔍 *3 Kekurangan:*\n${formData.threeWeaknesses}\n\n`;
     if (formData.fiveSkills) msg += `🛠️ *5 Skill:*\n${formData.fiveSkills}\n\n`;
 
+    if (formData.hasPortfolio === "yes" && formData.portfolioUrl) {
+      msg += `🎨 *Link Portofolio:* ${formData.portfolioUrl}\n`;
+    }
+
     if (formData.cvUrl) {
       msg += `📎 *Link Berkas:* ${formData.cvUrl}\n\n`;
     }
@@ -213,8 +244,18 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
       setErrorMsg("Nomor WhatsApp/HP wajib diisi.");
       return;
     }
+    // VALIDASI EMAIL WAJIB
+    if (!formData.email.trim()) {
+      setErrorMsg("Alamat email aktif wajib diisi.");
+      return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email.trim())) {
+      setErrorMsg("Format alamat email tidak valid (contoh: nama@email.com).");
+      return;
+    }
     if (!formData.address.trim()) {
-      setErrorMsg("Alamat lengkap wajib diisi.");
+      setErrorMsg("Alamat lengkap domisili wajib diisi.");
       return;
     }
     if (
@@ -320,6 +361,9 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
       strengths: formData.threeStrengths,
       weaknesses: formData.threeWeaknesses,
 
+      // Portofolio & Berkas
+      hasPortfolio: formData.hasPortfolio,
+      portfolioUrl: formData.portfolioUrl,
       cvUrl: formData.cvUrl,
       fileName: selectedFile?.name || "",
     };
@@ -333,7 +377,7 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
 
       if (!res.ok) {
         const d = await res.json();
-        setErrorMsg(d.error || "Gagal mengirim data.");
+        setErrorMsg(d.error || "Gagal mengirim data lamaran.");
         setIsSubmitting(false);
         return;
       }
@@ -341,7 +385,7 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
       setIsSuccess(true);
     } catch (err) {
       console.error(err);
-      setErrorMsg("Terjadi gangguan jaringan saat mengirim data.");
+      setErrorMsg("Terjadi gangguan jaringan saat mengirim data. Silakan coba kembali atau kirim via WhatsApp.");
     } finally {
       setIsSubmitting(false);
     }
@@ -469,7 +513,7 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
                 >
                   3
                 </div>
-                <span className="text-xs sm:text-sm font-semibold">3. Komitmen &amp; Skill</span>
+                <span className="text-xs sm:text-sm font-semibold">3. Komitmen &amp; Portofolio</span>
               </div>
             </div>
           </div>
@@ -521,8 +565,8 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
           ) : (
             <div>
               {errorMsg && (
-                <div className="p-3.5 mb-6 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-medium flex items-center gap-2 animate-fade-in">
-                  <span className="material-symbols-outlined text-base">error</span>
+                <div className="p-4 mb-6 rounded-2xl bg-red-50 border border-red-200 text-red-700 text-xs font-semibold flex items-center gap-2.5 animate-fade-in shadow-xs">
+                  <span className="material-symbols-outlined text-lg text-red-600">error</span>
                   <span>{errorMsg}</span>
                 </div>
               )}
@@ -606,7 +650,7 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
                     </div>
                   </div>
 
-                  {/* Grid Baris 3: WhatsApp & Email */}
+                  {/* Grid Baris 3: WhatsApp & Email (EMAIL WAJIB) */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-xs font-bold text-gray-800 mb-1.5 uppercase font-mono">
@@ -623,15 +667,19 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
                     </div>
                     <div>
                       <label className="block text-xs font-bold text-gray-800 mb-1.5 uppercase font-mono">
-                        Email (Opsional)
+                        Email Aktif <span className="text-bracket-border">*</span>
                       </label>
                       <input
                         type="email"
+                        required
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        placeholder="nama@email.com"
+                        placeholder="Contoh: nama@email.com"
                         className="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 focus:border-bracket-border text-sm text-gray-900 outline-none"
                       />
+                      <span className="text-[10px] text-gray-400 mt-1 block">
+                        Email wajib aktif untuk konfirmasi surat pemanggilan.
+                      </span>
                     </div>
                   </div>
 
@@ -966,7 +1014,7 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
                       </div>
                     </div>
                   ) : (
-                    /* JIKA FRESH GRADUATE: BERSIH & SEDERHANA TANPA TEKS BERLEBIHAN */
+                    /* JIKA FRESH GRADUATE */
                     <div className="space-y-4 animate-fade-in">
                       <div className="p-4 rounded-2xl bg-emerald-50/60 border border-emerald-200">
                         <label className="block text-xs font-bold text-emerald-950 mb-1.5 font-mono">
@@ -1023,7 +1071,7 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
               )}
 
               {/* ======================================================== */}
-              {/* HALAMAN 3: KOMITMEN KERJA, SKILL & BERKAS */}
+              {/* HALAMAN 3: KOMITMEN KERJA, SKILL & BERKAS + PORTOFOLIO */}
               {/* ======================================================== */}
               {currentStep === 3 && (
                 <div className="space-y-6 animate-fade-in">
@@ -1179,10 +1227,92 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
                     />
                   </div>
 
-                  {/* Berkas Dokumen */}
+                  {/* KONDISIONAL PORTOFOLIO: ADA / TIDAK ADA */}
+                  <div className="p-4 sm:p-5 rounded-2xl bg-gray-50 border border-gray-200 space-y-3">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 border-b border-gray-200">
+                      <div>
+                        <p className="text-xs font-bold text-gray-900 font-mono uppercase">
+                          Apakah Anda memiliki Portofolio Karya / Hasil Kerja?
+                        </p>
+                        <p className="text-[11px] text-gray-500">
+                          (Contoh: hasil cetak, foto project, sertifikasi desain/mesin)
+                        </p>
+                      </div>
+
+                      <div className="flex items-center gap-2 shrink-0">
+                        <button
+                          type="button"
+                          onClick={() => setFormData({ ...formData, hasPortfolio: "yes" })}
+                          className={`px-4 py-2 rounded-xl text-xs font-bold border transition cursor-pointer ${
+                            formData.hasPortfolio === "yes"
+                              ? "bg-bracket-border text-white border-bracket-border shadow-xs"
+                              : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
+                          }`}
+                        >
+                          Ada
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setFormData({ ...formData, hasPortfolio: "no" })}
+                          className={`px-4 py-2 rounded-xl text-xs font-bold border transition cursor-pointer ${
+                            formData.hasPortfolio === "no"
+                              ? "bg-gray-800 text-white border-gray-800 shadow-xs"
+                              : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
+                          }`}
+                        >
+                          Tidak Ada
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* JIKA ADA PORTOFOLIO: MUNCUL PILIHAN FILE ATAU GOOGLE DRIVE */}
+                    {formData.hasPortfolio === "yes" && (
+                      <div className="pt-2 grid grid-cols-1 sm:grid-cols-2 gap-3 items-center animate-fade-in">
+                        {/* Upload File Portofolio */}
+                        <div className="border border-dashed border-gray-300 hover:border-bracket-border rounded-xl p-3 text-center bg-white transition cursor-pointer relative">
+                          <input
+                            type="file"
+                            accept=".pdf,.zip,.rar,image/*"
+                            onChange={(e) => {
+                              const f = e.target.files?.[0];
+                              if (f) handlePortfolioUpload(f);
+                            }}
+                            className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+                          />
+                          <div className="flex flex-col items-center justify-center gap-1">
+                            <span className="material-symbols-outlined text-purple-600 text-2xl">
+                              collections_bookmark
+                            </span>
+                            <p className="text-xs font-semibold text-gray-800 truncate max-w-[200px]">
+                              {selectedPortfolioFile ? selectedPortfolioFile.name : "Unggah File Portofolio (PDF/ZIP)"}
+                            </p>
+                            <p className="text-[10px] text-gray-400">PDF, Gambar, atau ZIP</p>
+                          </div>
+                        </div>
+
+                        {/* Link Google Drive Portofolio */}
+                        <div>
+                          <label className="block text-[11px] font-bold text-gray-700 mb-1">
+                            Atau Tautan Google Drive / Link Portofolio:
+                          </label>
+                          <input
+                            type="url"
+                            value={formData.portfolioUrl}
+                            onChange={(e) =>
+                              setFormData({ ...formData, portfolioUrl: e.target.value })
+                            }
+                            placeholder="https://drive.google.com/... atau link website"
+                            className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-gray-200 text-xs text-gray-900 outline-none font-mono"
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Berkas Dokumen (CV, Ijazah, KTP) */}
                   <div className="p-4 sm:p-5 rounded-2xl bg-gray-50 border border-gray-200">
                     <label className="block text-xs font-bold text-gray-800 mb-2 uppercase font-mono">
-                      Upload Berkas (CV, Ijazah, KTP, Sertifikat)
+                      Upload Berkas CV, Ijazah, KTP &amp; Sertifikat
                     </label>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
                       <div className="border border-dashed border-gray-300 hover:border-bracket-border rounded-xl p-3 text-center bg-white transition cursor-pointer relative">
@@ -1242,7 +1372,7 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
                       <button
                         type="button"
                         onClick={handleSubmitFinal}
-                        disabled={isSubmitting || isUploadingFile}
+                        disabled={isSubmitting || isUploadingFile || isUploadingPortfolio}
                         className="flex-1 sm:flex-none px-7 py-3 rounded-xl bg-bracket-border hover:bg-bracket-border/90 disabled:opacity-50 text-xs font-bold text-white transition shadow-sm active:scale-95 flex items-center justify-center gap-2 cursor-pointer"
                       >
                         {isSubmitting ? (

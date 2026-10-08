@@ -43,14 +43,16 @@ export async function POST(req: NextRequest) {
       strengths,
       weaknesses,
 
-      // Dokumen
+      // Dokumen & Portofolio
+      hasPortfolio,
+      portfolioUrl,
       cvUrl,
       fileName,
     } = body;
 
-    if (!name?.trim() || !phone?.trim() || !jobTitle?.trim()) {
+    if (!name?.trim() || !phone?.trim() || !email?.trim() || !jobTitle?.trim()) {
       return NextResponse.json(
-        { error: "Nama lengkap, nomor telepon/WhatsApp, dan posisi wajib diisi." },
+        { error: "Nama lengkap, nomor telepon, alamat email, dan posisi wajib diisi." },
         { status: 400 }
       );
     }
@@ -94,7 +96,9 @@ export async function POST(req: NextRequest) {
       strengths: strengths?.trim() || threeStrengths?.trim() || "",
       weaknesses: weaknesses?.trim() || threeWeaknesses?.trim() || "",
 
-      // Berkas
+      // Berkas & Portofolio
+      hasPortfolio: hasPortfolio === "yes" ? "yes" : "no",
+      portfolioUrl: portfolioUrl?.trim() || "",
       cvUrl: cvUrl?.trim() || "",
       fileName: fileName?.trim() || "",
     });
