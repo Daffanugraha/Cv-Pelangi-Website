@@ -7,6 +7,7 @@ import { useState } from "react";
 const navItems = [
   { href: "/admin/dashboard", icon: "dashboard", label: "Dashboard" },
   { href: "/admin/karir", icon: "work", label: "Lowongan Karir" },
+  { href: "/admin/pelamar", icon: "badge", label: "Berkas Pelamar" },
   { href: "/admin/momen", icon: "collections_bookmark", label: "Momen & Kegiatan" },
   { href: "/admin/galeri", icon: "photo_library", label: "Galeri Foto" },
   { href: "/admin/leads", icon: "inbox", label: "Kotak Masuk Lead" },
