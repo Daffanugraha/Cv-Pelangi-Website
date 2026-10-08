@@ -407,12 +407,6 @@ export default function AdminKarirPage() {
                         <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-red-50 text-[#F65456] border border-red-100">
                           {job.division}
                         </span>
-                        <span className="text-xs text-gray-500 font-medium">
-                          &bull; {job.type}
-                        </span>
-                        <span className="text-xs text-gray-500 font-medium hidden md:inline">
-                          &bull; {job.location}
-                        </span>
                       </div>
 
                       <h3 className="font-heading font-extrabold text-base sm:text-lg text-gray-900">
@@ -567,7 +561,7 @@ export default function AdminKarirPage() {
                   />
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
                   <div>
                     <label className="block text-xs font-bold text-gray-800 mb-1">Divisi Pekerjaan</label>
                     <select
@@ -579,28 +573,6 @@ export default function AdminKarirPage() {
                         <option key={d} value={d}>Divisi {d}</option>
                       ))}
                     </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold text-gray-800 mb-1">Tipe Pekerjaan</label>
-                    <input
-                      type="text"
-                      value={formType}
-                      onChange={(e) => setFormType(e.target.value)}
-                      className="w-full px-3.5 py-2 text-xs sm:text-sm bg-white border border-gray-300 rounded-xl focus:outline-none focus:border-[#F65456]"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs font-bold text-gray-800 mb-1">Lokasi Kerja</label>
-                    <input
-                      type="text"
-                      value={formLocation}
-                      onChange={(e) => setFormLocation(e.target.value)}
-                      className="w-full px-3.5 py-2 text-xs sm:text-sm bg-white border border-gray-300 rounded-xl focus:outline-none focus:border-[#F65456]"
-                    />
                   </div>
 
                   <div>
