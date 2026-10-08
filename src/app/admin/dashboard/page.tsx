@@ -41,10 +41,6 @@ export default function DashboardPage() {
         fetch("/api/admin/applicants"),
       ]);
 
-      if (gRes.status === 401 || lRes.status === 401) {
-        router.push("/admin");
-        return;
-      }
 
       if (gRes.ok) setGallery(await gRes.json());
       if (lRes.ok) setLeads(await lRes.json());

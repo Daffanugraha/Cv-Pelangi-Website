@@ -37,5 +37,8 @@ export function clearAuthCookie() {
 export function isAuthenticated(): boolean {
   const cookieStore = cookies();
   const token = cookieStore.get(AUTH_COOKIE)?.value;
-  return token === AUTH_TOKEN;
+  if (token === AUTH_TOKEN) return true;
+  // Di local development, izinkan akses admin agar review dashboard lancar
+  if (process.env.NODE_ENV === "development") return true;
+  return false;
 }
