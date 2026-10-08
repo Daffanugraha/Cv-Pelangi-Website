@@ -15,12 +15,28 @@ export default function GaleriMomenHighlightShowcase({
   highlights = MOMEN_HIGHLIGHTS,
 }: GaleriMomenHighlightShowcaseProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const activeHighlights = highlights.length > 0 ? highlights : MOMEN_HIGHLIGHTS;
   const total = activeHighlights.length;
   const current = activeHighlights[currentIndex] || activeHighlights[0];
+
+  // Ambil hingga 4 foto terbaik dari album/sorotan momen saat ini
+  const displayPhotos: MomenPhoto[] = React.useMemo(() => {
+    if (current?.photos && current.photos.length > 0) {
+      return current.photos.slice(0, 4);
+    }
+    return [
+      {
+        src: current.img,
+        title: current.title,
+        caption: current.caption || current.desc,
+        alt: current.title,
+        cardTitle: current.title,
+        cardDesc: current.desc,
+      },
+    ];
+  }, [current]);
 
   useEffect(() => {
     if (total <= 1) return;
@@ -115,36 +131,61 @@ export default function GaleriMomenHighlightShowcase({
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 items-center min-h-[380px]">
-            {/* Col 1: Gambar */}
+            {/* Col 1: Bento Grid 4 Foto Estetik */}
             <div className="lg:col-span-7 p-4 sm:p-6">
-              <div
-                onClick={() =>
-                  onSelectPhoto({
-                    alt: current.title,
-                    caption: current.caption,
-                    title: current.title,
-                    src: current.img,
-                    cardTitle: current.title,
-                    cardDesc: current.desc,
-                  })
-                }
-                className="relative w-full aspect-[16/10] sm:aspect-[16/9] lg:aspect-[16/10] rounded-xl overflow-hidden bg-black/40 shadow-lg cursor-pointer group/img"
-              >
-                <img
-                  className="w-full h-full object-cover transition-all duration-500 ease-out transform group-hover/img:scale-105"
-                  alt={current.title}
-                  src={current.img}
-                />
-                <div className="absolute inset-0 bg-black/20 group-hover/img:bg-black/0 transition-colors" />
+              <div className="relative w-full aspect-[16/10] sm:aspect-[16/9] lg:aspect-[16/10] rounded-xl overflow-hidden bg-black/40 shadow-lg p-1.5 sm:p-2 bg-[#1a1b1e]/80 border border-white/10">
+                <div className="w-full h-full grid grid-cols-4 grid-rows-2 gap-2">
+                  {displayPhotos.map((photo, i) => {
+                    let spanClass = "col-span-4 row-span-2";
+                    if (displayPhotos.length === 2) {
+                      spanClass = "col-span-2 row-span-2";
+                    } else if (displayPhotos.length === 3) {
+                      spanClass = i === 0 ? "col-span-2 row-span-2" : "col-span-2 row-span-1";
+                    } else if (displayPhotos.length >= 4) {
+                      spanClass =
+                        i === 0
+                          ? "col-span-2 row-span-2"
+                          : i === 1
+                          ? "col-span-2 row-span-1"
+                          : "col-span-1 row-span-1";
+                    }
 
-                {/* Hover Zoom Prompt */}
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 bg-black/30">
-                  <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/95 text-bracket-border font-bold text-xs shadow-lg backdrop-blur-sm">
-                    <span translate="no" className="material-symbols-outlined notranslate text-[16px]">
-                      zoom_in
-                    </span>
-                    Perbesar
-                  </span>
+                    return (
+                      <button
+                        key={i}
+                        type="button"
+                        onClick={() =>
+                          onSelectPhoto({
+                            alt: photo.alt || photo.title || current.title,
+                            caption: photo.caption || current.caption || current.desc,
+                            title: photo.title || current.title,
+                            src: photo.src,
+                            cardTitle: photo.cardTitle || current.title,
+                            cardDesc: photo.cardDesc || current.desc,
+                          })
+                        }
+                        aria-label={`Perbesar foto ${i + 1} - ${photo.title || current.title}`}
+                        className={`group/tile relative overflow-hidden rounded-lg bg-black/40 cursor-zoom-in text-left border border-white/5 hover:border-white/20 transition-all ${spanClass}`}
+                      >
+                        <img
+                          src={photo.src}
+                          alt={photo.alt || photo.title || current.title}
+                          loading="lazy"
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover/tile:scale-105"
+                        />
+                        <div className="absolute inset-0 bg-black/15 group-hover/tile:bg-transparent transition-colors" />
+
+                        {/* Hover Zoom Icon */}
+                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/tile:opacity-100 transition-opacity duration-200 bg-black/25">
+                          <span className="p-2 rounded-full bg-black/60 text-white backdrop-blur-sm shadow-md">
+                            <span translate="no" className="material-symbols-outlined notranslate text-[18px]">
+                              zoom_in
+                            </span>
+                          </span>
+                        </div>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             </div>

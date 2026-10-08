@@ -69,6 +69,7 @@ export default function GaleriMomenPageContent({ initialAlbums }: GaleriMomenPag
           desc: album.desc,
           img: firstPhoto.src,
           caption: firstPhoto.caption || album.desc,
+          photos: album.photos || [],
         });
       }
     });
