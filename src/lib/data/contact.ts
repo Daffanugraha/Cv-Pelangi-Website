@@ -100,7 +100,7 @@ export const contactTestimonials: ContactTestimonial[] = [
   },
   {
     type: "image",
-    img: "/images/Cuplikan layar 2026-10-06 112440.png",
+    img: "/images/review-arif-ramadhan.png",
     badge: "Ulasan Google Maps",
     quote:
       '"Pelayanan cepat dan responsive oleh admin. Harga cukup terjangkau tapi hasil tetap berkualitas. Recomended buat bisnis yang baru berjalan dan butuh jasa finishing 👍👍👍"',
