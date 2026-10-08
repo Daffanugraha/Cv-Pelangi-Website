@@ -2,6 +2,11 @@ import React from "react";
 import type { Metadata } from "next";
 import { BlogPageContent } from "@/components/sections/blog";
 
+import { getBlogArticles } from "@/lib/admin/db";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export const metadata: Metadata = {
   title:
     "Blog & Berita Percetakan - CV Pelangi UV | Panduan Mesin & Tips Finishing Cetak",
@@ -19,5 +24,6 @@ export const metadata: Metadata = {
 };
 
 export default function BlogPage() {
-  return <BlogPageContent />;
+  const initialArticles = getBlogArticles();
+  return <BlogPageContent initialArticles={initialArticles} />;
 }

@@ -14,10 +14,20 @@ import BlogGrid from "./BlogGrid";
 import BlogPagination from "./BlogPagination";
 import BlogReaderModal from "./BlogReaderModal";
 
+interface BlogPageContentProps {
+  initialArticles?: ArticleItem[];
+}
+
 const ITEMS_PER_PAGE = 6;
 
-export default function BlogPageContent() {
-  const [articlesList, setArticlesList] = useState<ArticleItem[]>([featuredArticle, ...articlesData]);
+export default function BlogPageContent({
+  initialArticles,
+}: BlogPageContentProps = {}) {
+  const [articlesList, setArticlesList] = useState<ArticleItem[]>(
+    initialArticles && initialArticles.length > 0
+      ? initialArticles
+      : [featuredArticle, ...articlesData]
+  );
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState<string>("all");
   const [currentPage, setCurrentPage] = useState(1);
@@ -25,7 +35,7 @@ export default function BlogPageContent() {
 
   // Ambil artikel dinamis dari database admin jika tersedia
   React.useEffect(() => {
-    fetch("/api/blog")
+    fetch("/api/blog", { cache: "no-store" })
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
         if (Array.isArray(data) && data.length > 0) {
@@ -35,12 +45,20 @@ export default function BlogPageContent() {
       .catch(() => {});
   }, []);
 
-  // Ambil 1 artikel sorotan per topik
+  // Ambil 1 artikel sorotan per topik secara dinamis dari daftar artikel terbaru
   const highlightArticles = useMemo(() => {
-    const list = getTopicHighlights();
+    const topicMap: Record<string, ArticleItem> = {};
+    for (const item of articlesList) {
+      if (!topicMap[item.categoryKey]) {
+        topicMap[item.categoryKey] = item;
+      } else if (item.isFeatured && !topicMap[item.categoryKey].isFeatured) {
+        topicMap[item.categoryKey] = item;
+      }
+    }
+    const list = Object.values(topicMap);
     if (activeCategory === "all") return list;
     return list.filter((a) => a.categoryKey === activeCategory);
-  }, [activeCategory]);
+  }, [articlesList, activeCategory]);
 
   // Filter articles based on category and search query
   const filteredArticles = useMemo(() => {

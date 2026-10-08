@@ -1,8 +1,9 @@
 import React from "react";
 import Link from "next/link";
-import { articlesData } from "@/lib/data";
+import { getBlogArticles } from "@/lib/admin/db";
 
 export default function BlogSection() {
+  const articles = getBlogArticles().slice(0, 3);
   return (
     <section
       className="w-full bg-surface-neutral-alt py-space-3xl relative"
@@ -32,7 +33,7 @@ export default function BlogSection() {
 
         {/* 3-Column Article Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-space-lg">
-          {articlesData.map((art, idx) => (
+          {articles.map((art, idx) => (
             <article
               key={idx}
               className="bg-surface-canvas rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group border border-surface-container"

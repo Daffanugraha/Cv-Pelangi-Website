@@ -2,14 +2,18 @@ import React from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getAllArticles, getArticleBySlug } from "@/lib/data/articles";
+import { getBlogArticles } from "@/lib/admin/db";
 import { BlogDetailContent } from "@/components/sections/blog";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
 export async function generateStaticParams() {
-  const articles = getAllArticles();
+  const articles = getBlogArticles();
   return articles.map((article) => ({
     slug: article.slug,
   }));
@@ -17,7 +21,10 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const article = getArticleBySlug(slug);
+  const adminArticles = getBlogArticles();
+  const article =
+    adminArticles.find((a) => a.slug === slug || a.id === slug) ||
+    getArticleBySlug(slug);
 
   if (!article) {
     return {
@@ -46,7 +53,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function BlogDetailPage({ params }: PageProps) {
   const { slug } = await params;
-  const article = getArticleBySlug(slug);
+  const adminArticles = getBlogArticles();
+  const article =
+    adminArticles.find((a) => a.slug === slug || a.id === slug) ||
+    getArticleBySlug(slug);
 
   if (!article) {
     notFound();

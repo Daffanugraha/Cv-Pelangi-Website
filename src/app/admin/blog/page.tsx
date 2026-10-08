@@ -42,7 +42,7 @@ export default function AdminBlogPage() {
   async function loadArticles() {
     setLoading(true);
     try {
-      const res = await fetch("/api/admin/blog");
+      const res = await fetch("/api/admin/blog", { cache: "no-store" });
       if (res.status === 401) {
         router.push("/admin");
         return;

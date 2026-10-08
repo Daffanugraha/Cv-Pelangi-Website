@@ -77,7 +77,7 @@ export default function BlogArticleCard({
       {/* Action Footer */}
       <div className="p-3 bg-gray-50/80 border-t border-gray-100 flex items-center justify-between gap-2">
         <a
-          href={`/blog#${article.slug}`}
+          href={`/blog/${article.slug}`}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-1 text-xs font-semibold text-gray-600 hover:text-gray-900 px-2.5 py-1.5 rounded-lg hover:bg-gray-200/60 transition"
