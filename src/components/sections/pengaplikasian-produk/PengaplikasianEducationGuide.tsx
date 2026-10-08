@@ -90,9 +90,6 @@ export default function PengaplikasianEducationGuide() {
               {/* Kolom Kiri: Rekomendasi Jasa Utama */}
               <div className="lg:col-span-7 flex flex-col gap-5">
                 <div>
-                  <span className="text-xs font-bold text-bracket-border uppercase tracking-wider">
-                    Kategori {activeSlide + 1} dari {EDUCATIONAL_SLIDES.length}
-                  </span>
                   <h3 className="font-heading font-extrabold text-on-surface text-xl sm:text-2xl mt-1 leading-snug">
                     {slide.headline}
                   </h3>
