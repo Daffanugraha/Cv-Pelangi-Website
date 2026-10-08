@@ -673,10 +673,18 @@ export default function AdminKarirPage() {
                         <span className="font-bold text-blue-700 font-mono">
                           {applicant.referencePhone || "-"}
                         </span>
+                        {applicant.referenceRelation && (
+                          <span className="text-[10px] text-gray-500 block truncate font-sans">
+                            ({applicant.referenceRelation})
+                          </span>
+                        )}
                       </div>
                       <div>
-                        <span className="text-gray-400 block font-mono text-[11px]">Pendidikan Terakhir:</span>
-                        <span className="font-bold text-gray-900">{applicant.education || "-"}</span>
+                        <span className="text-gray-400 block font-mono text-[11px]">Pendidikan &amp; Jurusan:</span>
+                        <span className="font-bold text-gray-900">
+                          {applicant.education || "-"}
+                          {applicant.educationMajor ? ` (${applicant.educationMajor})` : ""}
+                        </span>
                       </div>
                       <div>
                         <span className="text-gray-400 block font-mono text-[11px]">Domisili:</span>
@@ -685,12 +693,29 @@ export default function AdminKarirPage() {
                     </div>
 
                     {/* Work Experience */}
-                    <div className="p-3.5 rounded-xl bg-blue-50/40 border border-blue-100 text-xs space-y-1">
-                      <p className="font-bold text-blue-900 flex items-center gap-1.5 font-mono">
-                        <span className="material-symbols-outlined text-blue-600 text-sm">work</span>
-                        Riwayat &amp; Pengalaman Kerja:
-                      </p>
-                      <p className="text-gray-800 leading-relaxed whitespace-pre-line pl-5">
+                    <div className={`p-3.5 rounded-xl border text-xs space-y-1 ${
+                      applicant.hasExperience === "yes"
+                        ? "bg-blue-50/40 border-blue-100"
+                        : "bg-emerald-50/40 border-emerald-100"
+                    }`}>
+                      <div className="flex items-center justify-between pb-1 border-b border-black/5">
+                        <p className={`font-bold flex items-center gap-1.5 font-mono ${
+                          applicant.hasExperience === "yes" ? "text-blue-900" : "text-emerald-900"
+                        }`}>
+                          <span className="material-symbols-outlined text-sm">
+                            {applicant.hasExperience === "yes" ? "work" : "school"}
+                          </span>
+                          <span>Riwayat &amp; Pengalaman:</span>
+                        </p>
+                        <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold font-mono ${
+                          applicant.hasExperience === "yes"
+                            ? "bg-blue-100 text-blue-800"
+                            : "bg-emerald-100 text-emerald-800"
+                        }`}>
+                          {applicant.hasExperience === "yes" ? "Pernah Bekerja" : "Fresh Graduate"}
+                        </span>
+                      </div>
+                      <p className="text-gray-800 leading-relaxed whitespace-pre-line pl-5 pt-1">
                         {applicant.experience || "Fresh Graduate / Siap dilatih"}
                       </p>
                     </div>

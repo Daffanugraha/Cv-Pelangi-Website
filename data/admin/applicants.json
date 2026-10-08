@@ -1,0 +1,24 @@
+[
+  {
+    "jobId": "job-operator-pond",
+    "jobTitle": "Operator Mesin Pond & Die Cutting",
+    "name": "Ahmad Budi",
+    "age": "20",
+    "phone": "081298765432",
+    "referencePhone": "081233445566",
+    "referenceRelation": "Bpk. Rudi - Supervisor",
+    "email": "budi@gmail.com",
+    "address": "Waru, Sidoarjo",
+    "education": "SMK",
+    "educationMajor": "Grafika",
+    "hasExperience": "yes",
+    "experience": "1 Tahun Operator Pond di Surabaya",
+    "strengths": "Teliti dan cermat",
+    "weaknesses": "Sering lupa bila terburu-buru, diatasi dengan checklist",
+    "cvUrl": "",
+    "fileName": "",
+    "id": "app_1791423646484_85qr",
+    "status": "new",
+    "createdAt": "2026-10-08T01:40:46.484Z"
+  }
+]

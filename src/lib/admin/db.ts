@@ -267,9 +267,12 @@ export interface JobApplicantItem {
   age: number | string;
   phone: string;
   referencePhone?: string;
+  referenceRelation?: string;
   email?: string;
   address: string;
   education?: string;
+  educationMajor?: string;
+  hasExperience?: "yes" | "no";
   experience: string;
   strengths: string;
   weaknesses: string;
