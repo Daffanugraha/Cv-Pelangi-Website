@@ -8,6 +8,7 @@ import fs from "fs";
 import path from "path";
 import { CAREER_JOBS, CareerJob } from "@/data/careers";
 import { MOMEN_ALBUMS, MomenAlbum, MomenPhoto } from "@/lib/data/galeriMomen";
+import { query, isPostgresConfigured } from "@/lib/db/postgres";
 
 // ---------------------------------------------------------------------------
 // Paths
@@ -328,6 +329,68 @@ export function addApplicant(
   };
   applicants.unshift(newApplicant);
   saveApplicants(applicants);
+
+  // Sync ke PostgreSQL di background jika DATABASE_URL terkonfigurasi
+  if (isPostgresConfigured()) {
+    query(
+      `INSERT INTO job_applicants (
+        id, job_id, job_title, name, birth_place_date, marital_status, age,
+        phone, email, address, education, education_major, has_experience,
+        experience, experience1, experience2, experience3,
+        reference1, reference2, reference_phone, reference_relation,
+        ready_no_work_no_pay, ready_overtime, expected_salary, expected_facilities,
+        three_weaknesses, three_strengths, five_skills, strengths, weaknesses,
+        has_portfolio, portfolio_url, cv_url, file_name, status, created_at
+      ) VALUES (
+        $1, $2, $3, $4, $5, $6, $7,
+        $8, $9, $10, $11, $12, $13,
+        $14, $15, $16, $17,
+        $18, $19, $20, $21,
+        $22, $23, $24, $25,
+        $26, $27, $28, $29, $30,
+        $31, $32, $33, $34, $35, $36
+      ) ON CONFLICT (id) DO NOTHING`,
+      [
+        newApplicant.id,
+        newApplicant.jobId || null,
+        newApplicant.jobTitle,
+        newApplicant.name,
+        newApplicant.birthPlaceDate || null,
+        newApplicant.maritalStatus || "Single",
+        newApplicant.age ? String(newApplicant.age) : null,
+        newApplicant.phone,
+        newApplicant.email || "-",
+        newApplicant.address,
+        newApplicant.education || null,
+        newApplicant.educationMajor || null,
+        newApplicant.hasExperience || "yes",
+        newApplicant.experience || null,
+        newApplicant.experience1 || null,
+        newApplicant.experience2 || null,
+        newApplicant.experience3 || null,
+        newApplicant.reference1 || null,
+        newApplicant.reference2 || null,
+        newApplicant.referencePhone || null,
+        newApplicant.referenceRelation || null,
+        newApplicant.readyNoWorkNoPay || "Ya",
+        newApplicant.readyOvertime || "Ya",
+        newApplicant.expectedSalary || null,
+        newApplicant.expectedFacilities || null,
+        newApplicant.threeWeaknesses || null,
+        newApplicant.threeStrengths || null,
+        newApplicant.fiveSkills || null,
+        newApplicant.strengths || null,
+        newApplicant.weaknesses || null,
+        newApplicant.hasPortfolio || "no",
+        newApplicant.portfolioUrl || null,
+        newApplicant.cvUrl || null,
+        newApplicant.fileName || null,
+        newApplicant.status,
+        new Date(newApplicant.createdAt),
+      ]
+    ).catch((err) => console.warn("[Postgres Sync Applicant Error]:", err.message));
+  }
+
   return newApplicant;
 }
 
@@ -339,10 +402,23 @@ export function updateApplicantStatus(
     a.id === id ? { ...a, status } : a
   );
   saveApplicants(applicants);
+
+  if (isPostgresConfigured()) {
+    query("UPDATE job_applicants SET status = $1, updated_at = NOW() WHERE id = $2", [
+      status,
+      id,
+    ]).catch((err) => console.warn("[Postgres Update Status Error]:", err.message));
+  }
 }
 
 export function deleteApplicant(id: string) {
   const applicants = getApplicants().filter((a) => a.id !== id);
   saveApplicants(applicants);
+
+  if (isPostgresConfigured()) {
+    query("DELETE FROM job_applicants WHERE id = $1", [id]).catch((err) =>
+      console.warn("[Postgres Delete Applicant Error]:", err.message)
+    );
+  }
 }
 
