@@ -25,6 +25,18 @@ export interface PelangiLifeReel {
 
 export const PELANGI_LIFE_REELS: PelangiLifeReel[] = [
   {
+    id: "reel-DcxLdF5zJHl",
+    title: "Menyembunyikan Owner di Antara Driver Armada",
+    tag: "Driver & Armada",
+    category: "Pelangi Life",
+    duration: "0:25",
+    views: "1.2K",
+    likes: "32",
+    thumbnail: "/images/instagram/DcxLdF5zJHl.jpg",
+    instagramUrl: "https://www.instagram.com/p/DcxLdF5zJHl/?hl=en",
+    caption: "Hayo yang mana ya😅 Intip keseruan dan kekompakan tim armada pengiriman dan driver CV Pelangi UV yang selalu gesit melayani pengiriman tepat waktu.",
+  },
+  {
     id: "reel-1",
     title: "Keseharian & Dedikasi Operator Mesin Finishing",
     tag: "Operator Life",
