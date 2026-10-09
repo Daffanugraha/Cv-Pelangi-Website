@@ -1,8 +1,15 @@
 /**
  * Admin authentication helpers
+ * Menghandle otorisasi admin dan sesi login aktif selama 2 jam
  */
 
 import { cookies } from "next/headers";
+import {
+  AUTH_COOKIE,
+  SESSION_DURATION_SECONDS,
+  createSessionToken,
+  isValidSessionToken,
+} from "./session";
 
 const ADMIN_USERNAME = (process.env.ADMIN_USERNAME || "admin").trim().toLowerCase();
 const ADMIN_PASSWORD = (process.env.ADMIN_PASSWORD || "pelangiuv2024").trim();
@@ -27,9 +34,6 @@ const ALLOWED_PASSWORDS = [
   "123456",
 ];
 
-const AUTH_COOKIE = "admin_token";
-const AUTH_TOKEN = `${ADMIN_USERNAME}:${ADMIN_PASSWORD}`;
-
 export function verifyCredentials(username?: string, password?: string): boolean {
   if (!username) return false;
   const cleanUser = username.trim().toLowerCase();
@@ -51,11 +55,13 @@ export function verifyCredentials(username?: string, password?: string): boolean
 
 export function setAuthCookie() {
   const cookieStore = cookies();
-  cookieStore.set(AUTH_COOKIE, AUTH_TOKEN, {
+  const token = createSessionToken();
+
+  cookieStore.set(AUTH_COOKIE, token, {
     httpOnly: true,
-    secure: false, // Compatible with both local HTTP and Cloudflare Tunnel HTTPS proxy
+    secure: false, // Compatible with local HTTP and HTTPS Cloudflare/Vercel
     sameSite: "lax",
-    maxAge: 60 * 60 * 24 * 7, // 7 days
+    maxAge: SESSION_DURATION_SECONDS, // Cookie otomatis hangus di browser setelah 2 jam
     path: "/",
   });
 }
@@ -68,8 +74,5 @@ export function clearAuthCookie() {
 export function isAuthenticated(): boolean {
   const cookieStore = cookies();
   const token = cookieStore.get(AUTH_COOKIE)?.value;
-  if (token === AUTH_TOKEN) return true;
-  // Di local development, izinkan akses admin agar review dashboard lancar
-  if (process.env.NODE_ENV === "development") return true;
-  return false;
+  return isValidSessionToken(token);
 }

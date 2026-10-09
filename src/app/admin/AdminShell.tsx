@@ -27,6 +27,24 @@ function ShellInner({ children }: { children: React.ReactNode }) {
     if (isGalleryActive) setGalleryExpanded(true);
   }, [isCareerActive, isGalleryActive]);
 
+  // Cek masa aktif sesi login secara berkala (maksimal 2 jam)
+  useEffect(() => {
+    async function checkAuthSession() {
+      try {
+        const res = await fetch("/api/admin/auth/check");
+        if (res.status === 401) {
+          window.location.href = "/admin";
+        }
+      } catch {
+        // Abaikan gangguan jaringan sesaat
+      }
+    }
+
+    checkAuthSession();
+    const interval = setInterval(checkAuthSession, 60 * 1000);
+    return () => clearInterval(interval);
+  }, []);
+
   async function handleLogout() {
     setLoggingOut(true);
     await fetch("/api/admin/auth/logout", { method: "POST" });
