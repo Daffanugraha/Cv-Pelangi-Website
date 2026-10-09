@@ -39,29 +39,30 @@ export default function DashboardVisitorStats({
 
   const maxVal = Math.max(
     ...dailyStats.map((d) => Math.max(d.pageviews, d.visitors)),
-    10
+    0
   );
-  const chartMax = Math.ceil((maxVal * 1.15) / 50) * 50;
+  // Default clean ceiling of 10 if views are minimal/0
+  const chartMax = maxVal === 0 ? 10 : Math.max(10, Math.ceil((maxVal * 1.25) / 5) * 5);
 
-  const totalDevices =
-    (data?.devices.mobile || 0) +
-    (data?.devices.desktop || 0) +
-    (data?.devices.tablet || 0) || 1;
+  const realTotalDevices =
+    (data?.devices?.mobile || 0) +
+    (data?.devices?.desktop || 0) +
+    (data?.devices?.tablet || 0);
 
-  const mobilePct = Math.round(((data?.devices.mobile || 0) / totalDevices) * 100);
-  const desktopPct = Math.round(((data?.devices.desktop || 0) / totalDevices) * 100);
-  const tabletPct = Math.max(0, 100 - mobilePct - desktopPct);
+  const mobilePct = realTotalDevices > 0 ? Math.round(((data?.devices?.mobile || 0) / realTotalDevices) * 100) : 0;
+  const desktopPct = realTotalDevices > 0 ? Math.round(((data?.devices?.desktop || 0) / realTotalDevices) * 100) : 0;
+  const tabletPct = realTotalDevices > 0 ? Math.max(0, 100 - mobilePct - desktopPct) : 0;
 
-  const totalSources =
-    (data?.sources.direct || 0) +
-    (data?.sources.search || 0) +
-    (data?.sources.whatsapp || 0) +
-    (data?.sources.instagram || 0) || 1;
+  const realTotalSources =
+    (data?.sources?.direct || 0) +
+    (data?.sources?.search || 0) +
+    (data?.sources?.whatsapp || 0) +
+    (data?.sources?.instagram || 0);
 
-  const directPct = Math.round(((data?.sources.direct || 0) / totalSources) * 100);
-  const searchPct = Math.round(((data?.sources.search || 0) / totalSources) * 100);
-  const waPct = Math.round(((data?.sources.whatsapp || 0) / totalSources) * 100);
-  const igPct = Math.max(0, 100 - directPct - searchPct - waPct);
+  const directPct = realTotalSources > 0 ? Math.round(((data?.sources?.direct || 0) / realTotalSources) * 100) : 0;
+  const searchPct = realTotalSources > 0 ? Math.round(((data?.sources?.search || 0) / realTotalSources) * 100) : 0;
+  const waPct = realTotalSources > 0 ? Math.round(((data?.sources?.whatsapp || 0) / realTotalSources) * 100) : 0;
+  const igPct = realTotalSources > 0 ? Math.max(0, 100 - directPct - searchPct - waPct) : 0;
 
   return (
     <div className="bg-white rounded-2xl border border-gray-200/80 shadow-2xs p-5 sm:p-6 mb-7">
@@ -171,21 +172,21 @@ export default function DashboardVisitorStats({
         <div className="p-4 rounded-xl bg-gray-50 border border-gray-200/80">
           <span className="text-xs font-semibold text-gray-500">Total Tayangan</span>
           <p className="text-xl sm:text-2xl font-black text-gray-900 mt-1 font-mono">
-            {data ? data.totalPageviews.toLocaleString("id-ID") : "..."}
+            {data ? data.totalPageviews.toLocaleString("id-ID") : "0"}
           </p>
         </div>
 
         <div className="p-4 rounded-xl bg-gray-50 border border-gray-200/80">
           <span className="text-xs font-semibold text-gray-500">Pengunjung Unik</span>
           <p className="text-xl sm:text-2xl font-black text-gray-900 mt-1 font-mono">
-            {data ? data.uniqueVisitors.toLocaleString("id-ID") : "..."}
+            {data ? data.uniqueVisitors.toLocaleString("id-ID") : "0"}
           </p>
         </div>
 
         <div className="p-4 rounded-xl bg-gray-50 border border-gray-200/80">
           <span className="text-xs font-semibold text-gray-500">Rata-Rata / Hari</span>
           <p className="text-xl sm:text-2xl font-black text-gray-900 mt-1 font-mono">
-            {data ? data.avgDailyViews.toLocaleString("id-ID") : "..."}
+            {data ? data.avgDailyViews.toLocaleString("id-ID") : "0"}
           </p>
         </div>
 
@@ -195,7 +196,7 @@ export default function DashboardVisitorStats({
             <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
           </div>
           <p className="text-xl sm:text-2xl font-black text-gray-900 mt-1 font-mono">
-            {data ? data.todayViews.toLocaleString("id-ID") : "..."}
+            {data ? data.todayViews.toLocaleString("id-ID") : "0"}
           </p>
         </div>
       </div>
@@ -239,8 +240,8 @@ export default function DashboardVisitorStats({
 
           {/* Daily Bars */}
           {dailyStats.map((item, idx) => {
-            const pvHeight = Math.max(4, Math.round((item.pageviews / chartMax) * 100));
-            const visHeight = Math.max(4, Math.round((item.visitors / chartMax) * 100));
+            const pvHeight = item.pageviews > 0 ? Math.max(6, Math.round((item.pageviews / chartMax) * 100)) : 0;
+            const visHeight = item.visitors > 0 ? Math.max(6, Math.round((item.visitors / chartMax) * 100)) : 0;
             const isHovered = hoveredIndex === idx;
 
             return (
@@ -272,7 +273,11 @@ export default function DashboardVisitorStats({
                     <div
                       style={{ height: `${pvHeight}%` }}
                       className={`w-full max-w-[16px] rounded-t-sm transition-all duration-200 ${
-                        isHovered ? "bg-[#F65456]" : "bg-[#F65456]/85"
+                        pvHeight === 0
+                          ? "bg-transparent"
+                          : isHovered
+                          ? "bg-[#F65456]"
+                          : "bg-[#F65456]/85"
                       }`}
                     ></div>
                   )}
@@ -281,7 +286,11 @@ export default function DashboardVisitorStats({
                     <div
                       style={{ height: `${visHeight}%` }}
                       className={`w-full max-w-[16px] rounded-t-sm transition-all duration-200 ${
-                        isHovered ? "bg-blue-600" : "bg-blue-500/80"
+                        visHeight === 0
+                          ? "bg-transparent"
+                          : isHovered
+                          ? "bg-blue-600"
+                          : "bg-blue-500/80"
                       }`}
                     ></div>
                   )}
@@ -307,7 +316,7 @@ export default function DashboardVisitorStats({
         {/* Top Pages */}
         <div className="p-4 sm:p-5 rounded-2xl bg-white border border-gray-200/80">
           <h4 className="text-sm font-bold text-gray-900 mb-4">
-            Halaman Populer
+            Halaman Paling Sering Dilihat
           </h4>
 
           <div className="space-y-3">
@@ -346,7 +355,15 @@ export default function DashboardVisitorStats({
                 </div>
               ))
             ) : (
-              <p className="text-xs text-gray-400 italic">Belum ada data.</p>
+              <div className="py-8 text-center">
+                <span className="material-symbols-outlined text-gray-300 text-3xl mb-1">
+                  query_stats
+                </span>
+                <p className="text-xs text-gray-500 font-medium">Belum ada kunjungan halaman tercatat.</p>
+                <p className="text-[11px] text-gray-400 mt-0.5">
+                  Data akan otomatis muncul saat pengunjung mengakses halaman website.
+                </p>
+              </div>
             )}
           </div>
         </div>
@@ -354,13 +371,13 @@ export default function DashboardVisitorStats({
         {/* Devices & Sources */}
         <div className="p-4 sm:p-5 rounded-2xl bg-white border border-gray-200/80">
           <h4 className="text-sm font-bold text-gray-900 mb-4">
-            Perangkat &amp; Sumber
+            Perangkat &amp; Sumber Trafik
           </h4>
 
           {/* Devices */}
           <div className="mb-5">
             <p className="text-xs font-semibold text-gray-500 mb-2">
-              Perangkat
+              Perangkat Pengunjung
             </p>
             <div className="grid grid-cols-3 gap-2">
               <div className="p-2.5 rounded-xl bg-gray-50 border border-gray-100 text-center">
@@ -389,12 +406,12 @@ export default function DashboardVisitorStats({
           {/* Sources */}
           <div>
             <p className="text-xs font-semibold text-gray-500 mb-2">
-              Sumber Trafik
+              Sumber Rujukan (Traffic Sources)
             </p>
             <div className="space-y-2">
               <div>
                 <div className="flex justify-between text-[11px] text-gray-700 font-medium mb-0.5">
-                  <span>Google</span>
+                  <span>Google Search</span>
                   <span className="font-mono">{searchPct}%</span>
                 </div>
                 <div className="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
@@ -404,7 +421,7 @@ export default function DashboardVisitorStats({
 
               <div>
                 <div className="flex justify-between text-[11px] text-gray-700 font-medium mb-0.5">
-                  <span>Akses Langsung</span>
+                  <span>Akses Langsung (Direct URL)</span>
                   <span className="font-mono">{directPct}%</span>
                 </div>
                 <div className="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
@@ -414,7 +431,7 @@ export default function DashboardVisitorStats({
 
               <div>
                 <div className="flex justify-between text-[11px] text-gray-700 font-medium mb-0.5">
-                  <span>WhatsApp</span>
+                  <span>WhatsApp Chat</span>
                   <span className="font-mono">{waPct}%</span>
                 </div>
                 <div className="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">

@@ -44,10 +44,19 @@ export interface AnalyticsData {
     instagram: number;
   };
   recentVisits: RecentVisit[];
+  visitorIds?: string[];
+  todayVisitorIds?: {
+    date: string;
+    ids: string[];
+  };
 }
 
 const DATA_DIR = path.join(process.cwd(), "data", "admin");
-const FILE_PATH = path.join(DATA_DIR, "analytics.json");
+const PRIMARY_FILE = path.join(DATA_DIR, "analytics.json");
+const TMP_FILE = path.join("/tmp", "cv_pelangi_analytics.json");
+
+// In-memory cache for ultra-fast, serverless-instance persistent reads/writes
+let memoryCache: AnalyticsData | null = null;
 
 function ensureDir() {
   if (!fs.existsSync(DATA_DIR)) {
@@ -86,171 +95,114 @@ function formatDateLabel(d: Date): string {
 }
 
 const KNOWN_PAGES: Record<string, string> = {
-  "/": "Beranda",
-  "/layanan": "Layanan Finishing",
-  "/produk/bahan-baku": "Bahan Baku & Foil",
-  "/karir": "Karir",
-  "/blog": "Blog",
-  "/kontak": "Kontak",
-  "/galeri-momen": "Galeri Momen",
-  "/pengaplikasian-produk": "Aplikasi Produk",
+  "/": "Beranda CV Pelangi UV",
+  "/layanan": "Layanan Finishing Cetak",
+  "/produk/bahan-baku": "Grosir Roll Foil & Bahan Baku",
+  "/karir": "Karir & Lowongan Kerja",
+  "/blog": "Artikel & Wawasan Percetakan",
+  "/kontak": "Kontak & Lokasi Bizpark Sidoarjo",
+  "/galeri-momen": "Galeri Momen Kegiatan",
+  "/pengaplikasian-produk": "Pengaplikasian & Sampel Produk",
 };
 
 /**
- * Generate 30 hari histori realistis jika file belum ada
+ * Inisialisasi data analitik 100% murni/rill (dimulai dari 0)
+ * Setiap kenaikan angka hanya berasal dari kunjungan nyata pengunjung
  */
 function generateInitialAnalytics(): AnalyticsData {
   const today = new Date();
   const dailyStats: DailyStat[] = [];
 
-  let totalPageviews = 0;
-  let uniqueVisitors = 0;
-
   for (let i = 29; i >= 0; i--) {
     const d = new Date(today);
     d.setDate(d.getDate() - i);
 
-    const isWeekend = d.getDay() === 0 || d.getDay() === 6;
-    const baseViews = isWeekend
-      ? Math.floor(90 + Math.random() * 70)
-      : Math.floor(190 + Math.random() * 130);
-
-    const baseVisitors = Math.floor(baseViews * (0.55 + Math.random() * 0.1));
-
     dailyStats.push({
       date: formatDateKey(d),
       label: formatDateLabel(d),
-      pageviews: baseViews,
-      visitors: baseVisitors,
+      pageviews: 0,
+      visitors: 0,
     });
-
-    totalPageviews += baseViews;
-    uniqueVisitors += baseVisitors;
   }
 
-  const todayKey = formatDateKey(today);
-  const todayEntry = dailyStats.find((s) => s.date === todayKey) || dailyStats[dailyStats.length - 1];
-
-  const topPages: PageStat[] = [
-    {
-      path: "/",
-      title: "Beranda",
-      views: Math.floor(totalPageviews * 0.36),
-      percentage: 36,
-    },
-    {
-      path: "/layanan",
-      title: "Layanan Finishing",
-      views: Math.floor(totalPageviews * 0.24),
-      percentage: 24,
-    },
-    {
-      path: "/produk/bahan-baku",
-      title: "Bahan Baku & Foil",
-      views: Math.floor(totalPageviews * 0.17),
-      percentage: 17,
-    },
-    {
-      path: "/karir",
-      title: "Karir",
-      views: Math.floor(totalPageviews * 0.12),
-      percentage: 12,
-    },
-    {
-      path: "/blog",
-      title: "Blog",
-      views: Math.floor(totalPageviews * 0.07),
-      percentage: 7,
-    },
-    {
-      path: "/kontak",
-      title: "Kontak",
-      views: Math.floor(totalPageviews * 0.04),
-      percentage: 4,
-    },
-  ];
-
-  const recentVisits: RecentVisit[] = [
-    {
-      id: `v_${Date.now() - 120000}`,
-      path: "/layanan",
-      timestamp: "Baru saja",
-      device: "mobile",
-      referrer: "Google Search",
-    },
-    {
-      id: `v_${Date.now() - 360000}`,
-      path: "/produk/bahan-baku",
-      timestamp: "3 menit lalu",
-      device: "desktop",
-      referrer: "Direct",
-    },
-    {
-      id: `v_${Date.now() - 650000}`,
-      path: "/",
-      timestamp: "10 menit lalu",
-      device: "mobile",
-      referrer: "WhatsApp",
-    },
-    {
-      id: `v_${Date.now() - 1200000}`,
-      path: "/karir",
-      timestamp: "20 menit lalu",
-      device: "mobile",
-      referrer: "Instagram",
-    },
-    {
-      id: `v_${Date.now() - 1800000}`,
-      path: "/blog",
-      timestamp: "30 menit lalu",
-      device: "desktop",
-      referrer: "Google Search",
-    },
-  ];
-
   return {
-    totalPageviews,
-    uniqueVisitors,
-    todayViews: todayEntry.pageviews,
-    todayVisitors: todayEntry.visitors,
-    avgDailyViews: Math.round(totalPageviews / 30),
-    growthRate: 14.8,
+    totalPageviews: 0,
+    uniqueVisitors: 0,
+    todayViews: 0,
+    todayVisitors: 0,
+    avgDailyViews: 0,
+    growthRate: 0,
     dailyStats,
-    topPages,
+    topPages: [],
     devices: {
-      mobile: Math.round(totalPageviews * 0.64),
-      desktop: Math.round(totalPageviews * 0.31),
-      tablet: Math.round(totalPageviews * 0.05),
+      mobile: 0,
+      desktop: 0,
+      tablet: 0,
     },
     sources: {
-      direct: Math.round(totalPageviews * 0.41),
-      search: Math.round(totalPageviews * 0.35),
-      whatsapp: Math.round(totalPageviews * 0.15),
-      instagram: Math.round(totalPageviews * 0.09),
+      direct: 0,
+      search: 0,
+      whatsapp: 0,
+      instagram: 0,
     },
-    recentVisits,
+    recentVisits: [],
+    visitorIds: [],
+    todayVisitorIds: {
+      date: formatDateKey(today),
+      ids: [],
+    },
   };
+}
+
+/**
+ * Menyimpan data analitik ke filesystem dengan fallback /tmp untuk Vercel Serverless
+ */
+function saveAnalytics(data: AnalyticsData) {
+  memoryCache = data;
+  const jsonStr = JSON.stringify(data, null, 2);
+
+  // 1. Coba tulis ke PRIMARY_FILE (bekerja di lokal & build)
+  try {
+    ensureDir();
+    fs.writeFileSync(PRIMARY_FILE, jsonStr, "utf-8");
+  } catch {
+    // 2. Jika read-only filesystem (seperti di Vercel lambda), simpan ke /tmp
+    try {
+      fs.writeFileSync(TMP_FILE, jsonStr, "utf-8");
+    } catch {
+      // Memory cache tetap aktif
+    }
+  }
 }
 
 /**
  * Membaca data analitik tersimpan
  */
 export function getAnalyticsRaw(): AnalyticsData {
-  ensureDir();
-  if (!fs.existsSync(FILE_PATH)) {
-    const initial = generateInitialAnalytics();
-    fs.writeFileSync(FILE_PATH, JSON.stringify(initial, null, 2), "utf-8");
-    return initial;
-  }
+  if (memoryCache) return memoryCache;
 
+  // 1. Cek file /tmp jika ada update sesi Vercel
   try {
-    const raw = fs.readFileSync(FILE_PATH, "utf-8");
-    return JSON.parse(raw) as AnalyticsData;
-  } catch {
-    const initial = generateInitialAnalytics();
-    fs.writeFileSync(FILE_PATH, JSON.stringify(initial, null, 2), "utf-8");
-    return initial;
-  }
+    if (fs.existsSync(TMP_FILE)) {
+      const raw = fs.readFileSync(TMP_FILE, "utf-8");
+      memoryCache = JSON.parse(raw) as AnalyticsData;
+      return memoryCache;
+    }
+  } catch {}
+
+  // 2. Cek file data repo
+  try {
+    if (fs.existsSync(PRIMARY_FILE)) {
+      const raw = fs.readFileSync(PRIMARY_FILE, "utf-8");
+      memoryCache = JSON.parse(raw) as AnalyticsData;
+      return memoryCache;
+    }
+  } catch {}
+
+  // 3. Fallback inisialisasi awal murni
+  const initial = generateInitialAnalytics();
+  saveAnalytics(initial);
+  return initial;
 }
 
 /**
@@ -265,12 +217,11 @@ export function getAnalyticsData(rangeDays: 7 | 14 | 30 = 7): AnalyticsData {
   let todayIndex = data.dailyStats.findIndex((s) => s.date === todayKey);
 
   if (todayIndex === -1) {
-    // Tambah hari ini
     const newTodayStat: DailyStat = {
       date: todayKey,
       label: formatDateLabel(today),
-      pageviews: 1,
-      visitors: 1,
+      pageviews: 0,
+      visitors: 0,
     };
     data.dailyStats.push(newTodayStat);
     if (data.dailyStats.length > 30) {
@@ -282,7 +233,7 @@ export function getAnalyticsData(rangeDays: 7 | 14 | 30 = 7): AnalyticsData {
 
   const rangeViews = slicedDaily.reduce((acc, curr) => acc + curr.pageviews, 0);
   const rangeVisitors = slicedDaily.reduce((acc, curr) => acc + curr.visitors, 0);
-  const avgDaily = Math.round(rangeViews / slicedDaily.length);
+  const avgDaily = slicedDaily.length > 0 ? Math.round(rangeViews / slicedDaily.length) : 0;
 
   const todayStat = slicedDaily[slicedDaily.length - 1] || { pageviews: 0, visitors: 0 };
 
@@ -298,7 +249,7 @@ export function getAnalyticsData(rangeDays: 7 | 14 | 30 = 7): AnalyticsData {
 }
 
 /**
- * Merekam kunjungan halaman asli saat pengunjung membuka halaman website
+ * Merekam kunjungan halaman asli secara real-time saat pengunjung membuka halaman website
  */
 export function recordPageView(
   rawPath: string,
@@ -333,15 +284,31 @@ export function recordPageView(
     }
   } else {
     dayStat.pageviews += 1;
-    // Tambah pengunjung unik dengan probabilitas moderat
-    if (Math.random() < 0.6) {
-      dayStat.visitors += 1;
-    }
   }
 
   data.totalPageviews += 1;
 
-  // 2. Update topPages
+  // 2. Lacak pengunjung unik secara akurat via visitorId
+  const visitorId = options.visitorId || `anon_${Math.random().toString(36).substring(2, 8)}`;
+  if (!data.visitorIds) data.visitorIds = [];
+  if (!data.todayVisitorIds || data.todayVisitorIds.date !== todayKey) {
+    data.todayVisitorIds = { date: todayKey, ids: [] };
+  }
+
+  if (!data.todayVisitorIds.ids.includes(visitorId)) {
+    data.todayVisitorIds.ids.push(visitorId);
+    dayStat.visitors += 1;
+  }
+
+  if (!data.visitorIds.includes(visitorId)) {
+    data.visitorIds.push(visitorId);
+    data.uniqueVisitors += 1;
+    if (data.visitorIds.length > 5000) {
+      data.visitorIds = data.visitorIds.slice(-5000);
+    }
+  }
+
+  // 3. Update topPages
   const pageTitle = KNOWN_PAGES[cleanPath] || `Halaman ${cleanPath}`;
   const existingPage = data.topPages.find((p) => p.path === cleanPath);
   if (existingPage) {
@@ -351,21 +318,21 @@ export function recordPageView(
       path: cleanPath,
       title: pageTitle,
       views: 1,
-      percentage: 1,
+      percentage: 100,
     });
   }
 
   // Recalculate percentages
-  const totalViewsTopPages = data.topPages.reduce((acc, p) => acc + p.views, 0);
+  const totalViewsTopPages = data.topPages.reduce((acc, p) => acc + p.views, 0) || 1;
   data.topPages = data.topPages
     .map((p) => ({
       ...p,
       percentage: Math.max(1, Math.round((p.views / totalViewsTopPages) * 100)),
     }))
     .sort((a, b) => b.views - a.views)
-    .slice(0, 8);
+    .slice(0, 10);
 
-  // 3. Update device
+  // 4. Update device
   const device = options.device || "mobile";
   if (data.devices[device] !== undefined) {
     data.devices[device] += 1;
@@ -373,7 +340,7 @@ export function recordPageView(
     data.devices.mobile += 1;
   }
 
-  // 4. Update source
+  // 5. Update source
   const ref = (options.referrer || "").toLowerCase();
   if (ref.includes("google")) {
     data.sources.search += 1;
@@ -385,7 +352,7 @@ export function recordPageView(
     data.sources.direct += 1;
   }
 
-  // 5. Append recent visit
+  // 6. Append recent visit
   data.recentVisits.unshift({
     id: `v_${Date.now()}`,
     path: cleanPath,
@@ -404,10 +371,6 @@ export function recordPageView(
     data.recentVisits = data.recentVisits.slice(0, 20);
   }
 
-  try {
-    ensureDir();
-    fs.writeFileSync(FILE_PATH, JSON.stringify(data, null, 2), "utf-8");
-  } catch (err) {
-    console.error("Gagal menyimpan analitik:", err);
-  }
+  // 7. Simpan
+  saveAnalytics(data);
 }

@@ -1,283 +1,208 @@
 {
-  "totalPageviews": 6771,
-  "uniqueVisitors": 4010,
-  "todayViews": 248,
-  "todayVisitors": 155,
-  "avgDailyViews": 226,
-  "growthRate": 14.8,
+  "totalPageviews": 0,
+  "uniqueVisitors": 0,
+  "todayViews": 0,
+  "todayVisitors": 0,
+  "avgDailyViews": 0,
+  "growthRate": 0,
   "dailyStats": [
     {
       "date": "2026-09-10",
       "label": "Kam, 10 Sep",
-      "pageviews": 254,
-      "visitors": 153
+      "pageviews": 0,
+      "visitors": 0
     },
     {
       "date": "2026-09-11",
       "label": "Jum, 11 Sep",
-      "pageviews": 260,
-      "visitors": 153
+      "pageviews": 0,
+      "visitors": 0
     },
     {
       "date": "2026-09-12",
       "label": "Sab, 12 Sep",
-      "pageviews": 140,
-      "visitors": 79
+      "pageviews": 0,
+      "visitors": 0
     },
     {
       "date": "2026-09-13",
       "label": "Min, 13 Sep",
-      "pageviews": 143,
-      "visitors": 88
+      "pageviews": 0,
+      "visitors": 0
     },
     {
       "date": "2026-09-14",
       "label": "Sen, 14 Sep",
-      "pageviews": 198,
-      "visitors": 116
+      "pageviews": 0,
+      "visitors": 0
     },
     {
       "date": "2026-09-15",
       "label": "Sel, 15 Sep",
-      "pageviews": 196,
-      "visitors": 120
+      "pageviews": 0,
+      "visitors": 0
     },
     {
       "date": "2026-09-16",
       "label": "Rab, 16 Sep",
-      "pageviews": 314,
-      "visitors": 174
+      "pageviews": 0,
+      "visitors": 0
     },
     {
       "date": "2026-09-17",
       "label": "Kam, 17 Sep",
-      "pageviews": 296,
-      "visitors": 176
+      "pageviews": 0,
+      "visitors": 0
     },
     {
       "date": "2026-09-18",
       "label": "Jum, 18 Sep",
-      "pageviews": 257,
-      "visitors": 142
+      "pageviews": 0,
+      "visitors": 0
     },
     {
       "date": "2026-09-19",
       "label": "Sab, 19 Sep",
-      "pageviews": 128,
-      "visitors": 71
+      "pageviews": 0,
+      "visitors": 0
     },
     {
       "date": "2026-09-20",
       "label": "Min, 20 Sep",
-      "pageviews": 93,
-      "visitors": 54
+      "pageviews": 0,
+      "visitors": 0
     },
     {
       "date": "2026-09-21",
       "label": "Sen, 21 Sep",
-      "pageviews": 245,
-      "visitors": 155
+      "pageviews": 0,
+      "visitors": 0
     },
     {
       "date": "2026-09-22",
       "label": "Sel, 22 Sep",
-      "pageviews": 307,
-      "visitors": 187
+      "pageviews": 0,
+      "visitors": 0
     },
     {
       "date": "2026-09-23",
       "label": "Rab, 23 Sep",
-      "pageviews": 297,
-      "visitors": 192
+      "pageviews": 0,
+      "visitors": 0
     },
     {
       "date": "2026-09-24",
       "label": "Kam, 24 Sep",
-      "pageviews": 312,
-      "visitors": 200
+      "pageviews": 0,
+      "visitors": 0
     },
     {
       "date": "2026-09-25",
       "label": "Jum, 25 Sep",
-      "pageviews": 317,
-      "visitors": 176
+      "pageviews": 0,
+      "visitors": 0
     },
     {
       "date": "2026-09-26",
       "label": "Sab, 26 Sep",
-      "pageviews": 107,
-      "visitors": 65
+      "pageviews": 0,
+      "visitors": 0
     },
     {
       "date": "2026-09-27",
       "label": "Min, 27 Sep",
-      "pageviews": 121,
-      "visitors": 67
+      "pageviews": 0,
+      "visitors": 0
     },
     {
       "date": "2026-09-28",
       "label": "Sen, 28 Sep",
-      "pageviews": 311,
-      "visitors": 192
+      "pageviews": 0,
+      "visitors": 0
     },
     {
       "date": "2026-09-29",
       "label": "Sel, 29 Sep",
-      "pageviews": 204,
-      "visitors": 119
+      "pageviews": 0,
+      "visitors": 0
     },
     {
       "date": "2026-09-30",
       "label": "Rab, 30 Sep",
-      "pageviews": 272,
-      "visitors": 152
+      "pageviews": 0,
+      "visitors": 0
     },
     {
       "date": "2026-10-01",
       "label": "Kam, 1 Okt",
-      "pageviews": 315,
-      "visitors": 174
+      "pageviews": 0,
+      "visitors": 0
     },
     {
       "date": "2026-10-02",
       "label": "Jum, 2 Okt",
-      "pageviews": 236,
-      "visitors": 137
+      "pageviews": 0,
+      "visitors": 0
     },
     {
       "date": "2026-10-03",
       "label": "Sab, 3 Okt",
-      "pageviews": 95,
-      "visitors": 53
+      "pageviews": 0,
+      "visitors": 0
     },
     {
       "date": "2026-10-04",
       "label": "Min, 4 Okt",
-      "pageviews": 108,
-      "visitors": 60
+      "pageviews": 0,
+      "visitors": 0
     },
     {
       "date": "2026-10-05",
       "label": "Sen, 5 Okt",
-      "pageviews": 221,
-      "visitors": 136
+      "pageviews": 0,
+      "visitors": 0
     },
     {
       "date": "2026-10-06",
       "label": "Sel, 6 Okt",
-      "pageviews": 283,
-      "visitors": 183
+      "pageviews": 0,
+      "visitors": 0
     },
     {
       "date": "2026-10-07",
       "label": "Rab, 7 Okt",
-      "pageviews": 294,
-      "visitors": 164
+      "pageviews": 0,
+      "visitors": 0
     },
     {
       "date": "2026-10-08",
       "label": "Kam, 8 Okt",
-      "pageviews": 198,
-      "visitors": 117
+      "pageviews": 0,
+      "visitors": 0
     },
     {
       "date": "2026-10-09",
       "label": "Jum, 9 Okt",
-      "pageviews": 249,
-      "visitors": 155
+      "pageviews": 0,
+      "visitors": 0
     }
   ],
-  "topPages": [
-    {
-      "path": "/",
-      "title": "Beranda",
-      "views": 2437,
-      "percentage": 36
-    },
-    {
-      "path": "/layanan",
-      "title": "Layanan Finishing",
-      "views": 1625,
-      "percentage": 24
-    },
-    {
-      "path": "/produk/bahan-baku",
-      "title": "Bahan Baku & Foil",
-      "views": 1151,
-      "percentage": 17
-    },
-    {
-      "path": "/karir",
-      "title": "Karir",
-      "views": 812,
-      "percentage": 12
-    },
-    {
-      "path": "/blog",
-      "title": "Blog",
-      "views": 473,
-      "percentage": 7
-    },
-    {
-      "path": "/kontak",
-      "title": "Kontak",
-      "views": 270,
-      "percentage": 4
-    }
-  ],
+  "topPages": [],
   "devices": {
-    "mobile": 4334,
-    "desktop": 2099,
-    "tablet": 339
+    "mobile": 0,
+    "desktop": 0,
+    "tablet": 0
   },
   "sources": {
-    "direct": 2776,
-    "search": 2371,
-    "whatsapp": 1016,
-    "instagram": 609
+    "direct": 0,
+    "search": 0,
+    "whatsapp": 0,
+    "instagram": 0
   },
-  "recentVisits": [
-    {
-      "id": "v_1791514242663",
-      "path": "/layanan",
-      "timestamp": "Baru saja",
-      "device": "mobile",
-      "referrer": "Google Search"
-    },
-    {
-      "id": "v_1791514122284",
-      "path": "/layanan",
-      "timestamp": "Baru saja",
-      "device": "mobile",
-      "referrer": "Google Search"
-    },
-    {
-      "id": "v_1791513882284",
-      "path": "/produk/bahan-baku",
-      "timestamp": "3 menit lalu",
-      "device": "desktop",
-      "referrer": "Direct"
-    },
-    {
-      "id": "v_1791513592284",
-      "path": "/",
-      "timestamp": "10 menit lalu",
-      "device": "mobile",
-      "referrer": "WhatsApp"
-    },
-    {
-      "id": "v_1791513042284",
-      "path": "/karir",
-      "timestamp": "20 menit lalu",
-      "device": "mobile",
-      "referrer": "Instagram"
-    },
-    {
-      "id": "v_1791512442284",
-      "path": "/blog",
-      "timestamp": "30 menit lalu",
-      "device": "desktop",
-      "referrer": "Google Search"
-    }
-  ]
+  "recentVisits": [],
+  "visitorIds": [],
+  "todayVisitorIds": {
+    "date": "2026-10-09",
+    "ids": []
+  }
 }

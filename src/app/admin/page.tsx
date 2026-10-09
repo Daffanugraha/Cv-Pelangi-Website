@@ -1,11 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 export default function AdminLoginPage() {
-  const router = useRouter();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -17,57 +15,33 @@ export default function AdminLoginPage() {
     setLoading(true);
     setError("");
 
-    const res = await fetch("/api/admin/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        username: username.trim(),
-        password: password.trim(),
-      }),
-    });
-
-    const data = await res.json();
-    setLoading(false);
-
-    if (data.ok) {
-      window.location.href = "/admin/dashboard";
-    } else {
-      setError(data.error ?? "Login gagal. Periksa kembali username & password Anda.");
-    }
-  }
-
-  async function handleAutoFill() {
-    setUsername("admin");
-    setPassword("pelangiuv2024");
-    setError("");
-    setLoading(true);
-
     try {
       const res = await fetch("/api/admin/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          username: "admin",
-          password: "pelangiuv2024",
+          username: username.trim(),
+          password: password.trim(),
         }),
       });
 
       const data = await res.json();
+      setLoading(false);
+
       if (data.ok) {
         window.location.href = "/admin/dashboard";
       } else {
-        setLoading(false);
-        setError(data.error ?? "Login gagal.");
+        setError(data.error ?? "Username atau password salah.");
       }
     } catch {
       setLoading(false);
-      window.location.href = "/admin/dashboard";
+      setError("Terjadi kesalahan jaringan. Coba beberapa saat lagi.");
     }
   }
 
   return (
     <div className="min-h-screen bg-[#0b0c0f] text-white flex items-center justify-center p-4 relative overflow-hidden font-sans">
-      {/* Ambient Red & Dark Glow Accents (Identik dengan Desain Website Pelangi UV) */}
+      {/* Ambient Red & Dark Glow Accents */}
       <div className="absolute -top-32 -right-32 w-96 h-96 rounded-full bg-bracket-border/15 blur-3xl pointer-events-none" />
       <div className="absolute -bottom-32 -left-32 w-96 h-96 rounded-full bg-bracket-border/10 blur-3xl pointer-events-none" />
       <div className="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none opacity-40" />
@@ -83,10 +57,10 @@ export default function AdminLoginPage() {
             />
           </div>
           <h1 className="text-2xl font-heading font-extrabold text-white tracking-tight">
-            Portal Admin Website
+            Portal Masuk Admin
           </h1>
           <p className="text-gray-400 text-xs sm:text-sm mt-1 font-sans">
-            Panel Pengelolaan Konten &amp; Layanan CV Pelangi UV
+            Masuk untuk mengakses dashboard manajemen website
           </p>
         </div>
 
@@ -107,7 +81,7 @@ export default function AdminLoginPage() {
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   className="w-full bg-[#1b1e26] border border-white/10 rounded-xl pl-11 pr-4 py-3 text-white text-sm placeholder-gray-500 focus:outline-none focus:border-bracket-border focus:ring-1 focus:ring-bracket-border transition font-sans"
-                  placeholder="Masukkan username admin"
+                  placeholder="Username"
                   required
                   autoComplete="username"
                 />
@@ -128,13 +102,14 @@ export default function AdminLoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full bg-[#1b1e26] border border-white/10 rounded-xl pl-11 pr-12 py-3 text-white text-sm placeholder-gray-500 focus:outline-none focus:border-bracket-border focus:ring-1 focus:ring-bracket-border transition font-sans"
-                  placeholder="••••••••"
+                  placeholder="Password"
                   required
                   autoComplete="current-password"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
+                  aria-label={showPassword ? "Sembunyikan password" : "Tampilkan password"}
                   className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 transition cursor-pointer"
                 >
                   <span className="material-symbols-outlined text-xl">
@@ -170,24 +145,7 @@ export default function AdminLoginPage() {
                 </>
               )}
             </button>
-
-            {/* Quick Fill & Login Button */}
-            <button
-              type="button"
-              onClick={handleAutoFill}
-              className="w-full mt-2.5 py-2.5 px-3 rounded-xl border border-white/10 hover:border-white/20 bg-white/5 hover:bg-white/10 text-gray-300 text-xs font-mono transition flex items-center justify-center gap-1.5 cursor-pointer"
-            >
-              <span className="material-symbols-outlined text-sm text-bracket-border">key</span>
-              <span>Masuk Otomatis (admin / pelangiuv2024)</span>
-            </button>
           </form>
-
-          <div className="mt-6 pt-5 border-t border-white/5 text-center">
-            <p className="text-xs text-gray-500 font-sans leading-relaxed">
-              Panel khusus otorisasi staf &amp; manajemen CV Pelangi UV.<br />
-              Sistem terlindungi enkripsi sesi terstandarisasi.
-            </p>
-          </div>
         </div>
 
         {/* Back to Site Link */}
