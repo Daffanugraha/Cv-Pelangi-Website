@@ -777,9 +777,104 @@ export const consultationScenarios: ScenarioPattern[] = [
   },
 ];
 
+/**
+ * Mendeteksi apakah input pengguna berada di luar topik layanan CV Pelangi UV
+ * (misal: hitungan matematika seperti "1+1", rumus, coding, politik, cuaca, dll.)
+ */
+export function isOffTopicQuery(rawText: string): boolean {
+  const text = rawText.trim().toLowerCase();
+  if (!text) return false;
+
+  // 1. Operasi matematika murni (contoh: "1+1", "1 + 1", "5*5", "10/2", "100-50", "2 + 2 = ?", "1 + 1 berapa", "berapa 1+1")
+  // Pastikan tidak mengenai dimensi/satuan cetak seperti "65x100 cm" atau "260 gsm"
+  const isPureMath = /^(\s*(hitung|berapa|hasil(\s+dari)?)\s*)?\d+(\.\d+)?\s*([\+\-\*\/xX]|\btambah\b|\bplus\b|\bkurang\b|\bminus\b|\bkali\b|\bbagi\b)\s*\d+(\.\d+)?(\s*([\+\-\*\/xX]|\btambah\b|\bplus\b|\bkurang\b|\bminus\b|\bkali\b|\bbagi\b)\s*\d+(\.\d+)?)*\s*(=|\?|\bberapa\b)*\s*$/i.test(text);
+  if (isPureMath) {
+    if (!/(cm|mm|lembar|lbr|pcs|gsm|rim|roll|box|dus|oplah|plano|ukuran|kertas)/i.test(text)) {
+      return true;
+    }
+  }
+
+  // Operasi matematika dalam bentuk kata (contoh: "satu tambah satu", "dua kali dua", "berapa 5 tambah 5")
+  const isWordMath = /^(\s*(hitung|berapa|hasil(\s+dari)?)\s*)?(satu|dua|tiga|empat|lima|enam|tujuh|delapan|sembilan|sepuluh|\d+)\s*(tambah|plus|kurang|minus|kali|bagi)\s*(satu|dua|tiga|empat|lima|enam|tujuh|delapan|sembilan|sepuluh|\d+)(\s*(=|\?|\bberapa\b))*\s*$/i.test(text);
+  if (isWordMath) {
+    return true;
+  }
+
+  // 2. Pertanyaan hitungan / rumus eksplisit
+  if (
+    /^(hitung(kan)?|berapakah hasil|berapa hasil|rumus)\s+(\d+|matematika|aljabar|sin|cos|tan|akar|integral|turunan|fisika|kimia)/i.test(text)
+  ) {
+    return true;
+  }
+
+  // 3. Permintaan coding / programming umum
+  if (
+    /\b(buatkan (kode|script|koding|coding|program|fungsi|class)|write code|python script|javascript code|flutter code|php code|sql query|c\+\+|java class|html css)\b/i.test(text)
+  ) {
+    return true;
+  }
+
+  // 4. Topik umum di luar percetakan: cuaca, politik, resep, zodiak, lagu, cerita, dll.
+  const offTopicKeywords = [
+    /\b(siapa presiden|wakil presiden|menteri|partai|pilpres|pemilu|politik)\b/i,
+    /\b(cuaca hari ini|prakiraan cuaca|hujan gak hari ini|ramalan zodiak|horoskop)\b/i,
+    /\b(resep\s+\w+|resep masakan|cara memasak|cara masak|bumbu\s+\w+|resep kue|cara buat kue)\b/i,
+    /\b(lirik lagu|chord gitar|kunci gitar|chord lagu)\b/i,
+    /\b(dongeng|cerita hantu|cerita lucu|pantun cinta|puisi cinta|jokes bapak)\b/i,
+    /\b(siapa penemu|ibu kota negara|sejarah perang dunia|tahun berapa indonesia merdeka)\b/i,
+    /\b(skor bola|hasil pertandingan bola|liga champion|klasemen liga)\b/i,
+    /\b(game online|cheat game|mobile legends|free fire|genshin)\b/i,
+  ];
+
+  for (const pattern of offTopicKeywords) {
+    if (pattern.test(text)) {
+      if (!/(cetak|finishing|pelangi|uv|foil|laminat|pond|kertas|kemasan|packaging|box)/i.test(text)) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
 // Fallback cerdas jika user mengetik pertanyaan yang sangat unik/spesifik
 export const getSmartAdvisorReply = (userText: string): AdvisorResponse => {
   const cleanText = userText.trim().toLowerCase();
+
+  // 0. Cek apakah pertanyaan di luar topik (misal: hitungan matematika "1+1", rumus, coding, dsb.)
+  if (isOffTopicQuery(cleanText)) {
+    return {
+      html: `
+        <div class="space-y-2 text-left">
+          <div class="flex items-center gap-1.5 text-neutral-400 font-medium text-[10px] uppercase tracking-wider">
+            <span class="w-1.5 h-1.5 rounded-full bg-bracket-border"></span>
+            <span>Pelangi Assistant</span>
+          </div>
+          <p class="font-bold text-neutral-900 text-xs sm:text-[13px] leading-snug">
+            Maaf, pertanyaan Anda di luar topik layanan kami. 🙏
+          </p>
+          <p class="text-neutral-600 text-xs leading-relaxed">
+            Saya adalah asisten virtual khusus <strong>CV Pelangi UV</strong> yang difokuskan membantu konsultasi seputar <strong>jasa finishing percetakan</strong> (Spot UV, Hot Stamping Foil, Laminating Doff/Glossy, Pond & Emboss), <strong>bahan baku cetak</strong>, serta informasi layanan workshop kami di Bizpark Sidoarjo.
+          </p>
+          <p class="text-neutral-500 text-[11px] leading-relaxed pt-1">
+            Apakah ada kebutuhan spesifikasi kemasan, masalah karton cetak, atau bahan baku yang bisa saya bantu?
+          </p>
+        </div>
+      `,
+      chips: [
+        "Layanan Finishing Cetak",
+        "Pricelist Foil & BOPP",
+        "Konsultasi Kemasan Produk",
+        "Hubungi CS WhatsApp",
+      ],
+      suggestedAction: {
+        label: "Konsultasi CS WhatsApp",
+        url: "https://wa.me/6282231019363?text=Halo%20Customer%20Service%20CV%20Pelangi%20UV%2C%20saya%20ingin%20konsultasi%20layanan%20finishing%20cetak.%20Terima%20kasih.",
+        icon: "chat",
+        type: "wa",
+      },
+    };
+  }
 
   // 1. Cek skenario yang cocok berdasarkan kata kunci
   for (const scenario of consultationScenarios) {

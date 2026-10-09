@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getSmartAdvisorReply } from "@/lib/chatbotAdvisor";
+import { getSmartAdvisorReply, isOffTopicQuery } from "@/lib/chatbotAdvisor";
 
 interface HistoryMessage {
   sender?: string;
@@ -31,7 +31,14 @@ const MARKETING_TEAM = [
  * Membuat tombol WhatsApp terstruktur untuk 3 tim marketing resmi CV Pelangi UV
  */
 function buildMarketingButtons(userQuery: string): string {
-  const querySummary = userQuery.slice(0, 70);
+  const isPrintingRelated =
+    /(cetak|finishing|uv|foil|laminat|pond|emboss|kertas|kemasan|box|dus|roll|bopp|lem|varnish|harga|plano|order|pesan|sampel)/i.test(
+      userQuery
+    );
+  const querySummary = isPrintingRelated
+    ? userQuery.slice(0, 70)
+    : "Layanan Finishing Cetak CV Pelangi UV";
+
   const links = MARKETING_TEAM.map((m) => {
     const waUrl = `https://wa.me/${m.phone}?text=${encodeURIComponent(
       `Halo ${m.name}, saya ingin konsultasi/tanya: ${querySummary}`
@@ -151,6 +158,17 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // 0. Guard Cepat: Tolak langsung pertanyaan matematika iseng ("1+1", "2*5") atau hal di luar percetakan
+    if (isOffTopicQuery(message)) {
+      const offTopicReply = getSmartAdvisorReply(message);
+      return NextResponse.json({
+        html: offTopicReply.html,
+        chips: offTopicReply.chips,
+        suggestedAction: offTopicReply.suggestedAction,
+        source: "off-topic-guard",
+      });
+    }
+
     const groqApiKey = process.env.GROQ_API_KEY;
     const groqModel = process.env.GROQ_MODEL || "qwen/qwen3.8-27b";
     const geminiApiKey = process.env.GEMINI_API_KEY;
@@ -196,7 +214,12 @@ CARA MENJAWAB SEBAGAI AI KONSULTAN CERDAS (PANDUAN KETAT):
 2. MULTI-TURN CONTEXT MEMORY:
    - Jika pengguna sudah menyebut namanya (misal Daffa), sapa dengan sopan "Pak Daffa" atau "Daffa".
    - Pahami alur percakapan sebelumnya (misal: kemasan rokok, micro emboss, dsb.) secara kontekstual tanpa mengulang dari nol.
-3. LARANGAN:
+3. LARANGAN & BATASAN RUANG LINGKUP (SANGAT KETAT):
+   - RUANG LINGKUP KHUSUS: Anda HANYA asisten dan konsultan teknis resmi dari CV Pelangi UV. Anda HANYA melayani pertanyaan terkait jasa finishing percetakan (Spot UV, Hot Stamping Foil, Cold Foil, Laminating Doff/Glossy, Pond & Emboss), bahan baku cetak (roll foil, film BOPP, lem, tinta UV), spesifikasi kemasan, serta info kontak/workshop CV Pelangi UV di Bizpark Sidoarjo.
+   - DILARANG KERAS menjawab hal di luar topik percetakan & CV Pelangi UV:
+     * DILARANG menjawab pertanyaan perhitungan matematika murni / iseng seperti "1 + 1", "5 x 5", "hitung akar", dsb. JANGAN PERNAH menghitung atau memberi jawabannya!
+     * DILARANG menjawab pertanyaan coding, resep masakan, cuaca, politik, lirik lagu, cerita, zodiak, atau hal umum lainnya.
+     * JIKA DITANYA HAL DI LUAR TOPIK: Tolak dengan sangat sopan dan singkat (1-2 kalimat): Nyatakan bahwa Anda adalah asisten virtual khusus CV Pelangi UV yang fokus pada layanan finishing percetakan dan bahan baku cetak, lalu tawarkan apakah ada kebutuhan seputar kemasan atau cetakan yang bisa dibantu.
    - DILARANG menggunakan sapaan alay seperti "hai kak", "halo kak".
    - DILARANG menyebut "kirimkan file AI/PDF" atau menjanjikan template kata-kata kaku di akhir teks. Tombol WhatsApp marketing sudah otomatis kami pasang di bawah jawaban.`;
 
