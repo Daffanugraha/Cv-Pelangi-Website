@@ -86,14 +86,14 @@ function formatDateLabel(d: Date): string {
 }
 
 const KNOWN_PAGES: Record<string, string> = {
-  "/": "Beranda CV Pelangi UV",
-  "/layanan": "Layanan Finishing Cetak (Spot UV & Foil)",
-  "/produk/bahan-baku": "Grosir Roll Foil, BOPP & Lem Cetak",
-  "/karir": "Karir & Lowongan Kerja",
-  "/blog": "Artikel & Wawasan Percetakan",
-  "/kontak": "Kontak Workshop & Sales Bizpark",
-  "/galeri-momen": "Galeri Momen & Kegiatan Tim",
-  "/pengaplikasian-produk": "Inspirasi Aplikasi Produk & Packaging",
+  "/": "Beranda",
+  "/layanan": "Layanan Finishing",
+  "/produk/bahan-baku": "Bahan Baku & Foil",
+  "/karir": "Karir",
+  "/blog": "Blog",
+  "/kontak": "Kontak",
+  "/galeri-momen": "Galeri Momen",
+  "/pengaplikasian-produk": "Aplikasi Produk",
 };
 
 /**
@@ -111,7 +111,6 @@ function generateInitialAnalytics(): AnalyticsData {
     d.setDate(d.getDate() - i);
 
     const isWeekend = d.getDay() === 0 || d.getDay() === 6;
-    // Weekday traffic 180-320, weekend traffic 90-160
     const baseViews = isWeekend
       ? Math.floor(90 + Math.random() * 70)
       : Math.floor(190 + Math.random() * 130);
@@ -135,37 +134,37 @@ function generateInitialAnalytics(): AnalyticsData {
   const topPages: PageStat[] = [
     {
       path: "/",
-      title: "Beranda CV Pelangi UV",
+      title: "Beranda",
       views: Math.floor(totalPageviews * 0.36),
       percentage: 36,
     },
     {
       path: "/layanan",
-      title: "Layanan Finishing Cetak",
+      title: "Layanan Finishing",
       views: Math.floor(totalPageviews * 0.24),
       percentage: 24,
     },
     {
       path: "/produk/bahan-baku",
-      title: "Grosir Roll Foil & Bahan Baku",
+      title: "Bahan Baku & Foil",
       views: Math.floor(totalPageviews * 0.17),
       percentage: 17,
     },
     {
       path: "/karir",
-      title: "Karir & Lowongan Kerja",
+      title: "Karir",
       views: Math.floor(totalPageviews * 0.12),
       percentage: 12,
     },
     {
       path: "/blog",
-      title: "Artikel & Wawasan Percetakan",
+      title: "Blog",
       views: Math.floor(totalPageviews * 0.07),
       percentage: 7,
     },
     {
       path: "/kontak",
-      title: "Kontak & Lokasi Bizpark Sidoarjo",
+      title: "Kontak",
       views: Math.floor(totalPageviews * 0.04),
       percentage: 4,
     },

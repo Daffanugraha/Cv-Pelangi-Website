@@ -79,12 +79,9 @@ export default function DashboardPage() {
 
   return (
     <AdminShell>
-      {/* 1. Header dengan Quick Actions */}
+      {/* 1. Header */}
       <AdminPageHeader
-        title="Dashboard Ikhtisar"
-        description="Ringkasan aktivitas operasional, berkas kandidat pelamar, pesanan lead, dan katalog media CV Pelangi UV."
-        badge="Sistem Aktif"
-        badgeVariant="success"
+        title="Dashboard"
         actions={
           <div className="flex items-center gap-2">
             <button

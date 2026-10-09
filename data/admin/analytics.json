@@ -190,37 +190,37 @@
   "topPages": [
     {
       "path": "/",
-      "title": "Beranda CV Pelangi UV",
+      "title": "Beranda",
       "views": 2437,
       "percentage": 36
     },
     {
       "path": "/layanan",
-      "title": "Layanan Finishing Cetak",
+      "title": "Layanan Finishing",
       "views": 1625,
       "percentage": 24
     },
     {
       "path": "/produk/bahan-baku",
-      "title": "Grosir Roll Foil & Bahan Baku",
-      "views": 1150,
+      "title": "Bahan Baku & Foil",
+      "views": 1151,
       "percentage": 17
     },
     {
       "path": "/karir",
-      "title": "Karir & Lowongan Kerja",
+      "title": "Karir",
       "views": 812,
       "percentage": 12
     },
     {
       "path": "/blog",
-      "title": "Artikel & Wawasan Percetakan",
+      "title": "Blog",
       "views": 473,
       "percentage": 7
     },
     {
       "path": "/kontak",
-      "title": "Kontak & Lokasi Bizpark Sidoarjo",
+      "title": "Kontak",
       "views": 270,
       "percentage": 4
     }

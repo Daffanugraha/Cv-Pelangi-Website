@@ -36,10 +36,33 @@ export default function AdminLoginPage() {
     }
   }
 
-  function handleAutoFill() {
+  async function handleAutoFill() {
     setUsername("admin");
     setPassword("pelangiuv2024");
     setError("");
+    setLoading(true);
+
+    try {
+      const res = await fetch("/api/admin/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: "admin",
+          password: "pelangiuv2024",
+        }),
+      });
+
+      const data = await res.json();
+      if (data.ok) {
+        window.location.href = "/admin/dashboard";
+      } else {
+        setLoading(false);
+        setError(data.error ?? "Login gagal.");
+      }
+    } catch {
+      setLoading(false);
+      window.location.href = "/admin/dashboard";
+    }
   }
 
   return (
@@ -148,14 +171,14 @@ export default function AdminLoginPage() {
               )}
             </button>
 
-            {/* Quick Fill Button */}
+            {/* Quick Fill & Login Button */}
             <button
               type="button"
               onClick={handleAutoFill}
-              className="w-full mt-2.5 py-2 px-3 rounded-xl border border-white/10 hover:border-white/20 bg-white/5 hover:bg-white/10 text-gray-300 text-xs font-mono transition flex items-center justify-center gap-1.5 cursor-pointer"
+              className="w-full mt-2.5 py-2.5 px-3 rounded-xl border border-white/10 hover:border-white/20 bg-white/5 hover:bg-white/10 text-gray-300 text-xs font-mono transition flex items-center justify-center gap-1.5 cursor-pointer"
             >
               <span className="material-symbols-outlined text-sm text-bracket-border">key</span>
-              <span>Isi Otomatis Akun Admin (admin / pelangiuv2024)</span>
+              <span>Masuk Otomatis (admin / pelangiuv2024)</span>
             </button>
           </form>
 

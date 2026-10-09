@@ -332,12 +332,9 @@ function ShellInner({ children }: { children: React.ReactNode }) {
             >
               <span className="material-symbols-outlined text-2xl">menu</span>
             </button>
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="text-xs font-mono font-bold text-gray-500 uppercase tracking-wider">
-                Sistem Aktif
-              </span>
-            </div>
+            <span className="text-xs font-semibold text-gray-500">
+              Admin Panel
+            </span>
           </div>
 
           <div className="flex items-center gap-3">
