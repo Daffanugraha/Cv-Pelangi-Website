@@ -80,14 +80,31 @@ export default function AdminBlogPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: deleteTarget.id }),
       });
+
+      const resData = await res.json().catch(() => ({}));
+
       if (res.ok) {
         setFeedbackMsg(`Artikel "${deleteTarget.title}" berhasil dihapus.`);
         setTimeout(() => setFeedbackMsg(""), 3500);
-        setArticles((prev) => prev.filter((a) => a.id !== deleteTarget.id));
+        setArticles((prev) =>
+          prev.filter(
+            (a) =>
+              a.id !== deleteTarget.id &&
+              a.slug !== deleteTarget.id &&
+              a.title !== deleteTarget.title
+          )
+        );
+        setDeleteTarget(null);
+      } else {
+        alert(resData.error || "Gagal menghapus artikel. Silakan coba lagi.");
         setDeleteTarget(null);
       }
     } catch (err) {
       console.error("Gagal menghapus artikel:", err);
+      setArticles((prev) =>
+        prev.filter((a) => a.id !== deleteTarget.id && a.title !== deleteTarget.title)
+      );
+      setDeleteTarget(null);
     } finally {
       setDeleting(false);
     }

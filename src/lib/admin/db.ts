@@ -12,13 +12,16 @@ import { featuredArticle, articlesData, ArticleItem } from "@/lib/data/articles"
 import { query, isPostgresConfigured } from "@/lib/db/postgres";
 
 // ---------------------------------------------------------------------------
-// Paths
+// Paths & Persistence Helpers
+// Mendukung penyimpanan lokal dan Vercel Serverless Function (/tmp fallback + in-memory store)
 // ---------------------------------------------------------------------------
 const DATA_DIR = path.join(process.cwd(), "data", "admin");
 
 function ensureDir() {
   if (!fs.existsSync(DATA_DIR)) {
-    fs.mkdirSync(DATA_DIR, { recursive: true });
+    try {
+      fs.mkdirSync(DATA_DIR, { recursive: true });
+    } catch {}
   }
 }
 
@@ -26,20 +29,60 @@ function filePath(name: string) {
   return path.join(DATA_DIR, `${name}.json`);
 }
 
+function tmpFilePath(name: string) {
+  return path.join("/tmp", `cv_pelangi_${name}.json`);
+}
+
+// In-memory cache agar operasi CRUD instan dan konsisten antar request
+const memoryStore = new Map<string, unknown>();
+
 function readJSON<T>(name: string, fallback: T): T {
-  ensureDir();
-  const fp = filePath(name);
-  if (!fs.existsSync(fp)) return fallback;
-  try {
-    return JSON.parse(fs.readFileSync(fp, "utf-8")) as T;
-  } catch {
-    return fallback;
+  if (memoryStore.has(name)) {
+    return memoryStore.get(name) as T;
   }
+
+  // 1. Cek file /tmp jika sebelumnya sudah ada perubahan di runtime serverless
+  try {
+    const tfp = tmpFilePath(name);
+    if (fs.existsSync(tfp)) {
+      const data = JSON.parse(fs.readFileSync(tfp, "utf-8")) as T;
+      memoryStore.set(name, data);
+      return data;
+    }
+  } catch {}
+
+  // 2. Cek file data repo
+  try {
+    ensureDir();
+    const fp = filePath(name);
+    if (fs.existsSync(fp)) {
+      const data = JSON.parse(fs.readFileSync(fp, "utf-8")) as T;
+      memoryStore.set(name, data);
+      return data;
+    }
+  } catch {}
+
+  memoryStore.set(name, fallback);
+  return fallback;
 }
 
 function writeJSON(name: string, data: unknown) {
-  ensureDir();
-  fs.writeFileSync(filePath(name), JSON.stringify(data, null, 2), "utf-8");
+  // Selalu update memory store agar query instan berikutnya sinkron
+  memoryStore.set(name, data);
+  const jsonStr = JSON.stringify(data, null, 2);
+
+  // 1. Tulis ke direktori repo (berhasil di local development)
+  try {
+    ensureDir();
+    fs.writeFileSync(filePath(name), jsonStr, "utf-8");
+  } catch {
+    // 2. Jika read-only filesystem (Vercel Serverless Function), fallback ke /tmp
+    try {
+      fs.writeFileSync(tmpFilePath(name), jsonStr, "utf-8");
+    } catch (err) {
+      console.warn(`[writeJSON ${name} /tmp write failed]:`, err);
+    }
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -508,8 +551,13 @@ export function updateBlogArticle(id: string, patch: Partial<BlogArticleItem>) {
 }
 
 export function deleteBlogArticle(id: string) {
+  const cleanTarget = (id || "").trim().toLowerCase();
   const articles = getBlogArticles().filter(
-    (a) => a.id !== id && a.slug !== id
+    (a) =>
+      a.id !== id &&
+      a.slug !== id &&
+      a.title.toLowerCase().trim() !== cleanTarget &&
+      a.slug.toLowerCase().trim() !== cleanTarget
   );
   saveBlogArticles(articles);
 }
