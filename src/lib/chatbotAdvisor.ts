@@ -66,7 +66,7 @@ const formatAdvice = (options: {
         <a href="${waUrl}" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-neutral-900 hover:bg-black text-white text-[11px] font-medium transition-all shadow-xs">
           <span class="w-1.5 h-1.5 rounded-full bg-[#25D366]"></span>
           <span>Diskusi Teknis di WhatsApp</span>
-          <span class="material-symbols-outlined text-[13px] text-neutral-400">arrow_forward</span>
+          <svg class="w-3 h-3 text-neutral-400 inline-block shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
       </div>
     </div>

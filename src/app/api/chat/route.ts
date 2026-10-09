@@ -7,62 +7,6 @@ interface HistoryMessage {
 }
 
 /**
- * 3 Tim Marketing Resmi CV Pelangi UV dari halaman Kontak Website
- */
-const MARKETING_TEAM = [
-  {
-    name: "Bu Nurul Islamiyah",
-    phone: "6282231019363",
-    display: "0822-3101-9363",
-  },
-  {
-    name: "Mbak Fathia Rizky",
-    phone: "6285211543430",
-    display: "0852-1154-3430",
-  },
-  {
-    name: "Pak Aris Waluyo",
-    phone: "6281803727671",
-    display: "0818-0372-7671",
-  },
-];
-
-/**
- * Membuat tombol WhatsApp terstruktur untuk 3 tim marketing resmi CV Pelangi UV
- */
-function buildMarketingButtons(userQuery: string): string {
-  const isPrintingRelated =
-    /(cetak|finishing|uv|foil|laminat|pond|emboss|kertas|kemasan|box|dus|roll|bopp|lem|varnish|harga|plano|order|pesan|sampel)/i.test(
-      userQuery
-    );
-  const querySummary = isPrintingRelated
-    ? userQuery.slice(0, 70)
-    : "Layanan Finishing Cetak CV Pelangi UV";
-
-  const links = MARKETING_TEAM.map((m) => {
-    const waUrl = `https://wa.me/${m.phone}?text=${encodeURIComponent(
-      `Halo ${m.name}, saya ingin konsultasi/tanya: ${querySummary}`
-    )}`;
-    return `
-      <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-neutral-900 hover:bg-black text-white text-[11px] font-medium transition-all shadow-2xs">
-        <span class="w-1.5 h-1.5 rounded-full bg-[#25D366]"></span>
-        <span>WA ${m.name}</span>
-        <span class="material-symbols-outlined text-[12px] text-neutral-400">arrow_forward</span>
-      </a>
-    `;
-  }).join("");
-
-  return `
-    <div class="pt-2 border-t border-neutral-100 mt-2">
-      <p class="text-[11px] text-neutral-500 font-medium mb-1.5">Hubungi Tim Marketing Langsung via WhatsApp:</p>
-      <div class="flex flex-wrap gap-1.5">
-        ${links}
-      </div>
-    </div>
-  `;
-}
-
-/**
  * Mengonversi output teks dari LLM (Markdown) menjadi struktur HTML bersih
  */
 function formatLlmResponseToHtml(raw: string): string {
@@ -96,6 +40,10 @@ function formatLlmResponseToHtml(raw: string): string {
     line = line.replace(/__(.*?)__/g, "<strong>$1</strong>");
     line = line.replace(/(^|[^*])\*(?!\s)([^*]+?)\*(?!\*)/g, "$1<em>$2</em>");
     line = line.replace(/(^|[^_])_(?!\s)([^_]+?)_(?!_)/g, "$1<em>$2</em>");
+    line = line.replace(
+      /\[(.*?)\]\((https?:\/\/[^\s\)]+)\)/g,
+      '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-neutral-900 underline font-medium hover:text-black">$1</a>'
+    );
 
     if (/^[-*•]\s+/.test(line)) {
       if (inOl) {
@@ -210,7 +158,7 @@ CARA MENJAWAB SEBAGAI AI KONSULTAN CERDAS (PANDUAN KETAT):
 1. JAWABAN SINGKAT, LUWES, DAN SOLUTIF (MAKSIMAL 1-2 PARAGRAF RINGKAS):
    - Jawab langsung intinya. Jika ditanya harga, sebutkan kisaran harga atau angka varian utamanya secara luwes dalam kalimat alami, TIDAK PERLU membuat list panjang tabel yang kaku.
    - JANGAN meminta file desain AI/PDF atau menyinggung "kirimkan file AI/PDF" atau "swatch sample kit gratis" kecuali memang ditanyakan oleh user.
-   - Cukup berikan penjelasan teknis/harga secara singkat, lalu persilakan user melanjutkan diskusi dengan tim marketing (Bu Nurul, Mbak Fathia, atau Pak Aris).
+   - Cukup berikan penjelasan teknis/harga secara singkat dan solutif. Jika relevan atau pengguna menanyakan kontak, sebutkan kontak tim marketing resmi CV Pelangi UV.
 2. MULTI-TURN CONTEXT MEMORY:
    - Jika pengguna sudah menyebut namanya (misal Daffa), sapa dengan sopan "Pak Daffa" atau "Daffa".
    - Pahami alur percakapan sebelumnya (misal: kemasan rokok, micro emboss, dsb.) secara kontekstual tanpa mengulang dari nol.
@@ -221,7 +169,7 @@ CARA MENJAWAB SEBAGAI AI KONSULTAN CERDAS (PANDUAN KETAT):
      * DILARANG menjawab pertanyaan coding, resep masakan, cuaca, politik, lirik lagu, cerita, zodiak, atau hal umum lainnya.
      * JIKA DITANYA HAL DI LUAR TOPIK: Tolak dengan sangat sopan dan singkat (1-2 kalimat): Nyatakan bahwa Anda adalah asisten virtual khusus CV Pelangi UV yang fokus pada layanan finishing percetakan dan bahan baku cetak, lalu tawarkan apakah ada kebutuhan seputar kemasan atau cetakan yang bisa dibantu.
    - DILARANG menggunakan sapaan alay seperti "hai kak", "halo kak".
-   - DILARANG menyebut "kirimkan file AI/PDF" atau menjanjikan template kata-kata kaku di akhir teks. Tombol WhatsApp marketing sudah otomatis kami pasang di bawah jawaban.`;
+   - DILARANG meminta "kirimkan file AI/PDF" kecuali pengguna menanyakannya. Jawab langsung secara informatif, ramah, dan profesional.`;
 
     // 1. Prioritas Utama: Groq API
     if (groqApiKey) {
@@ -304,8 +252,7 @@ CARA MENJAWAB SEBAGAI AI KONSULTAN CERDAS (PANDUAN KETAT):
             groqData.choices?.[0]?.message?.content;
 
           if (generatedText) {
-            let cleanHtml = formatLlmResponseToHtml(generatedText);
-            cleanHtml += buildMarketingButtons(message);
+            const cleanHtml = formatLlmResponseToHtml(generatedText);
 
             return NextResponse.json({
               html: cleanHtml,
@@ -369,8 +316,7 @@ CARA MENJAWAB SEBAGAI AI KONSULTAN CERDAS (PANDUAN KETAT):
             data.candidates?.[0]?.content?.parts?.[0]?.text;
 
           if (generatedText) {
-            let cleanHtml = formatLlmResponseToHtml(generatedText);
-            cleanHtml += buildMarketingButtons(message);
+            const cleanHtml = formatLlmResponseToHtml(generatedText);
 
             return NextResponse.json({
               html: cleanHtml,
