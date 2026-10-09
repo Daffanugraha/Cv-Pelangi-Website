@@ -148,6 +148,29 @@ export default function Navbar() {
     };
   }, [isSearchOpen, isLangOpen, isMobileLangOpen]);
 
+  // Handle URL hash on initial load or popstate
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const scrollToHash = () => {
+      if (window.location.hash) {
+        const target = document.querySelector(window.location.hash) as HTMLElement | null;
+        if (target) {
+          const navHeight = 78;
+          const targetPos = target.getBoundingClientRect().top + window.pageYOffset - navHeight;
+          window.scrollTo({ top: Math.max(0, targetPos), behavior: "smooth" });
+        }
+      }
+    };
+
+    const timer = setTimeout(scrollToHash, 300);
+    window.addEventListener("popstate", scrollToHash);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("popstate", scrollToHash);
+    };
+  }, [pathname]);
+
   const handleHashClick = (e: React.MouseEvent<HTMLAnchorElement>, hash: string) => {
     if (pathname === "/") {
       e.preventDefault();
@@ -156,6 +179,9 @@ export default function Navbar() {
         const navHeight = 78;
         const targetPos = target.getBoundingClientRect().top + window.pageYOffset - navHeight;
         window.scrollTo({ top: Math.max(0, targetPos), behavior: "smooth" });
+        if (typeof window !== "undefined") {
+          window.history.pushState(null, "", hash);
+        }
       }
     }
   };
@@ -169,6 +195,9 @@ export default function Navbar() {
         const navHeight = 78;
         const targetPos = target.getBoundingClientRect().top + window.pageYOffset - navHeight;
         window.scrollTo({ top: Math.max(0, targetPos), behavior: "smooth" });
+        if (typeof window !== "undefined") {
+          window.history.pushState(null, "", hash);
+        }
       }
     }
   };
