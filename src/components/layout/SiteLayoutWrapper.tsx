@@ -5,6 +5,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import FloatingActions from "@/components/layout/FloatingActions";
 import GoogleTranslator from "@/components/layout/GoogleTranslator";
+import VisitorTracker from "@/components/analytics/VisitorTracker";
 import { LanguageProvider } from "@/context/LanguageContext";
 
 export default function SiteLayoutWrapper({
@@ -22,6 +23,7 @@ export default function SiteLayoutWrapper({
   return (
     <LanguageProvider>
       <GoogleTranslator />
+      <VisitorTracker />
       <Navbar />
       <main suppressHydrationWarning className="min-h-screen">
         {children}

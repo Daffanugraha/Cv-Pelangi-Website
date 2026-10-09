@@ -5,6 +5,7 @@ import AdminShell from "../AdminShell";
 import AdminPageHeader from "@/components/admin/AdminPageHeader";
 import DashboardSkeleton from "@/components/admin/dashboard/DashboardSkeleton";
 import DashboardMetricsGrid from "@/components/admin/dashboard/DashboardMetricsGrid";
+import DashboardVisitorStats from "@/components/admin/dashboard/DashboardVisitorStats";
 import DashboardQuickActions from "@/components/admin/dashboard/DashboardQuickActions";
 import DashboardRecentApplicants from "@/components/admin/dashboard/DashboardRecentApplicants";
 import DashboardRecentLeads from "@/components/admin/dashboard/DashboardRecentLeads";
@@ -122,7 +123,10 @@ export default function DashboardPage() {
         momenCount={momenCount}
       />
 
-      {/* 3. Quick Shortcuts Banner */}
+      {/* 3. Grafik Statistik Pengunjung & Halaman Sering Dilihat */}
+      <DashboardVisitorStats initialRange={7} />
+
+      {/* 4. Quick Shortcuts Banner */}
       <DashboardQuickActions newApplicantsCount={newApplicants} />
 
       {/* 4. Two Primary Data Grids: Pelamar Terbaru & Pesan Leads */}

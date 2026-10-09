@@ -9,6 +9,7 @@ export default function DashboardSkeleton() {
           <div key={i} className="h-28 bg-white border border-gray-200 rounded-2xl p-4" />
         ))}
       </div>
+      <div className="h-96 bg-white border border-gray-200 rounded-2xl p-6" />
       <div className="h-24 bg-gray-200 rounded-2xl" />
       <div className="grid lg:grid-cols-2 gap-6">
         <div className="h-80 bg-white border border-gray-200 rounded-2xl" />
