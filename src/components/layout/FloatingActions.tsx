@@ -41,6 +41,16 @@ const INITIAL_BOT_MESSAGE: ChatMessage = {
   `,
 };
 
+function cleanDisplayHtml(rawHtml?: string): string {
+  if (!rawHtml) return "";
+  return rawHtml
+    .replace(/<div class="pt-2 border-t border-neutral-100[\s\S]*$/gi, "")
+    .replace(/Hubungi Tim Marketing Langsung via WhatsApp:?[\s\S]*$/gi, "")
+    .replace(/WA\s+(Bu Nurul|Mbak Fathia|Pak Aris)[^\n<]*arrow_?forward[^\n<]*/gi, "")
+    .replace(/\barrow_?forward\b/gi, "")
+    .trim();
+}
+
 export default function FloatingActions() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([INITIAL_BOT_MESSAGE]);
@@ -98,10 +108,20 @@ export default function FloatingActions() {
     const startTime = Date.now();
 
     try {
-      const formattedHistory = messages.slice(-10).map((m) => ({
-        sender: m.sender,
-        text: m.text || (m.html ? m.html.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim() : ""),
-      }));
+      const formattedHistory = messages.slice(-10).map((m) => {
+        let text = m.text || "";
+        if (!text && m.html) {
+          text = m.html.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+        }
+        text = text
+          .replace(/Hubungi Tim Marketing Langsung via WhatsApp:?[\s\S]*$/gi, "")
+          .replace(/\barrow_?forward\b/gi, "")
+          .trim();
+        return {
+          sender: m.sender,
+          text,
+        };
+      });
 
       const res = await fetch("/api/chat", {
         method: "POST",
@@ -229,7 +249,9 @@ export default function FloatingActions() {
                 <div key={msg.id} className="flex items-start gap-2">
                   <div className="bg-white border border-neutral-200/80 rounded-2xl rounded-tl-xs p-3 sm:p-3.5 max-w-[95%] text-xs sm:text-[13px] leading-relaxed shadow-2xs text-neutral-800">
                     <div
-                      dangerouslySetInnerHTML={{ __html: msg.html || "" }}
+                      dangerouslySetInnerHTML={{
+                        __html: cleanDisplayHtml(msg.html),
+                      }}
                     />
                   </div>
                 </div>

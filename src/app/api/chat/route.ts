@@ -7,10 +7,23 @@ interface HistoryMessage {
 }
 
 /**
+ * Membersihkan riwayat chat dan teks dari sisa teks tombol marketing atau arrow_forward
+ */
+function sanitizeHistoryText(raw?: string): string {
+  if (!raw) return "";
+  return raw
+    .replace(/<div class="pt-2 border-t border-neutral-100[\s\S]*$/gi, "")
+    .replace(/Hubungi Tim Marketing Langsung via WhatsApp:?[\s\S]*$/gi, "")
+    .replace(/WA\s+(Bu Nurul|Mbak Fathia|Pak Aris)[^\n<]*arrow_?forward[^\n<]*/gi, "")
+    .replace(/\barrow_?forward\b/gi, "")
+    .trim();
+}
+
+/**
  * Mengonversi output teks dari LLM (Markdown) menjadi struktur HTML bersih
  */
 function formatLlmResponseToHtml(raw: string): string {
-  let text = raw.replace(/```[a-z]*\n?/gi, "").trim();
+  let text = sanitizeHistoryText(raw.replace(/```[a-z]*\n?/gi, ""));
 
   if (/<(p|ul|ol|div|li)[^>]*>/i.test(text) && !text.includes("* ") && !text.includes("- ")) {
     return text;
@@ -169,7 +182,7 @@ CARA MENJAWAB SEBAGAI AI KONSULTAN CERDAS (PANDUAN KETAT):
      * DILARANG menjawab pertanyaan coding, resep masakan, cuaca, politik, lirik lagu, cerita, zodiak, atau hal umum lainnya.
      * JIKA DITANYA HAL DI LUAR TOPIK: Tolak dengan sangat sopan dan singkat (1-2 kalimat): Nyatakan bahwa Anda adalah asisten virtual khusus CV Pelangi UV yang fokus pada layanan finishing percetakan dan bahan baku cetak, lalu tawarkan apakah ada kebutuhan seputar kemasan atau cetakan yang bisa dibantu.
    - DILARANG menggunakan sapaan alay seperti "hai kak", "halo kak".
-   - DILARANG meminta "kirimkan file AI/PDF" kecuali pengguna menanyakannya. Jawab langsung secara informatif, ramah, dan profesional.`;
+   - DILARANG KERAS menuliskan teks atau footer seperti "Hubungi Tim Marketing Langsung via WhatsApp", "WA Bu Nurul Islamiyah arrow_forward", kata "arrow_forward", atau menempelkan tombol WhatsApp tiruan. Jawab langsung secara informatif, ramah, dan profesional dalam kalimat percakapan mengalir.`;
 
     // 1. Prioritas Utama: Groq API
     if (groqApiKey) {
@@ -219,10 +232,11 @@ CARA MENJAWAB SEBAGAI AI KONSULTAN CERDAS (PANDUAN KETAT):
 
         if (Array.isArray(conversationHistory)) {
           for (const msg of conversationHistory.slice(-10)) {
-            if (!msg.text || !msg.text.trim()) continue;
+            const cleanText = sanitizeHistoryText(msg.text);
+            if (!cleanText) continue;
             groqMessages.push({
               role: msg.sender === "user" ? "user" : "assistant",
-              content: msg.text.trim(),
+              content: cleanText,
             });
           }
         }
@@ -277,10 +291,11 @@ CARA MENJAWAB SEBAGAI AI KONSULTAN CERDAS (PANDUAN KETAT):
 
         if (Array.isArray(conversationHistory)) {
           for (const msg of conversationHistory.slice(-10)) {
-            if (!msg.text || !msg.text.trim()) continue;
+            const cleanText = sanitizeHistoryText(msg.text);
+            if (!cleanText) continue;
             contents.push({
               role: msg.sender === "user" ? "user" : "model",
-              parts: [{ text: msg.text.trim() }],
+              parts: [{ text: cleanText }],
             });
           }
         }
