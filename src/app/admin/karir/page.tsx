@@ -414,6 +414,21 @@ export default function AdminKarirPage() {
                       <h3 className="font-heading font-extrabold text-base sm:text-lg text-gray-900">
                         {job.title}
                       </h3>
+                      <div className="flex items-center gap-2 text-xs text-gray-500 pt-0.5">
+                        <span className="font-mono text-[11px] text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded">
+                          /karir/{job.id}
+                        </span>
+                        <a
+                          href={`/karir/${job.id}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 text-[#F65456] hover:underline font-semibold"
+                          title="Lihat halaman publik lowongan ini"
+                        >
+                          <span>Lihat di Web</span>
+                          <span className="material-symbols-outlined text-[13px]">open_in_new</span>
+                        </a>
+                      </div>
                     </div>
 
                     <div className="flex flex-wrap items-center gap-2 shrink-0">

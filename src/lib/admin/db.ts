@@ -219,13 +219,31 @@ export function getJobs(): CareerJobItem[] {
   return readJSON<CareerJobItem[]>("jobs", CAREER_JOBS);
 }
 
+export function slugifyJobTitle(title: string): string {
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+export function getJobBySlug(slug: string): CareerJobItem | undefined {
+  const jobs = getJobs();
+  const clean = decodeURIComponent(slug).toLowerCase().trim();
+  return jobs.find((j) => {
+    const idMatch = j.id.toLowerCase() === clean;
+    const titleSlug = slugifyJobTitle(j.title);
+    const idSlug = slugifyJobTitle(j.id);
+    return idMatch || titleSlug === clean || idSlug === clean;
+  });
+}
+
 export function saveJobs(jobs: CareerJobItem[]) {
   writeJSON("jobs", jobs);
 }
 
 export function addJobItem(job: Omit<CareerJobItem, "id" | "createdAt">): CareerJobItem {
   const jobs = getJobs();
-  const idSlug = job.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+  const idSlug = slugifyJobTitle(job.title);
   const newJob: CareerJobItem = {
     ...job,
     id: `${idSlug || "posisi"}-${Date.now().toString().slice(-4)}`,

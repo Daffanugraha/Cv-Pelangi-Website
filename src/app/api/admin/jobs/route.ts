@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
     });
 
     try {
-      revalidatePath("/karir");
+      revalidatePath("/karir", "layout");
       revalidatePath("/api/jobs");
     } catch {}
 
@@ -52,7 +52,7 @@ export async function PUT(req: NextRequest) {
     updateJobItem(id, patch);
 
     try {
-      revalidatePath("/karir");
+      revalidatePath("/karir", "layout");
       revalidatePath("/api/jobs");
     } catch {}
 
@@ -72,7 +72,7 @@ export async function PATCH(req: NextRequest) {
     updateJobItem(id, patch);
 
     try {
-      revalidatePath("/karir");
+      revalidatePath("/karir", "layout");
       revalidatePath("/api/jobs");
     } catch {}
 
@@ -102,7 +102,7 @@ export async function DELETE(req: NextRequest) {
     deleteJobItem(id);
 
     try {
-      revalidatePath("/karir");
+      revalidatePath("/karir", "layout");
       revalidatePath("/api/jobs");
     } catch {}
 

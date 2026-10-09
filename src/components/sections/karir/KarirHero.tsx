@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
+import { CareerJob } from "@/data/careers";
 
 interface KarirHeroProps {
   searchQuery: string;
@@ -9,6 +10,8 @@ interface KarirHeroProps {
   selectedDivision: string;
   setSelectedDivision: (div: string) => void;
   totalOpenJobs: number;
+  jobs?: CareerJob[];
+  onApply?: (job: CareerJob) => void;
 }
 
 export default function KarirHero({
@@ -17,6 +20,8 @@ export default function KarirHero({
   selectedDivision,
   setSelectedDivision,
   totalOpenJobs,
+  jobs = [],
+  onApply,
 }: KarirHeroProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -82,6 +87,30 @@ export default function KarirHero({
     { id: "Operational", label: "Operasional & Maintenance" },
   ];
 
+  const matchingJobs = useMemo(() => {
+    if (!searchQuery.trim() || !jobs) return [];
+    const q = searchQuery.toLowerCase().trim();
+    return jobs.filter(
+      (j) =>
+        j.title.toLowerCase().includes(q) ||
+        j.division.toLowerCase().includes(q) ||
+        j.qualifications?.some((qual) => qual.toLowerCase().includes(q))
+    );
+  }, [searchQuery, jobs]);
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsDropdownOpen(false);
+    if (searchQuery.trim() && matchingJobs.length > 0 && onApply) {
+      onApply(matchingJobs[0]);
+      return;
+    }
+    const targetEl = document.getElementById("posisi-terbuka");
+    if (targetEl) {
+      targetEl.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
   return (
     <section className="w-full bg-navbar-black text-on-secondary relative pt-12 sm:pt-16 pb-16 sm:pb-20 border-b border-surface-canvas/10 overflow-hidden rounded-b-[40px] sm:rounded-b-[48px]">
       {/* Background Gambar Galeri Momen (Employee Gathering & Kebersamaan Tim) - Lebih Terang & Jelas */}
@@ -143,10 +172,7 @@ export default function KarirHero({
           <div className="w-full max-w-2xl">
             <div className="relative">
               <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  setIsDropdownOpen(false);
-                }}
+                onSubmit={handleSearchSubmit}
                 className="relative flex items-center bg-surface-neutral-alt/10 border border-surface-canvas/20 rounded-2xl p-1.5 sm:p-2 backdrop-blur-md shadow-2xl focus-within:border-bracket-border transition-colors"
               >
                 <span
@@ -191,46 +217,103 @@ export default function KarirHero({
 
               {/* Instant Suggestion Dropdown */}
               {isDropdownOpen && (
-                <div className="absolute left-0 right-0 top-full mt-2 bg-navbar-dark/95 backdrop-blur-md border border-divider-tint/40 shadow-2xl rounded-2xl p-3 z-50 text-left">
-                  <div className="flex items-center justify-between text-[11px] font-bold text-text-muted px-2 py-1 uppercase tracking-wider">
-                    <span>Filter Kategori Cepat:</span>
-                    <button
-                      type="button"
-                      onClick={() => setIsDropdownOpen(false)}
-                      className="text-text-muted hover:text-white cursor-pointer"
-                    >
-                      Tutup
-                    </button>
-                  </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 mt-1">
-                    {[
-                      { id: "ALL", title: "Semua Posisi", desc: `${totalOpenJobs} lowongan aktif`, icon: "work" },
-                      { id: "Finance", title: "Finance & Pajak", desc: "Admin Pajak, Akuntansi", icon: "account_balance" },
-                      { id: "Marketing", title: "Marketing & Sales", desc: "Account Executive B2B", icon: "campaign" },
-                      { id: "Production", title: "Produksi & Mesin", desc: "Operator Spot UV & Foil", icon: "precision_manufacturing" },
-                      { id: "Warehouse", title: "Gudang & Logistik", desc: "Checker Plano & FIFO", icon: "inventory_2" },
-                      { id: "Operational", title: "Operasional & SPK", desc: "Teknisi Mesin & Admin", icon: "build" },
-                    ].map((item) => (
-                      <button
-                        key={item.id}
-                        type="button"
-                        onClick={() => handleSelectDivision(item.id)}
-                        className="text-left p-2 rounded-xl hover:bg-surface-canvas/10 border border-transparent hover:border-bracket-border/40 flex items-start gap-2.5 text-on-secondary transition-all cursor-pointer"
-                      >
-                        <span translate="no" className="material-symbols-outlined notranslate text-[18px] text-bracket-border shrink-0 mt-0.5">
-                          {item.icon}
-                        </span>
-                        <div>
-                          <div className="text-[12px] font-semibold text-on-secondary">
-                            {item.title}
+                <div className="absolute left-0 right-0 top-full mt-2 bg-navbar-dark/95 backdrop-blur-md border border-divider-tint/40 shadow-2xl rounded-2xl p-3 z-50 text-left max-h-[380px] overflow-y-auto">
+                  {/* Jika ada pencarian teks dan ada lowongan cocok */}
+                  {searchQuery.trim() && matchingJobs.length > 0 ? (
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between text-[11px] font-bold text-text-muted px-2 py-1 uppercase tracking-wider">
+                        <span>Lowongan Ditemukan ({matchingJobs.length}):</span>
+                        <button
+                          type="button"
+                          onClick={() => setIsDropdownOpen(false)}
+                          className="text-text-muted hover:text-white cursor-pointer"
+                        >
+                          Tutup
+                        </button>
+                      </div>
+                      <div className="space-y-1">
+                        {matchingJobs.map((j) => (
+                          <div
+                            key={j.id}
+                            className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 hover:border-bracket-border/40 flex items-center justify-between gap-3 text-on-secondary transition-all"
+                          >
+                            <div className="min-w-0 flex-1">
+                              <div className="text-[13px] font-bold text-white truncate">
+                                {j.title}
+                              </div>
+                              <div className="text-[11px] text-surface-dim">
+                                Divisi {j.division} • {j.type}
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-1.5 shrink-0">
+                              {onApply && j.isOpen && (
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    setIsDropdownOpen(false);
+                                    onApply(j);
+                                  }}
+                                  className="px-3 py-1.5 rounded-lg bg-bracket-border hover:bg-primary text-white text-xs font-bold transition shadow-xs cursor-pointer flex items-center gap-1"
+                                >
+                                  <span className="material-symbols-outlined text-[14px]">send</span>
+                                  <span>Lamar Langsung</span>
+                                </button>
+                              )}
+                              <Link
+                                href={`/karir/${j.id}`}
+                                onClick={() => setIsDropdownOpen(false)}
+                                className="px-2.5 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-semibold transition"
+                              >
+                                Detail
+                              </Link>
+                            </div>
                           </div>
-                          <div className="text-[11px] text-surface-dim line-clamp-1">
-                            {item.desc}
-                          </div>
-                        </div>
-                      </button>
-                    ))}
-                  </div>
+                        ))}
+                      </div>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="flex items-center justify-between text-[11px] font-bold text-text-muted px-2 py-1 uppercase tracking-wider">
+                        <span>Filter Kategori Cepat:</span>
+                        <button
+                          type="button"
+                          onClick={() => setIsDropdownOpen(false)}
+                          className="text-text-muted hover:text-white cursor-pointer"
+                        >
+                          Tutup
+                        </button>
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 mt-1">
+                        {[
+                          { id: "ALL", title: "Semua Posisi", desc: `${totalOpenJobs} lowongan aktif`, icon: "work" },
+                          { id: "Finance", title: "Finance & Pajak", desc: "Admin Pajak, Akuntansi", icon: "account_balance" },
+                          { id: "Marketing", title: "Marketing & Sales", desc: "Account Executive B2B", icon: "campaign" },
+                          { id: "Production", title: "Produksi & Mesin", desc: "Operator Spot UV & Foil", icon: "precision_manufacturing" },
+                          { id: "Warehouse", title: "Gudang & Logistik", desc: "Checker Plano & FIFO", icon: "inventory_2" },
+                          { id: "Operational", title: "Operasional & SPK", desc: "Teknisi Mesin & Admin", icon: "build" },
+                        ].map((item) => (
+                          <button
+                            key={item.id}
+                            type="button"
+                            onClick={() => handleSelectDivision(item.id)}
+                            className="text-left p-2 rounded-xl hover:bg-surface-canvas/10 border border-transparent hover:border-bracket-border/40 flex items-start gap-2.5 text-on-secondary transition-all cursor-pointer"
+                          >
+                            <span translate="no" className="material-symbols-outlined notranslate text-[18px] text-bracket-border shrink-0 mt-0.5">
+                              {item.icon}
+                            </span>
+                            <div>
+                              <div className="text-[12px] font-semibold text-on-secondary">
+                                {item.title}
+                              </div>
+                              <div className="text-[11px] text-surface-dim line-clamp-1">
+                                {item.desc}
+                              </div>
+                            </div>
+                          </button>
+                        ))}
+                      </div>
+                    </>
+                  )}
                 </div>
               )}
             </div>

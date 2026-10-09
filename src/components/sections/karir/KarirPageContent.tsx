@@ -37,6 +37,25 @@ export default function KarirPageContent({ initialJobs }: KarirPageContentProps)
     return () => window.removeEventListener("focus", fetchLatestJobs);
   }, []);
 
+  // Deteksi jika ada parameter URL ?apply= atau ?posisi= atau ?job= untuk langsung buka modal lamar
+  useEffect(() => {
+    if (typeof window === "undefined" || jobs.length === 0) return;
+    const params = new URLSearchParams(window.location.search);
+    const target = params.get("apply") || params.get("posisi") || params.get("job") || params.get("id");
+    if (target) {
+      const clean = decodeURIComponent(target).toLowerCase().trim();
+      const match = jobs.find(
+        (j) =>
+          j.id.toLowerCase() === clean ||
+          j.title.toLowerCase().includes(clean) ||
+          j.division.toLowerCase() === clean
+      );
+      if (match) {
+        setSelectedJobToApply(match);
+      }
+    }
+  }, [jobs]);
+
   // Filter jobs based on search query & selected division
   const filteredJobs = useMemo(() => {
     return jobs.filter((job) => {
@@ -59,6 +78,8 @@ export default function KarirPageContent({ initialJobs }: KarirPageContentProps)
         selectedDivision={selectedDivision}
         setSelectedDivision={setSelectedDivision}
         totalOpenJobs={jobs.filter((j) => j.isOpen).length}
+        jobs={jobs}
+        onApply={(job) => setSelectedJobToApply(job)}
       />
 
       {/* 2. CV Pelangi Life (Instagram Reels Activities Section) */}
