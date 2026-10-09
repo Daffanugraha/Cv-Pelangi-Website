@@ -18,7 +18,7 @@ import {
 
 export default function HomePage() {
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col w-full bg-navbar-black">
       {/* 1. Hero Section */}
       <Hero />
 

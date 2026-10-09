@@ -170,7 +170,7 @@ export default function Navbar() {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full transition-all duration-300 anim-nav-down">
+    <header className="sticky top-0 z-50 w-full bg-[#111111] transition-all duration-300 anim-nav-down">
       <div className="relative bg-[#111111] shadow-[0_8px_30px_rgba(0,0,0,0.5)]">
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-20 gap-3">
           {/* Logo */}
