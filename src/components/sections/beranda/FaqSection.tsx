@@ -102,7 +102,7 @@ export default function FaqSection() {
           <a
             className="inline-flex items-center justify-center gap-2 px-5 py-2 rounded-full bg-action-whatsapp hover:bg-action-whatsapp-hover text-on-primary font-cta-pill text-[13px] transition-all duration-200 shadow-md shrink-0"
             href={`https://wa.me/6282231019363?text=${encodeURIComponent(
-              "Halo Tim Marketing CV Pelangi UV,\n\nSaya [Nama] dari [Perusahaan], mau tanya tentang spesifikasi teknis finishing cetak:\n- Jenis Layanan: \n- Pertanyaan / Spesifikasi: \n\nMohon bantuannya. Terima kasih!"
+              "Halo Customer Service CV Pelangi UV, saya ingin tanya-tanya lebih lanjut seputar layanan finishing dan spesifikasi cetak. Boleh dibantu informasinya? Terima kasih."
             )}`}
             rel="noopener noreferrer"
             target="_blank"

@@ -146,7 +146,7 @@ export default function ContactHero() {
                 <a
                   className="inline-flex items-center gap-2 text-2xl sm:text-3xl font-headline-sm font-extrabold text-white hover:text-[#25D366] transition-colors tracking-tight group/link"
                   href={`https://wa.me/6282231019363?text=${encodeURIComponent(
-                    "Halo Tim Marketing CV Pelangi UV,\n\nSaya [Nama] dari [Perusahaan], mau tanya tentang konsultasi finishing cetak yang tepat untuk produk kemasan kami.\n\nSpesifikasi Kebutuhan:\n- Kebutuhan Finishing: \n- Estimasi Oplah: \n- Catatan Khusus: \n\nMohon bantuannya. Terima kasih!"
+                    "Halo Customer Service CV Pelangi UV, saya ingin konsultasi seputar layanan finishing cetak dan produk percetakan. Boleh dibantu informasinya? Terima kasih."
                   )}`}
                   rel="noopener noreferrer"
                   target="_blank"

@@ -194,7 +194,9 @@ export default function Footer() {
                     chat
                   </span>
                   <a
-                    href="https://wa.me/6282231019363"
+                    href={`https://wa.me/6282231019363?text=${encodeURIComponent(
+                      "Halo Customer Service CV Pelangi UV, saya ingin konsultasi dan tanya-tanya mengenai layanan percetakan. Boleh dibantu informasinya? Terima kasih."
+                    )}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="hover:text-bracket-border transition-colors"

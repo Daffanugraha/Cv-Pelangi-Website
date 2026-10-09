@@ -311,7 +311,9 @@ export default function FloatingActions() {
             <div className="flex items-center justify-between text-[10px] text-neutral-400 mt-1.5 px-1">
               <span>Konsultasi Teknis <span translate="no" className="notranslate">CV Pelangi UV</span></span>
               <a
-                href="https://wa.me/6282231019363"
+                href={`https://wa.me/6282231019363?text=${encodeURIComponent(
+                  "Halo Customer Service CV Pelangi UV, saya ingin konsultasi dan tanya-tanya mengenai layanan finishing dan produk percetakan. Boleh dibantu informasinya? Terima kasih."
+                )}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-neutral-700 text-neutral-500 font-medium flex items-center gap-0.5"
@@ -333,7 +335,7 @@ export default function FloatingActions() {
           <a
             className="w-12 h-12 rounded-full bg-[#25D366] hover:bg-[#1EBE5D] text-white flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105 active:scale-95 group cursor-pointer"
             href={`https://wa.me/6282231019363?text=${encodeURIComponent(
-              "Halo Tim Marketing CV Pelangi UV,\n\nSaya [Nama] dari [Perusahaan], mau tanya tentang layanan finishing / bahan baku.\n\nSpesifikasi Kebutuhan:\n- Kebutuhan: \n- Estimasi Kuantitas / Oplah: \n- Spesifikasi Khusus: \n\nMohon informasi penawaran harga & jadwal pengerjaan. Terima kasih!"
+              "Halo Customer Service CV Pelangi UV, saya ingin konsultasi dan tanya-tanya mengenai layanan finishing dan produk percetakan. Boleh dibantu informasinya? Terima kasih."
             )}`}
             rel="noopener noreferrer"
             target="_blank"
