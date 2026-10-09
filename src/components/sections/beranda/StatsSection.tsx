@@ -52,7 +52,12 @@ export default function StatsSection() {
   }, [hasAnimated]);
 
   return (
-    <section className="w-full bg-surface-canvas py-space-2xl relative" ref={containerRef}>
+    <section
+      id="tentang-kami"
+      style={{ scrollMarginTop: "80px" }}
+      className="w-full bg-surface-canvas py-space-2xl relative"
+      ref={containerRef}
+    >
       <div className="max-w-7xl mx-auto px-gutter">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 max-w-7xl mx-auto">
           {statsData.map((item, idx) => (

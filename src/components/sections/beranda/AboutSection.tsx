@@ -86,7 +86,7 @@ export default function AboutSection() {
   return (
     <section
       className="w-full bg-surface-canvas py-space-3xl relative overflow-hidden"
-      id="tentang-kami"
+      id="profil-perusahaan"
       style={{ scrollMarginTop: "80px" }}
     >
       <div className="absolute -right-24 top-20 w-96 h-96 rounded-full bg-surface-tint-light filter blur-3xl opacity-70 pointer-events-none"></div>

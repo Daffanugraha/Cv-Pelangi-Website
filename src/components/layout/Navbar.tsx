@@ -151,9 +151,11 @@ export default function Navbar() {
   const handleHashClick = (e: React.MouseEvent<HTMLAnchorElement>, hash: string) => {
     if (pathname === "/") {
       e.preventDefault();
-      const target = document.querySelector(hash);
+      const target = document.querySelector(hash) as HTMLElement | null;
       if (target) {
-        target.scrollIntoView({ behavior: "smooth" });
+        const navHeight = 78;
+        const targetPos = target.getBoundingClientRect().top + window.pageYOffset - navHeight;
+        window.scrollTo({ top: Math.max(0, targetPos), behavior: "smooth" });
       }
     }
   };
@@ -162,9 +164,11 @@ export default function Navbar() {
     setMobileMenuOpen(false);
     if (pathname === "/") {
       e.preventDefault();
-      const target = document.querySelector(hash);
+      const target = document.querySelector(hash) as HTMLElement | null;
       if (target) {
-        target.scrollIntoView({ behavior: "smooth" });
+        const navHeight = 78;
+        const targetPos = target.getBoundingClientRect().top + window.pageYOffset - navHeight;
+        window.scrollTo({ top: Math.max(0, targetPos), behavior: "smooth" });
       }
     }
   };
