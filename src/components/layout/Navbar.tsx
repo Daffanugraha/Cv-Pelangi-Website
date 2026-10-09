@@ -174,7 +174,7 @@ export default function Navbar() {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-[#111111] transition-all duration-300 anim-nav-down">
+    <header className="sticky top-0 z-50 w-full bg-[#111111] border-b border-white/10 transition-all duration-300 anim-nav-down">
       <div className="relative bg-[#111111] shadow-[0_8px_30px_rgba(0,0,0,0.5)]">
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-20 gap-3">
           {/* Logo */}
@@ -727,17 +727,6 @@ export default function Navbar() {
             </div>
           </div>
         )}
-      </div>
-
-      {/* Decorative Bottom Arch */}
-      <div className="w-full overflow-hidden leading-none pointer-events-none -mt-[1px]">
-        <svg
-          className="w-full h-4 sm:h-6 md:h-8 text-[#111111] fill-current block"
-          preserveAspectRatio="none"
-          viewBox="0 0 1440 40"
-        >
-          <path d="M0,0 C360,40 1080,40 1440,0 L1440,0 L0,0 Z"></path>
-        </svg>
       </div>
 
       {/* Search Modal - Tampil di bawah Navbar sehingga Navbar tetap terlihat utuh */}

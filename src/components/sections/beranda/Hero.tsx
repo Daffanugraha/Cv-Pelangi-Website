@@ -135,7 +135,7 @@ export default function Hero() {
 
   return (
     <section
-      className="relative w-full min-h-[85vh] lg:min-h-[90vh] flex flex-col justify-between overflow-hidden bg-navbar-black -mt-1 lg:-mt-2 pt-1 lg:pt-2"
+      className="relative w-full min-h-[90vh] lg:min-h-[96vh] flex flex-col justify-between overflow-hidden bg-navbar-black pt-2 lg:pt-4"
       id="beranda"
     >
       {/* Factory Motion Simulated Visual Plate */}
@@ -159,7 +159,7 @@ export default function Hero() {
       </div>
 
       {/* Hero Content Container */}
-      <div className="relative z-10 max-w-7xl w-full mx-auto px-gutter pt-14 sm:pt-16 lg:pt-20 pb-space-2xl my-auto flex flex-col lg:flex-row items-center justify-between">
+      <div className="relative z-10 max-w-7xl w-full mx-auto px-gutter pt-16 sm:pt-20 lg:pt-24 pb-space-2xl my-auto flex flex-col lg:flex-row items-center justify-between">
         {/* Left Column */}
         <div className="w-full lg:w-3/5 text-left">
           <h1 className="anim-hero-2 font-display-hero text-display-hero text-on-secondary tracking-tight mb-space-md leading-[1.2] [text-shadow:0_3px_18px_rgba(0,0,0,0.65)]">
