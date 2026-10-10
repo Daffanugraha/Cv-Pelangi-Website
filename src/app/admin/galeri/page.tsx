@@ -127,6 +127,15 @@ function GaleriContent() {
   }, [items, activeTab]);
 
   // Filtered by search & category
+  const availableCategories = useMemo(() => {
+    const cats = new Set<string>();
+    tabItems.forEach((it) => {
+      if (it.category) cats.add(it.category);
+    });
+    GALLERY_CATEGORIES.forEach((c) => cats.add(c));
+    return Array.from(cats);
+  }, [tabItems]);
+
   const filteredItems = useMemo(() => {
     return tabItems.filter((item) => {
       const q = search.toLowerCase().trim();
@@ -398,7 +407,7 @@ function GaleriContent() {
                   className="px-3 py-2 text-xs sm:text-sm bg-gray-50 border border-gray-200 rounded-xl text-gray-700 font-semibold focus:outline-none focus:border-[#F65456]"
                 >
                   <option value="ALL">Semua Kategori ({tabItems.length})</option>
-                  {GALLERY_CATEGORIES.map((cat) => (
+                  {availableCategories.map((cat) => (
                     <option key={cat} value={cat}>
                       {cat}
                     </option>

@@ -20,19 +20,20 @@ export default function PengaplikasianPageContent() {
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
-  // 2. Admin gallery items merge (if any uploaded from admin panel)
-  const [extraGallery, setExtraGallery] = useState<GalleryProduct[]>([]);
+  // 2. State produk yang disinkronkan langsung dari Admin Galeri
+  const [adminProducts, setAdminProducts] = useState<GalleryProduct[] | null>(null);
 
   useEffect(() => {
-    fetch("/api/admin/gallery", { cache: "no-store" })
-      .then((res) => (res.ok ? res.json() : []))
+    fetch("/api/admin/gallery?type=produk", { cache: "no-store" })
+      .then((res) => (res.ok ? res.json() : null))
       .then((data: any[]) => {
-        if (Array.isArray(data) && data.length > 0) {
+        if (Array.isArray(data)) {
           const mapped: GalleryProduct[] = data
             .filter((item) => !item.galleryType || item.galleryType === "produk")
             .map((item) => {
+              const defaultItem = DEFAULT_GALLERY_PRODUCTS.find((d) => d.id === item.id);
               const catLower = (item.category || "").toLowerCase();
-              let catKey: "kosmetik" | "makanan" | "buku" | "identity" | "paperbag" | "rokok" = "kosmetik";
+              let catKey: "kosmetik" | "makanan" | "buku" | "identity" | "paperbag" | "rokok" = defaultItem?.category || "kosmetik";
               if (catLower.includes("food") || catLower.includes("makan")) catKey = "makanan";
               else if (catLower.includes("book") || catLower.includes("buku") || catLower.includes("hardcover")) catKey = "buku";
               else if (catLower.includes("bag") || catLower.includes("paper")) catKey = "paperbag";
@@ -42,29 +43,32 @@ export default function PengaplikasianPageContent() {
               return {
                 id: item.id,
                 category: catKey,
-                categoryLabel: item.category || "Kemasan Khusus",
+                categoryLabel: item.category || defaultItem?.categoryLabel || "Kemasan Khusus",
                 title: item.title,
-                desc: `${item.technique || "Finishing Khusus"} — hasil finishing presisi tinggi CV Pelangi UV.`,
-                tag: item.technique || "Custom Finishing",
-                badges: [item.technique, item.category, "Custom Spec"].filter(Boolean),
-                finishing: item.technique || "Spot UV / Hot Stamp",
-                material: "Sesuai permintaan percetakan mitra",
-                notes: "Diproduksi dengan kalibrasi presisi tinggi oleh tim spesialis CV Pelangi UV.",
-                highlight: "Presisi CV Pelangi UV",
+                desc: item.desc || defaultItem?.desc || `${item.technique || "Finishing Khusus"} — hasil finishing presisi tinggi CV Pelangi UV.`,
+                tag: item.tag || defaultItem?.tag || item.technique || "Custom Finishing",
+                badges: item.badges || defaultItem?.badges || [item.technique, item.category, "Custom Spec"].filter(Boolean),
+                finishing: item.technique || defaultItem?.finishing || "Spot UV / Hot Stamp",
+                material: item.material || defaultItem?.material || "Sesuai permintaan percetakan mitra",
+                notes: item.notes || defaultItem?.notes || "Diproduksi dengan kalibrasi presisi tinggi oleh tim spesialis CV Pelangi UV.",
+                highlight: item.highlight || defaultItem?.highlight || "Presisi CV Pelangi UV",
                 img: item.imageUrl,
-                objectPosition: item.objectPosition || "center",
+                paperSuitability: item.paperSuitability || defaultItem?.paperSuitability,
+                resultCharacteristics: item.resultCharacteristics || defaultItem?.resultCharacteristics,
+                alternativeOption: item.alternativeOption || defaultItem?.alternativeOption,
+                objectPosition: item.objectPosition || defaultItem?.objectPosition || "center",
               };
             });
-          setExtraGallery(mapped);
+          setAdminProducts(mapped);
         }
       })
       .catch(() => {});
   }, []);
 
-  // 3. Combined products: item baru admin muncul paling awal di halaman pertama
+  // 3. Gunakan data admin saat sudah termuat, atau fallback default saat loading
   const allProducts = useMemo(() => {
-    return [...extraGallery, ...DEFAULT_GALLERY_PRODUCTS];
-  }, [extraGallery]);
+    return adminProducts !== null ? adminProducts : DEFAULT_GALLERY_PRODUCTS;
+  }, [adminProducts]);
 
   const filteredProducts = useMemo(() => {
     return allProducts.filter((p) => {

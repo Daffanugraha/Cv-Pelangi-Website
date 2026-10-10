@@ -10,6 +10,7 @@ import { CAREER_JOBS, CareerJob } from "@/data/careers";
 import { MOMEN_ALBUMS, MomenAlbum, MomenPhoto } from "@/lib/data/galeriMomen";
 import { featuredArticle, articlesData, ArticleItem } from "@/lib/data/articles";
 import { galleryVideos } from "@/lib/data/gallery";
+import { DEFAULT_GALLERY_PRODUCTS } from "@/lib/data/galleryProducts";
 import { query, isPostgresConfigured } from "@/lib/db/postgres";
 
 // ---------------------------------------------------------------------------
@@ -103,6 +104,14 @@ export interface GalleryItem {
   videoUrl?: string;
   tag?: string;
   objectPosition?: "top" | "center" | "bottom" | string;
+  desc?: string;
+  badges?: string[];
+  material?: string;
+  notes?: string;
+  highlight?: string;
+  paperSuitability?: string;
+  resultCharacteristics?: string;
+  alternativeOption?: string;
 }
 
 export interface LeadItem {
@@ -141,13 +150,52 @@ export const DEFAULT_BERANDA_GALLERY: GalleryItem[] = galleryVideos.map((v, idx)
   tag: v.tag,
 }));
 
+export const DEFAULT_PRODUK_GALLERY: GalleryItem[] = DEFAULT_GALLERY_PRODUCTS.map((p, idx) => ({
+  id: p.id,
+  title: p.title,
+  category: p.categoryLabel || p.category,
+  technique: p.finishing || p.tag,
+  imageUrl: p.img,
+  fileName: p.img.split("/").pop() || `product-${idx + 1}.jpg`,
+  createdAt: new Date(Date.now() - (idx + 1) * 86400000).toISOString(),
+  order: idx,
+  featured: idx < 4,
+  galleryType: "produk",
+  videoUrl: "",
+  tag: p.tag,
+  objectPosition: p.objectPosition || "center",
+  desc: p.desc,
+  badges: p.badges,
+  material: p.material,
+  notes: p.notes,
+  highlight: p.highlight,
+  paperSuitability: p.paperSuitability,
+  resultCharacteristics: p.resultCharacteristics,
+  alternativeOption: p.alternativeOption,
+}));
+
 export function getGallery(type?: string): GalleryItem[] {
   let items = readJSON<GalleryItem[]>("gallery", []);
-  
-  // Jika belum ada media bertipe beranda, otomatis sertakan 6 default media beranda
+  let modified = false;
+
+  // 1. Jika belum ada media bertipe beranda, otomatis sertakan 6 default media beranda
   const hasBeranda = items.some((i) => i.galleryType === "beranda");
   if (!hasBeranda) {
     items = [...items, ...DEFAULT_BERANDA_GALLERY];
+    modified = true;
+  }
+
+  // 2. Jika database produk belum pernah diisi default produk, otomatis gabungkan seluruh 18 default produk
+  const isProductsSeeded = readJSON<boolean>("gallery_products_seeded", false);
+  if (!isProductsSeeded) {
+    const existingIds = new Set(items.map((it) => it.id));
+    const toAdd = DEFAULT_PRODUK_GALLERY.filter((p) => !existingIds.has(p.id));
+    items = [...items, ...toAdd];
+    writeJSON("gallery_products_seeded", true);
+    modified = true;
+  }
+
+  if (modified) {
     saveGallery(items);
   }
 
