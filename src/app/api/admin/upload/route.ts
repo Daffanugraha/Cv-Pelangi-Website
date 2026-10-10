@@ -30,17 +30,23 @@ export async function POST(req: NextRequest) {
   const ext = file.name.split(".").pop();
   const fileName = `admin_${Date.now()}.${ext}`;
   const uploadDir = path.join(process.cwd(), "public", "images", "gallery");
-
-  if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir, { recursive: true });
-  }
-
   const buffer = Buffer.from(await file.arrayBuffer());
-  fs.writeFileSync(path.join(uploadDir, fileName), buffer);
+
+  let url = "";
+  try {
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
+    }
+    fs.writeFileSync(path.join(uploadDir, fileName), buffer);
+    url = `/images/gallery/${fileName}`;
+  } catch {
+    // Vercel Serverless read-only filesystem fallback: simpan sebagai Base64 Data URI
+    url = `data:${file.type};base64,${buffer.toString("base64")}`;
+  }
 
   return NextResponse.json({
     ok: true,
-    url: `/images/gallery/${fileName}`,
+    url,
     fileName,
   });
 }

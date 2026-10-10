@@ -9,6 +9,22 @@ function unauthorized() {
   return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 }
 
+// Helper untuk menyimpan file ke disk lokal (jika writable) atau fallback ke Base64 Data URI (di Vercel Serverless read-only)
+function saveBufferOrDataUri(buffer: Buffer, fileName: string, mimeType: string = "image/jpeg"): string {
+  try {
+    const uploadDir = path.join(process.cwd(), "public", "images", "gallery");
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
+    }
+    fs.writeFileSync(path.join(uploadDir, fileName), buffer);
+    return `/images/gallery/${fileName}`;
+  } catch {
+    // Vercel Serverless environment memiliki filesystem read-only.
+    // Fallback aman: kembalikan Data URI Base64 agar gambar langsung tampil dan tersimpan sempurna.
+    return `data:${mimeType};base64,${buffer.toString("base64")}`;
+  }
+}
+
 export async function POST(req: NextRequest) {
   if (!isAuthenticated()) return unauthorized();
 
@@ -21,11 +37,6 @@ export async function POST(req: NextRequest) {
         { error: "URL Instagram, TikTok, atau YouTube wajib diisi." },
         { status: 400 }
       );
-    }
-
-    const uploadDir = path.join(process.cwd(), "public", "images", "gallery");
-    if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir, { recursive: true });
     }
 
     // -------------------------------------------------------------------------
@@ -42,7 +53,10 @@ export async function POST(req: NextRequest) {
       }
 
       const shortcode = match[1];
-      const targetUrl = `https://www.instagram.com/p/${shortcode}/`;
+      const targetUrls = [
+        `https://www.instagram.com/reel/${shortcode}/`,
+        `https://www.instagram.com/p/${shortcode}/`,
+      ];
 
       const userAgents = [
         "facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)",
@@ -55,45 +69,47 @@ export async function POST(req: NextRequest) {
       let rawTitle = "";
 
       // Scrape Open Graph meta tags yang disediakan Instagram untuk preview sosmed
-      for (const ua of userAgents) {
-        try {
-          const res = await fetch(targetUrl, {
-            headers: {
-              "User-Agent": ua,
-              "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-              "Accept-Language": "id,en-US;q=0.7,en;q=0.3",
-            },
-          });
+      outerLoop: for (const targetUrl of targetUrls) {
+        for (const ua of userAgents) {
+          try {
+            const res = await fetch(targetUrl, {
+              headers: {
+                "User-Agent": ua,
+                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+                "Accept-Language": "id,en-US;q=0.7,en;q=0.3",
+              },
+            });
 
-          if (!res.ok) continue;
+            if (!res.ok) continue;
 
-          const html = await res.text();
+            const html = await res.text();
 
-          // 1. Ambil URL og:image
-          const imgMatch =
-            html.match(/<meta\s+[^>]*?(?:property|name)=["']og:image["'][^>]*?content=["']([^"']+)["']/i) ||
-            html.match(/<meta\s+[^>]*?content=["']([^"']+)["'][^>]*?(?:property|name)=["']og:image["']/i);
+            // 1. Ambil URL og:image
+            const imgMatch =
+              html.match(/<meta\s+[^>]*?(?:property|name)=["']og:image["'][^>]*?content=["']([^"']+)["']/i) ||
+              html.match(/<meta\s+[^>]*?content=["']([^"']+)["'][^>]*?(?:property|name)=["']og:image["']/i);
 
-          if (imgMatch && imgMatch[1]) {
-            imgUrl = imgMatch[1].replace(/&amp;/g, "&");
+            if (imgMatch && imgMatch[1]) {
+              imgUrl = imgMatch[1].replace(/&amp;/g, "&");
+            }
+
+            // 2. Ambil title/caption dari og:title jika ada
+            const titleMatch =
+              html.match(/<meta\s+[^>]*?(?:property|name)=["']og:title["'][^>]*?content=["']([^"']+)["']/i) ||
+              html.match(/<meta\s+[^>]*?content=["']([^"']+)["'][^>]*?(?:property|name)=["']og:title["']/i);
+
+            if (titleMatch && titleMatch[1]) {
+              rawTitle = titleMatch[1]
+                .replace(/&quot;/g, '"')
+                .replace(/&#x27;/g, "'")
+                .replace(/&amp;/g, "&")
+                .trim();
+            }
+
+            if (imgUrl) break outerLoop;
+          } catch (fetchErr) {
+            console.warn(`Gagal scrape Instagram (${targetUrl}) dengan UA: ${ua}`, fetchErr);
           }
-
-          // 2. Ambil title/caption dari og:title jika ada
-          const titleMatch =
-            html.match(/<meta\s+[^>]*?(?:property|name)=["']og:title["'][^>]*?content=["']([^"']+)["']/i) ||
-            html.match(/<meta\s+[^>]*?content=["']([^"']+)["'][^>]*?(?:property|name)=["']og:title["']/i);
-
-          if (titleMatch && titleMatch[1]) {
-            rawTitle = titleMatch[1]
-              .replace(/&quot;/g, '"')
-              .replace(/&#x27;/g, "'")
-              .replace(/&amp;/g, "&")
-              .trim();
-          }
-
-          if (imgUrl) break;
-        } catch (fetchErr) {
-          console.warn(`Gagal scrape Instagram dengan UA: ${ua}`, fetchErr);
         }
       }
 
@@ -103,9 +119,9 @@ export async function POST(req: NextRequest) {
           const imgRes = await fetch(imgUrl);
           if (imgRes.ok) {
             const buffer = Buffer.from(await imgRes.arrayBuffer());
-            if (buffer.length > 1000) {
+            if (buffer.length > 500) {
               const fileName = `ig_${shortcode}_${Date.now()}.jpg`;
-              fs.writeFileSync(path.join(uploadDir, fileName), buffer);
+              const finalImageUrl = saveBufferOrDataUri(buffer, fileName, "image/jpeg");
 
               const cleanTitle = rawTitle
                 ? rawTitle.slice(0, 80)
@@ -114,17 +130,28 @@ export async function POST(req: NextRequest) {
               return NextResponse.json({
                 ok: true,
                 platform: "Instagram",
-                imageUrl: `/images/gallery/${fileName}`,
+                imageUrl: finalImageUrl,
                 fileName,
                 videoUrl: `https://www.instagram.com/reel/${shortcode}/`,
                 suggestedTitle: cleanTitle,
-                message: "Thumbnail Instagram berhasil diunduh dan disimpan otomatis!",
+                message: "Thumbnail Instagram berhasil diambil dan dipasang otomatis!",
               });
             }
           }
         } catch (downloadErr) {
           console.warn("Gagal download image buffer dari CDN Instagram:", downloadErr);
         }
+
+        // Fallback jika download buffer gagal tapi imgUrl tersedia: gunakan direct CDN URL
+        return NextResponse.json({
+          ok: true,
+          platform: "Instagram",
+          imageUrl: imgUrl,
+          fileName: `ig_${shortcode}.jpg`,
+          videoUrl: `https://www.instagram.com/reel/${shortcode}/`,
+          suggestedTitle: rawTitle ? rawTitle.slice(0, 80) : `Dokumentasi Finishing Instagram (${shortcode})`,
+          message: "Thumbnail Instagram berhasil diambil dari CDN!",
+        });
       }
 
       return NextResponse.json(
@@ -195,32 +222,47 @@ export async function POST(req: NextRequest) {
       }
 
       if (thumbUrl) {
-        const imgRes = await fetch(thumbUrl, {
-          headers: {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
-          },
-        });
-        if (imgRes.ok) {
-          const buffer = Buffer.from(await imgRes.arrayBuffer());
-          if (buffer.length > 1000) {
-            const fileName = `tiktok_${Date.now()}.jpg`;
-            fs.writeFileSync(path.join(uploadDir, fileName), buffer);
+        try {
+          const imgRes = await fetch(thumbUrl, {
+            headers: {
+              "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+            },
+          });
+          if (imgRes.ok) {
+            const buffer = Buffer.from(await imgRes.arrayBuffer());
+            if (buffer.length > 500) {
+              const fileName = `tiktok_${Date.now()}.jpg`;
+              const finalImageUrl = saveBufferOrDataUri(buffer, fileName, "image/jpeg");
 
-            const cleanTitle = (videoTitle || "Video TikTok Pelangi UV")
-              .replace(/^[#\s]+/, "")
-              .slice(0, 80);
+              const cleanTitle = (videoTitle || "Video TikTok Pelangi UV")
+                .replace(/^[#\s]+/, "")
+                .slice(0, 80);
 
-            return NextResponse.json({
-              ok: true,
-              platform: "TikTok",
-              imageUrl: `/images/gallery/${fileName}`,
-              fileName,
-              videoUrl: resolvedUrl,
-              suggestedTitle: cleanTitle,
-              message: "Thumbnail TikTok berhasil diunduh dan disimpan otomatis!",
-            });
+              return NextResponse.json({
+                ok: true,
+                platform: "TikTok",
+                imageUrl: finalImageUrl,
+                fileName,
+                videoUrl: resolvedUrl,
+                suggestedTitle: cleanTitle,
+                message: "Thumbnail TikTok berhasil diunduh dan disimpan otomatis!",
+              });
+            }
           }
+        } catch (downloadErr) {
+          console.warn("Gagal download TikTok thumbnail:", downloadErr);
         }
+
+        // Fallback langsung ke URL jika download buffer gagal
+        return NextResponse.json({
+          ok: true,
+          platform: "TikTok",
+          imageUrl: thumbUrl,
+          fileName: `tiktok_${Date.now()}.jpg`,
+          videoUrl: resolvedUrl,
+          suggestedTitle: (videoTitle || "Video TikTok Pelangi UV").slice(0, 80),
+          message: "Thumbnail TikTok berhasil diambil!",
+        });
       }
 
       return NextResponse.json(
@@ -230,7 +272,7 @@ export async function POST(req: NextRequest) {
     }
 
     // -------------------------------------------------------------------------
-    // 3. YOUTUBE (Shorts & Videos - Bonus dukungan)
+    // 3. YOUTUBE (Shorts & Videos)
     // -------------------------------------------------------------------------
     const isYouTube = /youtube\.com|youtu\.be/i.test(rawUrl);
     if (isYouTube) {
@@ -256,12 +298,12 @@ export async function POST(req: NextRequest) {
             const buffer = Buffer.from(await imgRes.arrayBuffer());
             if (buffer.length > 2000) {
               const fileName = `yt_${videoId}_${Date.now()}.jpg`;
-              fs.writeFileSync(path.join(uploadDir, fileName), buffer);
+              const finalImageUrl = saveBufferOrDataUri(buffer, fileName, "image/jpeg");
 
               return NextResponse.json({
                 ok: true,
                 platform: "YouTube",
-                imageUrl: `/images/gallery/${fileName}`,
+                imageUrl: finalImageUrl,
                 fileName,
                 videoUrl: `https://www.youtube.com/watch?v=${videoId}`,
                 suggestedTitle: `Video YouTube Pelangi UV (${videoId})`,
@@ -274,10 +316,16 @@ export async function POST(req: NextRequest) {
         }
       }
 
-      return NextResponse.json(
-        { error: "Gagal mengunduh thumbnail dari video YouTube." },
-        { status: 502 }
-      );
+      // Fallback ke hqdefault URL langsung
+      return NextResponse.json({
+        ok: true,
+        platform: "YouTube",
+        imageUrl: `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`,
+        fileName: `yt_${videoId}.jpg`,
+        videoUrl: `https://www.youtube.com/watch?v=${videoId}`,
+        suggestedTitle: `Video YouTube Pelangi UV (${videoId})`,
+        message: "Thumbnail YouTube berhasil diambil!",
+      });
     }
 
     // Jika bukan dari platform yang didukung
