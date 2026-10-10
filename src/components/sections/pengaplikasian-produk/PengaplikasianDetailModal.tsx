@@ -56,7 +56,13 @@ export default function PengaplikasianDetailModal({
           <img
             src={product.img}
             alt={product.title}
-            className="w-full h-full object-cover"
+            className={`w-full h-full object-cover ${
+              product.objectPosition === "top"
+                ? "object-top"
+                : product.objectPosition === "bottom"
+                ? "object-bottom"
+                : "object-center"
+            }`}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
           <div className="absolute bottom-4 left-6 right-6 flex flex-wrap items-center gap-2">

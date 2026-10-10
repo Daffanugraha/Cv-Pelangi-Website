@@ -102,6 +102,7 @@ export interface GalleryItem {
   galleryType?: "beranda" | "produk";
   videoUrl?: string;
   tag?: string;
+  objectPosition?: "top" | "center" | "bottom" | string;
 }
 
 export interface LeadItem {

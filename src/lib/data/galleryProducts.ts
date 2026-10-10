@@ -14,6 +14,7 @@ export interface GalleryProduct {
   paperSuitability?: string;
   resultCharacteristics?: string;
   alternativeOption?: string;
+  objectPosition?: string;
 }
 
 export const DEFAULT_GALLERY_PRODUCTS: GalleryProduct[] = [

@@ -49,9 +49,10 @@ export default function PengaplikasianPageContent() {
                 badges: [item.technique, item.category, "Custom Spec"].filter(Boolean),
                 finishing: item.technique || "Spot UV / Hot Stamp",
                 material: "Sesuai permintaan percetakan mitra",
-                notes: "Diproduksi dengan kalibrasi ketat di pabrik Bizpark Sidoarjo.",
-                highlight: "Presisi Pabrik Bizpark",
+                notes: "Diproduksi dengan kalibrasi presisi tinggi oleh tim spesialis CV Pelangi UV.",
+                highlight: "Presisi CV Pelangi UV",
                 img: item.imageUrl,
+                objectPosition: item.objectPosition || "center",
               };
             });
           setExtraGallery(mapped);

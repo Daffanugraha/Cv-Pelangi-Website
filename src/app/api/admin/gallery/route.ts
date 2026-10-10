@@ -32,6 +32,7 @@ export async function POST(req: NextRequest) {
     galleryType: body.galleryType || "produk",
     videoUrl: body.videoUrl ?? "",
     tag: body.tag ?? "",
+    objectPosition: body.objectPosition || "center",
   });
   return NextResponse.json(item, { status: 201 });
 }

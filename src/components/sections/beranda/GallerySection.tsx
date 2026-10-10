@@ -81,6 +81,7 @@ export default function GallerySection() {
                 source: "instagram",
                 capacity: "CV Pelangi UV Showcase",
                 embedUrl,
+                objectPosition: item.objectPosition || "center",
               };
             });
           }
@@ -332,7 +333,13 @@ export default function GallerySection() {
                     // Fallback aman jika link eksternal kedaluwarsa
                     e.currentTarget.src = "/images/instagram/DdYdcznzLJY.jpg";
                   }}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 brightness-[0.92] group-hover:brightness-[0.82]"
+                  className={`w-full h-full object-cover ${
+                    video.objectPosition === "top"
+                      ? "object-top"
+                      : video.objectPosition === "bottom"
+                      ? "object-bottom"
+                      : "object-center"
+                  } group-hover:scale-105 transition-transform duration-700 brightness-[0.92] group-hover:brightness-[0.82]`}
                 />
                 <div className="absolute top-3 left-3 right-3 flex items-center justify-between z-10 pointer-events-none">
                   <span className="px-3 py-1 rounded-full bg-black/60 backdrop-blur-md text-white font-label-meta text-[11px] font-semibold border border-white/15 shadow-sm flex items-center gap-1.5">

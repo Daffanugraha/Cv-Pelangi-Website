@@ -50,6 +50,7 @@ export default function GalleryUploadModal({
   const [imageUrl, setImageUrl] = useState("");
   const [fileName, setFileName] = useState("");
   const [previewUrl, setPreviewUrl] = useState("");
+  const [objectPosition, setObjectPosition] = useState<"top" | "center" | "bottom">("center");
   const [uploading, setUploading] = useState(false);
   const [fetchingThumb, setFetchingThumb] = useState(false);
   const [thumbSuccessMsg, setThumbSuccessMsg] = useState("");
@@ -70,6 +71,7 @@ export default function GalleryUploadModal({
       setImageUrl(item.imageUrl || "");
       setFileName(item.fileName || "");
       setPreviewUrl(item.imageUrl || "");
+      setObjectPosition((item.objectPosition as "top" | "center" | "bottom") || "center");
     } else {
       setGalleryType(defaultGalleryType);
       setTitle("");
@@ -81,6 +83,7 @@ export default function GalleryUploadModal({
       setImageUrl("");
       setFileName("");
       setPreviewUrl("");
+      setObjectPosition("center");
     }
     setError("");
     setThumbSuccessMsg("");
@@ -186,6 +189,7 @@ export default function GalleryUploadModal({
         imageUrl: imageUrl.trim(),
         fileName,
         galleryType,
+        objectPosition,
       };
 
       let res;
@@ -337,7 +341,17 @@ export default function GalleryUploadModal({
               className="relative aspect-video rounded-2xl border-2 border-dashed border-gray-300 hover:border-[#F65456] cursor-pointer transition overflow-hidden bg-gray-50 flex items-center justify-center group"
             >
               {previewUrl ? (
-                <img src={previewUrl} alt="Preview" className="w-full h-full object-cover" />
+                <img
+                  src={previewUrl}
+                  alt="Preview"
+                  className={`w-full h-full object-cover transition-all duration-300 ${
+                    objectPosition === "top"
+                      ? "object-top"
+                      : objectPosition === "bottom"
+                      ? "object-bottom"
+                      : "object-center"
+                  }`}
+                />
               ) : (
                 <div className="text-center p-4">
                   <span className="material-symbols-outlined text-4xl text-gray-400 group-hover:text-[#F65456] transition">
@@ -358,6 +372,61 @@ export default function GalleryUploadModal({
                 </div>
               )}
             </div>
+
+            {previewUrl && (
+              <div className="mt-3 p-3 rounded-2xl bg-gray-50 border border-gray-200 shadow-2xs">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xs font-bold text-gray-800 font-mono flex items-center gap-1.5">
+                    <span className="material-symbols-outlined text-[15px] text-[#F65456]">crop</span>
+                    <span>Posisi Fokus Thumbnail (Crop)</span>
+                  </span>
+                  <span className="text-[11px] text-[#F65456] font-bold">
+                    {objectPosition === "top" ? "Fokus Atas" : objectPosition === "bottom" ? "Fokus Bawah" : "Fokus Tengah"}
+                  </span>
+                </div>
+                <div className="grid grid-cols-3 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setObjectPosition("top")}
+                    className={`py-2 px-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer ${
+                      objectPosition === "top"
+                        ? "bg-[#F65456] text-white shadow-xs"
+                        : "bg-white border border-gray-200 text-gray-700 hover:bg-gray-100 hover:text-black"
+                    }`}
+                  >
+                    <span className="material-symbols-outlined text-sm">align_vertical_top</span>
+                    <span>Atas</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setObjectPosition("center")}
+                    className={`py-2 px-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer ${
+                      objectPosition === "center"
+                        ? "bg-[#F65456] text-white shadow-xs"
+                        : "bg-white border border-gray-200 text-gray-700 hover:bg-gray-100 hover:text-black"
+                    }`}
+                  >
+                    <span className="material-symbols-outlined text-sm">align_vertical_center</span>
+                    <span>Tengah</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setObjectPosition("bottom")}
+                    className={`py-2 px-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer ${
+                      objectPosition === "bottom"
+                        ? "bg-[#F65456] text-white shadow-xs"
+                        : "bg-white border border-gray-200 text-gray-700 hover:bg-gray-100 hover:text-black"
+                    }`}
+                  >
+                    <span className="material-symbols-outlined text-sm">align_vertical_bottom</span>
+                    <span>Bawah</span>
+                  </button>
+                </div>
+                <p className="text-[11px] text-gray-500 mt-2 leading-relaxed">
+                  Pilih <b>Atas</b> jika foto portrait / video Reels terpotong judulnya di kartu galeri, atau <b>Tengah</b> / <b>Bawah</b> sesuai bagian terbaik yang ingin ditonjolkan.
+                </p>
+              </div>
+            )}
             <input
               ref={fileInputRef}
               type="file"

@@ -8,6 +8,7 @@ export interface GalleryVideoItem {
   img: string;
   videoUrl: string;
   embedUrl: string;
+  objectPosition?: string;
 }
 
 export const galleryVideos: GalleryVideoItem[] = [

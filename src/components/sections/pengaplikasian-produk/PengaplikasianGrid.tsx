@@ -61,7 +61,13 @@ export default function PengaplikasianGrid({
                   <img
                     src={product.img}
                     alt={product.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    className={`w-full h-full object-cover ${
+                      product.objectPosition === "top"
+                        ? "object-top"
+                        : product.objectPosition === "bottom"
+                        ? "object-bottom"
+                        : "object-center"
+                    } group-hover:scale-105 transition-transform duration-500`}
                     loading="lazy"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
