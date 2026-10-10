@@ -116,11 +116,6 @@ export default function KarirJobDetailClient({
                   <span className="material-symbols-outlined text-[14px]">schedule</span>
                   <span>{job.type}</span>
                 </span>
-
-                <span className="px-3 py-1 rounded-full text-xs font-medium bg-white/10 text-white/80 border border-white/10 flex items-center gap-1">
-                  <span className="material-symbols-outlined text-[14px]">location_on</span>
-                  <span>Bizpark Sidoarjo</span>
-                </span>
               </div>
 
               <h1 className="font-heading font-black text-2xl sm:text-3xl lg:text-4xl text-white tracking-tight leading-tight">
@@ -341,10 +336,6 @@ export default function KarirJobDetailClient({
                 <div className="flex items-center justify-between">
                   <span className="text-text-muted">Tipe Pekerjaan:</span>
                   <span className="font-bold text-on-surface">{job.type}</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-text-muted">Lokasi Penempatan:</span>
-                  <span className="font-bold text-on-surface text-right">Bizpark Sidoarjo</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-text-muted">Status:</span>

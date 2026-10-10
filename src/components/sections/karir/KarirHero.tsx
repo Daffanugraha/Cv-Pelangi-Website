@@ -76,6 +76,13 @@ export default function KarirHero({
   const handleSelectDivision = (div: string) => {
     setSelectedDivision(div);
     setIsDropdownOpen(false);
+    // Langsung scroll/direct ke daftar lowongan pekerjaan yang sesuai
+    setTimeout(() => {
+      const targetEl = document.getElementById("posisi-terbuka");
+      if (targetEl) {
+        targetEl.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }, 50);
   };
 
   const divisionsList = [

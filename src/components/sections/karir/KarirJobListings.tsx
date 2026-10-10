@@ -166,11 +166,8 @@ export default function KarirJobListings({ jobs, onApply }: KarirJobListingsProp
                   </div>
                 </div>
 
-                <div className="mt-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-3 sm:p-4 rounded-xl bg-surface-container-low border border-outline-variant/30">
-                  <p className="text-xs text-text-muted font-sans">
-                    Penempatan kerja di Kompleks Pergudangan Bizpark C17-C19, Tambaksawah, Sidoarjo.
-                  </p>
-                  <div className="flex items-center gap-2 self-end sm:self-auto shrink-0">
+                <div className="mt-5 flex flex-wrap items-center justify-end gap-3 p-3 sm:p-4 rounded-xl bg-surface-container-low border border-outline-variant/30">
+                  <div className="flex items-center gap-2 w-full sm:w-auto justify-end shrink-0">
                     <Link
                       href={`/karir/${job.id}`}
                       className="px-3.5 py-2 rounded-full bg-surface-neutral-alt hover:bg-surface-container text-text-body text-xs font-semibold transition border border-surface-container flex items-center gap-1.5 cursor-pointer"
