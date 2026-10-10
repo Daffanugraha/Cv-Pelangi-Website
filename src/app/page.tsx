@@ -46,7 +46,7 @@ export default function HomePage() {
       {/* 9. Partner Kami Marquee */}
       <PartnersSection />
 
-      {/* 10. Reels & Galeri Produksi */}
+      {/* 10. Galeri & Sorotan Video Produksi */}
       <GallerySection />
 
       {/* 11. Blog & Berita Terbaru */}

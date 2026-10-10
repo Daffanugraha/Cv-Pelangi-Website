@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { galleryVideos } from "@/lib/data";
 
@@ -13,6 +13,9 @@ type VideoItem = (typeof galleryVideos)[0] & {
 export default function GallerySection() {
   const [videos, setVideos] = useState<VideoItem[]>(galleryVideos);
   const [activeVideo, setActiveVideo] = useState<VideoItem | null>(null);
+  const [selectedTag, setSelectedTag] = useState<string>("Semua");
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const ITEMS_PER_PAGE = 6;
 
   // Ambil data video/media terbaru dari Beranda gallery admin & API Instagram
   useEffect(() => {
@@ -47,7 +50,7 @@ export default function GallerySection() {
               capacity: "CV Pelangi UV Showcase",
               embedUrl: item.videoUrl || "",
             }));
-            setVideos([...mappedAdmin, ...baseVideos]);
+            setVideos(mappedAdmin);
             return;
           }
         }
@@ -59,6 +62,43 @@ export default function GallerySection() {
     }
     loadLatestMedia();
   }, []);
+
+  // Kumpulan tag unik dari seluruh video
+  const allTags = useMemo(() => {
+    const set = new Set<string>();
+    videos.forEach((v) => {
+      if (v.tag) set.add(v.tag);
+    });
+    return ["Semua", ...Array.from(set)];
+  }, [videos]);
+
+  // Filter video berdasarkan tag yang dipilih
+  const filteredVideos = useMemo(() => {
+    if (selectedTag === "Semua") return videos;
+    return videos.filter((v) => v.tag === selectedTag);
+  }, [videos, selectedTag]);
+
+  // Reset ke halaman 1 saat filter tag berubah atau data berubah
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [selectedTag, videos]);
+
+  const totalPages = Math.ceil(filteredVideos.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, filteredVideos.length);
+
+  const paginatedVideos = useMemo(() => {
+    return filteredVideos.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  }, [filteredVideos, startIndex]);
+
+  const handlePageChange = (page: number) => {
+    if (page < 1 || page > totalPages) return;
+    setCurrentPage(page);
+    const targetEl = document.getElementById("galeri");
+    if (targetEl) {
+      targetEl.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
 
   // Kunci scroll body saat modal video terbuka
   useEffect(() => {
@@ -96,7 +136,7 @@ export default function GallerySection() {
             <div className="flex items-center gap-2 mb-2">
               <span className="font-label-meta text-label-meta uppercase tracking-widest text-bracket-border font-bold flex items-center gap-1.5">
                 <span className="w-2.5 h-1 bg-bracket-border rounded-full"></span>
-                <span translate="no" className="notranslate">Pelangi UV</span> Reels &amp; Video Media
+                <span translate="no" className="notranslate">Pelangi UV</span> Galeri Video &amp; Media
               </span>
             </div>
 
@@ -134,9 +174,30 @@ export default function GallerySection() {
           </div>
         </div>
 
-        {/* Video Cards Grid - Frameless Modern Reels Cards */}
+        {/* Tag Filters */}
+        <div className="flex flex-wrap items-center gap-2 mb-8">
+          {allTags.map((tag) => {
+            const isActive = selectedTag === tag;
+            return (
+              <button
+                key={tag}
+                type="button"
+                onClick={() => setSelectedTag(tag)}
+                className={`px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer ${
+                  isActive
+                    ? "bg-bracket-border text-white shadow-md scale-105"
+                    : "bg-surface-neutral-alt hover:bg-surface-container text-text-muted hover:text-on-surface border border-surface-container"
+                }`}
+              >
+                {tag}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Video Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          {videos.map((video, idx) => (
+          {paginatedVideos.map((video, idx) => (
             <div
               key={video.id || video.shortcode || idx}
               onClick={() => setActiveVideo(video)}
@@ -153,9 +214,9 @@ export default function GallerySection() {
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 brightness-[0.92] group-hover:brightness-[0.82]"
                 />
                 <div className="absolute top-3 left-3 right-3 flex items-center justify-between z-10 pointer-events-none">
-                  <span className="px-3 py-1 rounded-full bg-black/50 backdrop-blur-md text-white font-label-meta text-[11px] font-semibold border border-white/15 shadow-sm flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-bracket-border animate-pulse" />
-                    Reels
+                  <span className="px-3 py-1 rounded-full bg-black/60 backdrop-blur-md text-white font-label-meta text-[11px] font-semibold border border-white/15 shadow-sm flex items-center gap-1.5">
+                    <span className="material-symbols-outlined text-[13px] text-bracket-border">play_circle</span>
+                    <span>Video</span>
                   </span>
                   <span className="px-3 py-1 rounded-full bg-bracket-border text-white font-label-meta text-[11px] font-bold shadow-sm">
                     {video.tag}
@@ -197,11 +258,67 @@ export default function GallerySection() {
             </div>
           ))}
         </div>
+
+        {/* Pagination Controls */}
+        {totalPages > 1 && (
+          <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-surface-container/80 mt-10">
+            <p className="text-xs sm:text-sm text-text-muted font-sans order-2 sm:order-1">
+              Menampilkan <span className="font-semibold text-on-surface">{startIndex + 1}</span> -{" "}
+              <span className="font-semibold text-on-surface">{endIndex}</span> dari{" "}
+              <span className="font-semibold text-on-surface">{filteredVideos.length}</span> media
+            </p>
+
+            <div className="flex items-center gap-1.5 order-1 sm:order-2">
+              <button
+                type="button"
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+                className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer ${
+                  currentPage === 1
+                    ? "text-text-muted/40 bg-surface-container/30 cursor-not-allowed"
+                    : "text-text-body bg-surface-neutral-alt hover:bg-surface-container hover:text-on-surface"
+                }`}
+              >
+                <span className="material-symbols-outlined text-sm">chevron_left</span>
+                <span>Sebelumnya</span>
+              </button>
+
+              <div className="flex items-center gap-1">
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+                  <button
+                    key={pageNum}
+                    type="button"
+                    onClick={() => handlePageChange(pageNum)}
+                    className={`w-8 h-8 rounded-lg text-xs font-semibold transition cursor-pointer flex items-center justify-center ${
+                      currentPage === pageNum
+                        ? "bg-bracket-border text-white shadow-xs"
+                        : "text-text-muted bg-surface-neutral-alt hover:bg-surface-container hover:text-on-surface"
+                    }`}
+                  >
+                    {pageNum}
+                  </button>
+                ))}
+              </div>
+
+              <button
+                type="button"
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer ${
+                  currentPage === totalPages
+                    ? "text-text-muted/40 bg-surface-container/30 cursor-not-allowed"
+                    : "text-text-body bg-surface-neutral-alt hover:bg-surface-container hover:text-on-surface"
+                }`}
+              >
+                <span>Selanjutnya</span>
+                <span className="material-symbols-outlined text-sm">chevron_right</span>
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
-
-
-      {/* Video Player Modal Pop-up (Modern Aesthetic Reels Style) */}
+      {/* Video Player Modal Pop-up */}
       {activeVideo && (
         <div
           className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 animate-in fade-in duration-200"
@@ -241,7 +358,7 @@ export default function GallerySection() {
             <div className="relative z-10 flex items-center justify-between p-4 bg-gradient-to-b from-black/80 via-black/40 to-transparent pointer-events-none">
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/50 backdrop-blur-md text-white text-[11px] font-semibold border border-white/20">
                 <span className="w-2 h-2 rounded-full bg-bracket-border animate-pulse" />
-                {activeVideo.tag || "Pelangi UV Reels"}
+                {activeVideo.tag || "CV Pelangi UV"}
               </span>
 
               <button

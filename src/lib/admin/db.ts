@@ -9,6 +9,7 @@ import path from "path";
 import { CAREER_JOBS, CareerJob } from "@/data/careers";
 import { MOMEN_ALBUMS, MomenAlbum, MomenPhoto } from "@/lib/data/galeriMomen";
 import { featuredArticle, articlesData, ArticleItem } from "@/lib/data/articles";
+import { galleryVideos } from "@/lib/data/gallery";
 import { query, isPostgresConfigured } from "@/lib/db/postgres";
 
 // ---------------------------------------------------------------------------
@@ -124,10 +125,31 @@ export interface SiteSettings {
 }
 
 // ---------------------------------------------------------------------------
-// Gallery CRUD
-// ---------------------------------------------------------------------------
+export const DEFAULT_BERANDA_GALLERY: GalleryItem[] = galleryVideos.map((v, idx) => ({
+  id: `g_beranda_${idx + 1}`,
+  title: v.title,
+  category: v.tag || "Finishing",
+  technique: v.desc,
+  imageUrl: v.img,
+  fileName: v.img.split("/").pop() || "media.jpg",
+  createdAt: new Date(Date.now() - (idx + 1) * 86400000).toISOString(),
+  order: idx,
+  featured: true,
+  galleryType: "beranda",
+  videoUrl: v.videoUrl,
+  tag: v.tag,
+}));
+
 export function getGallery(type?: string): GalleryItem[] {
-  const items = readJSON<GalleryItem[]>("gallery", []);
+  let items = readJSON<GalleryItem[]>("gallery", []);
+  
+  // Jika belum ada media bertipe beranda, otomatis sertakan 6 default media beranda
+  const hasBeranda = items.some((i) => i.galleryType === "beranda");
+  if (!hasBeranda) {
+    items = [...items, ...DEFAULT_BERANDA_GALLERY];
+    saveGallery(items);
+  }
+
   if (!type || type === "all") return items;
   return items.filter((i) => (i.galleryType || "produk") === type);
 }
