@@ -237,15 +237,10 @@ export default function GalleryUploadModal({
       onClose={onClose}
       title={
         item
-          ? `Edit ${galleryType === "beranda" ? "Media Galeri Beranda" : "Portofolio Produk"}`
-          : `Tambah ${galleryType === "beranda" ? "Media Galeri Beranda" : "Foto Pengaplikasian Produk"}`
+          ? `Edit ${galleryType === "beranda" ? "Media Beranda" : "Foto Produk"}`
+          : `Tambah ${galleryType === "beranda" ? "Media Beranda" : "Foto Produk"}`
       }
-      subtitle={
-        galleryType === "beranda"
-          ? "Media yang ditambahkan di sini akan tampil di section Galeri halaman Beranda."
-          : "Unggah hasil cetak dan tentukan teknik finishing serta kategori kemasan."
-      }
-      maxWidth="3xl"
+      maxWidth="5xl"
       footer={
         <div className="w-full flex items-center justify-end gap-2.5">
           <button
@@ -270,23 +265,23 @@ export default function GalleryUploadModal({
             ) : (
               <>
                 <span className="material-symbols-outlined text-sm">save</span>
-                <span>{item ? "Simpan Perubahan" : "Tambahkan ke Galeri"}</span>
+                <span>{item ? "Simpan Perubahan" : "Simpan ke Galeri"}</span>
               </>
             )}
           </button>
         </div>
       }
     >
-      <div className="space-y-5">
+      <div className="space-y-4">
         {error && (
-          <div className="p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-medium flex items-center gap-2">
+          <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-medium flex items-center gap-2">
             <span className="material-symbols-outlined text-base">error</span>
             <span>{error}</span>
           </div>
         )}
 
         {thumbSuccessMsg && (
-          <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold flex items-center gap-2 shadow-xs animate-in fade-in">
+          <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold flex items-center gap-2 shadow-xs">
             <span className="material-symbols-outlined text-base text-emerald-600">check_circle</span>
             <span>{thumbSuccessMsg}</span>
           </div>
@@ -305,7 +300,7 @@ export default function GalleryUploadModal({
               }`}
             >
               <span className="material-symbols-outlined text-sm">inventory_2</span>
-              <span>1. Galeri Pengaplikasian Produk</span>
+              <span>Galeri Pengaplikasian Produk</span>
             </button>
             <button
               type="button"
@@ -317,53 +312,71 @@ export default function GalleryUploadModal({
               }`}
             >
               <span className="material-symbols-outlined text-sm">home</span>
-              <span>2. Galeri di Beranda</span>
+              <span>Galeri di Beranda</span>
             </button>
           </div>
         )}
 
-        <div className="grid lg:grid-cols-2 gap-5 items-start">
-          {/* Upload Area */}
-          <div>
-            <div className="flex items-center justify-between mb-1.5">
-              <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider font-mono">
-                Berkas Foto / Thumbnail <span className="text-red-500">*</span>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          {/* Kolom Kiri: Foto / Preview & Pengaturan Fokus Crop (Lebih Luas) */}
+          <div className="lg:col-span-7 space-y-3">
+            <div className="flex items-center justify-between">
+              <label className="text-xs font-bold text-gray-700 uppercase tracking-wider font-mono">
+                Foto / Sampul <span className="text-red-500">*</span>
               </label>
               {previewUrl && (
-                <span className="text-[11px] text-emerald-600 font-medium flex items-center gap-1">
-                  <span className="material-symbols-outlined text-xs">verified</span>
-                  Foto Terpasang
-                </span>
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  className="text-xs text-[#F65456] hover:underline font-semibold flex items-center gap-1 cursor-pointer"
+                >
+                  <span className="material-symbols-outlined text-xs">upload_file</span>
+                  Ganti Foto
+                </button>
               )}
             </div>
+
+            {/* Container Preview Gambar yang Besar */}
             <div
-              onClick={() => fileInputRef.current?.click()}
-              className="relative aspect-video rounded-2xl border-2 border-dashed border-gray-300 hover:border-[#F65456] cursor-pointer transition overflow-hidden bg-gray-50 flex items-center justify-center group"
+              onClick={() => !previewUrl && fileInputRef.current?.click()}
+              className={`relative aspect-[16/10] sm:aspect-[16/9] min-h-[260px] sm:min-h-[320px] w-full rounded-2xl border-2 ${
+                previewUrl ? "border-gray-200" : "border-dashed border-gray-300 hover:border-[#F65456] cursor-pointer"
+              } transition overflow-hidden bg-gray-900 flex items-center justify-center group shadow-xs`}
             >
               {previewUrl ? (
-                <img
-                  src={previewUrl}
-                  alt="Preview"
-                  className={`w-full h-full object-cover transition-all duration-300 ${
-                    objectPosition === "top"
-                      ? "object-top"
-                      : objectPosition === "bottom"
-                      ? "object-bottom"
-                      : "object-center"
-                  }`}
-                />
+                <>
+                  <img
+                    src={previewUrl}
+                    alt="Preview"
+                    className={`w-full h-full object-cover transition-all duration-300 ${
+                      objectPosition === "top"
+                        ? "object-top"
+                        : objectPosition === "bottom"
+                        ? "object-bottom"
+                        : "object-center"
+                    }`}
+                  />
+                  {/* Badge Posisi Saat Ini */}
+                  <div className="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-black/70 backdrop-blur-md text-white text-[11px] font-bold flex items-center gap-1 shadow-sm">
+                    <span className="material-symbols-outlined text-xs text-[#F65456]">crop</span>
+                    <span>
+                      {objectPosition === "top"
+                        ? "Fokus Atas"
+                        : objectPosition === "bottom"
+                        ? "Fokus Bawah"
+                        : "Fokus Tengah"}
+                    </span>
+                  </div>
+                </>
               ) : (
-                <div className="text-center p-4">
-                  <span className="material-symbols-outlined text-4xl text-gray-400 group-hover:text-[#F65456] transition">
+                <div className="text-center p-6">
+                  <span className="material-symbols-outlined text-5xl text-gray-400 group-hover:text-[#F65456] transition">
                     upload_file
                   </span>
-                  <p className="text-gray-700 text-xs sm:text-sm mt-2 font-bold">
-                    Pilih File Foto
+                  <p className="text-gray-200 text-sm mt-3 font-bold">
+                    Klik untuk Pilih Foto
                   </p>
-                  <p className="text-gray-400 text-[11px] mt-0.5">JPG, PNG, WEBP — maks 10MB</p>
-                  <p className="text-[#F65456] text-[11px] mt-2 font-semibold">
-                    Atau gunakan fitur otomatis dari link Instagram/TikTok di samping 👉
-                  </p>
+                  <p className="text-gray-400 text-xs mt-1">Maks. 10MB (JPG, PNG, WEBP)</p>
                 </div>
               )}
               {uploading && (
@@ -373,25 +386,23 @@ export default function GalleryUploadModal({
               )}
             </div>
 
+            {/* Kontrol Fokus Crop (Atas, Tengah, Bawah) */}
             {previewUrl && (
-              <div className="mt-3 p-3 rounded-2xl bg-gray-50 border border-gray-200 shadow-2xs">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-bold text-gray-800 font-mono flex items-center gap-1.5">
-                    <span className="material-symbols-outlined text-[15px] text-[#F65456]">crop</span>
-                    <span>Posisi Fokus Thumbnail (Crop)</span>
-                  </span>
-                  <span className="text-[11px] text-[#F65456] font-bold">
-                    {objectPosition === "top" ? "Fokus Atas" : objectPosition === "bottom" ? "Fokus Bawah" : "Fokus Tengah"}
+              <div className="p-3 bg-gray-50 rounded-xl border border-gray-200 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-gray-700 font-mono flex items-center gap-1.5">
+                    <span className="material-symbols-outlined text-sm text-[#F65456]">crop</span>
+                    Posisi Fokus Gambar (Crop)
                   </span>
                 </div>
                 <div className="grid grid-cols-3 gap-2">
                   <button
                     type="button"
                     onClick={() => setObjectPosition("top")}
-                    className={`py-2 px-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer ${
+                    className={`py-2 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer ${
                       objectPosition === "top"
                         ? "bg-[#F65456] text-white shadow-xs"
-                        : "bg-white border border-gray-200 text-gray-700 hover:bg-gray-100 hover:text-black"
+                        : "bg-white border border-gray-200 text-gray-700 hover:bg-gray-100"
                     }`}
                   >
                     <span className="material-symbols-outlined text-sm">align_vertical_top</span>
@@ -400,10 +411,10 @@ export default function GalleryUploadModal({
                   <button
                     type="button"
                     onClick={() => setObjectPosition("center")}
-                    className={`py-2 px-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer ${
+                    className={`py-2 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer ${
                       objectPosition === "center"
                         ? "bg-[#F65456] text-white shadow-xs"
-                        : "bg-white border border-gray-200 text-gray-700 hover:bg-gray-100 hover:text-black"
+                        : "bg-white border border-gray-200 text-gray-700 hover:bg-gray-100"
                     }`}
                   >
                     <span className="material-symbols-outlined text-sm">align_vertical_center</span>
@@ -412,21 +423,19 @@ export default function GalleryUploadModal({
                   <button
                     type="button"
                     onClick={() => setObjectPosition("bottom")}
-                    className={`py-2 px-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer ${
+                    className={`py-2 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer ${
                       objectPosition === "bottom"
                         ? "bg-[#F65456] text-white shadow-xs"
-                        : "bg-white border border-gray-200 text-gray-700 hover:bg-gray-100 hover:text-black"
+                        : "bg-white border border-gray-200 text-gray-700 hover:bg-gray-100"
                     }`}
                   >
                     <span className="material-symbols-outlined text-sm">align_vertical_bottom</span>
                     <span>Bawah</span>
                   </button>
                 </div>
-                <p className="text-[11px] text-gray-500 mt-2 leading-relaxed">
-                  Pilih <b>Atas</b> jika foto portrait / video Reels terpotong judulnya di kartu galeri, atau <b>Tengah</b> / <b>Bawah</b> sesuai bagian terbaik yang ingin ditonjolkan.
-                </p>
               </div>
             )}
+
             <input
               ref={fileInputRef}
               type="file"
@@ -435,10 +444,7 @@ export default function GalleryUploadModal({
               onChange={handleFileChange}
             />
 
-            <div className="mt-2.5">
-              <label className="block text-[11px] text-gray-500 font-mono mb-1">
-                Atau masukkan tautan URL gambar langsung:
-              </label>
+            <div>
               <input
                 type="text"
                 value={imageUrl}
@@ -446,17 +452,17 @@ export default function GalleryUploadModal({
                   setImageUrl(e.target.value);
                   setPreviewUrl(e.target.value);
                 }}
-                placeholder="https://... atau /images/gallery/..."
-                className="w-full px-3 py-1.5 text-xs border border-gray-200 rounded-xl focus:outline-none focus:border-[#F65456] bg-gray-50/50 font-mono"
+                placeholder="URL gambar langsung (opsional): https://... atau /images/..."
+                className="w-full px-3 py-2 text-xs border border-gray-200 rounded-xl focus:outline-none focus:border-[#F65456] bg-gray-50/50 font-mono"
               />
             </div>
           </div>
 
-          {/* Form Fields */}
-          <div className="space-y-4">
+          {/* Kolom Kanan: Detail & Form Input */}
+          <div className="lg:col-span-5 space-y-3.5">
             <div>
               <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1 font-mono">
-                Judul {galleryType === "beranda" ? "Media / Sorotan" : "Foto Portofolio"}{" "}
+                Judul {galleryType === "beranda" ? "Media" : "Produk"}{" "}
                 <span className="text-red-500">*</span>
               </label>
               <input
@@ -465,10 +471,10 @@ export default function GalleryUploadModal({
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder={
                   galleryType === "beranda"
-                    ? "cth. Mesin Spot UV Otomatis Bizpark Waru"
+                    ? "cth. Mesin Spot UV Otomatis"
                     : "cth. Rigid Box Parfum Hot Stamp Gold"
                 }
-                className="w-full bg-white border border-gray-300 rounded-xl px-3.5 py-2 text-gray-900 text-xs sm:text-sm focus:outline-none focus:border-[#F65456] transition"
+                className="w-full bg-white border border-gray-300 rounded-xl px-3 py-2 text-gray-900 text-xs sm:text-sm focus:outline-none focus:border-[#F65456] transition"
               />
             </div>
 
@@ -482,50 +488,42 @@ export default function GalleryUploadModal({
                     type="text"
                     value={tag}
                     onChange={(e) => setTag(e.target.value)}
-                    placeholder="cth. Spot UV, Hot Foil, Mesin Otomatis"
-                    className="w-full bg-white border border-gray-300 rounded-xl px-3.5 py-2 text-gray-900 text-xs sm:text-sm focus:outline-none focus:border-[#F65456] transition"
+                    placeholder="cth. Spot UV, Hot Foil"
+                    className="w-full bg-white border border-gray-300 rounded-xl px-3 py-2 text-gray-900 text-xs sm:text-sm focus:outline-none focus:border-[#F65456] transition"
                   />
                 </div>
 
                 <div>
-                  <div className="flex items-center justify-between mb-1">
-                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider font-mono">
-                      Link Video Instagram / TikTok
-                    </label>
-                    <span className="text-[10px] text-gray-400 font-sans">Opsional untuk video</span>
-                  </div>
+                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1 font-mono">
+                    Link Instagram / TikTok
+                  </label>
                   <div className="flex gap-2">
                     <input
                       type="text"
                       value={videoUrl}
                       onChange={(e) => setVideoUrl(e.target.value)}
                       placeholder="https://instagram.com/reel/... atau https://tiktok.com/..."
-                      className="flex-1 bg-white border border-gray-300 rounded-xl px-3.5 py-2 text-gray-900 text-xs sm:text-sm focus:outline-none focus:border-[#F65456] transition font-mono"
+                      className="flex-1 min-w-0 bg-white border border-gray-300 rounded-xl px-3 py-2 text-gray-900 text-xs focus:outline-none focus:border-[#F65456] transition font-mono"
                     />
                     <button
                       type="button"
                       onClick={() => handleAutoFetchThumbnail()}
                       disabled={fetchingThumb || !videoUrl.trim()}
-                      className="px-3.5 py-2 bg-gradient-to-r from-[#F65456] to-[#E03F41] hover:from-[#E03F41] hover:to-[#C02E30] text-white rounded-xl text-xs font-bold shrink-0 transition shadow-xs disabled:opacity-40 flex items-center gap-1.5 cursor-pointer"
-                      title="Unduh thumbnail secara otomatis dari URL ini"
+                      className="px-3 py-2 bg-[#F65456] hover:bg-[#E03F41] text-white rounded-xl text-xs font-bold shrink-0 transition shadow-xs disabled:opacity-40 flex items-center gap-1 cursor-pointer"
                     >
                       {fetchingThumb ? (
                         <>
-                          <span className="material-symbols-outlined animate-spin text-sm">progress_activity</span>
+                          <span className="material-symbols-outlined animate-spin text-xs">progress_activity</span>
                           <span>Mengunduh...</span>
                         </>
                       ) : (
                         <>
-                          <span className="material-symbols-outlined text-sm">download</span>
+                          <span className="material-symbols-outlined text-xs">download</span>
                           <span>Ambil Thumbnail</span>
                         </>
                       )}
                     </button>
                   </div>
-                  <p className="text-[11px] text-gray-500 mt-1.5 flex items-center gap-1">
-                    <span className="material-symbols-outlined text-xs text-[#F65456]">auto_awesome</span>
-                    <span>Klik <b>Ambil Thumbnail</b> untuk otomatis mendownload foto sampul video &amp; mengisinya ke foto.</span>
-                  </p>
                 </div>
               </>
             ) : (
@@ -537,7 +535,7 @@ export default function GalleryUploadModal({
                   <select
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
-                    className="w-full bg-white border border-gray-300 rounded-xl px-3.5 py-2 text-gray-900 text-xs sm:text-sm focus:outline-none focus:border-[#F65456] transition"
+                    className="w-full bg-white border border-gray-300 rounded-xl px-3 py-2 text-gray-900 text-xs sm:text-sm focus:outline-none focus:border-[#F65456] transition"
                   >
                     {GALLERY_CATEGORIES.map((c) => (
                       <option key={c} value={c}>
@@ -554,7 +552,7 @@ export default function GalleryUploadModal({
                   <select
                     value={technique}
                     onChange={(e) => setTechnique(e.target.value)}
-                    className="w-full bg-white border border-gray-300 rounded-xl px-3.5 py-2 text-gray-900 text-xs sm:text-sm focus:outline-none focus:border-[#F65456] transition"
+                    className="w-full bg-white border border-gray-300 rounded-xl px-3 py-2 text-gray-900 text-xs sm:text-sm focus:outline-none focus:border-[#F65456] transition"
                   >
                     {GALLERY_TECHNIQUES.map((t) => (
                       <option key={t} value={t}>
@@ -565,24 +563,22 @@ export default function GalleryUploadModal({
                 </div>
 
                 <div>
-                  <div className="flex items-center justify-between mb-1">
-                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider font-mono">
-                      Ambil dari Link Instagram / TikTok (Opsional)
-                    </label>
-                  </div>
+                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1 font-mono">
+                    Link Instagram / TikTok (Opsional)
+                  </label>
                   <div className="flex gap-2">
                     <input
                       type="text"
                       value={videoUrl}
                       onChange={(e) => setVideoUrl(e.target.value)}
                       placeholder="https://instagram.com/reel/... atau https://tiktok.com/..."
-                      className="flex-1 bg-white border border-gray-300 rounded-xl px-3 py-1.5 text-gray-900 text-xs focus:outline-none focus:border-[#F65456] transition font-mono"
+                      className="flex-1 min-w-0 bg-white border border-gray-300 rounded-xl px-3 py-2 text-gray-900 text-xs focus:outline-none focus:border-[#F65456] transition font-mono"
                     />
                     <button
                       type="button"
                       onClick={() => handleAutoFetchThumbnail()}
                       disabled={fetchingThumb || !videoUrl.trim()}
-                      className="px-3 py-1.5 bg-[#F65456] hover:bg-[#E03F41] text-white rounded-xl text-xs font-bold shrink-0 transition disabled:opacity-40 flex items-center gap-1 cursor-pointer"
+                      className="px-3 py-2 bg-[#F65456] hover:bg-[#E03F41] text-white rounded-xl text-xs font-bold shrink-0 transition disabled:opacity-40 flex items-center gap-1 cursor-pointer"
                     >
                       {fetchingThumb ? (
                         <span className="material-symbols-outlined animate-spin text-xs">progress_activity</span>
@@ -592,14 +588,11 @@ export default function GalleryUploadModal({
                       <span>Ambil Foto</span>
                     </button>
                   </div>
-                  <p className="text-[10px] text-gray-400 mt-1">
-                    Otomatis mengunduh foto dari postingan Instagram / TikTok tanpa upload manual.
-                  </p>
                 </div>
               </>
             )}
 
-            <label className="flex items-center gap-2.5 cursor-pointer select-none pt-1">
+            <label className="flex items-center gap-2 cursor-pointer select-none pt-2">
               <input
                 type="checkbox"
                 checked={featured}
@@ -608,7 +601,7 @@ export default function GalleryUploadModal({
               />
               <span className="text-xs sm:text-sm text-gray-700 font-semibold flex items-center gap-1">
                 <span className="material-symbols-outlined text-amber-500 text-base">star</span>
-                Tampilkan sebagai media unggulan prioritas
+                Tampilkan sebagai unggulan prioritas
               </span>
             </label>
           </div>
