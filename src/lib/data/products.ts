@@ -80,7 +80,7 @@ export const productsBahan: ProductItem[] = [
     tag: "",
     title: "Lem Wet & Dry Laminating",
     desc: "Formula lem laminasi waterbase dan thermal superior tanpa bau kimia menyengat, bersertifikasi ramah pangan dan cepat kering.",
-    img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCy0HZt7qzpIhNn062ivZgfTkxuc6fNV2bVC-hpWUVGuLS8Dls-21shWao0YA_ZjT1AVcip6oiiEDcPclGaeG6KIXdbC0tXDwRuJpOV_CNwgg028b0efxNEmq_aOKRLaBdJebkMtbIUzu_hH0UBjNOBZswdcgh3oa8CQT-1tn4Wv1Gkpo7fa23Fs0pmUKgB0EFjJ7YbLbGIQ_4RAAb4DDP0ar_43-JbJiFG-z_JIaIM63fzRE67y3Sx",
+    img: "/images/bahan-baku/lem-wet-dry-laminating.png",
     capacity: "Kemasan: Pail 20kg & Drum",
     href: "/produk/bahan-baku#product-card-lem",
   },

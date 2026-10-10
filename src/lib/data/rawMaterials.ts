@@ -241,7 +241,7 @@ export const rawMaterialCategories: MaterialCategory[] = [
       "Aplikasi: Wet laminating, dry laminating, polygum",
     ],
     startingPrice: "Rp 15.000",
-    img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCy0HZt7qzpIhNn062ivZgfTkxuc6fNV2bVC-hpWUVGuLS8Dls-21shWao0YA_ZjT1AVcip6oiiEDcPclGaeG6KIXdbC0tXDwRuJpOV_CNwgg028b0efxNEmq_aOKRLaBdJebkMtbIUzu_hH0UBjNOBZswdcgh3oa8CQT-1tn4Wv1Gkpo7fa23Fs0pmUKgB0EFjJ7YbLbGIQ_4RAAb4DDP0ar_43-JbJiFG-z_JIaIM63fzRE67y3Sx",
+    img: "/images/bahan-baku/lem-wet-dry-laminating.png",
     popularVariants: [
       "Lem Wet Laminating Waterbase Ekstra Kuat",
       "Lem Dry Laminating Komponen A & B",

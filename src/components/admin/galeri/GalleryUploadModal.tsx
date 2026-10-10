@@ -51,6 +51,8 @@ export default function GalleryUploadModal({
   const [fileName, setFileName] = useState("");
   const [previewUrl, setPreviewUrl] = useState("");
   const [uploading, setUploading] = useState(false);
+  const [fetchingThumb, setFetchingThumb] = useState(false);
+  const [thumbSuccessMsg, setThumbSuccessMsg] = useState("");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
 
@@ -81,7 +83,50 @@ export default function GalleryUploadModal({
       setPreviewUrl("");
     }
     setError("");
+    setThumbSuccessMsg("");
   }, [isOpen, item, defaultGalleryType]);
+
+  // Fungsi unduh thumbnail otomatis dari Instagram, TikTok, atau YouTube
+  async function handleAutoFetchThumbnail(inputUrl?: string) {
+    const targetUrl = (inputUrl !== undefined ? inputUrl : videoUrl).trim();
+    if (!targetUrl) {
+      setError("Masukkan URL Instagram atau TikTok terlebih dahulu.");
+      return;
+    }
+
+    setFetchingThumb(true);
+    setError("");
+    setThumbSuccessMsg("");
+
+    try {
+      const res = await fetch("/api/admin/gallery/fetch-thumbnail", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url: targetUrl }),
+      });
+
+      const data = await res.json();
+      if (res.ok && data.ok) {
+        setImageUrl(data.imageUrl);
+        setPreviewUrl(data.imageUrl);
+        setFileName(data.fileName);
+        if (data.videoUrl) setVideoUrl(data.videoUrl);
+        if (!title.trim() && data.suggestedTitle) {
+          setTitle(data.suggestedTitle);
+        }
+        setThumbSuccessMsg(
+          data.message || `Thumbnail ${data.platform} berhasil diunduh dan dipasang otomatis!`
+        );
+      } else {
+        setError(data.error || "Gagal mengunduh thumbnail dari link tersebut.");
+      }
+    } catch (err) {
+      console.error(err);
+      setError("Terjadi kesalahan jaringan saat mengunduh thumbnail.");
+    } finally {
+      setFetchingThumb(false);
+    }
+  }
 
   async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -90,6 +135,7 @@ export default function GalleryUploadModal({
     setPreviewUrl(URL.createObjectURL(file));
     setUploading(true);
     setError("");
+    setThumbSuccessMsg("");
 
     try {
       const fd = new FormData();
@@ -235,6 +281,13 @@ export default function GalleryUploadModal({
           </div>
         )}
 
+        {thumbSuccessMsg && (
+          <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold flex items-center gap-2 shadow-xs animate-in fade-in">
+            <span className="material-symbols-outlined text-base text-emerald-600">check_circle</span>
+            <span>{thumbSuccessMsg}</span>
+          </div>
+        )}
+
         {/* Gallery Type Selector (If creating new) */}
         {!item && (
           <div className="p-1 bg-gray-100 rounded-xl flex gap-1">
@@ -268,9 +321,17 @@ export default function GalleryUploadModal({
         <div className="grid lg:grid-cols-2 gap-5 items-start">
           {/* Upload Area */}
           <div>
-            <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5 font-mono">
-              Berkas Foto / Thumbnail <span className="text-red-500">*</span>
-            </label>
+            <div className="flex items-center justify-between mb-1.5">
+              <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider font-mono">
+                Berkas Foto / Thumbnail <span className="text-red-500">*</span>
+              </label>
+              {previewUrl && (
+                <span className="text-[11px] text-emerald-600 font-medium flex items-center gap-1">
+                  <span className="material-symbols-outlined text-xs">verified</span>
+                  Foto Terpasang
+                </span>
+              )}
+            </div>
             <div
               onClick={() => fileInputRef.current?.click()}
               className="relative aspect-video rounded-2xl border-2 border-dashed border-gray-300 hover:border-[#F65456] cursor-pointer transition overflow-hidden bg-gray-50 flex items-center justify-center group"
@@ -286,6 +347,9 @@ export default function GalleryUploadModal({
                     Pilih File Foto
                   </p>
                   <p className="text-gray-400 text-[11px] mt-0.5">JPG, PNG, WEBP — maks 10MB</p>
+                  <p className="text-[#F65456] text-[11px] mt-2 font-semibold">
+                    Atau gunakan fitur otomatis dari link Instagram/TikTok di samping 👉
+                  </p>
                 </div>
               )}
               {uploading && (
@@ -313,7 +377,7 @@ export default function GalleryUploadModal({
                   setImageUrl(e.target.value);
                   setPreviewUrl(e.target.value);
                 }}
-                placeholder="https://... atau /uploads/..."
+                placeholder="https://... atau /images/gallery/..."
                 className="w-full px-3 py-1.5 text-xs border border-gray-200 rounded-xl focus:outline-none focus:border-[#F65456] bg-gray-50/50 font-mono"
               />
             </div>
@@ -355,18 +419,43 @@ export default function GalleryUploadModal({
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1 font-mono">
-                    Link Video / Reels (Opsional)
-                  </label>
-                  <input
-                    type="text"
-                    value={videoUrl}
-                    onChange={(e) => setVideoUrl(e.target.value)}
-                    placeholder="cth. https://instagram.com/reel/... atau link MP4"
-                    className="w-full bg-white border border-gray-300 rounded-xl px-3.5 py-2 text-gray-900 text-xs sm:text-sm focus:outline-none focus:border-[#F65456] transition font-mono"
-                  />
-                  <p className="text-[11px] text-gray-400 mt-1">
-                    Jika diisi, pengunjung di Beranda dapat memutar video ini.
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider font-mono">
+                      Link Video Instagram / TikTok
+                    </label>
+                    <span className="text-[10px] text-gray-400 font-sans">Opsional untuk video</span>
+                  </div>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={videoUrl}
+                      onChange={(e) => setVideoUrl(e.target.value)}
+                      placeholder="https://instagram.com/reel/... atau https://tiktok.com/..."
+                      className="flex-1 bg-white border border-gray-300 rounded-xl px-3.5 py-2 text-gray-900 text-xs sm:text-sm focus:outline-none focus:border-[#F65456] transition font-mono"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => handleAutoFetchThumbnail()}
+                      disabled={fetchingThumb || !videoUrl.trim()}
+                      className="px-3.5 py-2 bg-gradient-to-r from-[#F65456] to-[#E03F41] hover:from-[#E03F41] hover:to-[#C02E30] text-white rounded-xl text-xs font-bold shrink-0 transition shadow-xs disabled:opacity-40 flex items-center gap-1.5 cursor-pointer"
+                      title="Unduh thumbnail secara otomatis dari URL ini"
+                    >
+                      {fetchingThumb ? (
+                        <>
+                          <span className="material-symbols-outlined animate-spin text-sm">progress_activity</span>
+                          <span>Mengunduh...</span>
+                        </>
+                      ) : (
+                        <>
+                          <span className="material-symbols-outlined text-sm">download</span>
+                          <span>Ambil Thumbnail</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+                  <p className="text-[11px] text-gray-500 mt-1.5 flex items-center gap-1">
+                    <span className="material-symbols-outlined text-xs text-[#F65456]">auto_awesome</span>
+                    <span>Klik <b>Ambil Thumbnail</b> untuk otomatis mendownload foto sampul video &amp; mengisinya ke foto.</span>
                   </p>
                 </div>
               </>
@@ -404,6 +493,39 @@ export default function GalleryUploadModal({
                       </option>
                     ))}
                   </select>
+                </div>
+
+                <div>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider font-mono">
+                      Ambil dari Link Instagram / TikTok (Opsional)
+                    </label>
+                  </div>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={videoUrl}
+                      onChange={(e) => setVideoUrl(e.target.value)}
+                      placeholder="https://instagram.com/reel/... atau https://tiktok.com/..."
+                      className="flex-1 bg-white border border-gray-300 rounded-xl px-3 py-1.5 text-gray-900 text-xs focus:outline-none focus:border-[#F65456] transition font-mono"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => handleAutoFetchThumbnail()}
+                      disabled={fetchingThumb || !videoUrl.trim()}
+                      className="px-3 py-1.5 bg-[#F65456] hover:bg-[#E03F41] text-white rounded-xl text-xs font-bold shrink-0 transition disabled:opacity-40 flex items-center gap-1 cursor-pointer"
+                    >
+                      {fetchingThumb ? (
+                        <span className="material-symbols-outlined animate-spin text-xs">progress_activity</span>
+                      ) : (
+                        <span className="material-symbols-outlined text-xs">download</span>
+                      )}
+                      <span>Ambil Foto</span>
+                    </button>
+                  </div>
+                  <p className="text-[10px] text-gray-400 mt-1">
+                    Otomatis mengunduh foto dari postingan Instagram / TikTok tanpa upload manual.
+                  </p>
                 </div>
               </>
             )}
