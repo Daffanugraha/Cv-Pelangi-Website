@@ -48,10 +48,19 @@ export default function KarirPageContent({ initialJobs }: KarirPageContentProps)
         (j) =>
           j.id.toLowerCase() === clean ||
           j.title.toLowerCase().includes(clean) ||
-          j.division.toLowerCase() === clean
+          j.division.toLowerCase() === clean ||
+          j.id.replace(/-/g, "").toLowerCase() === clean.replace(/-/g, "") ||
+          clean.replace(/-/g, " ").includes(j.title.toLowerCase()) ||
+          j.title.toLowerCase().includes(clean.replace(/-/g, " "))
       );
       if (match) {
         setSelectedJobToApply(match);
+        setTimeout(() => {
+          const el = document.getElementById("posisi-terbuka");
+          if (el) {
+            el.scrollIntoView({ behavior: "smooth", block: "start" });
+          }
+        }, 150);
       }
     }
   }, [jobs]);
@@ -219,7 +228,7 @@ export default function KarirPageContent({ initialJobs }: KarirPageContentProps)
                     Offering &amp; Onboarding
                   </h4>
                   <p className="text-xs text-text-muted leading-relaxed font-sans">
-                    Penawaran kontrak kerja resmi dan orientasi fasilitas di Bizpark Sidoarjo.
+                    Penawaran kontrak kerja resmi dan orientasi fasilitas CV Pelangi UV.
                   </p>
                 </div>
               </div>

@@ -242,10 +242,14 @@ export default function KarirHero({
                         {matchingJobs.map((j) => (
                           <div
                             key={j.id}
-                            className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 hover:border-bracket-border/40 flex items-center justify-between gap-3 text-on-secondary transition-all"
+                            onClick={() => {
+                              setIsDropdownOpen(false);
+                              if (onApply && j.isOpen) onApply(j);
+                            }}
+                            className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 hover:border-bracket-border/40 flex items-center justify-between gap-3 text-on-secondary transition-all cursor-pointer group"
                           >
                             <div className="min-w-0 flex-1">
-                              <div className="text-[13px] font-bold text-white truncate">
+                              <div className="text-[13px] font-bold text-white group-hover:text-bracket-border transition-colors truncate">
                                 {j.title}
                               </div>
                               <div className="text-[11px] text-surface-dim">
@@ -256,23 +260,17 @@ export default function KarirHero({
                               {onApply && j.isOpen && (
                                 <button
                                   type="button"
-                                  onClick={() => {
+                                  onClick={(e) => {
+                                    e.stopPropagation();
                                     setIsDropdownOpen(false);
                                     onApply(j);
                                   }}
-                                  className="px-3 py-1.5 rounded-lg bg-bracket-border hover:bg-primary text-white text-xs font-bold transition shadow-xs cursor-pointer flex items-center gap-1"
+                                  className="px-3.5 py-1.5 rounded-lg bg-bracket-border hover:bg-primary text-white text-xs font-bold transition shadow-xs cursor-pointer flex items-center gap-1"
                                 >
                                   <span className="material-symbols-outlined text-[14px]">send</span>
                                   <span>Lamar Langsung</span>
                                 </button>
                               )}
-                              <Link
-                                href={`/karir/${j.id}`}
-                                onClick={() => setIsDropdownOpen(false)}
-                                className="px-2.5 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-semibold transition"
-                              >
-                                Detail
-                              </Link>
                             </div>
                           </div>
                         ))}

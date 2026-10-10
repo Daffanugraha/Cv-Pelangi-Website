@@ -1,8 +1,6 @@
-import React from "react";
+import { redirect } from "next/navigation";
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
-import { getJobs, getJobBySlug, slugifyJobTitle } from "@/lib/admin/db";
-import KarirJobDetailClient from "./KarirJobDetailClient";
+import { getJobBySlug } from "@/lib/admin/db";
 
 export const dynamic = "force-dynamic";
 
@@ -25,17 +23,16 @@ export async function generateMetadata({
   }
 
   const title = `${job.title} (${job.division}) - Lowongan Karir CV Pelangi UV`;
-  const description = `Lowongan kerja ${job.title} di CV Pelangi UV Bizpark Sidoarjo. Tipe ${job.type}, penempatan di Sidoarjo. Kirim berkas lamaran dan CV Anda sekarang secara online.`;
+  const description = `Lowongan kerja ${job.title} di CV Pelangi UV. Tipe ${job.type}. Kirim berkas lamaran dan CV Anda sekarang secara online.`;
 
   return {
     title,
     description,
     keywords: [
       `lowongan ${job.title.toLowerCase()}`,
-      `loker ${job.title.toLowerCase()} sidoarjo`,
+      `loker ${job.title.toLowerCase()}`,
       `karir pelangi uv ${job.division.toLowerCase()}`,
-      "loker percetakan sidoarjo",
-      "loker bizpark sidoarjo",
+      "loker percetakan",
       "CV Pelangi UV karir",
     ],
     openGraph: {
@@ -48,30 +45,7 @@ export async function generateMetadata({
   };
 }
 
-export async function generateStaticParams() {
-  const jobs = getJobs();
-  const params: { slug: string }[] = [];
-
-  for (const job of jobs) {
-    params.push({ slug: job.id });
-    const slug = slugifyJobTitle(job.title);
-    if (slug !== job.id) {
-      params.push({ slug });
-    }
-  }
-
-  return params;
-}
-
 export default function KarirDetailPage({ params }: KarirDetailPageProps) {
-  const job = getJobBySlug(params.slug);
-
-  if (!job) {
-    notFound();
-  }
-
-  const allJobs = getJobs();
-  const otherJobs = allJobs.filter((j) => j.id !== job.id && j.isOpen);
-
-  return <KarirJobDetailClient job={job} otherJobs={otherJobs} />;
+  // Langsung direct ke halaman utama karir dengan posisi aktif dan popup formulir lamaran
+  redirect(`/karir?posisi=${encodeURIComponent(params.slug)}#posisi-terbuka`);
 }

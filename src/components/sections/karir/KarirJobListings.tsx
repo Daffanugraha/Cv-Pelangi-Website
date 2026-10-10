@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect, useMemo } from "react";
-import Link from "next/link";
 import { CareerJob } from "@/data/careers";
 
 interface KarirJobListingsProps {
@@ -166,24 +165,15 @@ export default function KarirJobListings({ jobs, onApply }: KarirJobListingsProp
                   </div>
                 </div>
 
-                <div className="mt-5 flex flex-wrap items-center justify-end gap-3 p-3 sm:p-4 rounded-xl bg-surface-container-low border border-outline-variant/30">
-                  <div className="flex items-center gap-2 w-full sm:w-auto justify-end shrink-0">
-                    <Link
-                      href={`/karir/${job.id}`}
-                      className="px-3.5 py-2 rounded-full bg-surface-neutral-alt hover:bg-surface-container text-text-body text-xs font-semibold transition border border-surface-container flex items-center gap-1.5 cursor-pointer"
-                    >
-                      <span className="material-symbols-outlined text-[15px]">open_in_new</span>
-                      <span>Halaman Khusus</span>
-                    </Link>
-                    <button
-                      type="button"
-                      onClick={() => onApply(job)}
-                      className="px-5 py-2 rounded-full bg-bracket-border hover:bg-primary text-white text-xs font-bold transition shadow active:scale-95 shrink-0 flex items-center gap-1.5 cursor-pointer"
-                    >
-                      <span className="material-symbols-outlined text-[15px]">send</span>
-                      <span>Kirim Lamaran Posisi Ini</span>
-                    </button>
-                  </div>
+                <div className="mt-5 flex items-center justify-end p-3 sm:p-4 rounded-xl bg-surface-container-low border border-outline-variant/30">
+                  <button
+                    type="button"
+                    onClick={() => onApply(job)}
+                    className="px-6 py-2.5 rounded-full bg-bracket-border hover:bg-primary text-white text-xs font-bold transition shadow active:scale-95 shrink-0 flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <span className="material-symbols-outlined text-[15px]">send</span>
+                    <span>Kirim Lamaran Posisi Ini</span>
+                  </button>
                 </div>
               </div>
             )}
