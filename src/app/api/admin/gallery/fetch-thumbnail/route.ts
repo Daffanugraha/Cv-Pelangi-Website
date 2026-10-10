@@ -42,36 +42,89 @@ export async function POST(req: NextRequest) {
       }
 
       const shortcode = match[1];
-      const igMediaUrl = `https://www.instagram.com/p/${shortcode}/media/?size=l`;
+      const targetUrl = `https://www.instagram.com/p/${shortcode}/`;
 
-      try {
-        const imgRes = await fetch(igMediaUrl, {
-          redirect: "follow",
-          headers: {
-            "User-Agent":
-              "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-          },
-        });
+      const userAgents = [
+        "facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)",
+        "WhatsApp/2.21.12.21 A",
+        "Twitterbot/1.0",
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+      ];
 
-        if (imgRes.ok) {
-          const buffer = Buffer.from(await imgRes.arrayBuffer());
-          if (buffer.length > 1000) {
-            const fileName = `ig_${shortcode}_${Date.now()}.jpg`;
-            fs.writeFileSync(path.join(uploadDir, fileName), buffer);
+      let imgUrl = "";
+      let rawTitle = "";
 
-            return NextResponse.json({
-              ok: true,
-              platform: "Instagram",
-              imageUrl: `/images/gallery/${fileName}`,
-              fileName,
-              videoUrl: `https://www.instagram.com/reel/${shortcode}/`,
-              suggestedTitle: `Dokumentasi Finishing Instagram (${shortcode})`,
-              message: "Thumbnail Instagram berhasil diunduh dan disimpan otomatis!",
-            });
+      // Scrape Open Graph meta tags yang disediakan Instagram untuk preview sosmed
+      for (const ua of userAgents) {
+        try {
+          const res = await fetch(targetUrl, {
+            headers: {
+              "User-Agent": ua,
+              "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+              "Accept-Language": "id,en-US;q=0.7,en;q=0.3",
+            },
+          });
+
+          if (!res.ok) continue;
+
+          const html = await res.text();
+
+          // 1. Ambil URL og:image
+          const imgMatch =
+            html.match(/<meta\s+[^>]*?(?:property|name)=["']og:image["'][^>]*?content=["']([^"']+)["']/i) ||
+            html.match(/<meta\s+[^>]*?content=["']([^"']+)["'][^>]*?(?:property|name)=["']og:image["']/i);
+
+          if (imgMatch && imgMatch[1]) {
+            imgUrl = imgMatch[1].replace(/&amp;/g, "&");
           }
+
+          // 2. Ambil title/caption dari og:title jika ada
+          const titleMatch =
+            html.match(/<meta\s+[^>]*?(?:property|name)=["']og:title["'][^>]*?content=["']([^"']+)["']/i) ||
+            html.match(/<meta\s+[^>]*?content=["']([^"']+)["'][^>]*?(?:property|name)=["']og:title["']/i);
+
+          if (titleMatch && titleMatch[1]) {
+            rawTitle = titleMatch[1]
+              .replace(/&quot;/g, '"')
+              .replace(/&#x27;/g, "'")
+              .replace(/&amp;/g, "&")
+              .trim();
+          }
+
+          if (imgUrl) break;
+        } catch (fetchErr) {
+          console.warn(`Gagal scrape Instagram dengan UA: ${ua}`, fetchErr);
         }
-      } catch (igErr) {
-        console.warn("Gagal download media Instagram via media redirect:", igErr);
+      }
+
+      // Download buffer gambar jika URL ditemukan
+      if (imgUrl) {
+        try {
+          const imgRes = await fetch(imgUrl);
+          if (imgRes.ok) {
+            const buffer = Buffer.from(await imgRes.arrayBuffer());
+            if (buffer.length > 1000) {
+              const fileName = `ig_${shortcode}_${Date.now()}.jpg`;
+              fs.writeFileSync(path.join(uploadDir, fileName), buffer);
+
+              const cleanTitle = rawTitle
+                ? rawTitle.slice(0, 80)
+                : `Dokumentasi Finishing Instagram (${shortcode})`;
+
+              return NextResponse.json({
+                ok: true,
+                platform: "Instagram",
+                imageUrl: `/images/gallery/${fileName}`,
+                fileName,
+                videoUrl: `https://www.instagram.com/reel/${shortcode}/`,
+                suggestedTitle: cleanTitle,
+                message: "Thumbnail Instagram berhasil diunduh dan disimpan otomatis!",
+              });
+            }
+          }
+        } catch (downloadErr) {
+          console.warn("Gagal download image buffer dari CDN Instagram:", downloadErr);
+        }
       }
 
       return NextResponse.json(
