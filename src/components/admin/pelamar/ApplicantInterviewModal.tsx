@@ -15,10 +15,28 @@ export default function ApplicantInterviewModal({
 }: ApplicantInterviewModalProps) {
   const [copied, setCopied] = useState(false);
 
-  // Default tanggal besok
-  const defaultDateStr = useMemo(() => {
+  // Default tanggal besok format YYYY-MM-DD untuk input date
+  const defaultDateRaw = useMemo(() => {
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
+    const y = tomorrow.getFullYear();
+    const m = String(tomorrow.getMonth() + 1).padStart(2, "0");
+    const d = String(tomorrow.getDate()).padStart(2, "0");
+    return `${y}-${m}-${d}`;
+  }, []);
+
+  const [interviewDateRaw, setInterviewDateRaw] = useState(defaultDateRaw);
+  const [interviewTimeRaw, setInterviewTimeRaw] = useState("09:00");
+  const [interviewAddress, setInterviewAddress] = useState(
+    "Kompleks Pergudangan Bizpark C17, Tambak Sawah (Laporan ke Security dahulu)"
+  );
+  const [contactPerson, setContactPerson] = useState("08563444213 - Dliyauddin");
+
+  // Format tanggal ke Bahasa Indonesia (cth: Kamis, 24 September 2026)
+  const formattedDate = useMemo(() => {
+    if (!interviewDateRaw) return "";
+    const [y, m, d] = interviewDateRaw.split("-").map(Number);
+    const dt = new Date(y, m - 1, d);
     const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
     const months = [
       "Januari",
@@ -34,15 +52,15 @@ export default function ApplicantInterviewModal({
       "November",
       "Desember",
     ];
-    return `${days[tomorrow.getDay()]}, ${tomorrow.getDate()} ${months[tomorrow.getMonth()]} ${tomorrow.getFullYear()}`;
-  }, []);
+    return `${days[dt.getDay()]}, ${d} ${months[m - 1]} ${y}`;
+  }, [interviewDateRaw]);
 
-  const [interviewDate, setInterviewDate] = useState(defaultDateStr);
-  const [interviewTime, setInterviewTime] = useState("09.00 WIB");
-  const [interviewAddress, setInterviewAddress] = useState(
-    "Kompleks Pergudangan Bizzpark No C3, Tambak Sawah (Laporan ke Security dahulu)"
-  );
-  const [contactPerson, setContactPerson] = useState("08563444213 - Dliyauddin");
+  // Format waktu jam dan menit (cth: 09.00 WIB)
+  const formattedTime = useMemo(() => {
+    if (!interviewTimeRaw) return "09.00 WIB";
+    const [hh, mm] = interviewTimeRaw.split(":");
+    return `${hh}.${mm} WIB`;
+  }, [interviewTimeRaw]);
 
   // State Pengiriman Email Langsung (maharbasuki@gmail.com)
   const [emailRecipient, setEmailRecipient] = useState(applicant?.email || "");
@@ -66,12 +84,12 @@ export default function ApplicantInterviewModal({
 
   if (!applicant) return null;
 
-  // Template undangan resmi sesuai arahan user (GRC dihilangkan, form data diri dihilangkan)
+  // Template undangan resmi sesuai arahan user (GRC dihilangkan, form data diri dihilangkan, lokasi Bizpark C17)
   const interviewMessage = `Hai ${applicant.name},
 Berdasarkan CV saudara, kami mengundang saudara pada:
 
-Hari : ${interviewDate}
-Pukul : ${interviewTime}
+Hari : ${formattedDate}
+Pukul : ${formattedTime}
 Alamat : ${interviewAddress}
 
 Mohon melakukan pengisian Tes:
@@ -301,24 +319,28 @@ HRD CV Pelangi UV`;
         {/* Pengaturan Jadwal & Lokasi */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3.5 bg-gray-50 border border-gray-200 rounded-xl text-xs">
           <div>
-            <label className="block font-bold text-gray-700 mb-1">Hari &amp; Tanggal:</label>
+            <label className="block font-bold text-gray-700 mb-1">Pilih Tanggal Interview:</label>
             <input
-              type="text"
-              value={interviewDate}
-              onChange={(e) => setInterviewDate(e.target.value)}
-              placeholder="cth. Kamis, 24 September 2026"
-              className="w-full px-3 py-1.5 bg-white border border-gray-300 rounded-lg text-xs text-gray-800 focus:outline-none focus:border-[#F65456]"
+              type="date"
+              value={interviewDateRaw}
+              onChange={(e) => setInterviewDateRaw(e.target.value)}
+              className="w-full px-3 py-1.5 bg-white border border-gray-300 rounded-lg text-xs font-mono text-gray-800 focus:outline-none focus:border-[#F65456]"
             />
+            <span className="text-[11px] font-bold text-[#F65456] mt-1 block">
+              📅 {formattedDate}
+            </span>
           </div>
           <div>
-            <label className="block font-bold text-gray-700 mb-1">Pukul / Waktu:</label>
+            <label className="block font-bold text-gray-700 mb-1">Pukul / Jam &amp; Menit:</label>
             <input
-              type="text"
-              value={interviewTime}
-              onChange={(e) => setInterviewTime(e.target.value)}
-              placeholder="cth. 09.00 WIB"
-              className="w-full px-3 py-1.5 bg-white border border-gray-300 rounded-lg text-xs text-gray-800 focus:outline-none focus:border-[#F65456]"
+              type="time"
+              value={interviewTimeRaw}
+              onChange={(e) => setInterviewTimeRaw(e.target.value)}
+              className="w-full px-3 py-1.5 bg-white border border-gray-300 rounded-lg text-xs font-mono text-gray-800 focus:outline-none focus:border-[#F65456]"
             />
+            <span className="text-[11px] font-bold text-[#F65456] mt-1 block">
+              ⏰ {formattedTime}
+            </span>
           </div>
           <div className="sm:col-span-2">
             <label className="block font-bold text-gray-700 mb-1">Alamat Penempatan Interview:</label>
