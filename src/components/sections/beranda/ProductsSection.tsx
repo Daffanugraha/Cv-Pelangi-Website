@@ -31,6 +31,13 @@ export default function ProductsSection() {
       return firstChild ? firstChild.offsetWidth + 24 : container.scrollWidth / 3;
     };
 
+    // Set awal ke set tengah (set 1) jika masih di 0 agar ada buffer kiri dan kanan
+    const initialWidth = getLoopWidth();
+    if (initialWidth > 0 && container.scrollLeft === 0) {
+      container.scrollLeft = initialWidth;
+      currentPos = initialWidth;
+    }
+
     const activeContainer = container;
 
     function tick() {
@@ -39,9 +46,9 @@ export default function ProductsSection() {
         currentPos += speed;
         const loopWidth = getLoopWidth();
         if (loopWidth > 0) {
-          if (currentPos >= loopWidth) {
+          if (currentPos >= loopWidth * 2) {
             currentPos -= loopWidth;
-          } else if (currentPos <= 0) {
+          } else if (currentPos <= 10) {
             currentPos += loopWidth;
           }
           activeContainer.scrollLeft = Math.round(currentPos);
@@ -99,10 +106,10 @@ export default function ProductsSection() {
       currentPos = startScrollLeft - deltaX;
       const loopWidth = getLoopWidth();
       if (loopWidth > 0) {
-        if (currentPos >= loopWidth) {
+        if (currentPos >= loopWidth * 2) {
           currentPos -= loopWidth;
           startScrollLeft -= loopWidth;
-        } else if (currentPos <= 0) {
+        } else if (currentPos <= 10) {
           currentPos += loopWidth;
           startScrollLeft += loopWidth;
         }
@@ -139,10 +146,10 @@ export default function ProductsSection() {
       currentPos = startScrollLeft - deltaX;
       const loopWidth = getLoopWidth();
       if (loopWidth > 0) {
-        if (currentPos >= loopWidth) {
+        if (currentPos >= loopWidth * 2) {
           currentPos -= loopWidth;
           startScrollLeft -= loopWidth;
-        } else if (currentPos <= 0) {
+        } else if (currentPos <= 10) {
           currentPos += loopWidth;
           startScrollLeft += loopWidth;
         }
@@ -185,25 +192,13 @@ export default function ProductsSection() {
   }, [activeTab]);
 
   const handlePrev = () => {
-    if (!containerRef.current || !trackRef.current) return;
-    const container = containerRef.current;
-    const firstChild = trackRef.current.firstElementChild as HTMLElement | null;
-    const loopWidth = firstChild ? firstChild.offsetWidth + 24 : container.scrollWidth / 3;
-    let nextPos = container.scrollLeft - 360;
-    if (nextPos <= 0) nextPos += loopWidth;
-    container.scrollTo({ left: nextPos, behavior: "smooth" });
-    currentPosRef.current = nextPos;
+    if (!containerRef.current) return;
+    containerRef.current.scrollBy({ left: -380, behavior: "smooth" });
   };
 
   const handleNext = () => {
-    if (!containerRef.current || !trackRef.current) return;
-    const container = containerRef.current;
-    const firstChild = trackRef.current.firstElementChild as HTMLElement | null;
-    const loopWidth = firstChild ? firstChild.offsetWidth + 24 : container.scrollWidth / 3;
-    let nextPos = container.scrollLeft + 360;
-    if (nextPos >= loopWidth) nextPos -= loopWidth;
-    container.scrollTo({ left: nextPos, behavior: "smooth" });
-    currentPosRef.current = nextPos;
+    if (!containerRef.current) return;
+    containerRef.current.scrollBy({ left: 380, behavior: "smooth" });
   };
 
   return (
