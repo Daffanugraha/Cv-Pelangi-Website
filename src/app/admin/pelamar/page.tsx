@@ -11,6 +11,7 @@ import AdminConfirmDialog from "@/components/admin/AdminConfirmDialog";
 import ApplicantCardItem from "@/components/admin/pelamar/ApplicantCardItem";
 import ApplicantDetailModal from "@/components/admin/pelamar/ApplicantDetailModal";
 import ApplicantRejectionModal from "@/components/admin/pelamar/ApplicantRejectionModal";
+import ApplicantInterviewModal from "@/components/admin/pelamar/ApplicantInterviewModal";
 import { CareerJobItem, JobApplicantItem } from "@/lib/admin/db";
 
 type ApplicantSortOption = "newest" | "oldest" | "name_asc" | "name_desc" | "status";
@@ -60,6 +61,7 @@ function PelamarContent() {
   // Modal State
   const [selectedApplicant, setSelectedApplicant] = useState<JobApplicantItem | null>(null);
   const [rejectionTarget, setRejectionTarget] = useState<JobApplicantItem | null>(null);
+  const [interviewTarget, setInterviewTarget] = useState<JobApplicantItem | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<{ id: string; name: string } | null>(null);
   const [deleting, setDeleting] = useState(false);
 
@@ -111,6 +113,9 @@ function PelamarContent() {
         }
         if (status === "rejected") {
           setRejectionTarget(applicant);
+        }
+        if (status === "interview") {
+          setInterviewTarget(applicant);
         }
       }
     } catch (err) {
@@ -414,6 +419,7 @@ function PelamarContent() {
               onUpdateStatus={handleUpdateApplicantStatus}
               onOpenDetail={(app) => setSelectedApplicant(app)}
               onOpenRejection={(app) => setRejectionTarget(app)}
+              onOpenInterview={(app) => setInterviewTarget(app)}
               onDelete={(id, name) => setDeleteTarget({ id, name })}
             />
           ))}
@@ -426,6 +432,13 @@ function PelamarContent() {
         dateTime={formatApplicantDateTime(selectedApplicant?.createdAt)}
         onClose={() => setSelectedApplicant(null)}
         onUpdateStatus={handleUpdateApplicantStatus}
+        onOpenInterview={(app) => setInterviewTarget(app)}
+      />
+
+      {/* Modal Template Undangan Interview WhatsApp */}
+      <ApplicantInterviewModal
+        applicant={interviewTarget}
+        onClose={() => setInterviewTarget(null)}
       />
 
       {/* Modal Template Penolakan WhatsApp */}

@@ -9,6 +9,7 @@ interface ApplicantDetailModalProps {
   dateTime: { day: string; date: string; time: string; full: string };
   onClose: () => void;
   onUpdateStatus: (applicant: JobApplicantItem, status: JobApplicantItem["status"]) => void;
+  onOpenInterview?: (applicant: JobApplicantItem) => void;
 }
 
 export default function ApplicantDetailModal({
@@ -16,6 +17,7 @@ export default function ApplicantDetailModal({
   dateTime,
   onClose,
   onUpdateStatus,
+  onOpenInterview,
 }: ApplicantDetailModalProps) {
   const [activeTab, setActiveTab] = useState<"identitas" | "pengalaman" | "komitmen" | "skill" | "berkas">("identitas");
 
@@ -46,11 +48,24 @@ export default function ApplicantDetailModal({
           </div>
 
           <div className="flex items-center gap-2">
+            {onOpenInterview && (
+              <button
+                type="button"
+                onClick={() => {
+                  onClose();
+                  onOpenInterview(applicant);
+                }}
+                className="px-3.5 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-xs font-bold shadow-xs transition flex items-center gap-1.5 cursor-pointer"
+              >
+                <span className="material-symbols-outlined text-sm">event_available</span>
+                <span>Undang Interview (WA)</span>
+              </button>
+            )}
             <a
               href={`https://wa.me/${applicant.phone.replace(/^0/, "62")}?text=Halo%20${encodeURIComponent(applicant.name)}%2C%20kami%20dari%20Tim%20HRD%20CV%20Pelangi%20UV%20terkait%20lamaran%20posisi%20*${encodeURIComponent(applicant.jobTitle)}*...`}
               target="_blank"
               rel="noopener noreferrer"
-              className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-sm transition flex items-center gap-1.5"
+              className="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-xs transition flex items-center gap-1.5"
             >
               <span className="material-symbols-outlined text-sm">chat</span>
               <span>Hubungi via WA</span>

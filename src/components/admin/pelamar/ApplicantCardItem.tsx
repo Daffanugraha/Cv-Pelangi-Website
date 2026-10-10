@@ -9,6 +9,7 @@ interface ApplicantCardItemProps {
   onUpdateStatus: (applicant: JobApplicantItem, status: JobApplicantItem["status"]) => void;
   onOpenDetail: (applicant: JobApplicantItem) => void;
   onOpenRejection: (applicant: JobApplicantItem) => void;
+  onOpenInterview?: (applicant: JobApplicantItem) => void;
   onDelete: (id: string, name: string) => void;
 }
 
@@ -26,6 +27,7 @@ export default function ApplicantCardItem({
   onUpdateStatus,
   onOpenDetail,
   onOpenRejection,
+  onOpenInterview,
   onDelete,
 }: ApplicantCardItemProps) {
   const currentStatus = APPLICANT_STATUS_CONFIG[applicant.status] || APPLICANT_STATUS_CONFIG.new;
@@ -100,7 +102,10 @@ export default function ApplicantCardItem({
         <div className="flex flex-wrap items-center gap-2.5 pt-3 lg:pt-0 border-t lg:border-t-0 border-gray-100 shrink-0">
           <select
             value={applicant.status}
-            onChange={(e) => onUpdateStatus(applicant, e.target.value as any)}
+            onChange={(e) => {
+              const newStatus = e.target.value as any;
+              onUpdateStatus(applicant, newStatus);
+            }}
             className="px-3 py-1.5 text-xs font-semibold bg-gray-50 border border-gray-300 rounded-xl focus:outline-none focus:border-[#F65456] text-gray-700 cursor-pointer"
           >
             <option value="new">Status: Baru</option>
@@ -109,6 +114,19 @@ export default function ApplicantCardItem({
             <option value="accepted">Diterima</option>
             <option value="rejected">Ditolak</option>
           </select>
+
+          {/* Tombol Undangan Interview Khusus */}
+          {onOpenInterview && (
+            <button
+              type="button"
+              onClick={() => onOpenInterview(applicant)}
+              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold transition shadow-xs cursor-pointer active:scale-95"
+              title="Kirim template resmi undangan interview WhatsApp"
+            >
+              <span className="material-symbols-outlined text-sm">event_available</span>
+              <span>Undang Interview</span>
+            </button>
+          )}
 
           {/* Tombol WhatsApp Direct */}
           <a
