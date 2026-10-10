@@ -115,19 +115,6 @@ export default function ApplicantCardItem({
             <option value="rejected">Ditolak</option>
           </select>
 
-          {/* Tombol Undangan Interview Khusus */}
-          {onOpenInterview && (
-            <button
-              type="button"
-              onClick={() => onOpenInterview(applicant)}
-              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold transition shadow-xs cursor-pointer active:scale-95"
-              title="Kirim template resmi undangan interview WhatsApp"
-            >
-              <span className="material-symbols-outlined text-sm">event_available</span>
-              <span>Undang Interview</span>
-            </button>
-          )}
-
           {/* Tombol WhatsApp Direct */}
           <a
             href={`https://wa.me/${applicant.phone.replace(/^0/, "62")}?text=Halo%20${encodeURIComponent(applicant.name)}%2C%20kami%20dari%20Tim%20HRD%20CV%20Pelangi%20UV%20terkait%20lamaran%20posisi%20*${encodeURIComponent(applicant.jobTitle)}*...`}

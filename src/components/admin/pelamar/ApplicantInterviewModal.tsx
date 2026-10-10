@@ -143,6 +143,13 @@ HRD CV Pelangi UV`;
     }
   }
 
+  const handleOpenGmailCompose = () => {
+    const targetEmail = (emailRecipient || applicant?.email || "").trim();
+    const subject = `Undangan Wawancara Kerja (${applicant?.jobTitle}) - CV Pelangi UV`;
+    const composeUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(targetEmail)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(interviewMessage)}`;
+    window.open(composeUrl, "_blank");
+  };
+
   return (
     <AdminModal
       isOpen={!!applicant}
@@ -164,36 +171,49 @@ HRD CV Pelangi UV`;
             <button
               type="button"
               onClick={handleCopy}
-              className="px-3.5 py-2 text-xs sm:text-sm font-bold text-gray-800 bg-gray-100 hover:bg-gray-200 rounded-xl transition cursor-pointer flex items-center gap-1.5"
+              className="px-3 py-2 text-xs sm:text-sm font-bold text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-xl transition cursor-pointer flex items-center gap-1.5"
             >
               <span className="material-symbols-outlined text-sm">content_copy</span>
-              <span>{copied ? "Tersalin!" : "Salin Teks"}</span>
+              <span>Salin Teks</span>
             </button>
 
             <button
               type="button"
               onClick={handleSendWA}
-              className="px-4 py-2 text-xs sm:text-sm font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl transition shadow-xs cursor-pointer flex items-center gap-1.5"
+              className="px-3.5 py-2 text-xs sm:text-sm font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl transition shadow-xs cursor-pointer flex items-center gap-1.5"
             >
               <span className="material-symbols-outlined text-sm">chat</span>
               <span>Kirim via WhatsApp</span>
             </button>
 
+            {/* Solusi 1-Klik Gmail Tanpa Butuh Password / Setup Apapun */}
+            <button
+              type="button"
+              onClick={handleOpenGmailCompose}
+              className="px-3.5 py-2 text-xs sm:text-sm font-bold text-white bg-red-600 hover:bg-red-700 rounded-xl transition shadow-xs cursor-pointer flex items-center gap-1.5"
+              title="Buka langsung di Gmail dengan teks dan penerima terisi otomatis (Tanpa Sandi Aplikasi)"
+            >
+              <span className="material-symbols-outlined text-sm">mail</span>
+              <span>Buka di Gmail (1-Klik)</span>
+            </button>
+
+            {/* Opsi Kirim Langsung Background via Server */}
             <button
               type="button"
               onClick={handleSendEmailDirect}
               disabled={emailSending}
-              className="px-4 py-2 text-xs sm:text-sm font-bold text-white bg-[#F65456] hover:bg-[#E03F41] rounded-xl transition shadow-xs cursor-pointer flex items-center gap-1.5 disabled:opacity-50"
+              className="px-3 py-2 text-xs sm:text-sm font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 border border-gray-200 rounded-xl transition cursor-pointer flex items-center gap-1 disabled:opacity-50"
+              title="Kirim background otomatis via server (Memerlukan Sandi Aplikasi)"
             >
               {emailSending ? (
                 <>
                   <span className="material-symbols-outlined animate-spin text-sm">progress_activity</span>
-                  <span>Mengirim Email...</span>
+                  <span>Mengirim...</span>
                 </>
               ) : (
                 <>
                   <span className="material-symbols-outlined text-sm">send</span>
-                  <span>Kirim Email Langsung</span>
+                  <span>Kirim Background</span>
                 </>
               )}
             </button>
