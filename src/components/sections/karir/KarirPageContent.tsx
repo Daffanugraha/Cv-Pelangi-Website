@@ -78,6 +78,29 @@ export default function KarirPageContent({ initialJobs }: KarirPageContentProps)
     });
   }, [jobs, searchQuery, selectedDivision]);
 
+  // Handler buka modal lamaran + update URL query param ?posisi=[id] secara instan
+  const handleOpenApply = (job: CareerJob) => {
+    setSelectedJobToApply(job);
+    if (typeof window !== "undefined") {
+      const url = new URL(window.location.href);
+      url.searchParams.set("posisi", job.id);
+      window.history.replaceState(null, "", url.toString());
+    }
+  };
+
+  // Handler tutup modal lamaran + bersihkan URL query param kembali ke /karir
+  const handleCloseApply = () => {
+    setSelectedJobToApply(null);
+    if (typeof window !== "undefined") {
+      const url = new URL(window.location.href);
+      url.searchParams.delete("posisi");
+      url.searchParams.delete("apply");
+      url.searchParams.delete("job");
+      url.searchParams.delete("id");
+      window.history.replaceState(null, "", url.toString());
+    }
+  };
+
   return (
     <div className="w-full min-h-screen bg-surface-canvas text-text-body font-sans antialiased selection:bg-bracket-border selection:text-white">
       {/* 1. Hero Section */}
@@ -88,7 +111,7 @@ export default function KarirPageContent({ initialJobs }: KarirPageContentProps)
         setSelectedDivision={setSelectedDivision}
         totalOpenJobs={jobs.filter((j) => j.isOpen).length}
         jobs={jobs}
-        onApply={(job) => setSelectedJobToApply(job)}
+        onApply={handleOpenApply}
       />
 
       {/* 2. CV Pelangi Life (Instagram Reels Activities Section) */}
@@ -248,7 +271,7 @@ export default function KarirPageContent({ initialJobs }: KarirPageContentProps)
           {/* Job listings accordion */}
           <KarirJobListings
             jobs={filteredJobs}
-            onApply={(job) => setSelectedJobToApply(job)}
+            onApply={handleOpenApply}
           />
         </div>
       </section>
@@ -256,7 +279,7 @@ export default function KarirPageContent({ initialJobs }: KarirPageContentProps)
       {/* 4. Modal Apply Form */}
       <KarirApplyModal
         job={selectedJobToApply}
-        onClose={() => setSelectedJobToApply(null)}
+        onClose={handleCloseApply}
       />
     </div>
   );
