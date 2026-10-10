@@ -1,16 +1,199 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
+
+interface SubServiceItem {
+  name: string;
+  variants: string[];
+}
+
+interface ServiceGroup {
+  label: string;
+  subLabel: string;
+  items: SubServiceItem[];
+}
+
+const BERANDA_SERVICE_CONFIG: Record<string, ServiceGroup> = {
+  finishing: {
+    label: "Layanan Jasa Finishing Pasca-Cetak (Spot UV / Foil / Laminasi / Pond)",
+    subLabel: "Pilih Jenis Finishing",
+    items: [
+      {
+        name: "Laminating (Doff / Glossy / Velvet)",
+        variants: [
+          "Laminating Doff Halus (Standard)",
+          "Laminating Doff Velvet (Soft Touch Beludru)",
+          "Laminating Doff Anti-Scratch (Anti Gores)",
+          "Laminating Glossy Cermin (High Gloss)",
+          "Laminating Window / Mika Box",
+        ],
+      },
+      {
+        name: "Spot UV Selektif",
+        variants: [
+          "Spot UV Gloss (Kilap Cermin)",
+          "Spot UV Pasir / Sand (Timbul Kasar Taktil)",
+          "Spot UV Doff / Matte Kontras",
+          "Spot UV Drip-Off (Kombinasi Tekstur)",
+          "Spot UV Glitter Emas / Perak",
+        ],
+      },
+      {
+        name: "Hot Stamping Foil (Hot Print)",
+        variants: [
+          "Hot Stamping Foil Emas (Gold Brilliant)",
+          "Hot Stamping Foil Emas Doff (Matt Gold)",
+          "Hot Stamping Foil Perak (Silver Mirror)",
+          "Hot Stamping Foil Rose Gold Mewah",
+          "Hot Stamping Foil Hologram Pelangi",
+          "Hot Stamping Foil Hitam / Merah / Warna Custom",
+        ],
+      },
+      {
+        name: "Pond & Die-Cut / Creasing",
+        variants: [
+          "Pond Bentuk Box Packaging / Kemasan",
+          "Pond Rel Creasing Anti-Pecah Karton Tebal",
+          "Half-Cut Stiker Presisi Tinggi",
+          "Emboss & Deboss Timbul 3D",
+        ],
+      },
+      {
+        name: "Cast & Cure / Micro Emboss",
+        variants: [
+          "Cast & Cure Efek Pelangi Hologram",
+          "Micro Emboss Hologram Prismatik",
+          "Cast & Cure Motif Pasir",
+        ],
+      },
+    ],
+  },
+  bahan_baku: {
+    label: "Bahan Baku: OPP Thermal / Foil / Lem / Varnish",
+    subLabel: "Pilih Kategori Bahan Baku",
+    items: [
+      {
+        name: "Plastik OPP Thermal Film",
+        variants: [
+          "Roll OPP Thermal Doff (Bebas Sidik Jari)",
+          "Roll OPP Thermal Glossy",
+          "Roll OPP Thermal Velvet (Soft Touch Beludru)",
+          "Roll OPP Wet (Laminasi Lem Basah)",
+        ],
+      },
+      {
+        name: "Roll Stamping Foil (Hot Print)",
+        variants: [
+          "Roll Foil Emas (Gold 12 Micron)",
+          "Roll Foil Perak (Silver Mirror)",
+          "Roll Foil Hologram & Pattern",
+          "Roll Foil Rose Gold & Cooper",
+          "Jasa Slitting / Potong Lebar Roll Foil Custom",
+        ],
+      },
+      {
+        name: "Lem Percetakan & Finishing",
+        variants: [
+          "Lem Side Gluer Box (Water-based)",
+          "Lem Mesin Laminasi Kering / Basah",
+          "Lem Hotmelt Jilid Buku / Blok Lem",
+        ],
+      },
+      {
+        name: "Varnish & Tinta UV Coating",
+        variants: [
+          "Tinta Spot UV Gloss High Cure",
+          "Varnish Spot UV Pasir Kristal",
+          "Water-based Overprint Varnish (OPV)",
+        ],
+      },
+      {
+        name: "Pisau & Perlengkapan Pond",
+        variants: [
+          "Pisau Pond Potong & Rel Tekuk",
+          "Karet Bantalan / Spons Ejector",
+          "Pertinax Matrix Creasing Channel",
+        ],
+      },
+    ],
+  },
+  paket_lengkap: {
+    label: "Paket Jasa Finishing + Penyediaan Bahan Baku Lengkap",
+    subLabel: "Pilih Solusi Paket",
+    items: [
+      {
+        name: "Paket Produksi One-Stop",
+        variants: [
+          "Finishing Lengkap Box Kemasan (Laminasi + Foil + Pond)",
+          "Finishing Hardcover Buku / Agenda (Velvet + Foil + Spot UV)",
+          "Finishing Hangtag & Paper Bag Mewah",
+          "Kustomisasi Sesuai Spesifikasi Brand",
+        ],
+      },
+    ],
+  },
+  sample: {
+    label: "Permintaan Sampel Fisik / Uji Coba Proofing",
+    subLabel: "Pilih Jenis Sampel / Uji Coba",
+    items: [
+      {
+        name: "Sampel Fisik & Demo",
+        variants: [
+          "Swatch Card Lengkap (Spot UV, Foil, Laminating)",
+          "Sample Pack Dus Kemasan Skincare & Makanan",
+          "Uji Coba Proofing Kertas Klien di Mesin Workshop",
+          "Katalog Fisik & Pricelist Lengkap Percetakan",
+        ],
+      },
+    ],
+  },
+};
 
 export default function ContactSection() {
   const [formData, setFormData] = useState({
     name: "",
     company: "",
     phone: "",
-    category: "Layanan Jasa Finishing (Spot UV / Foil / Laminasi / Pond / dll)",
-    quantity: "",
+    categoryKey: "finishing",
+    subItemIndex: 0,
+    variant: "Laminating Doff Halus (Standard)",
+    quantity: "2.000 – 10.000 Lembar",
+    paper: "Art Paper / Art Carton (150 - 310 gsm)",
     message: "",
   });
+
+  const activeGroup = useMemo(() => {
+    return BERANDA_SERVICE_CONFIG[formData.categoryKey] || BERANDA_SERVICE_CONFIG.finishing;
+  }, [formData.categoryKey]);
+
+  const activeSubItem = useMemo(() => {
+    const idx = Math.min(formData.subItemIndex, activeGroup.items.length - 1);
+    return activeGroup.items[idx] || activeGroup.items[0];
+  }, [activeGroup, formData.subItemIndex]);
+
+  const handleCategoryChange = (key: string) => {
+    const targetGroup = BERANDA_SERVICE_CONFIG[key] || BERANDA_SERVICE_CONFIG.finishing;
+    const defaultSub = targetGroup.items[0];
+    const defaultVar = defaultSub.variants[0] || "";
+
+    setFormData((prev) => ({
+      ...prev,
+      categoryKey: key,
+      subItemIndex: 0,
+      variant: defaultVar,
+    }));
+  };
+
+  const handleSubItemChange = (index: number) => {
+    const targetSub = activeGroup.items[index] || activeGroup.items[0];
+    const defaultVar = targetSub.variants[0] || "";
+
+    setFormData((prev) => ({
+      ...prev,
+      subItemIndex: index,
+      variant: defaultVar,
+    }));
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -18,27 +201,47 @@ export default function ContactSection() {
     const name = formData.name.trim();
     const company = formData.company.trim();
     const phone = formData.phone.trim();
-    const category = formData.category.trim();
-    const quantity = formData.quantity.trim();
+    const categoryLabel = activeGroup.label;
+    const subServiceName = activeSubItem.name;
+    const variantName = formData.variant;
+    const quantity = formData.quantity;
+    const paper = formData.paper;
     const message = formData.message.trim();
+
+    // Catat ke admin leads jika tersedia
+    try {
+      fetch("/api/admin/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: name,
+          company: company || "-",
+          phone: phone,
+          email: "",
+          service: `${categoryLabel} > ${subServiceName} (${variantName})`,
+          message: `[Kuantitas: ${quantity}] [Bahan: ${paper}] ${message || "Permintaan penawaran via beranda"}`,
+        }),
+      }).catch(() => {});
+    } catch {}
 
     let msg = `Halo Tim Marketing CV Pelangi UV,%0A%0ASaya *${encodeURIComponent(
       name
     )}*`;
     if (company) {
-      msg += ` dari perusahaan *${encodeURIComponent(company)}*`;
+      msg += ` dari perusahaan/percetakan *${encodeURIComponent(company)}*`;
     }
-    msg += `, mau tanya tentang kebutuhan: *${encodeURIComponent(
-      category
-    )}*.%0A%0A*Rincian Kebutuhan & Spesifikasi:*%0A`;
-    if (quantity) {
-      msg += `- Estimasi Oplah / Kebutuhan: *${encodeURIComponent(quantity)}*%0A`;
-    }
+    msg += `.%0A%0A*Permintaan Spesifikasi & Penawaran:*%0A`;
+    msg += `- Kategori: *${encodeURIComponent(categoryLabel)}*%0A`;
+    msg += `- Layanan: *${encodeURIComponent(subServiceName)}*%0A`;
+    msg += `- Varian / Jenis Efek: *${encodeURIComponent(variantName)}*%0A`;
+    msg += `- Estimasi Kuantitas / Oplah: *${encodeURIComponent(quantity)}*%0A`;
+    msg += `- Jenis Bahan Kertas: *${encodeURIComponent(paper)}*%0A`;
+
     if (message) {
-      msg += `- Catatan Spesifikasi (Opsional): *${encodeURIComponent(message)}*%0A`;
+      msg += `%0A*Catatan Spesifikasi Tambahan:*%0A${encodeURIComponent(message)}%0A`;
     }
     if (phone) {
-      msg += `- No. WhatsApp: *${encodeURIComponent(phone)}*%0A`;
+      msg += `%0A- No. WhatsApp: *${encodeURIComponent(phone)}*%0A`;
     }
     msg += `%0AMohon informasi penawaran harga & estimasi jadwal pengerjaan/pengiriman. Terima kasih!`;
 
@@ -74,7 +277,7 @@ export default function ContactSection() {
                 Formulir Rincian Spesifikasi
               </h3>
               <p className="text-sm sm:text-base text-text-muted mt-1.5 leading-relaxed">
-                Pilih kebutuhan jasa finishing atau bahan baku untuk mendapatkan kalkulasi harga akurat via WhatsApp.
+                Pilih kebutuhan spesifik jasa finishing atau bahan baku untuk mendapatkan kalkulasi harga akurat via WhatsApp.
               </p>
             </div>
             <span className="w-14 h-14 rounded-2xl bg-surface-tint-light flex items-center justify-center text-secondary-container shrink-0 shadow-xs border border-divider-tint/40">
@@ -83,6 +286,7 @@ export default function ContactSection() {
           </div>
 
           <form className="space-y-6 relative z-10" onSubmit={handleSubmit}>
+            {/* Nama & Perusahaan */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div className="flex flex-col gap-2">
                 <label className="font-label-nav text-xs sm:text-sm font-bold text-on-surface flex items-center gap-1.5">
@@ -115,6 +319,7 @@ export default function ContactSection() {
               </div>
             </div>
 
+            {/* Nomor WA & Kategori Utama */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div className="flex flex-col gap-2">
                 <label className="font-label-nav text-xs sm:text-sm font-bold text-on-surface flex items-center gap-1.5">
@@ -133,71 +338,130 @@ export default function ContactSection() {
               </div>
               <div className="flex flex-col gap-2">
                 <label className="font-label-nav text-xs sm:text-sm font-bold text-on-surface">
-                  Kategori Kebutuhan <span className="text-primary text-sm">*</span>
+                  Kategori Kebutuhan Utama <span className="text-primary text-sm">*</span>
                 </label>
                 <select
-                  value={formData.category}
-                  onChange={(e) =>
-                    setFormData({ ...formData, category: e.target.value })
-                  }
-                  className="w-full h-14 px-5 rounded-2xl bg-surface-neutral-alt border border-surface-container text-sm sm:text-base text-on-surface focus:bg-white focus:border-bracket-border focus:ring-2 focus:ring-bracket-border/20 outline-none transition-all cursor-pointer font-medium"
+                  value={formData.categoryKey}
+                  onChange={(e) => handleCategoryChange(e.target.value)}
+                  className="w-full h-14 px-5 rounded-2xl bg-surface-neutral-alt border border-surface-container text-sm sm:text-base text-on-surface focus:bg-white focus:border-bracket-border focus:ring-2 focus:ring-bracket-border/20 outline-none transition-all cursor-pointer font-semibold"
                 >
-                  <option value="Jasa Finishing Pasca-Cetak (Spot UV / Foil / Laminasi / Pond / dll)">
-                    Jasa Finishing Pasca-Cetak (Spot UV, Foil, Laminasi, Pond, dll)
-                  </option>
-                  <option value="Bahan Baku: Film BOPP Thermal (Doff Velvet & Glossy)">
-                    Bahan Baku: Film BOPP Thermal (Doff Velvet &amp; Glossy)
-                  </option>
-                  <option value="Bahan Baku: Roll Foil Stamping (Gold, Silver, Hologram)">
-                    Bahan Baku: Roll Foil Stamping (Gold, Silver, Hologram)
-                  </option>
-                  <option value="Bahan Baku: Lem Waterbase & Chemical Laminating">
-                    Bahan Baku: Lem Waterbase &amp; Chemical Laminating
-                  </option>
-                  <option value="Bahan Baku: Tinta & Varnish Spot UV">
-                    Bahan Baku: Tinta &amp; Varnish Spot UV
-                  </option>
-                  <option value="Paket Jasa Finishing + Penyediaan Bahan Baku Lengkap">
-                    Paket Jasa Finishing + Penyediaan Bahan Baku Lengkap
-                  </option>
-                  <option value="Permintaan Sampel Fisik / Uji Coba Proofing">
-                    Permintaan Sampel Fisik / Uji Coba Proofing
-                  </option>
+                  {Object.entries(BERANDA_SERVICE_CONFIG).map(([key, item]) => (
+                    <option key={key} value={key}>
+                      {item.label}
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>
 
-            <div className="flex flex-col gap-2">
-              <label className="font-label-nav text-xs sm:text-sm font-bold text-on-surface">
-                Estimasi Kuantitas / Oplah Cetak / Kebutuhan Roll
-              </label>
-              <input
-                type="text"
-                value={formData.quantity}
-                onChange={(e) =>
-                  setFormData({ ...formData, quantity: e.target.value })
-                }
-                placeholder="Contoh: 5.000 lembar plano / 10 roll foil / 2 pail lem"
-                className="w-full h-14 px-5 rounded-2xl bg-surface-neutral-alt border border-surface-container text-sm sm:text-base text-on-surface placeholder:text-text-muted focus:bg-white focus:border-bracket-border focus:ring-2 focus:ring-bracket-border/20 outline-none transition-all"
-              />
+            {/* Kotak Pilihan Bertingkat Dinamis */}
+            <div className="p-5 sm:p-6 rounded-2xl bg-slate-50 border border-slate-200 space-y-4">
+              <div className="flex items-center gap-2 text-xs sm:text-sm font-bold text-slate-900 uppercase tracking-wide font-label-meta border-b border-slate-200 pb-2">
+                <span translate="no" className="material-symbols-outlined notranslate text-[20px] text-secondary-container">
+                  tune
+                </span>
+                Spesifikasi & Pilihan Layanan Detail
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {/* Level 2: Sub-Layanan */}
+                <div className="flex flex-col gap-1.5">
+                  <label className="font-label-nav text-xs font-bold text-slate-700">
+                    {activeGroup.subLabel} <span className="text-primary">*</span>
+                  </label>
+                  <select
+                    value={formData.subItemIndex}
+                    onChange={(e) => handleSubItemChange(Number(e.target.value))}
+                    className="w-full h-12 px-4 rounded-xl bg-white border border-slate-300 text-xs sm:text-sm text-slate-900 focus:border-secondary-container focus:ring-1 focus:ring-secondary-container outline-none font-medium transition-all"
+                  >
+                    {activeGroup.items.map((sub, idx) => (
+                      <option key={sub.name} value={idx}>
+                        {sub.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Level 3: Varian Spesifik */}
+                <div className="flex flex-col gap-1.5">
+                  <label className="font-label-nav text-xs font-bold text-slate-700">
+                    Pilihan Varian / Jenis Efek <span className="text-primary">*</span>
+                  </label>
+                  <select
+                    value={formData.variant}
+                    onChange={(e) =>
+                      setFormData({ ...formData, variant: e.target.value })
+                    }
+                    className="w-full h-12 px-4 rounded-xl bg-white border border-slate-300 text-xs sm:text-sm text-secondary-container font-semibold focus:border-secondary-container focus:ring-1 focus:ring-secondary-container outline-none transition-all"
+                  >
+                    {activeSubItem.variants.map((v) => (
+                      <option key={v} value={v}>
+                        {v}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              {/* Tambahan Teknis: Oplag & Bahan Kertas */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
+                <div className="flex flex-col gap-1.5">
+                  <label className="font-label-nav text-xs font-medium text-slate-600">
+                    Estimasi Kuantitas / Oplah Cetak
+                  </label>
+                  <select
+                    value={formData.quantity}
+                    onChange={(e) =>
+                      setFormData({ ...formData, quantity: e.target.value })
+                    }
+                    className="w-full h-11 px-3.5 rounded-xl bg-white border border-slate-300 text-xs sm:text-sm text-slate-800 focus:border-secondary-container outline-none"
+                  >
+                    <option value="Belum Dihitung / Konsultasi">Belum Dihitung / Konsultasi</option>
+                    <option value="Di bawah 500 Lembar">&lt; 500 Lembar (Order Minimal)</option>
+                    <option value="500 – 2.000 Lembar">500 – 2.000 Lembar</option>
+                    <option value="2.000 – 10.000 Lembar">2.000 – 10.000 Lembar (Kapasitas Cepat)</option>
+                    <option value="Lebih dari 10.000 Lembar">&gt; 10.000 Lembar (Partai Besar Industri)</option>
+                  </select>
+                </div>
+
+                <div className="flex flex-col gap-1.5">
+                  <label className="font-label-nav text-xs font-medium text-slate-600">
+                    Jenis Bahan Kertas / Media
+                  </label>
+                  <select
+                    value={formData.paper}
+                    onChange={(e) =>
+                      setFormData({ ...formData, paper: e.target.value })
+                    }
+                    className="w-full h-11 px-3.5 rounded-xl bg-white border border-slate-300 text-xs sm:text-sm text-slate-800 focus:border-secondary-container outline-none"
+                  >
+                    <option value="Belum Tahu / Rekomendasi">Belum Tahu / Mohon Rekomendasi</option>
+                    <option value="Art Paper / Art Carton (150 - 310 gsm)">Art Paper / Art Carton (150 - 310 gsm)</option>
+                    <option value="Karton Ivory / Paperboard (210 - 350 gsm)">Karton Ivory / Paperboard (210 - 350 gsm)</option>
+                    <option value="Duplex / Greyboard Tebal">Duplex / Greyboard Tebal</option>
+                    <option value="Fancy Paper / Kraft / Linen">Fancy Paper / Kraft / Linen</option>
+                  </select>
+                </div>
+              </div>
             </div>
 
+            {/* Catatan Tambahan */}
             <div className="flex flex-col gap-2">
               <label className="font-label-nav text-xs sm:text-sm font-bold text-on-surface">
-                Catatan Spesifikasi (Opsional: Ukuran Bidang Plano, Gramatur Kertas, Efek Khusus)
+                Catatan Spesifikasi Tambahan (Opsional)
               </label>
               <textarea
-                rows={4}
+                rows={3}
                 value={formData.message}
                 onChange={(e) =>
                   setFormData({ ...formData, message: e.target.value })
                 }
-                placeholder="Tuliskan spesifikasi detail kertas (misal: Art Carton 260gsm, Ivory 300gsm), ukuran bidang plano, atau spesifikasi bahan baku yang dibutuhkan..."
-                className="w-full p-5 rounded-2xl bg-surface-neutral-alt border border-surface-container text-sm sm:text-base text-on-surface placeholder:text-text-muted focus:bg-white focus:border-bracket-border focus:ring-2 focus:ring-bracket-border/20 outline-none transition-all leading-relaxed"
+                placeholder="Tuliskan spesifikasi detail bidang plano (misal: plano 65x100 cm), deadline, atau catatan teknis lainnya..."
+                className="w-full p-4 rounded-2xl bg-surface-neutral-alt border border-surface-container text-sm sm:text-base text-on-surface placeholder:text-text-muted focus:bg-white focus:border-bracket-border focus:ring-2 focus:ring-bracket-border/20 outline-none transition-all leading-relaxed"
               />
             </div>
 
-            <div className="pt-3">
+            <div className="pt-2">
               <button
                 type="submit"
                 className="w-full inline-flex items-center justify-center gap-3 px-8 py-5 rounded-full bg-secondary-container hover:bg-primary text-on-primary font-cta-pill text-base sm:text-lg font-bold transition-all shadow-[0_10px_25px_rgba(246,84,86,0.38)] cursor-pointer hover:scale-[1.01] active:scale-[0.99]"
