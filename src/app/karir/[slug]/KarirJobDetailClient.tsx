@@ -126,10 +126,6 @@ export default function KarirJobDetailClient({
               <h1 className="font-heading font-black text-2xl sm:text-3xl lg:text-4xl text-white tracking-tight leading-tight">
                 {job.title}
               </h1>
-
-              <p className="text-sm sm:text-base text-white/70 max-w-2xl leading-relaxed">
-                Penempatan kerja langsung di fasilitas produksi CV Pelangi UV — Kompleks Pergudangan Bizpark C17-C19, Tambaksawah, Waru, Sidoarjo.
-              </p>
             </div>
 
             {/* Quick Action Buttons */}
