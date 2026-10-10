@@ -10,10 +10,35 @@ type VideoItem = (typeof galleryVideos)[0] & {
   date?: string;
 };
 
+// Helper untuk deduplikasi video & memastikan maksimal 6 item di Beranda
+function deduplicateVideos(list: VideoItem[], maxItems = 6): VideoItem[] {
+  const seen = new Set<string>();
+  const result: VideoItem[] = [];
+
+  for (const item of list) {
+    if (!item) continue;
+    // Gunakan normalisasi judul atau id sebagai kunci unik
+    const normalizedKey = (item.title || item.id || item.videoUrl || "")
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, " ");
+
+    if (normalizedKey && !seen.has(normalizedKey)) {
+      seen.add(normalizedKey);
+      result.push(item);
+    }
+
+    if (result.length >= maxItems) break;
+  }
+
+  return result;
+}
+
 export default function GallerySection() {
-  const [videos, setVideos] = useState<VideoItem[]>(galleryVideos);
+  const [videos, setVideos] = useState<VideoItem[]>(() => deduplicateVideos(galleryVideos, 6));
   const [activeVideo, setActiveVideo] = useState<VideoItem | null>(null);
   const [selectedTag, setSelectedTag] = useState<string>("Semua");
+  const [searchQuery, setSearchQuery] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const ITEMS_PER_PAGE = 6;
 
@@ -21,41 +46,62 @@ export default function GallerySection() {
   useEffect(() => {
     async function loadLatestMedia() {
       try {
-        const [instaRes, adminRes] = await Promise.all([
-          fetch("/api/instagram").catch(() => null),
+        const [adminRes, instaRes] = await Promise.all([
           fetch("/api/admin/gallery?type=beranda").catch(() => null),
+          fetch("/api/instagram").catch(() => null),
         ]);
 
-        let baseVideos: VideoItem[] = galleryVideos;
-        if (instaRes && instaRes.ok) {
-          const json = await instaRes.json();
-          if (json.data && Array.isArray(json.data) && json.data.length > 0) {
-            baseVideos = json.data;
-          }
-        }
+        let rawItems: VideoItem[] = [];
 
+        // 1. Prioritaskan data yang dikelola dari Admin jika tersedia
         if (adminRes && adminRes.ok) {
           const adminItems = await adminRes.json();
           if (Array.isArray(adminItems) && adminItems.length > 0) {
-            const mappedAdmin: VideoItem[] = adminItems.map((item: any) => ({
-              id: item.id,
-              title: item.title,
-              tag: item.tag || item.category || "Showcase",
-              desc: item.technique || "Sorotan Galeri CV Pelangi UV",
-              img: item.imageUrl,
-              videoUrl: item.videoUrl || "",
-              duration: "00:45",
-              views: "1.2K",
-              source: "instagram",
-              capacity: "CV Pelangi UV Showcase",
-              embedUrl: item.videoUrl || "",
-            }));
-            setVideos(mappedAdmin);
-            return;
+            rawItems = adminItems.map((item: any) => {
+              // Format embedUrl otomatis jika dari Instagram
+              let embedUrl = item.videoUrl || "";
+              if (embedUrl) {
+                const match = embedUrl.match(/\/(reel|p)\/([a-zA-Z0-9_\-]+)/);
+                if (match) {
+                  embedUrl = `https://www.instagram.com/reel/${match[2]}/embed/`;
+                } else if (!embedUrl.endsWith("/embed/")) {
+                  embedUrl = embedUrl.endsWith("/") ? `${embedUrl}embed/` : `${embedUrl}/embed/`;
+                }
+              }
+
+              return {
+                id: item.id,
+                title: item.title,
+                tag: item.tag || item.category || "Finishing",
+                desc: item.technique || "Sorotan Galeri CV Pelangi UV",
+                img: item.imageUrl,
+                videoUrl: item.videoUrl || "",
+                duration: "00:45",
+                views: "1.2K",
+                source: "instagram",
+                capacity: "CV Pelangi UV Showcase",
+                embedUrl,
+              };
+            });
           }
         }
 
-        setVideos(baseVideos);
+        // 2. Jika admin belum ada, coba dari cache Instagram
+        if (rawItems.length === 0 && instaRes && instaRes.ok) {
+          const json = await instaRes.json();
+          if (json.data && Array.isArray(json.data) && json.data.length > 0) {
+            rawItems = json.data;
+          }
+        }
+
+        // 3. Fallback ke galleryVideos lokal jika kedua sumber kosong
+        if (rawItems.length === 0) {
+          rawItems = galleryVideos;
+        }
+
+        // Terapkan deduplikasi ketat dan batasi maksimal 6 item unik untuk Beranda
+        const cleaned = deduplicateVideos(rawItems, 6);
+        setVideos(cleaned);
       } catch (err) {
         console.warn("Gagal memuat galeri beranda:", err);
       }
@@ -63,25 +109,38 @@ export default function GallerySection() {
     loadLatestMedia();
   }, []);
 
-  // Kumpulan tag unik dari seluruh video
+  // Kumpulan tag / kategori unik dari seluruh video yang ada
   const allTags = useMemo(() => {
     const set = new Set<string>();
     videos.forEach((v) => {
-      if (v.tag) set.add(v.tag);
+      if (v.tag && v.tag.trim()) set.add(v.tag.trim());
     });
     return ["Semua", ...Array.from(set)];
   }, [videos]);
 
-  // Filter video berdasarkan tag yang dipilih
+  // Filter video berdasarkan tag dan kata kunci pencarian kategori / judul
   const filteredVideos = useMemo(() => {
-    if (selectedTag === "Semua") return videos;
-    return videos.filter((v) => v.tag === selectedTag);
-  }, [videos, selectedTag]);
+    const query = searchQuery.toLowerCase().trim();
+    return videos.filter((v) => {
+      const matchTag =
+        selectedTag === "Semua" ||
+        v.tag?.toLowerCase() === selectedTag.toLowerCase();
 
-  // Reset ke halaman 1 saat filter tag berubah atau data berubah
+      const matchSearch =
+        !query ||
+        v.title?.toLowerCase().includes(query) ||
+        v.tag?.toLowerCase().includes(query) ||
+        v.desc?.toLowerCase().includes(query) ||
+        v.capacity?.toLowerCase().includes(query);
+
+      return matchTag && matchSearch;
+    });
+  }, [videos, selectedTag, searchQuery]);
+
+  // Reset ke halaman 1 saat filter tag, kata kunci, atau data berubah
   useEffect(() => {
     setCurrentPage(1);
-  }, [selectedTag, videos]);
+  }, [selectedTag, searchQuery, videos]);
 
   const totalPages = Math.ceil(filteredVideos.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -131,7 +190,7 @@ export default function GallerySection() {
     >
       <div className="max-w-7xl mx-auto px-gutter">
         {/* Header Section */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-space-xl gap-space-md">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-space-lg gap-space-md">
           <div>
             <div className="flex items-center gap-2 mb-2">
               <span className="font-label-meta text-label-meta uppercase tracking-widest text-bracket-border font-bold flex items-center gap-1.5">
@@ -174,26 +233,88 @@ export default function GallerySection() {
           </div>
         </div>
 
-        {/* Tag Filters */}
-        <div className="flex flex-wrap items-center gap-2 mb-8">
-          {allTags.map((tag) => {
-            const isActive = selectedTag === tag;
-            return (
+        {/* Filter & Search Bar Kategori */}
+        <div className="bg-surface-neutral-alt/60 p-3 sm:p-4 rounded-2xl border border-surface-container/70 mb-8 flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-xs">
+          {/* Tag / Category Filter Buttons */}
+          <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+            <span className="text-xs font-semibold text-text-muted flex items-center gap-1 mr-1">
+              <span className="material-symbols-outlined text-[15px] text-bracket-border">tune</span>
+              <span>Kategori:</span>
+            </span>
+            {allTags.map((tag) => {
+              const isActive = selectedTag === tag;
+              return (
+                <button
+                  key={tag}
+                  type="button"
+                  onClick={() => setSelectedTag(tag)}
+                  className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 cursor-pointer flex items-center gap-1 ${
+                    isActive
+                      ? "bg-bracket-border text-white shadow-sm scale-102"
+                      : "bg-surface-canvas hover:bg-surface-container text-text-body hover:text-on-surface border border-surface-container/80"
+                  }`}
+                >
+                  <span>{tag}</span>
+                  {tag === "Semua" && (
+                    <span className="text-[10px] opacity-75 ml-0.5">({videos.length})</span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Search Box untuk Mencari Kategori / Teknik */}
+          <div className="relative min-w-[240px] sm:min-w-[280px]">
+            <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-muted text-[18px] pointer-events-none">
+              search
+            </span>
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Cari kategori / teknik..."
+              className="w-full pl-9 pr-8 py-1.5 text-xs sm:text-sm rounded-xl bg-surface-canvas border border-surface-container/80 focus:border-bracket-border focus:outline-none focus:ring-1 focus:ring-bracket-border text-on-surface placeholder:text-text-muted transition-all"
+            />
+            {searchQuery && (
               <button
-                key={tag}
                 type="button"
-                onClick={() => setSelectedTag(tag)}
-                className={`px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer ${
-                  isActive
-                    ? "bg-bracket-border text-white shadow-md scale-105"
-                    : "bg-surface-neutral-alt hover:bg-surface-container text-text-muted hover:text-on-surface border border-surface-container"
-                }`}
+                onClick={() => setSearchQuery("")}
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-text-muted hover:text-on-surface cursor-pointer p-0.5 rounded-full hover:bg-surface-container"
+                aria-label="Hapus pencarian"
               >
-                {tag}
+                <span className="material-symbols-outlined text-[16px]">close</span>
               </button>
-            );
-          })}
+            )}
+          </div>
         </div>
+
+        {/* Empty State jika hasil pencarian / filter tidak ditemukan */}
+        {filteredVideos.length === 0 && (
+          <div className="text-center py-12 px-4 rounded-2xl bg-surface-neutral-alt/30 border border-surface-container/50 my-6">
+            <span className="material-symbols-outlined text-4xl text-text-muted mb-2">
+              search_off
+            </span>
+            <h3 className="font-heading text-base font-bold text-on-surface mb-1">
+              Tidak ada video yang cocok
+            </h3>
+            <p className="font-sans text-xs sm:text-sm text-text-muted max-w-md mx-auto mb-4">
+              {searchQuery
+                ? `Tidak ditemukan media dengan kata kunci "${searchQuery}".`
+                : `Tidak ada media untuk kategori "${selectedTag}".`}
+            </p>
+            <button
+              type="button"
+              onClick={() => {
+                setSelectedTag("Semua");
+                setSearchQuery("");
+              }}
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-bracket-border text-white text-xs font-semibold hover:bg-primary transition shadow-sm cursor-pointer"
+            >
+              <span className="material-symbols-outlined text-[16px]">refresh</span>
+              <span>Reset Filter Kategori</span>
+            </button>
+          </div>
+        )}
 
         {/* Video Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
