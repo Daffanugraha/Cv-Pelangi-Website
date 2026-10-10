@@ -419,11 +419,11 @@ export default function AdminKarirPage() {
                           /karir/{job.id}
                         </span>
                         <a
-                          href={`/karir/${job.id}`}
+                          href={`/karir?posisi=${encodeURIComponent(job.id)}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="inline-flex items-center gap-1 text-[#F65456] hover:underline font-semibold"
-                          title="Lihat halaman publik lowongan ini"
+                          title="Lihat lowongan ini di web"
                         >
                           <span>Lihat di Web</span>
                           <span className="material-symbols-outlined text-[13px]">open_in_new</span>
