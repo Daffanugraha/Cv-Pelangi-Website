@@ -176,27 +176,17 @@ export const DEFAULT_PRODUK_GALLERY: GalleryItem[] = DEFAULT_GALLERY_PRODUCTS.ma
 
 export function getGallery(type?: string): GalleryItem[] {
   let items = readJSON<GalleryItem[]>("gallery", []);
-  let modified = false;
+  const deletedIds = new Set(readJSON<string[]>("deleted_gallery_ids", []));
 
-  // 1. Jika belum ada media bertipe beranda, otomatis sertakan 6 default media beranda
-  const hasBeranda = items.some((i) => i.galleryType === "beranda");
-  if (!hasBeranda) {
-    items = [...items, ...DEFAULT_BERANDA_GALLERY];
-    modified = true;
-  }
-
-  // 2. Jika database produk belum pernah diisi default produk, otomatis gabungkan seluruh 18 default produk
-  const isProductsSeeded = readJSON<boolean>("gallery_products_seeded", false);
-  if (!isProductsSeeded) {
-    const existingIds = new Set(items.map((it) => it.id));
-    const toAdd = DEFAULT_PRODUK_GALLERY.filter((p) => !existingIds.has(p.id));
-    items = [...items, ...toAdd];
-    writeJSON("gallery_products_seeded", true);
-    modified = true;
-  }
-
-  if (modified) {
+  // Jika gallery benar-benar kosong dan belum pernah ada item yang dihapus sama sekali, seed default
+  if (items.length === 0 && deletedIds.size === 0) {
+    items = [...DEFAULT_BERANDA_GALLERY, ...DEFAULT_PRODUK_GALLERY];
     saveGallery(items);
+  }
+
+  // Selalu pastikan item yang sudah dihapus tidak pernah muncul
+  if (deletedIds.size > 0) {
+    items = items.filter((i) => !deletedIds.has(i.id));
   }
 
   if (!type || type === "all") return items;
@@ -221,12 +211,22 @@ export function addGalleryItem(item: Omit<GalleryItem, "id" | "createdAt" | "ord
 }
 
 export function deleteGalleryItem(id: string) {
-  const items = getGallery().filter((i) => i.id !== id);
-  saveGallery(items);
+  // 1. Simpan ke daftar deletedIds secara persisten
+  const deletedList = readJSON<string[]>("deleted_gallery_ids", []);
+  if (!deletedList.includes(id)) {
+    deletedList.push(id);
+    writeJSON("deleted_gallery_ids", deletedList);
+  }
+
+  // 2. Hapus dari gallery.json & memoryStore
+  const rawItems = readJSON<GalleryItem[]>("gallery", []);
+  const updated = rawItems.filter((i) => i.id !== id);
+  saveGallery(updated);
 }
 
 export function updateGalleryItem(id: string, patch: Partial<GalleryItem>) {
-  const items = getGallery().map((i) => (i.id === id ? { ...i, ...patch } : i));
+  const rawItems = readJSON<GalleryItem[]>("gallery", []);
+  const items = rawItems.map((i) => (i.id === id ? { ...i, ...patch } : i));
   saveGallery(items);
 }
 
