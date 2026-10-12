@@ -2,13 +2,20 @@ import { NextRequest, NextResponse } from "next/server";
 import { isAuthenticated } from "@/lib/admin/auth";
 import { getLeads, addLead, updateLeadStatus, deleteLead } from "@/lib/admin/db";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 function unauthorized() {
   return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 }
 
 export async function GET() {
   if (!isAuthenticated()) return unauthorized();
-  return NextResponse.json(getLeads());
+  return NextResponse.json(getLeads(), {
+    headers: {
+      "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+    },
+  });
 }
 
 export async function POST(req: NextRequest) {

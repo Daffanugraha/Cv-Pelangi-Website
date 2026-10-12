@@ -6,13 +6,20 @@ import {
   deleteApplicant,
 } from "@/lib/admin/db";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 function unauthorized() {
   return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 }
 
 export async function GET() {
   if (!isAuthenticated()) return unauthorized();
-  return NextResponse.json(getApplicants());
+  return NextResponse.json(getApplicants(), {
+    headers: {
+      "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+    },
+  });
 }
 
 export async function PATCH(req: NextRequest) {

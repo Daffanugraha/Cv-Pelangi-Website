@@ -3,13 +3,20 @@ import { revalidatePath } from "next/cache";
 import { isAuthenticated } from "@/lib/admin/auth";
 import { getJobs, addJobItem, updateJobItem, deleteJobItem } from "@/lib/admin/db";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 function unauthorized() {
   return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 }
 
 export async function GET() {
   if (!isAuthenticated()) return unauthorized();
-  return NextResponse.json(getJobs());
+  return NextResponse.json(getJobs(), {
+    headers: {
+      "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+    },
+  });
 }
 
 export async function POST(req: NextRequest) {

@@ -19,7 +19,11 @@ function unauthorized() {
 // GET all momen albums (Admin)
 export async function GET() {
   if (!isAuthenticated()) return unauthorized();
-  return NextResponse.json(getMomenAlbums());
+  return NextResponse.json(getMomenAlbums(), {
+    headers: {
+      "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+    },
+  });
 }
 
 // POST create new momen album
