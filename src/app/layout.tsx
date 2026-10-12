@@ -115,20 +115,6 @@ export default function RootLayout({
                     return originalInsertBefore.apply(this, arguments);
                   };
                 }
-
-                function protectAllIcons() {
-                  var els = document.querySelectorAll('.material-symbols-outlined, .material-symbols-rounded, .material-symbols-sharp, .material-icons, [class*="material-symbols"]');
-                  for (var i = 0; i < els.length; i++) {
-                    els[i].setAttribute('translate', 'no');
-                    if (!els[i].classList.contains('notranslate')) {
-                      els[i].classList.add('notranslate');
-                    }
-                  }
-                }
-                if (typeof window !== 'undefined') {
-                  window.addEventListener('DOMContentLoaded', protectAllIcons);
-                  window.addEventListener('load', protectAllIcons);
-                }
               })();
             `,
           }}
