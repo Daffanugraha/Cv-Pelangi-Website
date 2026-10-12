@@ -43,7 +43,7 @@ export const productsJasa: ProductItem[] = [
     title: "Pond (Die-Cut)",
     badges: ["Plong Otomatis Speed", "Plong Manual Presisi", "Rel Creasing", "Perforasi"],
     desc: "Pemotongan dan rel kurva pola kemasan karton dengan toleransi akurat. Menggunakan pisau die-cut kualitas tinggi agar lipatan box lurus sempurna tanpa retak pada tekukan.",
-    img: "/images/layanan/laminating-window.jpg",
+    img: "/images/layanan/pond-die-cut.png",
     capacity: "Kapasitas 34.000 lembar/hari",
     href: "/layanan?service=pond",
     waText: "Halo Tim Marketing CV Pelangi UV, saya mau tanya tentang layanan finishing: *Pond (Die-Cut)*. Mohon info estimasi harga dan jadwal pengerjaan.",
