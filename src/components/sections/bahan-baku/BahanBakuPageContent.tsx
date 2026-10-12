@@ -13,7 +13,7 @@ export default function BahanBakuPageContent() {
   const [isPricelistOpen, setIsPricelistOpen] = useState(false);
   const [pricelistCategory, setPricelistCategory] = useState<string>("opp");
   const [isSampleModalOpen, setIsSampleModalOpen] = useState(false);
-  const [sampleCategory, setSampleCategory] = useState<string>("opp");
+  const [sampleCategory, setSampleCategory] = useState<string>("foil");
 
   const handleOpenPricelist = (categoryId?: string) => {
     if (categoryId) setPricelistCategory(categoryId);
