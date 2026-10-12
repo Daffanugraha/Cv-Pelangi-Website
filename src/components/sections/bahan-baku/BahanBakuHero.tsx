@@ -94,7 +94,7 @@ export default function BahanBakuHero({
 
   return (
     <section
-      className="w-full bg-navbar-black text-on-secondary relative pt-12 sm:pt-16 pb-20 sm:pb-24 border-b border-white/10 overflow-hidden"
+      className="w-full bg-navbar-black text-on-secondary relative pt-12 sm:pt-16 pb-20 sm:pb-24 border-none overflow-hidden"
     >
       {/* Cinematic Looping Video Background for Bahan Baku */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
@@ -122,7 +122,7 @@ export default function BahanBakuHero({
           aria-label="Breadcrumb"
           className="flex items-center gap-2 mb-6 sm:mb-8 font-label-meta text-label-meta justify-center"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-surface-canvas/10 border border-surface-canvas/10 backdrop-blur-md">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md">
             <Link
               href="/"
               className="hover:text-bracket-border transition-colors flex items-center gap-1 text-surface-dim uppercase tracking-wider text-[11px]"
@@ -165,7 +165,7 @@ export default function BahanBakuHero({
           {/* Search & Recommendation Container */}
           <div className="w-full max-w-3xl">
             {/* Tab switchers */}
-            <div className="inline-flex items-center p-1 rounded-full bg-surface-canvas/10 border border-surface-canvas/10 backdrop-blur-md mb-4">
+            <div className="inline-flex items-center p-1 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-4">
               <button
                 type="button"
                 onClick={() => setActiveTab("search")}
@@ -201,7 +201,7 @@ export default function BahanBakuHero({
               <div className="relative animate-fadeIn">
                 <form
                   onSubmit={handleSearchSubmit}
-                  className="relative flex items-center bg-surface-neutral-alt/10 border border-surface-canvas/20 rounded-2xl p-2 backdrop-blur-md shadow-2xl focus-within:border-bracket-border transition-colors"
+                  className="relative flex items-center bg-white/5 border border-white/10 rounded-2xl p-2 backdrop-blur-md shadow-2xl focus-within:border-bracket-border transition-colors"
                 >
                   <span translate="no" className="material-symbols-outlined notranslate text-bracket-border text-[22px] sm:text-[24px] ml-3 mr-2 shrink-0 notranslate"
                   >
@@ -276,28 +276,28 @@ export default function BahanBakuHero({
                   <button
                     type="button"
                     onClick={() => onSelectCategoryCard("foil")}
-                    className="px-3 py-1 rounded-full bg-surface-canvas/10 hover:bg-bracket-border hover:text-on-primary text-surface-dim text-[12px] font-label-meta border border-surface-canvas/10 transition-all cursor-pointer"
+                    className="px-3 py-1 rounded-full bg-white/5 hover:bg-bracket-border hover:text-on-primary text-surface-dim text-[12px] font-label-meta border border-white/10 transition-all cursor-pointer"
                   >
                     Roll Foil Gold 120m
                   </button>
                   <button
                     type="button"
                     onClick={() => onSelectCategoryCard("opp")}
-                    className="px-3 py-1 rounded-full bg-surface-canvas/10 hover:bg-bracket-border hover:text-on-primary text-surface-dim text-[12px] font-label-meta border border-surface-canvas/10 transition-all cursor-pointer"
+                    className="px-3 py-1 rounded-full bg-white/5 hover:bg-bracket-border hover:text-on-primary text-surface-dim text-[12px] font-label-meta border border-white/10 transition-all cursor-pointer"
                   >
                     BOPP Thermal Doff 18 mic
                   </button>
                   <button
                     type="button"
                     onClick={() => onSelectCategoryCard("lem")}
-                    className="px-3 py-1 rounded-full bg-surface-canvas/10 hover:bg-bracket-border hover:text-on-primary text-surface-dim text-[12px] font-label-meta border border-surface-canvas/10 transition-all cursor-pointer"
+                    className="px-3 py-1 rounded-full bg-white/5 hover:bg-bracket-border hover:text-on-primary text-surface-dim text-[12px] font-label-meta border border-white/10 transition-all cursor-pointer"
                   >
                     Lem Wet Emulsi 20kg
                   </button>
                   <button
                     type="button"
                     onClick={() => onSelectCategoryCard("spotuv")}
-                    className="px-3 py-1 rounded-full bg-surface-canvas/10 hover:bg-bracket-border hover:text-on-primary text-surface-dim text-[12px] font-label-meta border border-surface-canvas/10 transition-all cursor-pointer"
+                    className="px-3 py-1 rounded-full bg-white/5 hover:bg-bracket-border hover:text-on-primary text-surface-dim text-[12px] font-label-meta border border-white/10 transition-all cursor-pointer"
                   >
                     Tinta Spot UV LumineX
                   </button>
@@ -312,7 +312,7 @@ export default function BahanBakuHero({
                   {/* Rekomendasi 1: OPP */}
                   <div
                     onClick={() => onOpenPricelist("opp")}
-                    className="p-3.5 rounded-2xl bg-surface-neutral-alt/10 border border-surface-canvas/20 backdrop-blur-md hover:border-bracket-border transition-all cursor-pointer group"
+                    className="p-3.5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md hover:border-bracket-border transition-all cursor-pointer group"
                   >
                     <div className="flex items-center justify-between mb-1.5">
                       <span
@@ -342,7 +342,7 @@ export default function BahanBakuHero({
                   {/* Rekomendasi 2: Foil */}
                   <div
                     onClick={() => onOpenPricelist("foil")}
-                    className="p-3.5 rounded-2xl bg-surface-neutral-alt/10 border border-surface-canvas/20 backdrop-blur-md hover:border-bracket-border transition-all cursor-pointer group"
+                    className="p-3.5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md hover:border-bracket-border transition-all cursor-pointer group"
                   >
                     <div className="flex items-center justify-between mb-1.5">
                       <span
@@ -372,7 +372,7 @@ export default function BahanBakuHero({
                   {/* Rekomendasi 3: Lem */}
                   <div
                     onClick={() => onOpenPricelist("lem")}
-                    className="p-3.5 rounded-2xl bg-surface-neutral-alt/10 border border-surface-canvas/20 backdrop-blur-md hover:border-bracket-border transition-all cursor-pointer group"
+                    className="p-3.5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md hover:border-bracket-border transition-all cursor-pointer group"
                   >
                     <div className="flex items-center justify-between mb-1.5">
                       <span
@@ -402,7 +402,7 @@ export default function BahanBakuHero({
                   {/* Rekomendasi 4: Spot UV */}
                   <div
                     onClick={() => onOpenPricelist("spotuv")}
-                    className="p-3.5 rounded-2xl bg-surface-neutral-alt/10 border border-surface-canvas/20 backdrop-blur-md hover:border-bracket-border transition-all cursor-pointer group"
+                    className="p-3.5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md hover:border-bracket-border transition-all cursor-pointer group"
                   >
                     <div className="flex items-center justify-between mb-1.5">
                       <span
