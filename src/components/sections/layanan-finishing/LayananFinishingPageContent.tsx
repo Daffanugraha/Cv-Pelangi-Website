@@ -60,6 +60,7 @@ function handleServiceFromUrl(targetUrl) {
 }
 
 setTimeout(handleServiceFromUrl, 200);
+setTimeout(handleServiceFromUrl, 500);
 window.addEventListener('popstate', () => handleServiceFromUrl());
 window.addEventListener('pelangi-nav-target', function(e) {
   handleServiceFromUrl(e.detail);
