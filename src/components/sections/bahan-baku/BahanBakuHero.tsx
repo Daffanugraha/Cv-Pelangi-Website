@@ -94,7 +94,7 @@ export default function BahanBakuHero({
 
   return (
     <section
-      className="w-full bg-navbar-black text-on-secondary relative pt-12 sm:pt-16 pb-20 sm:pb-24 border-b border-surface-canvas/10 overflow-hidden rounded-b-[40px] sm:rounded-b-[48px]"
+      className="w-full bg-navbar-black text-on-secondary relative pt-12 sm:pt-16 pb-20 sm:pb-24 border-b border-white/10 overflow-hidden"
     >
       {/* Cinematic Looping Video Background for Bahan Baku */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
