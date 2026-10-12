@@ -101,7 +101,7 @@ export const DEFAULT_GALLERY_PRODUCTS: GalleryProduct[] = [
     resultCharacteristics: "Lapisan beludru velvet 2 sisi memberi kesan eksklusif saat disentuh. Tepi kartu dilapisi foil emas mengkilap (Edge Gilding) 360 derajat yang berkilau saat ditumpuk maupun dipegang satu per satu.",
     alternativeOption: "Bisa menggunakan Blind Deboss mendalam tanpa foil atau paduan Foil Hologram pada sudut tepi kartu untuk kartu nama eksekutif modern.",
     highlight: "Foil Tepi 360 Derajat",
-    img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCuWCh0gVsNn5ZjdwTNVfC5tjHPwCNwCmhrIgf24XmiSREb1yO8FsQzHuCmA3BbMqvTetcSzK4_wkMniyfLJp5otWtWqkgisOowzLmkM4kwdeCcwIubuCIuzjq0GvzpXUiDF-8d8FKSQ4jt71e8xgJNxLmpd1lpCqoFdJVNLbDZXg3I_VfjX6cnhHeOT7e4XTjFu2EJmpJGNj9VuEZvmZXESIL3NsodT2qwJ59u8k8op02XmpuAXEP0",
+    img: "/images/layanan/cold-foil.png",
   },
   {
     id: "prod-6",
@@ -444,7 +444,7 @@ export const EDUCATIONAL_SLIDES = [
       },
     ],
     sampleTitle: "Business Card Cotton 360gsm",
-    sampleImage: "https://lh3.googleusercontent.com/aida-public/AB6AXuCuWCh0gVsNn5ZjdwTNVfC5tjHPwCNwCmhrIgf24XmiSREb1yO8FsQzHuCmA3BbMqvTetcSzK4_wkMniyfLJp5otWtWqkgisOowzLmkM4kwdeCcwIubuCIuzjq0GvzpXUiDF-8d8FKSQ4jt71e8xgJNxLmpd1lpCqoFdJVNLbDZXg3I_VfjX6cnhHeOT7e4XTjFu2EJmpJGNj9VuEZvmZXESIL3NsodT2qwJ59u8k8op02XmpuAXEP0",
+    sampleImage: "/images/layanan/cold-foil.png",
     jasaBadges: ["Edge Foil Emas", "Thermal Velvet", "Deboss"],
   },
   {
