@@ -29,13 +29,18 @@ export default function PengaplikasianHero() {
   }, []);
   return (
     <section className="relative w-full overflow-hidden bg-navbar-black pt-12 pb-14 sm:pb-16 border-b border-white/10">
-      {/* Background Image with Gradient Overlay */}
-      <div className="absolute inset-0 pointer-events-none">
-        <img
-          alt="Latar Belakang Mesin Finishing Industri CV Pelangi UV"
-          className="w-full h-full object-cover opacity-20 filter brightness-75 scale-105"
-          src="https://lh3.googleusercontent.com/aida/AEtjO1X8hUYRnyrzcmk40q8h_QhSLFCdR_322fC-Sf0MzF_son0DBlP6sBiJThSE0RcBy0Nr1HytYFhIPNdQjXaMSA99Ozsq3yPKMyOsMrdQj7xUfD7EUMIBm0O8yfWnjQks2v9efmAGY1Vubn0IQP1VtA8Sn6t_8rllU2UjdGRyMh4Z4ys0vr2MHZ8evYEiU1BQB_lDhDiF5TCtd0qVFsQvQ_vFtJugqUG11f_FwNOSA0C8tXbBt-3NGoXtwU4"
-        />
+      {/* Ambient Background Video Layer */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none -z-0 bg-navbar-black">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          className="w-full h-full object-cover scale-105 opacity-40 filter brightness-90 contrast-105"
+        >
+          <source src="/videos/video-pengaplikasian.mp4" type="video/mp4" />
+        </video>
         <div className="absolute inset-0 bg-gradient-to-t from-navbar-black via-navbar-black/85 to-navbar-black/95" />
       </div>
 
