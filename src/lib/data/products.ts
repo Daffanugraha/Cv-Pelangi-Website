@@ -6,53 +6,156 @@ export interface ProductItem {
   img: string;
   capacity: string;
   href?: string;
+  serviceKey?: string;
+  priceStarting?: string;
 }
+
+export interface ServicePricelistItem {
+  no: number;
+  variant: string;
+  unit: string;
+  note: string;
+}
+
+export interface ServiceDetailPricelist {
+  key: string;
+  name: string;
+  icon: string;
+  desc: string;
+  capacity: string;
+  speed: string;
+  startingPrice: string;
+  waText: string;
+  pricelist: ServicePricelistItem[];
+}
+
+export const servicesPricelistData: Record<string, ServiceDetailPricelist> = {
+  laminating: {
+    key: "laminating",
+    name: "Laminating (Doff & Gloss)",
+    icon: "filter_frames",
+    desc: "Pelapisan plastik film BOPP dan PET menggunakan metode thermal, dry, atau wet laminating. Melindungi cetakan dari gesekan, basah, minyak, dan meningkatkan rigiditas serta kekayaan warna lembaran kemasan.",
+    capacity: "5 Mesin Otomatis & 2 Semi-Otomatis",
+    speed: "Kapasitas 114.000 cetakan/hari",
+    startingPrice: "Mulai Rp 0,163 / cm²",
+    waText: "Halo CV Pelangi UV, saya membutuhkan jasa Laminating (Doff / Gloss / Hologram). Mohon kalkulasi estimasi biayanya.",
+    pricelist: [
+      { no: 1, variant: "Laminating Doff Halus", unit: "Rp 0,24 / cm²", note: "Minimal Order Rp 300.000" },
+      { no: 2, variant: "Laminating Gloss Bening", unit: "Rp 0,163 / cm²", note: "Minimal Order Rp 300.000" },
+      { no: 3, variant: "Laminating Hologram Optik", unit: "Rp 0,31 / cm²", note: "Minimal Order Rp 300.000" },
+    ],
+  },
+  hotstamp: {
+    key: "hotstamp",
+    name: "Hot Print (Hot Stamping Foil)",
+    icon: "auto_awesome",
+    desc: "Pelapisan foil dekoratif mewah pada permukaan kertas cetakan menggunakan pemanas klise bertekanan tinggi. Menghasilkan aksen kilau berkilau tinggi, tidak mudah pudar, dan presisi di setiap detail tepi desain packaging.",
+    capacity: "5 Mesin Otomatis & 4 Manual",
+    speed: "Kapasitas s/d 120.000 cetakan/hari",
+    startingPrice: "Mulai Rp 1,08 / cm²",
+    waText: "Halo CV Pelangi UV, saya ingin konsultasi harga dan jadwal produksi untuk Layanan Hot Print / Hot Stamping Foil.",
+    pricelist: [
+      { no: 1, variant: "Hot Stamp Silver", unit: "Rp 1,08 / cm²", note: "Minimal Order Rp 300.000" },
+      { no: 2, variant: "Hot Stamp Gold", unit: "Rp 1,08 / cm²", note: "Minimal Order Rp 300.000" },
+      { no: 3, variant: "Hot Stamp Warna-Warni", unit: "Rp 1,7 / cm²", note: "Minimal Order Rp 300.000" },
+      { no: 4, variant: "Hot Stamp Hologram Prismatik", unit: "Rp 2 / cm²", note: "Minimal Order Rp 300.000" },
+    ],
+  },
+  pond: {
+    key: "pond",
+    name: "Pond / Die Cutting",
+    icon: "content_cut",
+    desc: "Proses plong pemotongan bentuk kurva, garis rel tekukan (creasing), dan perforasi pada kertas maupun karton tebal kemasan agar presisi saat dirakit menjadi box jadi tanpa risiko retak.",
+    capacity: "1 Mesin Otomatis & 1 Manual Presisi",
+    speed: "Kapasitas 34.000 lembar/hari",
+    startingPrice: "Rp 80 / lembar",
+    waText: "Halo CV Pelangi UV, saya ingin order jasa Pond (Die-Cut) untuk pemotongan lembar cetakan / box karton.",
+    pricelist: [
+      { no: 1, variant: "Plong Otomatis (High Speed Die-Cut)", unit: "Rp 80 / lembar", note: "Minimal Order Rp 500.000" },
+      { no: 2, variant: "Plong Manual Presisi", unit: "Rp 80 / lembar", note: "Minimal Order Rp 200.000" },
+    ],
+  },
+  spotuv: {
+    key: "spotuv",
+    name: "Spot UV (Gloss & Pasir)",
+    icon: "brush",
+    desc: "Proses pelapisan selective coating dengan curing UV solvent-based roller coating berpresisi tinggi. Menghasilkan kontras kilau optik cermin, matte lembut, ataupun efek butiran tekstur pasir taktil yang elegan.",
+    capacity: "5 Mesin Otomatis & 3 Manual",
+    speed: "Kapasitas 174.000 cetakan/hari",
+    startingPrice: "Mulai Rp 0,22 / cm²",
+    waText: "Halo CV Pelangi UV, saya ingin memesan jasa Spot UV (Gloss / Matte / Pasir) untuk lembar cetakan saya.",
+    pricelist: [
+      { no: 1, variant: "Spot UV Gloss", unit: "Rp 0,22 / cm²", note: "Minimal Order Rp 300.000" },
+      { no: 2, variant: "Spot UV Matte", unit: "Rp 0,25 / cm²", note: "Minimal Order Rp 300.000" },
+      { no: 3, variant: "Spot UV Pasir / Sand Texture", unit: "Rp 0,25 / cm²", note: "Minimal Order Rp 300.000" },
+    ],
+  },
+  emboss: {
+    key: "emboss",
+    name: "Emboss & Deboss",
+    icon: "view_in_ar",
+    desc: "Pencetakan efek timbul 3D fisik (Emboss) maupun tenggelam (Deboss) pada lembar cetak menggunakan klise plat presisi jantan-betina untuk menghasilkan sensasi tekstur taktil yang kokoh dan berkarakter.",
+    capacity: "2 Mesin Otomatis & 1 Mesin Manual",
+    speed: "Kapasitas 60.000 lembar/hari",
+    startingPrice: "Mulai Rp 90 / lembar",
+    waText: "Halo CV Pelangi UV, saya ingin konsultasi pengerjaan jasa Emboss & Deboss untuk cover buku / packaging.",
+    pricelist: [
+      { no: 1, variant: "Emboss Manual", unit: "Rp 90 / lembar", note: "Minimal Order Rp 200.000" },
+      { no: 2, variant: "Emboss Otomatis", unit: "Rp 100 / lembar", note: "Minimal Order Rp 300.000" },
+    ],
+  },
+};
 
 export const productsJasa: ProductItem[] = [
   {
     num: "01",
-    tag: "",
-    title: "Hot Stamp Foil",
-    desc: "Finishing cetak kilap metalik mewah dengan pilihan warna Gold, Silver, Rose Gold, Hologram, dan Pigment Foil tahan gores.",
-    img: "/images/layanan/hot-stamp.jpg",
-    capacity: "120k/hari",
-    href: "/layanan",
+    tag: "Terlaris",
+    title: "Laminating (Doff & Gloss)",
+    desc: "Pelapisan plastik film BOPP termal dan wet berkualitas prima untuk proteksi anti gores, kelembaban, dan sentuhan premium (velvet doff/glossy).",
+    img: "/images/layanan/laminating.jpg",
+    capacity: "114k/hari",
+    serviceKey: "laminating",
+    priceStarting: "Mulai Rp 0,163 / cm²",
   },
   {
     num: "02",
-    tag: "",
-    title: "Spot UV",
-    desc: "Lapisan vernis mengkilap kontras pada area tertentu (logo/tipografi) untuk menciptakan efek visual dimensi yang elegan dan eksklusif.",
-    img: "/images/layanan/spot-uv.jpg",
-    capacity: "150k/hari",
-    href: "/layanan",
+    tag: "Populer",
+    title: "Hot Print (Hot Stamping Foil)",
+    desc: "Finishing foil dekoratif mewah dengan suhu dan tekanan tinggi. Menghasilkan aksen kilau Gold, Silver, Hologram berpresisi tajam anti-kelupas.",
+    img: "/images/layanan/hot-stamp.jpg",
+    capacity: "120k/hari",
+    serviceKey: "hotstamp",
+    priceStarting: "Mulai Rp 1,08 / cm²",
   },
   {
     num: "03",
-    tag: "",
-    title: "Laminating Gloss & Doff",
-    desc: "Pelapisan plastik tipis termal (Thermal) dan Wet berkualitas prima untuk perlindungan kelembaban, anti gores, serta daya tahan kemasan.",
-    img: "/images/layanan/laminating.jpg",
-    capacity: "200k/hari",
-    href: "/layanan",
+    tag: "Presisi Tinggi",
+    title: "Pond / Die Cutting",
+    desc: "Pemotongan pola kurva (plong), garis rel tekukan (creasing), dan perforasi pada karton kemasan dengan pisau presisi agar box lipat rapi tanpa retak.",
+    img: "/images/layanan/laminating-window.jpg",
+    capacity: "34k/hari",
+    serviceKey: "pond",
+    priceStarting: "Rp 80 / lembar",
   },
   {
     num: "04",
-    tag: "",
-    title: "Cast and Cure",
-    desc: "Efek holografis ramah lingkungan tanpa laminasi lapisan mika, memberikan kilauan pelangi autentik yang sulit dipalsukan.",
-    img: "/images/layanan/cast-and-cure.png",
-    capacity: "80k/hari",
-    href: "/layanan",
+    tag: "Efek Mewah",
+    title: "Spot UV (Gloss & Pasir)",
+    desc: "Lapisan coating UV selektif berpresisi mikron. Memberikan efek kontras kilau cermin tinggi, matte lembut, atau tekstur pasir taktil mewah pada logo dan kemasan.",
+    img: "/images/layanan/spot-uv.jpg",
+    capacity: "174k/hari",
+    serviceKey: "spotuv",
+    priceStarting: "Mulai Rp 0,22 / cm²",
   },
   {
     num: "05",
-    tag: "",
-    title: "Pond & Window Patch",
-    desc: "Potong bentuk presisi tinggi (Die-Cut) dan penempelan jendela mika bening otomatis untuk kemasan kue, kosmetik, dan garmen.",
-    img: "/images/layanan/laminating-window.jpg",
-    capacity: "90k/hari",
-    href: "/layanan",
+    tag: "Tekstur Taktil",
+    title: "Emboss & Deboss",
+    desc: "Efek timbul 3D fisik (Emboss) atau tenggelam (Deboss) menggunakan master klise plat presisi jantan-betina untuk menghasilkan sensasi tekstur taktil yang kokoh.",
+    img: "/images/layanan/micro-emboss.png",
+    capacity: "60k/hari",
+    serviceKey: "emboss",
+    priceStarting: "Mulai Rp 90 / lembar",
   },
 ];
 
