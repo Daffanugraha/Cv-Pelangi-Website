@@ -394,13 +394,8 @@ export default function BahanBakuCatalog({
             </div>
           </div>
 
-          {/* Tombol Navigasi Prev & Next + Panduan Geser */}
+          {/* Tombol Navigasi Prev & Next */}
           <div className="flex items-center gap-3 self-start lg:self-end">
-            <span className="text-xs text-text-muted hidden sm:inline-flex items-center gap-1 font-medium mr-1">
-              <span className="material-symbols-outlined text-[16px]">swipe</span>
-              <span>Bisa digeser bebas</span>
-            </span>
-
             <button
               type="button"
               onClick={handlePrev}
