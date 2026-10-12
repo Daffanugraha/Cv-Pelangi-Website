@@ -25,9 +25,7 @@ export default function SiteLayoutWrapper({
       <GoogleTranslator />
       <VisitorTracker />
       <Navbar />
-      <main suppressHydrationWarning className="min-h-screen">
-        {children}
-      </main>
+      <main suppressHydrationWarning className="min-h-screen">{children}</main>
       <Footer />
       <FloatingActions />
     </LanguageProvider>

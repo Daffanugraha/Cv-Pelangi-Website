@@ -86,7 +86,7 @@ export default function BlogDetailContent({ article }: BlogDetailContentProps) {
         {/* 2-Column Editorial Grid: Main Content (8 cols) & Sidebar (4 cols) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
           {/* Main Article Content Column */}
-          <main className="lg:col-span-8 flex flex-col gap-6">
+          <article className="lg:col-span-8 flex flex-col gap-6">
             {/* Category Pill & Meta */}
             <div className="flex flex-wrap items-center gap-3">
               <span className="px-3.5 py-1.5 rounded-full bg-surface-tint-light text-bracket-border font-label-meta text-xs font-bold border border-divider-tint/60 shadow-xs">
@@ -223,7 +223,7 @@ export default function BlogDetailContent({ article }: BlogDetailContentProps) {
                 </button>
               </div>
             </div>
-          </main>
+          </article>
 
           {/* Sidebar Column (4 cols) */}
           <aside className="lg:col-span-4 flex flex-col gap-8 lg:sticky lg:top-28">
