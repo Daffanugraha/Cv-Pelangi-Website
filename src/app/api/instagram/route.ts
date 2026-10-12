@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
+import { getDeletedGalleryIds } from "@/lib/admin/db";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 const DATA_FILE_PATH = path.join(process.cwd(), "src", "data", "instagram_reels.json");
 
@@ -53,6 +57,24 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const forceRefresh = searchParams.get("refresh") === "true";
   const accessToken = process.env.INSTAGRAM_ACCESS_TOKEN;
+  const deletedIds = getDeletedGalleryIds();
+
+  // Helper untuk memfilter reels yang sudah dihapus di Admin
+  const filterDeleted = (items: ReelItem[]) => {
+    if (deletedIds.size === 0) return items;
+    return items.filter((item) => {
+      const idClean = (item.id || "").toLowerCase().trim();
+      const shortcodeClean = (item.shortcode || "").toLowerCase().trim();
+      const videoClean = (item.videoUrl || "").toLowerCase().trim();
+      const titleClean = (item.title || "").toLowerCase().trim();
+      return (
+        !deletedIds.has(idClean) &&
+        !deletedIds.has(shortcodeClean) &&
+        !deletedIds.has(videoClean) &&
+        !deletedIds.has(titleClean)
+      );
+    });
+  };
 
   // 1. If Meta Instagram Graph API Token is configured, attempt live fetch
   if (accessToken && (forceRefresh || true)) {
@@ -87,16 +109,26 @@ export async function GET(request: Request) {
             };
           });
 
+          // Filter out any deleted reels before saving/returning
+          const filteredLive = filterDeleted(liveReels);
+
           // Save/cache live reels for offline reliability
-          if (liveReels.length > 0) {
-            saveStoredReels(liveReels);
-            return NextResponse.json({
-              success: true,
-              source: "instagram_graph_api",
-              count: liveReels.length,
-              lastUpdated: new Date().toISOString(),
-              data: liveReels,
-            });
+          if (filteredLive.length > 0) {
+            saveStoredReels(filteredLive);
+            return NextResponse.json(
+              {
+                success: true,
+                source: "instagram_graph_api",
+                count: filteredLive.length,
+                lastUpdated: new Date().toISOString(),
+                data: filteredLive,
+              },
+              {
+                headers: {
+                  "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+                },
+              }
+            );
           }
         }
       }
@@ -105,17 +137,24 @@ export async function GET(request: Request) {
     }
   }
 
-  // 2. Return cached authentic reels
-  const cached = getStoredReels();
-  return NextResponse.json({
-    success: true,
-    source: "local_cache",
-    count: cached.length,
-    lastUpdated: new Date().toISOString(),
-    account: "pelangi.uv",
-    profileUrl: "https://www.instagram.com/pelangi.uv/",
-    data: cached,
-  });
+  // 2. Return cached authentic reels, filtered from deleted items
+  const cached = filterDeleted(getStoredReels());
+  return NextResponse.json(
+    {
+      success: true,
+      source: "local_cache",
+      count: cached.length,
+      lastUpdated: new Date().toISOString(),
+      account: "pelangi.uv",
+      profileUrl: "https://www.instagram.com/pelangi.uv/",
+      data: cached,
+    },
+    {
+      headers: {
+        "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+      },
+    }
+  );
 }
 
 /**

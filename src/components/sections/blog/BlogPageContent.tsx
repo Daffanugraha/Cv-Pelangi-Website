@@ -35,14 +35,20 @@ export default function BlogPageContent({
 
   // Ambil artikel dinamis dari database admin jika tersedia
   React.useEffect(() => {
-    fetch("/api/blog", { cache: "no-store" })
-      .then((res) => (res.ok ? res.json() : null))
-      .then((data) => {
-        if (Array.isArray(data) && data.length > 0) {
-          setArticlesList(data);
-        }
-      })
-      .catch(() => {});
+    const fetchArticles = () => {
+      fetch("/api/blog", { cache: "no-store" })
+        .then((res) => (res.ok ? res.json() : null))
+        .then((data) => {
+          if (Array.isArray(data)) {
+            setArticlesList(data);
+          }
+        })
+        .catch(() => {});
+    };
+
+    fetchArticles();
+    window.addEventListener("focus", fetchArticles);
+    return () => window.removeEventListener("focus", fetchArticles);
   }, []);
 
   // Ambil 1 artikel sorotan per topik secara dinamis dari daftar artikel terbaru

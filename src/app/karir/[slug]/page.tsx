@@ -1,8 +1,9 @@
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import type { Metadata } from "next";
 import { getJobBySlug } from "@/lib/admin/db";
 
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 interface KarirDetailPageProps {
   params: {
@@ -46,6 +47,11 @@ export async function generateMetadata({
 }
 
 export default function KarirDetailPage({ params }: KarirDetailPageProps) {
+  const job = getJobBySlug(params.slug);
+  if (!job) {
+    notFound();
+  }
+
   // Langsung direct ke halaman utama karir dengan posisi aktif dan popup formulir lamaran
   redirect(`/karir?posisi=${encodeURIComponent(params.slug)}#posisi-terbuka`);
 }

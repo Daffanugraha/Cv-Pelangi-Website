@@ -47,56 +47,60 @@ export default function GallerySection() {
     async function loadLatestMedia() {
       try {
         const [adminRes, instaRes] = await Promise.all([
-          fetch("/api/admin/gallery?type=beranda").catch(() => null),
-          fetch("/api/instagram").catch(() => null),
+          fetch("/api/admin/gallery?type=beranda", { cache: "no-store" }).catch(() => null),
+          fetch("/api/instagram", { cache: "no-store" }).catch(() => null),
         ]);
 
         let rawItems: VideoItem[] = [];
+        let adminResSuccess = false;
 
         // 1. Prioritaskan data yang dikelola dari Admin jika tersedia
         if (adminRes && adminRes.ok) {
           const adminItems = await adminRes.json();
-          if (Array.isArray(adminItems) && adminItems.length > 0) {
-            rawItems = adminItems.map((item: any) => {
-              // Format embedUrl otomatis jika dari Instagram
-              let embedUrl = item.videoUrl || "";
-              if (embedUrl) {
-                const match = embedUrl.match(/\/(reel|p)\/([a-zA-Z0-9_\-]+)/);
-                if (match) {
-                  embedUrl = `https://www.instagram.com/reel/${match[2]}/embed/`;
-                } else if (!embedUrl.endsWith("/embed/")) {
-                  embedUrl = embedUrl.endsWith("/") ? `${embedUrl}embed/` : `${embedUrl}/embed/`;
+          if (Array.isArray(adminItems)) {
+            adminResSuccess = true;
+            if (adminItems.length > 0) {
+              rawItems = adminItems.map((item: any) => {
+                // Format embedUrl otomatis jika dari Instagram
+                let embedUrl = item.videoUrl || "";
+                if (embedUrl) {
+                  const match = embedUrl.match(/\/(reel|p)\/([a-zA-Z0-9_\-]+)/);
+                  if (match) {
+                    embedUrl = `https://www.instagram.com/reel/${match[2]}/embed/`;
+                  } else if (!embedUrl.endsWith("/embed/")) {
+                    embedUrl = embedUrl.endsWith("/") ? `${embedUrl}embed/` : `${embedUrl}/embed/`;
+                  }
                 }
-              }
 
-              return {
-                id: item.id,
-                title: item.title,
-                tag: item.tag || item.category || "Finishing",
-                desc: item.technique || "Sorotan Galeri CV Pelangi UV",
-                img: item.imageUrl,
-                videoUrl: item.videoUrl || "",
-                duration: "00:45",
-                views: "1.2K",
-                source: "instagram",
-                capacity: "CV Pelangi UV Showcase",
-                embedUrl,
-                objectPosition: item.objectPosition || "center",
-              };
-            });
+                return {
+                  id: item.id,
+                  title: item.title,
+                  tag: item.tag || item.category || "Finishing",
+                  desc: item.technique || "Sorotan Galeri CV Pelangi UV",
+                  img: item.imageUrl,
+                  videoUrl: item.videoUrl || "",
+                  duration: "00:45",
+                  views: "1.2K",
+                  source: "instagram",
+                  capacity: "CV Pelangi UV Showcase",
+                  embedUrl,
+                  objectPosition: item.objectPosition || "center",
+                };
+              });
+            }
           }
         }
 
-        // 2. Jika admin belum ada, coba dari cache Instagram
-        if (rawItems.length === 0 && instaRes && instaRes.ok) {
+        // 2. Jika admin belum ada / belum tersimpan, coba dari cache Instagram
+        if (!adminResSuccess && instaRes && instaRes.ok) {
           const json = await instaRes.json();
           if (json.data && Array.isArray(json.data) && json.data.length > 0) {
             rawItems = json.data;
           }
         }
 
-        // 3. Fallback ke galleryVideos lokal jika kedua sumber kosong
-        if (rawItems.length === 0) {
+        // 3. Fallback hanya jika kedua endpoint server gagal diakses secara jaringan
+        if (!adminResSuccess && rawItems.length === 0 && (!instaRes || !instaRes.ok)) {
           rawItems = galleryVideos;
         }
 
@@ -107,7 +111,11 @@ export default function GallerySection() {
         console.warn("Gagal memuat galeri beranda:", err);
       }
     }
+
     loadLatestMedia();
+
+    window.addEventListener("focus", loadLatestMedia);
+    return () => window.removeEventListener("focus", loadLatestMedia);
   }, []);
 
   // Kumpulan tag / kategori unik dari seluruh video yang ada

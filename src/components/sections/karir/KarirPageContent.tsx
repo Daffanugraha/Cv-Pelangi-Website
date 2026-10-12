@@ -20,7 +20,7 @@ export default function KarirPageContent({ initialJobs }: KarirPageContentProps)
   // Sync with /api/jobs in case updated or deleted from admin
   useEffect(() => {
     const fetchLatestJobs = () => {
-      fetch("/api/jobs")
+      fetch("/api/jobs", { cache: "no-store" })
         .then((res) => (res.ok ? res.json() : null))
         .then((data) => {
           if (Array.isArray(data)) {

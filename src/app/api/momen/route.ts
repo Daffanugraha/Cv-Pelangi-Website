@@ -3,6 +3,7 @@ import { getMomenAlbums } from "@/lib/admin/db";
 import { MOMEN_FILTERS } from "@/lib/data/galeriMomen";
 
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export async function GET() {
   try {
@@ -22,10 +23,17 @@ export async function GET() {
       }
     });
 
-    return NextResponse.json({
-      albums,
-      filters: dynamicFilters,
-    });
+    return NextResponse.json(
+      {
+        albums,
+        filters: dynamicFilters,
+      },
+      {
+        headers: {
+          "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+        },
+      }
+    );
   } catch (err) {
     console.error("Error fetching momen:", err);
     return NextResponse.json(

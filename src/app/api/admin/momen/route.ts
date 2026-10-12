@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { isAuthenticated } from "@/lib/admin/auth";
 import {
   getMomenAlbums,
@@ -7,6 +8,9 @@ import {
   deleteMomenAlbum,
   MomenAlbumItem,
 } from "@/lib/admin/db";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 function unauthorized() {
   return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -118,13 +122,26 @@ export async function DELETE(req: NextRequest) {
   if (!isAuthenticated()) return unauthorized();
   try {
     const { searchParams } = new URL(req.url);
-    const id = searchParams.get("id");
+    let id = searchParams.get("id");
+
+    if (!id) {
+      try {
+        const body = await req.json();
+        id = body?.id;
+      } catch {}
+    }
 
     if (!id) {
       return NextResponse.json({ error: "ID momen diperlukan" }, { status: 400 });
     }
 
     deleteMomenAlbum(id);
+
+    try {
+      revalidatePath("/galeri/momen", "layout");
+      revalidatePath("/api/momen");
+    } catch {}
+
     return NextResponse.json({ ok: true });
   } catch (err) {
     console.error("Error deleting momen:", err);

@@ -14,7 +14,9 @@ interface GaleriMomenPageContentProps {
 }
 
 export default function GaleriMomenPageContent({ initialAlbums }: GaleriMomenPageContentProps) {
-  const [albums, setAlbums] = useState<MomenAlbumItem[]>(initialAlbums || (MOMEN_ALBUMS as MomenAlbumItem[]));
+  const [albums, setAlbums] = useState<MomenAlbumItem[]>(
+    Array.isArray(initialAlbums) ? initialAlbums : (MOMEN_ALBUMS as MomenAlbumItem[])
+  );
   const [activeFilter, setActiveFilter] = useState("all");
   const [selectedPhoto, setSelectedPhoto] = useState<MomenPhoto | null>(null);
 
@@ -22,7 +24,7 @@ export default function GaleriMomenPageContent({ initialAlbums }: GaleriMomenPag
   useEffect(() => {
     async function fetchLiveMomen() {
       try {
-        const res = await fetch("/api/momen");
+        const res = await fetch("/api/momen", { cache: "no-store" });
         if (res.ok) {
           const data = await res.json();
           if (data?.albums && Array.isArray(data.albums)) {
@@ -33,17 +35,21 @@ export default function GaleriMomenPageContent({ initialAlbums }: GaleriMomenPag
         console.warn("Using initial momen data:", err);
       }
     }
+
     fetchLiveMomen();
+
+    window.addEventListener("focus", fetchLiveMomen);
+    return () => window.removeEventListener("focus", fetchLiveMomen);
   }, []);
 
-  // Compute dynamic filters based on current albums and presets
+  // Compute dynamic filters based strictly on active non-deleted albums
   const dynamicFilters = useMemo(() => {
-    const existingKeys = new Set(MOMEN_FILTERS.map((f) => f.key));
-    const filters = [...MOMEN_FILTERS];
+    const filters = [{ key: "all", label: "Semua Momen" }];
+    const seen = new Set<string>(["all"]);
 
     albums.forEach((album) => {
-      if (album.category && !existingKeys.has(album.category)) {
-        existingKeys.add(album.category);
+      if (album.category && !seen.has(album.category)) {
+        seen.add(album.category);
         filters.push({
           key: album.category,
           label: album.title,
@@ -54,7 +60,7 @@ export default function GaleriMomenPageContent({ initialAlbums }: GaleriMomenPag
     return filters;
   }, [albums]);
 
-  // Compute dynamic highlights from albums (highlight-marked or first photo of each album)
+  // Compute dynamic highlights from active non-deleted albums only
   const dynamicHighlights = useMemo<MomenHighlight[]>(() => {
     const customHighlights: MomenHighlight[] = [];
     const seenCategories = new Set<string>();
@@ -74,7 +80,7 @@ export default function GaleriMomenPageContent({ initialAlbums }: GaleriMomenPag
       }
     });
 
-    return customHighlights.length > 0 ? customHighlights : MOMEN_HIGHLIGHTS;
+    return customHighlights;
   }, [albums]);
 
   // Flat list of all photos for seamless cycling in Lightbox

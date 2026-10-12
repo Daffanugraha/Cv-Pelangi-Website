@@ -1,9 +1,30 @@
-import React from "react";
+"use client";
+
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { getBlogArticles } from "@/lib/admin/db";
+import { ArticleItem } from "@/lib/data/articles";
 
 export default function BlogSection() {
-  const articles = getBlogArticles().slice(0, 3);
+  const [articles, setArticles] = useState<ArticleItem[]>([]);
+
+  useEffect(() => {
+    const fetchArticles = () => {
+      fetch("/api/blog", { cache: "no-store" })
+        .then((res) => (res.ok ? res.json() : []))
+        .then((data) => {
+          if (Array.isArray(data)) {
+            setArticles(data.slice(0, 3));
+          }
+        })
+        .catch(() => {});
+    };
+
+    fetchArticles();
+    window.addEventListener("focus", fetchArticles);
+    return () => window.removeEventListener("focus", fetchArticles);
+  }, []);
+
+  if (articles.length === 0) return null;
   return (
     <section
       className="w-full bg-surface-neutral-alt py-space-3xl relative"

@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { isAuthenticated } from "@/lib/admin/auth";
 import { getGallery, addGalleryItem, deleteGalleryItem, updateGalleryItem } from "@/lib/admin/db";
 
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 function unauthorized() {
   return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -46,7 +48,24 @@ export async function PATCH(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
   if (!isAuthenticated()) return unauthorized();
-  const { id } = await req.json();
+  let id = req.nextUrl.searchParams.get("id");
+  if (!id) {
+    try {
+      const body = await req.json();
+      id = body?.id;
+    } catch {}
+  }
+  if (!id) {
+    return NextResponse.json({ error: "ID media diperlukan" }, { status: 400 });
+  }
   deleteGalleryItem(id);
+
+  try {
+    revalidatePath("/", "layout");
+    revalidatePath("/layanan", "layout");
+    revalidatePath("/api/admin/gallery");
+    revalidatePath("/api/instagram");
+  } catch {}
+
   return NextResponse.json({ ok: true });
 }

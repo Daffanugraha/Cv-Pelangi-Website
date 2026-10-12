@@ -6,20 +6,31 @@ import { ArticleItem, getAllArticles } from "@/lib/data/articles";
 
 interface BlogDetailContentProps {
   article: ArticleItem;
+  relatedArticles?: ArticleItem[];
 }
 
-export default function BlogDetailContent({ article }: BlogDetailContentProps) {
+export default function BlogDetailContent({
+  article,
+  relatedArticles: initialRelated,
+}: BlogDetailContentProps) {
   const [copied, setCopied] = useState(false);
+  const [liveArticles, setLiveArticles] = useState<ArticleItem[]>(
+    initialRelated || []
+  );
 
-  // Other related articles (excluding current article)
-  const allArticles = getAllArticles();
-  const relatedArticles = allArticles
-    .filter((a) => a.id !== article.id)
-    .slice(0, 3);
+  React.useEffect(() => {
+    fetch("/api/blog", { cache: "no-store" })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setLiveArticles(data.filter((a) => a.id !== article.id && a.slug !== article.slug));
+        }
+      })
+      .catch(() => {});
+  }, [article.id, article.slug]);
 
-  const sidebarArticles = allArticles
-    .filter((a) => a.id !== article.id)
-    .slice(0, 4);
+  const relatedArticles = liveArticles.slice(0, 3);
+  const sidebarArticles = liveArticles.slice(0, 4);
 
   const handleCopyLink = () => {
     if (typeof window !== "undefined") {
