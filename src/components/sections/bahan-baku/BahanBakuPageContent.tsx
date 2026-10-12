@@ -86,7 +86,7 @@ export default function BahanBakuPageContent() {
   }, []);
 
   return (
-    <div className="flex flex-col w-full bg-surface-canvas selection:bg-bracket-border selection:text-white">
+    <div className="flex flex-col w-full bg-navbar-black selection:bg-bracket-border selection:text-white">
       {/* 1. Hero with Breadcrumb, Search, and Recommendations */}
       <BahanBakuHero
         categories={rawMaterialCategories}

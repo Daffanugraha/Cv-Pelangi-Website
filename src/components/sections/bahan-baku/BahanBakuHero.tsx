@@ -97,13 +97,13 @@ export default function BahanBakuHero({
       className="w-full bg-navbar-black text-on-secondary relative pt-12 sm:pt-16 pb-20 sm:pb-24 border-none overflow-hidden"
     >
       {/* Cinematic Looping Video Background for Bahan Baku */}
-      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none bg-navbar-black">
         <video
           autoPlay
           loop
           muted
           playsInline
-          className="w-full h-full object-cover transform scale-105 brightness-[0.65] contrast-[1.15]"
+          className="w-full h-full object-cover transform scale-110 brightness-[0.65] contrast-[1.15]"
         >
           <source src="/videos/video-bahan-baku-fixed.mp4" type="video/mp4" />
           <source src="/videos/video-bahan-baku.mp4" type="video/mp4" />
