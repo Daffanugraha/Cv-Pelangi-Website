@@ -211,7 +211,7 @@ export const articlesData: ArticleItem[] = [
     commentsCount: "0 Komentar",
     author: "Admin Pelangi UV",
     desc: "Teknologi varnish UV nano-embossing yang menciptakan kilau hologram pelangi tanpa menghasilkan sampah plastik mika yang sulit didaur ulang.",
-    img: "https://lh3.googleusercontent.com/aida-public/AB6AXuBEXJFAl9U2vieevJ01JauKl40I9hLNDc5i3TTZqyEvvIW41iwDDFjqEAcFJaEvVNMni-SiTko0A_srel6JQicrO-3yESDr_guNXnlm9LgV5KXMgjXUmF2pga6mbsnfeb2719sGmHtCu6vYShpDi3WxN4ztLgGpcGiM2IHvs1Z_ue4fTzQZIQNZ7RloVgRaa1TqSnd1p-mKi-2C8TPeIWcu5jONFobG7u_HtU-L8BsstZWjwfmZJdMh",
+    img: "/images/layanan/cast-and-cure.png",
     keyTakeaways: [
       "Mengurangi limbah film plastik hingga 100% karena menggunakan silinder embossing casting reusable.",
       "Efek kilau prisma holografis sulit ditiru oleh mesin percetakan rumahan konvensional.",

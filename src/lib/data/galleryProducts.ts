@@ -67,7 +67,7 @@ export const DEFAULT_GALLERY_PRODUCTS: GalleryProduct[] = [
     resultCharacteristics: "Lapisan Doff Anti-Scratch menjaga cover bebas baret kuku dan noda minyak saat agenda dibawa beraktivitas harian. Foil emas menempel berkilau tajam pada lekukan logo, serta engsel buku tetap lentur tanpa retak meski dibuka-tutup berulang kali.",
     alternativeOption: "Dapat dipadukan dengan aksen Spot UV selektif untuk efek logo timbul mengkilap, atau teknik Cast & Cure (Hologram Film) jika menginginkan pendaran pelangi eksklusif untuk agenda edisi terbatas.",
     highlight: "Tahan Lipat & Anti-Gores",
-    img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCiUV4edDUXiRayyKMnaKnLW0HotEF4QY07s5iBeFS-wXhn6goKVHHwJq0CjI3ySyKZ2sKmUVRqvJmSxKKnDgZCNiwHQC9Zm7lUMW0--oQ1_eM3np1cBf5HzD5cjA2V7ZPTJmBVvD812Ph65byiMrOawZmC5XsTJDhuXQnuIuqymCgSdy4H3TpZ8HyyX4C-fmXoGkXnQSRVAxfnELt80FzbVWhMmFqk_-dswYLI6-6nJJDgPfUDVWXc",
+    img: "/images/layanan/micro-emboss.png",
   },
   {
     id: "prod-4",
@@ -254,7 +254,7 @@ export const DEFAULT_GALLERY_PRODUCTS: GalleryProduct[] = [
     resultCharacteristics: "Jendela mika berteknologi anti-fog tetap bening dan jernih tanpa embun yang menghalangi pandangan produk saat dikeluarkan dari ruang beku.",
     alternativeOption: "Bisa dipadukan dengan Waterbase Gloss Varnish atau Spot UV selektif pada foto hidangan matang untuk menggugah selera pembeli.",
     highlight: "Jendela Anti-Embun Freezer",
-    img: "https://lh3.googleusercontent.com/aida-public/AB6AXuBEXJFAl9U2vieevJ01JauKl40I9hLNDc5i3TTZqyEvvIW41iwDDFjqEAcFJaEvVNMni-SiTko0A_srel6JQicrO-3yESDr_guNXnlm9LgV5KXMgjXUmF2pga6mbsnfeb2719sGmHtCu6vYShpDi3WxN4ztLgGpcGiM2IHvs1Z_ue4fTzQZIQNZ7RloVgRaa1TqSnd1p-mKi-2C8TPeIWcu5jONFobG7u_HtU-L8BsstZWjwfmZJdMh",
+    img: "/images/layanan/cast-and-cure.png",
   },
   {
     id: "prod-15",
@@ -422,7 +422,7 @@ export const EDUCATIONAL_SLIDES = [
       },
     ],
     sampleTitle: "Hardcover Agenda Korporat",
-    sampleImage: "https://lh3.googleusercontent.com/aida-public/AB6AXuCiUV4edDUXiRayyKMnaKnLW0HotEF4QY07s5iBeFS-wXhn6goKVHHwJq0CjI3ySyKZ2sKmUVRqvJmSxKKnDgZCNiwHQC9Zm7lUMW0--oQ1_eM3np1cBf5HzD5cjA2V7ZPTJmBVvD812Ph65byiMrOawZmC5XsTJDhuXQnuIuqymCgSdy4H3TpZ8HyyX4C-fmXoGkXnQSRVAxfnELt80FzbVWhMmFqk_-dswYLI6-6nJJDgPfUDVWXc",
+    sampleImage: "/images/layanan/micro-emboss.png",
     jasaBadges: ["Doff Anti-Gores", "Gold Foil", "Spot UV"],
   },
   {

@@ -123,7 +123,7 @@ export const journeyStoryPhases: JourneyStoryPhase[] = [
         caption: "Lini mesin otomatis modern CV Pelangi UV berkecepatan tinggi dan presisi konsisten.",
       },
       {
-        url: "https://lh3.googleusercontent.com/aida-public/AB6AXuBEXJFAl9U2vieevJ01JauKl40I9hLNDc5i3TTZqyEvvIW41iwDDFjqEAcFJaEvVNMni-SiTko0A_srel6JQicrO-3yESDr_guNXnlm9LgV5KXMgjXUmF2pga6mbsnfeb2719sGmHtCu6vYShpDi3WxN4ztLgGpcGiM2IHvs1Z_ue4fTzQZIQNZ7RloVgRaa1TqSnd1p-mKi-2C8TPeIWcu5jONFobG7u_HtU-L8BsstZWjwfmZJdMh",
+        url: "/images/layanan/cast-and-cure.png",
         caption: "80 tenaga kerja terampil yang bekerja secara profesional dengan pembagian shift terstruktur.",
       },
       {

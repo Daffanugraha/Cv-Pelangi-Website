@@ -41,7 +41,7 @@ export const productsJasa: ProductItem[] = [
     tag: "",
     title: "Cast and Cure",
     desc: "Efek holografis ramah lingkungan tanpa laminasi lapisan mika, memberikan kilauan pelangi autentik yang sulit dipalsukan.",
-    img: "https://lh3.googleusercontent.com/aida-public/AB6AXuBEXJFAl9U2vieevJ01JauKl40I9hLNDc5i3TTZqyEvvIW41iwDDFjqEAcFJaEvVNMni-SiTko0A_srel6JQicrO-3yESDr_guNXnlm9LgV5KXMgjXUmF2pga6mbsnfeb2719sGmHtCu6vYShpDi3WxN4ztLgGpcGiM2IHvs1Z_ue4fTzQZIQNZ7RloVgRaa1TqSnd1p-mKi-2C8TPeIWcu5jONFobG7u_HtU-L8BsstZWjwfmZJdMh",
+    img: "/images/layanan/cast-and-cure.png",
     capacity: "80k/hari",
     href: "/layanan",
   },
