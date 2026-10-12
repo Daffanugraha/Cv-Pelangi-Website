@@ -67,7 +67,7 @@ export const productsJasa: ProductItem[] = [
     title: "Emboss & Deboss",
     badges: ["Emboss 3D Timbul", "Deboss Tenggelam", "Klise Jantan-Betina", "Presisi Mikron"],
     desc: "Pencetakan efek timbul 3D fisik (Emboss) maupun tenggelam (Deboss) pada lembar cetak menggunakan klise plat presisi untuk sensasi tekstur taktil yang kokoh dan berkarakter.",
-    img: "/images/layanan/micro-emboss.png",
+    img: "/images/layanan/emboss-deboss.png",
     capacity: "Kapasitas 60.000 lembar/hari",
     href: "/layanan?service=emboss",
     waText: "Halo Tim Marketing CV Pelangi UV, saya mau tanya tentang layanan finishing: *Emboss & Deboss*. Mohon info estimasi harga dan jadwal pengerjaan.",

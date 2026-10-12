@@ -33,7 +33,7 @@ export const DEFAULT_GALLERY_PRODUCTS: GalleryProduct[] = [
     resultCharacteristics: "Sentuhan beludru Thermal Velvet terasa lembut bebas bekas sidik jari saat dipegang. Hot Stamping Rose Gold berpadu deboss memberikan kedalaman tipografi berkilau mewah tanpa risiko foil terkelupas.",
     alternativeOption: "Dapat dipadukan dengan teknik Cast & Cure prisma mikro pada segel kemasan atau aksen Spot UV Pasir untuk kontras tekstur taktil.",
     highlight: "Akurasi Register 0.1mm",
-    img: "https://lh3.googleusercontent.com/aida-public/AB6AXuAMLrJTlHhWWWl8TkrYzWHlml7k99aYf-juJUl5LAs_I1m614sMb50JjP7dgiGwK1zOyYfvepfsXKlKZBdKVHrUWGyovURyP2YJD64EaWWxDxPs3aPipltsAB_1p-I2OVCARpQcx94EVpqaMkhPVACSwFTub4k_JLrDt6ihiqvv6ylYZlOIA5EFJcvcKQtRJIDlfGIH2jKJhAku5ciAkpCdv9to98CwRt_uuiO7SAKIQxIvWevSVoW9",
+    img: "/images/layanan/emboss-deboss.png",
   },
   {
     id: "prod-2",
@@ -378,7 +378,7 @@ export const EDUCATIONAL_SLIDES = [
       },
     ],
     sampleTitle: "Rigid Box Parfum Eksklusif",
-    sampleImage: "https://lh3.googleusercontent.com/aida-public/AB6AXuAMLrJTlHhWWWl8TkrYzWHlml7k99aYf-juJUl5LAs_I1m614sMb50JjP7dgiGwK1zOyYfvepfsXKlKZBdKVHrUWGyovURyP2YJD64EaWWxDxPs3aPipltsAB_1p-I2OVCARpQcx94EVpqaMkhPVACSwFTub4k_JLrDt6ihiqvv6ylYZlOIA5EFJcvcKQtRJIDlfGIH2jKJhAku5ciAkpCdv9to98CwRt_uuiO7SAKIQxIvWevSVoW9",
+    sampleImage: "/images/layanan/emboss-deboss.png",
     jasaBadges: ["Doff Velvet", "Rose Gold Foil", "Deboss"],
   },
   {
