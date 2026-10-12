@@ -10,16 +10,12 @@ interface BahanBakuOrderFormProps {
 
 interface RawMaterialOption {
   name: string;
-  icon: string;
-  shortDesc: string;
   variants: string[];
 }
 
 const RAW_MATERIAL_OPTIONS: Record<string, RawMaterialOption> = {
   opp: {
-    name: "1. Film BOPP Thermal / Waterbase",
-    icon: "layers",
-    shortDesc: "Doff Velvet, Glossy & Waterbase Film",
+    name: "1. Film BOPP Thermal & Waterbase",
     variants: [
       "Semua Varian Film BOPP (Doff & Glossy)",
       "BOPP Thermal Doff Velvet 18 mic",
@@ -31,8 +27,6 @@ const RAW_MATERIAL_OPTIONS: Record<string, RawMaterialOption> = {
   },
   foil: {
     name: "2. Roll Foil Hot & Cold Stamping",
-    icon: "auto_awesome",
-    shortDesc: "Gold, Silver, Hologram & Cold Foil",
     variants: [
       "Semua Varian Foil (Gold, Silver & Hologram)",
       "Roll Foil Gold Mewah 120m (Grade A+)",
@@ -44,8 +38,6 @@ const RAW_MATERIAL_OPTIONS: Record<string, RawMaterialOption> = {
   },
   lem: {
     name: "3. Lem Laminating Industri",
-    icon: "water_drop",
-    shortDesc: "Lem Wet Emulsi & Dry Laminating",
     variants: [
       "Semua Varian Lem (Wet & Dry)",
       "Lem Wet Laminating Emulsi Waterbase",
@@ -56,8 +48,6 @@ const RAW_MATERIAL_OPTIONS: Record<string, RawMaterialOption> = {
   },
   spotuv: {
     name: "4. Varnish & Tinta Spot UV",
-    icon: "brush",
-    shortDesc: "LumineX High Gloss & Doff Pasir",
     variants: [
       "Semua Varian Spot UV (Gloss & Pasir)",
       "Varnish UV High Gloss LumineX (98 GU)",
@@ -67,13 +57,11 @@ const RAW_MATERIAL_OPTIONS: Record<string, RawMaterialOption> = {
     ],
   },
   all: {
-    name: "5. Paket Lengkap (Semua 4 Kategori Bahan)",
-    icon: "all_inclusive",
-    shortDesc: "BOPP, Foil, Lem, & Spot UV Komplit",
+    name: "5. Paket Lengkap (Semua Kategori Bahan Baku)",
     variants: [
       "Paket Swatch Komplit (BOPP, Foil, Lem, & Spot UV)",
       "Paket Khusus Kemasan Box Karton & Packaging",
-      "Paket Khusus Percetakan Hardbox & Undangan Mewah",
+      "Paket Khusus Percetakan Hardbox & Undangan",
     ],
   },
 };
@@ -88,23 +76,11 @@ export default function BahanBakuOrderForm({
   const [city, setCity] = useState("Surabaya");
   const [notes, setNotes] = useState("");
 
-  // Dropdown states (matching Layanan Finishing)
+  // Dropdown states (1:1 seperti Layanan Finishing)
   const [selectedCategory, setSelectedCategory] = useState<string>("opp");
   const [selectedVariant, setSelectedVariant] = useState<string>(
     RAW_MATERIAL_OPTIONS.opp.variants[0]
   );
-
-  // Multi-select list of chosen samples
-  const [chosenSamples, setChosenSamples] = useState<
-    { categoryId: string; categoryName: string; variantName: string; icon: string }[]
-  >([
-    {
-      categoryId: "opp",
-      categoryName: "Film BOPP Thermal / Waterbase",
-      variantName: "BOPP Thermal Doff Velvet 18 mic",
-      icon: "layers",
-    },
-  ]);
 
   // Sync when requestedCategory prop changes
   useEffect(() => {
@@ -112,23 +88,7 @@ export default function BahanBakuOrderForm({
     const cat = requestedCategory === "foil-stamping" ? "foil" : requestedCategory;
     if (RAW_MATERIAL_OPTIONS[cat]) {
       setSelectedCategory(cat);
-      const defaultVariant = RAW_MATERIAL_OPTIONS[cat].variants[1] || RAW_MATERIAL_OPTIONS[cat].variants[0];
-      setSelectedVariant(defaultVariant);
-      setChosenSamples((prev) => {
-        const exists = prev.some((p) => p.categoryId === cat);
-        if (!exists) {
-          return [
-            ...prev,
-            {
-              categoryId: cat,
-              categoryName: RAW_MATERIAL_OPTIONS[cat].name.replace(/^\d+\.\s*/, ""),
-              variantName: defaultVariant,
-              icon: RAW_MATERIAL_OPTIONS[cat].icon,
-            },
-          ];
-        }
-        return prev;
-      });
+      setSelectedVariant(RAW_MATERIAL_OPTIONS[cat].variants[0]);
     }
   }, [requestedCategory]);
 
@@ -138,96 +98,10 @@ export default function BahanBakuOrderForm({
     setSelectedVariant(firstVariant);
   };
 
-  // Add the currently selected dropdown variant into multi-select list
-  const handleAddCurrentVariant = () => {
-    const opt = RAW_MATERIAL_OPTIONS[selectedCategory];
-    if (!opt) return;
-    const cleanCatName = opt.name.replace(/^\d+\.\s*/, "");
-    const exists = chosenSamples.some(
-      (s) => s.categoryId === selectedCategory && s.variantName === selectedVariant
-    );
-    if (!exists) {
-      setChosenSamples((prev) => [
-        ...prev,
-        {
-          categoryId: selectedCategory,
-          categoryName: cleanCatName,
-          variantName: selectedVariant,
-          icon: opt.icon,
-        },
-      ]);
-    }
-  };
-
-  // Toggle quick category selection (Checkbox / Card Click)
-  const toggleQuickCategory = (catKey: string) => {
-    const opt = RAW_MATERIAL_OPTIONS[catKey];
-    if (!opt) return;
-    const cleanCatName = opt.name.replace(/^\d+\.\s*/, "");
-    const isAlreadySelected = chosenSamples.some((s) => s.categoryId === catKey);
-
-    if (isAlreadySelected) {
-      // Remove all samples under this category
-      setChosenSamples((prev) => prev.filter((s) => s.categoryId !== catKey));
-    } else {
-      // Add default variant for this category
-      const variantToAdd = opt.variants[1] || opt.variants[0];
-      setChosenSamples((prev) => [
-        ...prev,
-        {
-          categoryId: catKey,
-          categoryName: cleanCatName,
-          variantName: variantToAdd,
-          icon: opt.icon,
-        },
-      ]);
-      setSelectedCategory(catKey);
-      setSelectedVariant(variantToAdd);
-    }
-  };
-
-  // Select all 4 categories at once
-  const handleSelectAllCategories = () => {
-    const allList: { categoryId: string; categoryName: string; variantName: string; icon: string }[] = [];
-    (["opp", "foil", "lem", "spotuv"] as const).forEach((key) => {
-      const opt = RAW_MATERIAL_OPTIONS[key];
-      allList.push({
-        categoryId: key,
-        categoryName: opt.name.replace(/^\d+\.\s*/, ""),
-        variantName: opt.variants[0],
-        icon: opt.icon,
-      });
-    });
-    setChosenSamples(allList);
-    setSelectedCategory("all");
-    setSelectedVariant(RAW_MATERIAL_OPTIONS.all.variants[0]);
-  };
-
-  // Remove a specific sample chip
-  const handleRemoveSample = (index: number) => {
-    setChosenSamples((prev) => prev.filter((_, idx) => idx !== index));
-  };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
-    // Ensure at least the currently selected dropdown item is included if list is empty
-    let sampleList = chosenSamples;
-    if (sampleList.length === 0) {
-      const opt = RAW_MATERIAL_OPTIONS[selectedCategory];
-      sampleList = [
-        {
-          categoryId: selectedCategory,
-          categoryName: opt.name.replace(/^\d+\.\s*/, ""),
-          variantName: selectedVariant,
-          icon: opt.icon,
-        },
-      ];
-    }
-
-    const sampleTextList = sampleList
-      .map((item, idx) => `${idx + 1}. *${item.categoryName}* — ${item.variantName}`)
-      .join("\n");
+    const catData = RAW_MATERIAL_OPTIONS[selectedCategory];
+    const categoryName = catData ? catData.name.replace(/^\d+\.\s*/, "") : "Bahan Baku";
 
     let text =
       `*FORMULIR PERMINTAAN SAMPEL BAHAN GRATIS*\n` +
@@ -237,9 +111,10 @@ export default function BahanBakuOrderForm({
       `*Nomor WhatsApp:* ${phone.trim() || "-"}\n` +
       `*Alamat Pengiriman:* ${address.trim() || "-"}\n` +
       `*Kota / Wilayah Tujuan:* ${city.trim() || "-"}\n\n` +
-      `*Total Sampel yang Diminta (${sampleList.length} Bahan):*\n${sampleTextList}\n\n` +
-      (notes.trim() ? `*Catatan Spesifikasi / Kebutuhan:* ${notes.trim()}\n\n` : "") +
-      `Mohon konfirmasi ketersediaan dan jadwal pengiriman paket sampel fisiknya. Terima kasih!`;
+      `*Pilihan Kategori Bahan:* ${categoryName}\n` +
+      `*Varian Spesifik:* ${selectedVariant}\n\n` +
+      (notes.trim() ? `*Catatan Spesifikasi:* ${notes.trim()}\n\n` : "") +
+      `Mohon info ketersediaan dan jadwal pengiriman sampel fisiknya. Terima kasih!`;
 
     const url = `https://wa.me/6282231019363?text=${encodeURIComponent(text)}`;
     window.open(url, "_blank");
@@ -267,7 +142,7 @@ export default function BahanBakuOrderForm({
             Minta Sampel Bahan Gratis
           </h2>
           <p className="font-body-lg text-body-lg text-text-muted mt-3 max-w-2xl mx-auto leading-relaxed">
-            Ingin mencoba kualitas bahan terlebih dahulu sebelum memesan? Isi formulir di bawah ini untuk mendapatkan contoh fisik bahan langsung ke alamat Anda, atau konsultasikan kebutuhan percetakan Anda dengan tim kami.
+            Ingin mencoba kualitas bahan terlebih dahulu sebelum memesan? Isi formulir di bawah ini untuk mendapatkan contoh fisik bahan langsung ke alamat Anda, atau hubungi langsung via WhatsApp resmi.
           </p>
         </div>
 
@@ -283,7 +158,7 @@ export default function BahanBakuOrderForm({
                 Formulir Permintaan Sampel Bahan Gratis
               </h3>
               <p className="text-sm sm:text-base text-text-muted mt-1.5 leading-relaxed">
-                Pilih satu atau lebih sampel material cetak yang ingin Anda uji coba di workshop atau mesin produksi Anda.
+                Pilih kategori dan varian bahan yang ingin Anda uji coba di workshop atau mesin produksi Anda.
               </p>
             </div>
             <span className="w-14 h-14 rounded-2xl bg-surface-tint-light flex items-center justify-center text-secondary-container shrink-0 shadow-xs border border-divider-tint/40">
@@ -327,7 +202,7 @@ export default function BahanBakuOrderForm({
                   required
                   value={companyName}
                   onChange={(e) => setCompanyName(e.target.value)}
-                  placeholder="Contoh: Percetakan Jaya / PT Grafika Mandiri"
+                  placeholder="Contoh: PT Grafika Prima / CV Mandiri"
                   className="w-full h-14 px-5 rounded-2xl bg-surface-neutral-alt border border-surface-container text-sm sm:text-base text-on-surface placeholder:text-text-muted focus:bg-white focus:border-bracket-border focus:ring-2 focus:ring-bracket-border/20 outline-none transition-all"
                 />
               </div>
@@ -391,8 +266,8 @@ export default function BahanBakuOrderForm({
               />
             </div>
 
-            {/* Row 4: Dropdowns Kategori & Varian (MIRIP PERSIS LAYANAN FINISHING) */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-1">
+            {/* Row 4: Dropdowns Kategori & Varian (1:1 PERSIS SEPERTI LAYANAN FINISHING) */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div className="flex flex-col gap-2">
                 <label className="font-label-nav text-xs sm:text-sm font-bold text-on-surface flex items-center gap-1.5">
                   Pilihan Kategori Bahan Utama <span className="text-primary text-sm">*</span>
@@ -402,194 +277,33 @@ export default function BahanBakuOrderForm({
                   onChange={(e) => handleCategoryChange(e.target.value)}
                   className="w-full h-14 px-5 rounded-2xl bg-surface-neutral-alt border border-surface-container text-sm sm:text-base text-on-surface focus:bg-white focus:border-bracket-border focus:ring-2 focus:ring-bracket-border/20 outline-none transition-all cursor-pointer font-medium"
                 >
-                  <option value="opp">1. Film BOPP Thermal / Waterbase</option>
+                  <option value="opp">1. Film BOPP Thermal &amp; Waterbase</option>
                   <option value="foil">2. Roll Foil Hot &amp; Cold Stamping</option>
                   <option value="lem">3. Lem Laminating Industri</option>
                   <option value="spotuv">4. Varnish &amp; Tinta Spot UV</option>
-                  <option value="all">5. Paket Lengkap (Semua 4 Kategori Bahan)</option>
+                  <option value="all">5. Paket Lengkap (Semua Kategori Bahan Baku)</option>
                 </select>
               </div>
 
               <div className="flex flex-col gap-2">
-                <div className="flex items-center justify-between">
-                  <label className="font-label-nav text-xs sm:text-sm font-bold text-on-surface flex items-center gap-1.5">
-                    Pilihan Varian Spesifik <span className="text-primary text-sm">*</span>
-                  </label>
-                  <button
-                    type="button"
-                    onClick={handleAddCurrentVariant}
-                    className="text-xs font-bold text-secondary-container hover:text-primary transition-colors flex items-center gap-1 cursor-pointer"
-                  >
-                    <span translate="no" className="material-symbols-outlined notranslate text-[16px]">
-                      add_circle
-                    </span>
-                    + Tambah ke Daftar
-                  </button>
-                </div>
-                <div className="flex gap-2">
-                  <select
-                    value={selectedVariant}
-                    onChange={(e) => setSelectedVariant(e.target.value)}
-                    className="flex-1 h-14 px-5 rounded-2xl bg-surface-neutral-alt border border-surface-container text-sm sm:text-base text-on-surface focus:bg-white focus:border-bracket-border focus:ring-2 focus:ring-bracket-border/20 outline-none transition-all cursor-pointer font-medium"
-                  >
-                    {RAW_MATERIAL_OPTIONS[selectedCategory]?.variants.map((variant) => (
-                      <option key={variant} value={variant}>
-                        {variant}
-                      </option>
-                    ))}
-                  </select>
-                  <button
-                    type="button"
-                    onClick={handleAddCurrentVariant}
-                    title="Tambahkan varian ini ke daftar sampel Anda"
-                    className="px-4 h-14 rounded-2xl bg-secondary-container hover:bg-primary text-on-primary font-cta-pill text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-1.5 shrink-0 shadow-xs cursor-pointer active:scale-95"
-                  >
-                    <span translate="no" className="material-symbols-outlined notranslate text-[18px]">
-                      add
-                    </span>
-                    <span className="hidden md:inline">Tambah</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Row 5: KONTROL MULTI-SELECT SAMPEL (BISA PILIH LEBIH DARI SATU DENGAN SANGAT MUDAH) */}
-            <div className="p-5 rounded-2xl bg-surface-neutral-alt/70 border border-surface-container space-y-4">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
-                <div>
-                  <div className="text-xs sm:text-sm font-bold text-navbar-black flex items-center gap-2">
-                    <span translate="no" className="material-symbols-outlined notranslate text-secondary-container text-[18px]">
-                      checklist
-                    </span>
-                    <span>Pilihan Cepat Kategori Bahan (Bisa Pilih Lebih dari 1)</span>
-                    <span className="px-2 py-0.5 rounded-full bg-secondary-container/15 text-secondary-container text-[11px] font-bold">
-                      {chosenSamples.length} Terpilih
-                    </span>
-                  </div>
-                  <p className="text-xs text-text-muted mt-0.5">
-                    Centang kategori bahan di bawah untuk memilih beberapa sampel sekaligus:
-                  </p>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={handleSelectAllCategories}
-                  className="self-start sm:self-auto px-3.5 py-1.5 rounded-full bg-white hover:bg-surface-tint-light text-secondary-container font-cta-pill text-xs font-bold border border-divider-tint/70 shadow-2xs transition-all flex items-center gap-1 cursor-pointer"
+                <label className="font-label-nav text-xs sm:text-sm font-bold text-on-surface flex items-center gap-1.5">
+                  Pilihan Varian Spesifik <span className="text-primary text-sm">*</span>
+                </label>
+                <select
+                  value={selectedVariant}
+                  onChange={(e) => setSelectedVariant(e.target.value)}
+                  className="w-full h-14 px-5 rounded-2xl bg-surface-neutral-alt border border-surface-container text-sm sm:text-base text-on-surface focus:bg-white focus:border-bracket-border focus:ring-2 focus:ring-bracket-border/20 outline-none transition-all cursor-pointer font-medium"
                 >
-                  <span translate="no" className="material-symbols-outlined notranslate text-[15px]">
-                    select_all
-                  </span>
-                  Pilih Semua 4 Bahan Sekaligus
-                </button>
+                  {RAW_MATERIAL_OPTIONS[selectedCategory]?.variants.map((variant) => (
+                    <option key={variant} value={variant}>
+                      {variant}
+                    </option>
+                  ))}
+                </select>
               </div>
-
-              {/* 4 Quick Category Cards (Centang Cepat Lebih dari 1) */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                {(["opp", "foil", "lem", "spotuv"] as const).map((key) => {
-                  const opt = RAW_MATERIAL_OPTIONS[key];
-                  const isChecked = chosenSamples.some((s) => s.categoryId === key);
-                  return (
-                    <div
-                      key={key}
-                      onClick={() => toggleQuickCategory(key)}
-                      className={`p-3.5 rounded-xl border transition-all cursor-pointer flex items-center justify-between gap-2.5 select-none ${
-                        isChecked
-                          ? "bg-surface-tint-light border-bracket-border shadow-xs"
-                          : "bg-white border-surface-container hover:border-outline-variant hover:bg-surface-neutral-alt"
-                      }`}
-                    >
-                      <div className="flex items-center gap-2.5 min-w-0">
-                        <span
-                          className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-colors ${
-                            isChecked
-                              ? "bg-bracket-border text-white shadow-2xs"
-                              : "bg-surface-neutral-alt text-text-muted"
-                          }`}
-                        >
-                          <span translate="no" className="material-symbols-outlined notranslate text-[18px]">
-                            {opt.icon}
-                          </span>
-                        </span>
-                        <div className="min-w-0">
-                          <div
-                            className={`text-xs font-bold truncate leading-tight ${
-                              isChecked ? "text-navbar-black" : "text-on-surface"
-                            }`}
-                          >
-                            {opt.name.replace(/^\d+\.\s*/, "")}
-                          </div>
-                          <div className="text-[11px] text-text-muted truncate mt-0.5">
-                            {opt.shortDesc}
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Custom Checkbox */}
-                      <div
-                        className={`w-5 h-5 rounded-md border flex items-center justify-center shrink-0 transition-all ${
-                          isChecked
-                            ? "bg-bracket-border border-bracket-border text-white"
-                            : "border-outline-variant bg-white"
-                        }`}
-                      >
-                        {isChecked && (
-                          <span translate="no" className="material-symbols-outlined notranslate text-[15px]">
-                            check
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-
-              {/* Daftar Sampel yang Sedang Dipilih (Chips dengan tombol hapus X) */}
-              {chosenSamples.length > 0 && (
-                <div className="pt-2 border-t border-surface-container/80">
-                  <div className="text-[11px] font-bold text-text-muted uppercase tracking-wider mb-2 flex items-center justify-between">
-                    <span>Sampel yang Akan Dikirimkan ({chosenSamples.length}):</span>
-                    <button
-                      type="button"
-                      onClick={() => setChosenSamples([])}
-                      className="text-text-muted hover:text-primary transition-colors text-[11px]"
-                    >
-                      Kosongkan Semua
-                    </button>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {chosenSamples.map((sample, idx) => (
-                      <span
-                        key={`${sample.categoryId}-${sample.variantName}-${idx}`}
-                        className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-bracket-border/40 text-on-surface font-label-nav text-xs shadow-2xs group"
-                      >
-                        <span translate="no" className="material-symbols-outlined notranslate text-[15px] text-secondary-container">
-                          {sample.icon}
-                        </span>
-                        <span className="font-semibold text-navbar-black">
-                          {sample.categoryName}:
-                        </span>
-                        <span className="text-text-body">{sample.variantName}</span>
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleRemoveSample(idx);
-                          }}
-                          className="w-4 h-4 rounded-full bg-surface-container hover:bg-primary hover:text-white flex items-center justify-center text-text-muted transition-colors cursor-pointer"
-                          title="Hapus sampel ini"
-                        >
-                          <span translate="no" className="material-symbols-outlined notranslate text-[12px]">
-                            close
-                          </span>
-                        </button>
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
             </div>
 
-            {/* Row 6: Catatan Tambahan */}
+            {/* Row 5: Catatan Spesifikasi */}
             <div className="flex flex-col gap-2">
               <label
                 htmlFor="sample_form_notes"
@@ -607,7 +321,7 @@ export default function BahanBakuOrderForm({
               />
             </div>
 
-            {/* Row 7: Action Buttons Matching Layanan Finishing */}
+            {/* Row 6: Action Buttons Matching Layanan Finishing */}
             <div className="pt-3 flex flex-col sm:flex-row items-center gap-4">
               <button
                 type="submit"
@@ -616,9 +330,7 @@ export default function BahanBakuOrderForm({
                 <span translate="no" className="material-symbols-outlined notranslate text-[24px]">
                   send
                 </span>
-                <span>
-                  Kirim Permintaan Sampel via WhatsApp ({chosenSamples.length || 1} Bahan)
-                </span>
+                <span>Kirim Permintaan Sampel via WhatsApp</span>
               </button>
 
               <a
