@@ -37,11 +37,12 @@ export default function PengaplikasianHero() {
           muted
           playsInline
           preload="auto"
-          className="w-full h-full object-cover scale-105 opacity-40 filter brightness-90 contrast-105"
+          className="w-full h-full object-cover scale-105 opacity-75 filter brightness-100 contrast-105"
         >
           <source src="/videos/video-pengaplikasian.mp4" type="video/mp4" />
         </video>
-        <div className="absolute inset-0 bg-gradient-to-t from-navbar-black via-navbar-black/85 to-navbar-black/95" />
+        {/* Soft balanced gradient overlay - clear video visibility */}
+        <div className="absolute inset-0 bg-gradient-to-t from-navbar-black/90 via-navbar-black/35 to-navbar-black/55" />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -65,12 +66,12 @@ export default function PengaplikasianHero() {
           </nav>
 
           {/* Headline Utama Galeri */}
-          <h1 className="font-heading font-extrabold tracking-tight text-white mb-4 text-3xl sm:text-4xl lg:text-5xl leading-tight">
+          <h1 className="font-heading font-extrabold tracking-tight text-white mb-4 text-3xl sm:text-4xl lg:text-5xl leading-tight drop-shadow-[0_2px_12px_rgba(0,0,0,0.7)]">
             Galeri Pengaplikasian <span className="text-bracket-border">Produk Cetak</span>
           </h1>
 
           {/* Headline Subtitle yang Jelas & Informatif */}
-          <p className="text-surface-dim max-w-3xl leading-relaxed text-sm sm:text-base lg:text-lg text-center font-normal">
+          <p className="text-surface-dim/95 max-w-3xl leading-relaxed text-sm sm:text-base lg:text-lg text-center font-normal drop-shadow-[0_1px_6px_rgba(0,0,0,0.7)]">
             Katalog dan portofolio visualisasi hasil nyata finishing cetak presisi tinggi dari CV Pelangi UV mulai dari{" "}
             <span
               className={`font-semibold text-accent-gold inline transition-opacity duration-300 ease-in-out ${
