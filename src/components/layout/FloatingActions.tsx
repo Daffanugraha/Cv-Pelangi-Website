@@ -177,32 +177,32 @@ export default function FloatingActions() {
   };
 
   return (
-    <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end pointer-events-none">
+    <div className="fixed bottom-4 right-4 sm:bottom-5 sm:right-5 z-50 flex flex-col items-end pointer-events-none">
       {/* Chatbot Window */}
       {isOpen && (
         <div
           id="chatbot-widget"
-          className="pointer-events-auto mb-3 w-[350px] sm:w-[380px] h-[510px] max-h-[78vh] rounded-3xl bg-white shadow-[0_16px_48px_rgba(0,0,0,0.14)] border border-neutral-200/80 flex flex-col overflow-hidden transition-all duration-300 transform scale-100 origin-bottom-right"
+          className="pointer-events-auto fixed inset-x-3 bottom-20 sm:static sm:inset-auto sm:mb-3 w-auto sm:w-[385px] max-w-[420px] h-[min(560px,calc(100dvh-110px))] sm:h-[510px] rounded-2xl sm:rounded-3xl bg-white shadow-[0_16px_48px_rgba(0,0,0,0.18)] border border-neutral-200/90 flex flex-col overflow-hidden transition-all duration-300 transform scale-100 origin-bottom-right"
         >
           {/* Header */}
-          <div className="p-3.5 bg-[#18181b] text-white flex items-center justify-between relative overflow-hidden shrink-0">
+          <div className="p-3 sm:p-3.5 bg-[#18181b] text-white flex items-center justify-between relative overflow-hidden shrink-0">
             {/* Signature Pelangi Brand Line */}
             <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-gradient-to-r from-[#b1212b] via-[#e5a00d] to-[#008744]"></div>
 
-            <div className="flex items-center gap-2.5">
+            <div className="flex items-center gap-2 sm:gap-2.5">
               <div className="w-8 h-8 rounded-full bg-white/10 border border-white/20 flex items-center justify-center shrink-0">
                 <span className="w-2.5 h-2.5 rounded-full bg-[#25D366] ring-2 ring-[#25D366]/30"></span>
               </div>
               <div className="min-w-0 text-left">
                 <div className="flex items-center gap-1.5">
-                  <h4 className="font-headline-sm text-[13.5px] font-bold text-white leading-tight">
+                  <h4 className="font-headline-sm text-xs sm:text-[13.5px] font-bold text-white leading-tight">
                     Pelangi Assistant
                   </h4>
-                  <span className="px-1.5 py-0.5 bg-white/10 text-neutral-300 text-[9px] font-medium rounded">
+                  <span className="px-1.5 py-0.5 bg-white/10 text-neutral-300 text-[8.5px] sm:text-[9px] font-medium rounded">
                     Konsultan
                   </span>
                 </div>
-                <p className="font-body-sm text-[11px] text-neutral-300 leading-tight mt-0.5 truncate flex items-center gap-1">
+                <p className="font-body-sm text-[10.5px] sm:text-[11px] text-neutral-300 leading-tight mt-0.5 truncate flex items-center gap-1">
                   <span>Fast Response • Konsultasi Teknis &amp; Bahan</span>
                 </p>
               </div>
@@ -213,31 +213,31 @@ export default function FloatingActions() {
               <button
                 type="button"
                 onClick={handleResetChat}
-                className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 text-neutral-300 hover:text-white flex items-center justify-center transition-all cursor-pointer active:scale-95"
+                className="w-8 h-8 sm:w-7 sm:h-7 rounded-full bg-white/10 hover:bg-white/20 text-neutral-300 hover:text-white flex items-center justify-center transition-all cursor-pointer active:scale-95"
                 title="Mulai Percakapan Baru"
                 aria-label="Mulai Percakapan Baru"
               >
-                <span translate="no" className="material-symbols-outlined notranslate text-[15px]">restart_alt</span>
+                <span translate="no" className="material-symbols-outlined notranslate text-[16px] sm:text-[15px]">restart_alt</span>
               </button>
 
               {/* Close Button */}
               <button
                 type="button"
                 onClick={() => setIsOpen(false)}
-                className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 text-neutral-300 hover:text-white flex items-center justify-center transition-all cursor-pointer active:scale-95"
+                className="w-8 h-8 sm:w-7 sm:h-7 rounded-full bg-white/10 hover:bg-white/20 text-neutral-300 hover:text-white flex items-center justify-center transition-all cursor-pointer active:scale-95"
                 aria-label="Tutup Chatbot"
                 title="Tutup Chatbot"
               >
-                <span translate="no" className="material-symbols-outlined notranslate text-[16px]">close</span>
+                <span translate="no" className="material-symbols-outlined notranslate text-[17px] sm:text-[16px]">close</span>
               </button>
             </div>
           </div>
 
           {/* Message Area */}
-          <div className="flex-1 p-3.5 overflow-y-auto space-y-3 bg-[#fafafa] text-neutral-800 text-sm">
+          <div className="flex-1 p-3 sm:p-3.5 overflow-y-auto space-y-2.5 sm:space-y-3 bg-[#fafafa] text-neutral-800 text-xs sm:text-sm">
             {messages.map((msg) =>
               msg.sender === "user" ? (
-                <div key={msg.id} className="flex items-start justify-end gap-2">
+                <div key={msg.id} className="flex items-start justify-end gap-1.5 sm:gap-2">
                   <div className="bg-[#18181b] text-white rounded-2xl rounded-tr-xs p-2.5 sm:p-3 max-w-[85%] text-xs sm:text-[13px] leading-relaxed shadow-2xs">
                     <p>{msg.text}</p>
                   </div>
@@ -246,8 +246,8 @@ export default function FloatingActions() {
                   </div>
                 </div>
               ) : (
-                <div key={msg.id} className="flex items-start gap-2">
-                  <div className="bg-white border border-neutral-200/80 rounded-2xl rounded-tl-xs p-3 sm:p-3.5 max-w-[95%] text-xs sm:text-[13px] leading-relaxed shadow-2xs text-neutral-800">
+                <div key={msg.id} className="flex items-start gap-1.5 sm:gap-2">
+                  <div className="bg-white border border-neutral-200/80 rounded-2xl rounded-tl-xs p-2.5 sm:p-3.5 max-w-[92%] sm:max-w-[95%] text-xs sm:text-[13px] leading-relaxed shadow-2xs text-neutral-800">
                     <div
                       dangerouslySetInnerHTML={{
                         __html: cleanDisplayHtml(msg.html),
@@ -275,7 +275,7 @@ export default function FloatingActions() {
             )}
 
             {/* Dynamic Suggestion Chips */}
-            <div className="pl-8 pr-1 pt-1">
+            <div className="pl-1 sm:pl-7 pr-1 pt-1">
               <p className="text-[11px] text-neutral-400 mb-1.5 font-medium flex items-center gap-1">
                 <span translate="no" className="material-symbols-outlined notranslate text-[13px]">
                   auto_awesome
@@ -301,7 +301,7 @@ export default function FloatingActions() {
           </div>
 
           {/* Input Area */}
-          <div className="p-2.5 bg-white border-t border-neutral-100 shrink-0">
+          <div className="p-2 sm:p-2.5 bg-white border-t border-neutral-100 shrink-0">
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -317,7 +317,7 @@ export default function FloatingActions() {
                 placeholder="Tulis pertanyaan seputar finishing atau kemasan..."
                 autoComplete="off"
                 disabled={isTyping}
-                className="flex-1 h-9 px-3.5 rounded-full bg-neutral-100/80 border border-neutral-200/80 text-xs sm:text-[13px] text-neutral-900 placeholder:text-neutral-400 outline-none focus:border-neutral-400 focus:bg-white transition-all disabled:opacity-60"
+                className="flex-1 h-9 sm:h-9.5 px-3.5 rounded-full bg-neutral-100/90 border border-neutral-200/90 text-xs sm:text-[13px] text-neutral-900 placeholder:text-neutral-400 outline-none focus:border-neutral-400 focus:bg-white transition-all disabled:opacity-60"
               />
               <button
                 type="submit"
@@ -351,11 +351,11 @@ export default function FloatingActions() {
       )}
 
       {/* Floating Action Trigger Buttons */}
-      <div className="flex flex-col items-center gap-2.5 pointer-events-auto">
+      <div className="flex flex-col items-center gap-2 sm:gap-2.5 pointer-events-auto">
         {/* WhatsApp Direct Floating Button */}
         <div className="relative group">
           <a
-            className="w-12 h-12 rounded-full bg-[#25D366] hover:bg-[#1EBE5D] text-white flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105 active:scale-95 group cursor-pointer"
+            className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-[#25D366] hover:bg-[#1EBE5D] text-white flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105 active:scale-95 group cursor-pointer"
             href={`https://wa.me/6282231019363?text=${encodeURIComponent(
               "Halo Customer Service CV Pelangi UV, saya ingin konsultasi dan tanya-tanya mengenai layanan finishing dan produk percetakan. Boleh dibantu informasinya? Terima kasih."
             )}`}
@@ -363,7 +363,7 @@ export default function FloatingActions() {
             target="_blank"
             title="Chat WhatsApp CS Pelangi UV"
           >
-            <span translate="no" className="material-symbols-outlined notranslate text-[24px]">
+            <span translate="no" className="material-symbols-outlined notranslate text-[22px] sm:text-[24px]">
               chat
             </span>
           </a>
@@ -377,11 +377,11 @@ export default function FloatingActions() {
           <button
             type="button"
             onClick={() => setIsOpen(!isOpen)}
-            className="w-12 h-12 rounded-full bg-[#18181b] hover:bg-black text-white flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105 active:scale-95 group cursor-pointer border border-white/10"
+            className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-[#18181b] hover:bg-black text-white flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105 active:scale-95 group cursor-pointer border border-white/10"
             aria-label="Buka Pelangi Assistant"
             title="Pelangi Assistant - Konsultasi & CS"
           >
-            <span translate="no" className="material-symbols-outlined notranslate text-[22px]">
+            <span translate="no" className="material-symbols-outlined notranslate text-[20px] sm:text-[22px]">
               {isOpen ? "close" : "support_agent"}
             </span>
           </button>
