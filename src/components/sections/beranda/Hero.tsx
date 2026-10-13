@@ -6,47 +6,28 @@ import { heroTestimonials } from "@/lib/data";
 import { useLanguage } from "@/context/LanguageContext";
 
 const ROTATING_SERVICES_ID = [
-  "29+ Layanan Finishing.",
   "Spot UV & Tekstur Pasir.",
   "Hot Stamping Foil Mewah.",
   "Laminasi Doff & Glossy.",
+  "Pond Otomatis (Die-Cut).",
+  "Emboss & Deboss 3D Presisi.",
   "Cast & Cure 3D Hologram.",
-  "Pond Otomatis Kemasan.",
-  "Rigid Box Skincare Mewah.",
-  "Lem Karton Food Grade.",
+  "Grosir Film BOPP & Foil.",
+  "Lem Karton Industri.",
 ];
 
 const ROTATING_SERVICES_EN = [
-  "29+ Finishing Services.",
-  "Raised Spot UV & Texture.",
-  "Hot Stamping Foil.",
+  "Raised Spot UV & Sand Texture.",
+  "Luxury Hot Stamping Foil.",
   "Matte & Glossy Lamination.",
+  "Auto Packaging Die-Cutting.",
+  "Precision 3D Emboss & Deboss.",
   "3D Hologram Cast & Cure.",
-  "Auto Packaging Die-Cut.",
-  "Luxury Rigid Box Solutions.",
-  "Food Grade Cartoning Glue.",
+  "BOPP Film & Foil Wholesale.",
+  "Industrial Cartoning Glue.",
 ];
 
 function renderServiceText(text: string) {
-  if (text.startsWith("29+")) {
-    const rest = text.replace("29+", "").trim();
-    return (
-      <span className="inline-flex items-baseline">
-        <span
-          translate="no"
-          className="notranslate font-black text-white text-[28px] sm:text-[36px] lg:text-[44px] tracking-tight leading-none drop-shadow-[0_2px_14px_rgba(255,255,255,0.45)] mr-1.5"
-        >
-          29+
-        </span>
-        <span
-          translate="no"
-          className="notranslate font-extrabold text-[18px] sm:text-[22px] lg:text-[26px]"
-        >
-          {rest}
-        </span>
-      </span>
-    );
-  }
   return (
     <span
       translate="no"

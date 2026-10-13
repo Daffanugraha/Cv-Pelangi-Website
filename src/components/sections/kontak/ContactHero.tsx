@@ -5,19 +5,21 @@ import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
 
 const PHRASES_ID = [
-  "Laminasi Doff & Glossy",
-  "Finishing Cetak",
+  "Laminasi Doff atau Glossy",
   "Efek Hot Stamping Foil",
-  "Spot UV & Tekstur Pasir",
-  "Solusi Rigid Box Mewah",
+  "Kilau Spot UV & Tekstur Pasir",
+  "Pola Pond & Die-Cut Kemasan",
+  "Detail Emboss & Deboss 3D",
+  "Bahan Baku Film BOPP & Foil Roll",
 ];
 
 const PHRASES_EN = [
-  "Matte & Glossy Lamination",
-  "Precision Print Finishing",
+  "Matte or Glossy Lamination",
   "Hot Stamping Foil Effects",
-  "Spot UV & Sand Texture",
-  "Luxury Rigid Box Solutions",
+  "Spot UV & Sand Texture Gloss",
+  "Packaging Die-Cut & Creasing",
+  "3D Emboss & Deboss Details",
+  "BOPP Film & Foil Roll Materials",
 ];
 
 export default function ContactHero() {
