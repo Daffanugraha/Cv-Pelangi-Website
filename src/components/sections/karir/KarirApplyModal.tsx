@@ -131,19 +131,26 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
   const handleFileUpload = async (file: File) => {
     setSelectedFile(file);
     setIsUploadingFile(true);
+    setErrorMsg("");
     try {
       const fd = new FormData();
       fd.append("file", file);
-      const res = await fetch("/api/admin/upload", {
+      const res = await fetch("/api/career-apply/upload", {
         method: "POST",
         body: fd,
       });
       const data = await res.json();
       if (res.ok && data.url) {
-        setFormData((prev) => ({ ...prev, cvUrl: data.url }));
+        setFormData((prev) => ({
+          ...prev,
+          cvUrl: data.url,
+        }));
+      } else {
+        setErrorMsg(data.error || "Gagal mengunggah berkas CV. Format didukung: PDF, DOCX, ZIP.");
       }
     } catch (err) {
       console.warn("Upload fallback error:", err);
+      setErrorMsg("Gagal mengunggah berkas karena koneksi terputus.");
     } finally {
       setIsUploadingFile(false);
     }
@@ -153,19 +160,23 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
   const handlePortfolioUpload = async (file: File) => {
     setSelectedPortfolioFile(file);
     setIsUploadingPortfolio(true);
+    setErrorMsg("");
     try {
       const fd = new FormData();
       fd.append("file", file);
-      const res = await fetch("/api/admin/upload", {
+      const res = await fetch("/api/career-apply/upload", {
         method: "POST",
         body: fd,
       });
       const data = await res.json();
       if (res.ok && data.url) {
         setFormData((prev) => ({ ...prev, portfolioUrl: data.url }));
+      } else {
+        setErrorMsg(data.error || "Gagal mengunggah file portofolio.");
       }
     } catch (err) {
       console.warn("Upload portfolio error:", err);
+      setErrorMsg("Gagal mengunggah portofolio karena koneksi terputus.");
     } finally {
       setIsUploadingPortfolio(false);
     }
@@ -1310,39 +1321,85 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
                   </div>
 
                   {/* Berkas Dokumen (CV, Ijazah, KTP) */}
-                  <div className="p-4 sm:p-5 rounded-2xl bg-gray-50 border border-gray-200">
-                    <label className="block text-xs font-bold text-gray-800 mb-2 uppercase font-mono">
+                  <div className="p-4 sm:p-5 rounded-2xl bg-gray-50 border border-gray-200 space-y-2">
+                    <label className="block text-xs font-bold text-gray-800 uppercase font-mono">
                       Upload Berkas CV, Ijazah, KTP &amp; Sertifikat
                     </label>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
-                      <div className="border border-dashed border-gray-300 hover:border-bracket-border rounded-xl p-3 text-center bg-white transition cursor-pointer relative">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 items-stretch">
+                      {/* Upload Box */}
+                      <div className={`border-2 border-dashed rounded-xl p-3.5 text-center transition relative flex flex-col items-center justify-center min-h-[90px] ${
+                        formData.cvUrl
+                          ? "border-emerald-400 bg-emerald-50/40"
+                          : "border-gray-300 hover:border-bracket-border bg-white"
+                      }`}>
                         <input
                           type="file"
                           accept=".pdf,.zip,.rar,.docx,.doc,image/*"
+                          disabled={isUploadingFile}
                           onChange={(e) => {
                             const f = e.target.files?.[0];
                             if (f) handleFileUpload(f);
                           }}
-                          className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+                          className="absolute inset-0 opacity-0 cursor-pointer w-full h-full disabled:cursor-not-allowed"
                         />
-                        <div className="flex flex-col items-center justify-center gap-1">
-                          <span className="material-symbols-outlined text-bracket-border text-2xl">
-                            cloud_upload
-                          </span>
-                          <p className="text-xs font-semibold text-gray-800 truncate max-w-[200px]">
-                            {selectedFile ? selectedFile.name : "Unggah Dokumen (PDF / ZIP)"}
-                          </p>
-                        </div>
+                        {isUploadingFile ? (
+                          <div className="flex flex-col items-center gap-1.5 py-1">
+                            <span className="material-symbols-outlined text-bracket-border animate-spin text-2xl">
+                              progress_activity
+                            </span>
+                            <p className="text-xs font-bold text-gray-700">Mengunggah berkas CV...</p>
+                            <p className="text-[10px] text-gray-400 font-mono">Harap tunggu sebentar</p>
+                          </div>
+                        ) : formData.cvUrl ? (
+                          <div className="flex flex-col items-center gap-1">
+                            <span className="material-symbols-outlined text-emerald-600 text-2xl">
+                              check_circle
+                            </span>
+                            <p className="text-xs font-bold text-emerald-950 truncate max-w-[220px]">
+                              {selectedFile?.name || "Berkas CV Berhasil Terunggah"}
+                            </p>
+                            <div className="flex items-center gap-2 mt-0.5">
+                              <a
+                                href={formData.cvUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={(e) => e.stopPropagation()}
+                                className="px-2 py-0.5 rounded-md bg-emerald-600 text-white text-[10px] font-bold hover:bg-emerald-700 transition flex items-center gap-1 z-10"
+                              >
+                                <span className="material-symbols-outlined text-xs">visibility</span>
+                                <span>Preview Berkas</span>
+                              </a>
+                              <span className="text-[10px] text-gray-400 font-mono">Klik untuk ganti</span>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="flex flex-col items-center justify-center gap-1">
+                            <span className="material-symbols-outlined text-bracket-border text-2xl">
+                              cloud_upload
+                            </span>
+                            <p className="text-xs font-semibold text-gray-800 truncate max-w-[200px]">
+                              Unggah Dokumen (PDF / ZIP)
+                            </p>
+                            <p className="text-[10px] text-gray-400 font-mono">Maksimal 15 MB</p>
+                          </div>
+                        )}
                       </div>
 
-                      <div>
+                      {/* Google Drive Link Box */}
+                      <div className="flex flex-col justify-center">
+                        <label className="block text-[11px] font-bold text-gray-600 mb-1">
+                          Atau Tautan Google Drive Dokumen:
+                        </label>
                         <input
                           type="url"
-                          value={formData.cvUrl}
+                          value={formData.cvUrl.startsWith("data:") ? "" : formData.cvUrl}
                           onChange={(e) => setFormData({ ...formData, cvUrl: e.target.value })}
-                          placeholder="Atau Tautan Google Drive Dokumen"
-                          className="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 text-xs text-gray-900 outline-none font-mono"
+                          placeholder="https://drive.google.com/file/d/.../view"
+                          className="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 text-xs text-gray-900 outline-none font-mono focus:border-bracket-border"
                         />
+                        <span className="text-[10px] text-gray-400 mt-1">
+                          Pastikan akses link diatur ke &quot;Siapa saja yang memiliki link&quot;.
+                        </span>
                       </div>
                     </div>
                   </div>

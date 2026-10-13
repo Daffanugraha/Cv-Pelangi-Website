@@ -3,7 +3,9 @@ import { isAuthenticated } from "@/lib/admin/auth";
 import {
   getApplicants,
   updateApplicantStatus,
+  updateApplicant,
   deleteApplicant,
+  JobApplicantItem,
 } from "@/lib/admin/db";
 
 export const dynamic = "force-dynamic";
@@ -25,15 +27,23 @@ export async function GET() {
 export async function PATCH(req: NextRequest) {
   if (!isAuthenticated()) return unauthorized();
   try {
-    const { id, status } = await req.json();
-    if (!id || !status) {
-      return NextResponse.json({ error: "ID dan status diperlukan" }, { status: 400 });
+    const body = await req.json();
+    const { id, status, cvUrl, fileName, portfolioUrl } = body;
+    if (!id) {
+      return NextResponse.json({ error: "ID pelamar diperlukan" }, { status: 400 });
     }
-    updateApplicantStatus(id, status);
-    return NextResponse.json({ ok: true });
+
+    const patch: Partial<JobApplicantItem> = {};
+    if (status !== undefined) patch.status = status;
+    if (cvUrl !== undefined) patch.cvUrl = cvUrl;
+    if (fileName !== undefined) patch.fileName = fileName;
+    if (portfolioUrl !== undefined) patch.portfolioUrl = portfolioUrl;
+
+    const updated = updateApplicant(id, patch);
+    return NextResponse.json({ ok: true, data: updated });
   } catch (err) {
     console.error("Error updating applicant:", err);
-    return NextResponse.json({ error: "Gagal memperbarui status" }, { status: 500 });
+    return NextResponse.json({ error: "Gagal memperbarui data pelamar" }, { status: 500 });
   }
 }
 

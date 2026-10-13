@@ -60,6 +60,9 @@ function PelamarContent() {
 
   // Modal State
   const [selectedApplicant, setSelectedApplicant] = useState<JobApplicantItem | null>(null);
+  const [detailInitialTab, setDetailInitialTab] = useState<
+    "identitas" | "pengalaman" | "komitmen" | "skill" | "berkas"
+  >("identitas");
   const [rejectionTarget, setRejectionTarget] = useState<JobApplicantItem | null>(null);
   const [interviewTarget, setInterviewTarget] = useState<JobApplicantItem | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<{ id: string; name: string } | null>(null);
@@ -417,7 +420,10 @@ function PelamarContent() {
               applicant={applicant}
               dateTime={formatApplicantDateTime(applicant.createdAt)}
               onUpdateStatus={handleUpdateApplicantStatus}
-              onOpenDetail={(app) => setSelectedApplicant(app)}
+              onOpenDetail={(app, tab) => {
+                setSelectedApplicant(app);
+                setDetailInitialTab(tab || "identitas");
+              }}
               onOpenRejection={(app) => setRejectionTarget(app)}
               onOpenInterview={(app) => setInterviewTarget(app)}
               onDelete={(id, name) => setDeleteTarget({ id, name })}
@@ -429,9 +435,16 @@ function PelamarContent() {
       {/* Modal Detail Pelamar */}
       <ApplicantDetailModal
         applicant={selectedApplicant}
+        initialTab={detailInitialTab}
         dateTime={formatApplicantDateTime(selectedApplicant?.createdAt)}
         onClose={() => setSelectedApplicant(null)}
         onUpdateStatus={handleUpdateApplicantStatus}
+        onUpdateApplicant={(updated) => {
+          setSelectedApplicant(updated);
+          setApplicants((prev) =>
+            prev.map((a) => (a.id === updated.id ? updated : a))
+          );
+        }}
         onOpenInterview={(app) => setInterviewTarget(app)}
       />
 

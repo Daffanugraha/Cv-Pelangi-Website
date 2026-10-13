@@ -7,7 +7,7 @@ interface ApplicantCardItemProps {
   applicant: JobApplicantItem;
   dateTime: { day: string; date: string; time: string; full: string };
   onUpdateStatus: (applicant: JobApplicantItem, status: JobApplicantItem["status"]) => void;
-  onOpenDetail: (applicant: JobApplicantItem) => void;
+  onOpenDetail: (applicant: JobApplicantItem, tab?: "identitas" | "pengalaman" | "komitmen" | "skill" | "berkas") => void;
   onOpenRejection: (applicant: JobApplicantItem) => void;
   onOpenInterview?: (applicant: JobApplicantItem) => void;
   onDelete: (id: string, name: string) => void;
@@ -148,10 +148,28 @@ export default function ApplicantCardItem({
             <span className="material-symbols-outlined text-sm">delete</span>
           </button>
 
+          {/* Tombol Preview CV Langsung */}
+          <button
+            type="button"
+            onClick={() => onOpenDetail(applicant, "berkas")}
+            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition shadow-xs cursor-pointer active:scale-95 ${
+              applicant.cvUrl
+                ? "bg-red-50 hover:bg-red-100 text-[#F65456] border border-red-200"
+                : "bg-gray-100 hover:bg-gray-200 text-gray-600 border border-gray-200"
+            }`}
+            title="Preview Berkas CV (PDF)"
+          >
+            <span className="material-symbols-outlined text-sm">picture_as_pdf</span>
+            <span>Preview CV</span>
+            {applicant.cvUrl && (
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+            )}
+          </button>
+
           {/* Tombol Rincian Berkas */}
           <button
             type="button"
-            onClick={() => onOpenDetail(applicant)}
+            onClick={() => onOpenDetail(applicant, "identitas")}
             className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#111216] hover:bg-black text-white text-xs font-bold shadow-sm transition cursor-pointer active:scale-95"
           >
             <span className="material-symbols-outlined text-sm">visibility</span>

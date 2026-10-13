@@ -731,21 +731,47 @@ export function addApplicant(
   return newApplicant;
 }
 
+export function updateApplicant(
+  id: string,
+  patch: Partial<JobApplicantItem>
+): JobApplicantItem | null {
+  const applicants = getApplicants();
+  let updated: JobApplicantItem | null = null;
+  const list = applicants.map((a) => {
+    if (a.id === id) {
+      updated = { ...a, ...patch };
+      return updated;
+    }
+    return a;
+  });
+
+  if (updated) {
+    saveApplicants(list);
+    if (isPostgresConfigured()) {
+      if (patch.status) {
+        query("UPDATE job_applicants SET status = $1, updated_at = NOW() WHERE id = $2", [
+          patch.status,
+          id,
+        ]).catch((err) => console.warn("[Postgres Update Status Error]:", err.message));
+      }
+      if (patch.cvUrl) {
+        query("UPDATE job_applicants SET cv_url = $1, file_name = $2, updated_at = NOW() WHERE id = $3", [
+          patch.cvUrl,
+          patch.fileName || null,
+          id,
+        ]).catch((err) => console.warn("[Postgres Update CV Error]:", err.message));
+      }
+    }
+  }
+
+  return updated;
+}
+
 export function updateApplicantStatus(
   id: string,
   status: JobApplicantItem["status"]
 ) {
-  const applicants = getApplicants().map((a) =>
-    a.id === id ? { ...a, status } : a
-  );
-  saveApplicants(applicants);
-
-  if (isPostgresConfigured()) {
-    query("UPDATE job_applicants SET status = $1, updated_at = NOW() WHERE id = $2", [
-      status,
-      id,
-    ]).catch((err) => console.warn("[Postgres Update Status Error]:", err.message));
-  }
+  return updateApplicant(id, { status });
 }
 
 export function deleteApplicant(id: string) {

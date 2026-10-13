@@ -1,5 +1,5 @@
 {
-  "totalPageviews": 25,
+  "totalPageviews": 26,
   "uniqueVisitors": 6,
   "todayViews": 0,
   "todayVisitors": 0,
@@ -183,7 +183,7 @@
     {
       "date": "2026-10-13",
       "label": "Sel, 13 Okt",
-      "pageviews": 15,
+      "pageviews": 16,
       "visitors": 7
     }
   ],
@@ -191,20 +191,20 @@
     {
       "path": "/",
       "title": "Beranda CV Pelangi UV",
-      "views": 7,
-      "percentage": 28
+      "views": 8,
+      "percentage": 31
     },
     {
       "path": "/kontak",
       "title": "Kontak & Lokasi Bizpark Sidoarjo",
       "views": 5,
-      "percentage": 20
+      "percentage": 19
     },
     {
       "path": "/karir",
       "title": "Karir & Lowongan Kerja",
       "views": 4,
-      "percentage": 16
+      "percentage": 15
     },
     {
       "path": "/produk/bahan-baku",
@@ -239,16 +239,23 @@
   ],
   "devices": {
     "mobile": 0,
-    "desktop": 25,
+    "desktop": 26,
     "tablet": 0
   },
   "sources": {
-    "direct": 25,
+    "direct": 26,
     "search": 0,
     "whatsapp": 0,
     "instagram": 0
   },
   "recentVisits": [
+    {
+      "id": "v_1791874779332",
+      "path": "/",
+      "timestamp": "Baru saja",
+      "device": "desktop",
+      "referrer": "Direct"
+    },
     {
       "id": "v_1791860008727",
       "path": "/blog",
@@ -378,13 +385,6 @@
     {
       "id": "v_1791787529699",
       "path": "/layanan",
-      "timestamp": "Baru saja",
-      "device": "desktop",
-      "referrer": "Direct"
-    },
-    {
-      "id": "v_1791787452877",
-      "path": "/kontak",
       "timestamp": "Baru saja",
       "device": "desktop",
       "referrer": "Direct"

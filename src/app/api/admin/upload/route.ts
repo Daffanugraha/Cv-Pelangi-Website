@@ -17,9 +17,22 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "No file provided" }, { status: 400 });
   }
 
-  const allowedTypes = ["image/jpeg", "image/png", "image/webp", "image/gif"];
-  if (!allowedTypes.includes(file.type)) {
-    return NextResponse.json({ error: "Tipe file tidak didukung. Gunakan JPG, PNG, atau WEBP." }, { status: 400 });
+  const allowedTypes = [
+    "image/jpeg",
+    "image/png",
+    "image/webp",
+    "image/gif",
+    "application/pdf",
+    "application/msword",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "application/zip",
+    "application/x-zip-compressed",
+  ];
+  const ext = (file.name.split(".").pop() || "").toLowerCase();
+  const allowedExts = ["jpg", "jpeg", "png", "webp", "gif", "pdf", "doc", "docx", "zip", "rar"];
+
+  if (!allowedTypes.includes(file.type) && !allowedExts.includes(ext)) {
+    return NextResponse.json({ error: "Tipe file tidak didukung. Gunakan JPG, PNG, WEBP, PDF, atau Dokumen." }, { status: 400 });
   }
 
   const maxSize = 10 * 1024 * 1024; // 10 MB
@@ -27,7 +40,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Ukuran file terlalu besar (maks 10MB)." }, { status: 400 });
   }
 
-  const ext = file.name.split(".").pop();
   const fileName = `admin_${Date.now()}.${ext}`;
   const uploadDir = path.join(process.cwd(), "public", "images", "gallery");
   const buffer = Buffer.from(await file.arrayBuffer());
