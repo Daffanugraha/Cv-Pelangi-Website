@@ -8,6 +8,7 @@ import {
   deleteMomenAlbum,
   MomenAlbumItem,
 } from "@/lib/admin/db";
+import { getSupabaseAdmin } from "@/lib/supabase/admin";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -19,6 +20,37 @@ function unauthorized() {
 // GET all momen albums (Admin)
 export async function GET() {
   if (!isAuthenticated()) return unauthorized();
+
+  try {
+    const sb = getSupabaseAdmin();
+    if (sb) {
+      const { data, error } = await sb
+        .from("momen_albums")
+        .select("*")
+        .order("order", { ascending: true });
+
+      if (!error && Array.isArray(data) && data.length > 0) {
+        const formatted: MomenAlbumItem[] = data.map((d: any) => ({
+          id: d.id,
+          category: d.category,
+          title: d.title,
+          desc: d.description || d.desc || "",
+          photos: Array.isArray(d.photos) ? d.photos : [],
+          isHighlight: d.is_highlight !== false,
+          order: d.order || 0,
+          createdAt: d.created_at,
+        }));
+        return NextResponse.json(formatted, {
+          headers: {
+            "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+          },
+        });
+      }
+    }
+  } catch (err) {
+    console.warn("[Supabase Admin Momen GET Fallback]:", err);
+  }
+
   return NextResponse.json(getMomenAlbums(), {
     headers: {
       "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
@@ -48,14 +80,16 @@ export async function POST(req: NextRequest) {
     }
 
     // Validate and sanitize photos
-    const sanitizedPhotos = photos.map((p: any, idx: number) => ({
-      src: p.src?.trim() || "",
-      title: p.title?.trim() || p.cardTitle?.trim() || `Foto ${idx + 1}`,
-      cardTitle: p.cardTitle?.trim() || p.title?.trim() || `Foto ${idx + 1}`,
-      caption: p.caption?.trim() || p.cardDesc?.trim() || "",
-      cardDesc: p.cardDesc?.trim() || p.caption?.trim() || "",
-      alt: p.alt?.trim() || p.title?.trim() || `Foto ${idx + 1}`,
-    })).filter((p: any) => Boolean(p.src));
+    const sanitizedPhotos = photos
+      .map((p: any, idx: number) => ({
+        src: p.src?.trim() || "",
+        title: p.title?.trim() || p.cardTitle?.trim() || `Foto ${idx + 1}`,
+        cardTitle: p.cardTitle?.trim() || p.title?.trim() || `Foto ${idx + 1}`,
+        caption: p.caption?.trim() || p.cardDesc?.trim() || "",
+        cardDesc: p.cardDesc?.trim() || p.caption?.trim() || "",
+        alt: p.alt?.trim() || p.title?.trim() || `Foto ${idx + 1}`,
+      }))
+      .filter((p: any) => Boolean(p.src));
 
     if (sanitizedPhotos.length === 0) {
       return NextResponse.json(
@@ -71,6 +105,25 @@ export async function POST(req: NextRequest) {
       photos: sanitizedPhotos,
       isHighlight: isHighlight !== false,
     });
+
+    // Sync ke Supabase
+    try {
+      const sb = getSupabaseAdmin();
+      if (sb) {
+        await sb.from("momen_albums").upsert({
+          id: newAlbum.id,
+          category: newAlbum.category,
+          title: newAlbum.title,
+          description: newAlbum.desc,
+          photos: newAlbum.photos,
+          is_highlight: newAlbum.isHighlight !== false,
+          order: newAlbum.order || 0,
+          created_at: newAlbum.createdAt || new Date().toISOString(),
+        });
+      }
+    } catch (sbErr) {
+      console.warn("[Supabase Admin Momen POST Error]:", sbErr);
+    }
 
     return NextResponse.json({ ok: true, data: newAlbum }, { status: 201 });
   } catch (err) {
@@ -100,17 +153,37 @@ export async function PUT(req: NextRequest) {
     if (isHighlight !== undefined) patch.isHighlight = Boolean(isHighlight);
 
     if (Array.isArray(photos)) {
-      patch.photos = photos.map((p: any, idx: number) => ({
-        src: p.src?.trim() || "",
-        title: p.title?.trim() || p.cardTitle?.trim() || `Foto ${idx + 1}`,
-        cardTitle: p.cardTitle?.trim() || p.title?.trim() || `Foto ${idx + 1}`,
-        caption: p.caption?.trim() || p.cardDesc?.trim() || "",
-        cardDesc: p.cardDesc?.trim() || p.caption?.trim() || "",
-        alt: p.alt?.trim() || p.title?.trim() || `Foto ${idx + 1}`,
-      })).filter((p: any) => Boolean(p.src));
+      patch.photos = photos
+        .map((p: any, idx: number) => ({
+          src: p.src?.trim() || "",
+          title: p.title?.trim() || p.cardTitle?.trim() || `Foto ${idx + 1}`,
+          cardTitle: p.cardTitle?.trim() || p.title?.trim() || `Foto ${idx + 1}`,
+          caption: p.caption?.trim() || p.cardDesc?.trim() || "",
+          cardDesc: p.cardDesc?.trim() || p.caption?.trim() || "",
+          alt: p.alt?.trim() || p.title?.trim() || `Foto ${idx + 1}`,
+        }))
+        .filter((p: any) => Boolean(p.src));
     }
 
     updateMomenAlbum(id, patch);
+
+    // Sync ke Supabase
+    try {
+      const sb = getSupabaseAdmin();
+      if (sb) {
+        const updatePayload: Record<string, any> = {};
+        if (patch.title !== undefined) updatePayload.title = patch.title;
+        if (patch.desc !== undefined) updatePayload.description = patch.desc;
+        if (patch.category !== undefined) updatePayload.category = patch.category;
+        if (patch.isHighlight !== undefined) updatePayload.is_highlight = patch.isHighlight;
+        if (patch.photos !== undefined) updatePayload.photos = patch.photos;
+
+        await sb.from("momen_albums").update(updatePayload).eq("id", id);
+      }
+    } catch (sbErr) {
+      console.warn("[Supabase Admin Momen PUT Error]:", sbErr);
+    }
+
     return NextResponse.json({ ok: true });
   } catch (err) {
     console.error("Error updating momen:", err);
@@ -137,6 +210,16 @@ export async function DELETE(req: NextRequest) {
 
     if (!id) {
       return NextResponse.json({ error: "ID momen diperlukan" }, { status: 400 });
+    }
+
+    // Delete dari Supabase
+    try {
+      const sb = getSupabaseAdmin();
+      if (sb) {
+        await sb.from("momen_albums").delete().eq("id", id);
+      }
+    } catch (sbErr) {
+      console.warn("[Supabase Admin Momen DELETE Error]:", sbErr);
     }
 
     deleteMomenAlbum(id);
