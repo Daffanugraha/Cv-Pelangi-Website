@@ -182,7 +182,7 @@ export default function FloatingActions() {
       {isOpen && (
         <div
           id="chatbot-widget"
-          className="pointer-events-auto fixed inset-x-3 bottom-20 sm:static sm:inset-auto sm:mb-3 w-auto sm:w-[385px] max-w-[420px] h-[min(560px,calc(100dvh-110px))] sm:h-[510px] rounded-2xl sm:rounded-3xl bg-white shadow-[0_16px_48px_rgba(0,0,0,0.18)] border border-neutral-200/90 flex flex-col overflow-hidden transition-all duration-300 transform scale-100 origin-bottom-right"
+          className="pointer-events-auto mb-2.5 sm:mb-3 w-[min(360px,calc(100vw-32px))] sm:w-[385px] h-[min(540px,calc(100dvh-130px))] sm:h-[510px] rounded-2xl sm:rounded-3xl bg-white shadow-[0_16px_48px_rgba(0,0,0,0.18)] border border-neutral-200/90 flex flex-col overflow-hidden transition-all duration-300 transform scale-100 origin-bottom-right"
         >
           {/* Header */}
           <div className="p-3 sm:p-3.5 bg-[#18181b] text-white flex items-center justify-between relative overflow-hidden shrink-0">
