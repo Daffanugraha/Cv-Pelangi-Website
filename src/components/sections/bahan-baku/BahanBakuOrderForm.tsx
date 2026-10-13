@@ -1,13 +1,14 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { MaterialCategory } from "@/lib/data/rawMaterials";
+import { rawMaterialCategories, MaterialCategory } from "@/lib/data/rawMaterials";
 
 interface BahanBakuOrderFormProps {
   categories?: MaterialCategory[];
   requestedCategory?: string;
 }
 
+// Single-Source-of-Truth yang diturunkan otomatis dari master rawMaterialCategories
 const RAW_MATERIALS_DATA: Record<
   string,
   { name: string; variants: string[] }
@@ -16,70 +17,51 @@ const RAW_MATERIALS_DATA: Record<
     name: "1. Foil (Gold, Silver, Hologram, Transparan & Putih BO1)",
     variants: [
       "Semua Varian Foil (Gold, Silver, Hologram, Transparan)",
-      "Gold (120 Meter)",
-      "Silver (120 Meter)",
-      "Warna - Warni (120 Meter)",
-      "Gold & Silver Hologram (120 Meter)",
-      "Transparan (120 Meter)",
-      "Putih BO1",
-      "White BO1",
+      ...(rawMaterialCategories.find((c) => c.id === "foil")?.items.map((i) => i.name) || [
+        "Gold (120 Meter)",
+        "Silver (120 Meter)",
+        "Warna - Warni (120 Meter)",
+        "Gold & Silver Hologram (120 Meter)",
+        "Transparan (120 Meter)",
+        "Putih BO1",
+        "White BO1",
+      ]),
     ],
   },
   "foil-stamping": {
     name: "2. Hot & Cold Foil Stamping (Roll 120M High Precision)",
     variants: [
       "Semua Varian Foil Stamping (Gold, Silver, Hologram Laser)",
-      "Gold 120M High Precision",
-      "Silver 120M High Precision",
-      "Warna - Warni 120M (Red, Blue, Green, Copper)",
-      "Gold & Silver Hologram Laser",
-      "Transparan 120M (Security Ghost Stamp)",
-      "Putih BO1 (Pigment White Stamp)",
-      "White BO1 (Extra Width Roll)",
+      ...(rawMaterialCategories.find((c) => c.id === "foil-stamping")?.items.map((i) => i.name) || [
+        "Gold 120M High Precision",
+        "Silver 120M High Precision",
+        "Warna - Warni 120M (Red, Blue, Green, Copper)",
+        "Gold & Silver Hologram Laser",
+        "Transparan 120M (Security Ghost Stamp)",
+        "Putih BO1 (Pigment White Stamp)",
+        "White BO1 (Extra Width Roll)",
+      ]),
     ],
   },
   opp: {
     name: "3. Film BOPP Thermal & Waterbase (Doff / Glossy)",
     variants: [
       "Semua Varian Film BOPP (Doff & Glossy)",
-      "Thermall Glossy 18 mic",
-      "Thermall Doff 18 mic",
-      "Thermal Glossy 3000m",
-      "Thermal Glossy 4000m",
-      "Thermal Doff 4000m",
-      "Glossy Waterbase 12 mic",
-      "Doff Waterbase 15 mic",
-      "Glossy Waterbase 12 mic (Spek Khusus)",
-      "PET Metalize",
-      "BOPP Glossy 20 mic",
-      "Thermal Glossy 22, 24, 27 mic",
-      "OPP Glossy Waterbase 30 mic",
+      ...(rawMaterialCategories.find((c) => c.id === "opp")?.items.map((i) => i.name) || []),
     ],
   },
   lem: {
     name: "4. Lem Laminating Industri (Wet & Dry Emulsi)",
     variants: [
       "Semua Varian Lem Laminating (Wet & Dry)",
-      "Lem Wet Laminating",
-      "Lem Dry / Lem Laminating A",
-      "Lem Dry / Lem Laminating B",
-      "Lem Polygum",
-      "Creasing Matrix",
-      "Hand Roll Stretch Film",
+      ...(rawMaterialCategories.find((c) => c.id === "lem")?.items.map((i) => i.name) || []),
     ],
   },
   spotuv: {
     name: "5. Varnish & Tinta Spot UV (Gloss, Matte & Pasir)",
     variants: [
       "Semua Varian Spot UV (Gloss, Matte & Pasir)",
-      "Tinta Spot UV Standard",
-      "Tinta Spot UV Mix",
-      "Bluish High Gloss Varnish",
-      "Tinta Spot UV HG - 25",
-      "Tinta UV Full Varnish",
-      "Tinta Spot UV Matte (Doff)",
-      "WB Glossy (Waterbase Coat)",
-      "Tinta Tex 20 Varnish",
+      ...(rawMaterialCategories.find((c) => c.id === "spotuv")?.items.map((i) => i.name) || []),
     ],
   },
 };

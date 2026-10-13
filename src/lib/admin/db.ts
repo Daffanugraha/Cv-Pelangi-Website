@@ -88,6 +88,30 @@ function writeJSON(name: string, data: unknown) {
 }
 
 // ---------------------------------------------------------------------------
+// Centralized Deletion Tracking Helpers (DRY)
+// ---------------------------------------------------------------------------
+function getDeletedSet(storeName: string): Set<string> {
+  const list = readJSON<string[]>(storeName, []);
+  return new Set(list.map((s) => s.toLowerCase().trim()));
+}
+
+function recordDeletedKeys(storeName: string, keys: (string | undefined | null)[]) {
+  const deletedList = readJSON<string[]>(storeName, []);
+  let hasChange = false;
+  for (const raw of keys) {
+    if (!raw) continue;
+    const clean = raw.trim().toLowerCase();
+    if (clean && !deletedList.includes(clean)) {
+      deletedList.push(clean);
+      hasChange = true;
+    }
+  }
+  if (hasChange) {
+    writeJSON(storeName, deletedList);
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
 export interface GalleryItem {
@@ -175,8 +199,7 @@ export const DEFAULT_PRODUK_GALLERY: GalleryItem[] = DEFAULT_GALLERY_PRODUCTS.ma
 }));
 
 export function getDeletedGalleryIds(): Set<string> {
-  const list = readJSON<string[]>("deleted_gallery_ids", []);
-  return new Set(list.map((s) => s.toLowerCase().trim()));
+  return getDeletedSet("deleted_gallery_ids");
 }
 
 export function getGallery(type?: string): GalleryItem[] {
@@ -225,32 +248,26 @@ export function addGalleryItem(item: Omit<GalleryItem, "id" | "createdAt" | "ord
 }
 
 export function deleteGalleryItem(id: string) {
-  // 1. Simpan ke daftar deletedIds secara persisten
-  const deletedList = readJSON<string[]>("deleted_gallery_ids", []);
   const cleanId = (id || "").trim().toLowerCase();
-
   const rawItems = readJSON<GalleryItem[]>("gallery", []);
   const target = rawItems.find((i) => i.id === id || i.id.toLowerCase() === cleanId);
-  const toAdd = [id, cleanId];
-  if (target) {
-    if (target.videoUrl) toAdd.push(target.videoUrl.toLowerCase());
-    if (target.fileName) toAdd.push(target.fileName.toLowerCase());
-    if (target.title) toAdd.push(target.title.toLowerCase().trim());
-  }
 
-  toAdd.forEach((k) => {
-    if (k && !deletedList.includes(k)) {
-      deletedList.push(k);
-    }
-  });
-  writeJSON("deleted_gallery_ids", deletedList);
+  // 1. Catat ke deleted_gallery_ids secara terpusat
+  recordDeletedKeys("deleted_gallery_ids", [
+    id,
+    cleanId,
+    target?.videoUrl,
+    target?.fileName,
+    target?.title,
+  ]);
 
   // 2. Hapus dari gallery.json & memoryStore
+  const deletedSet = getDeletedGalleryIds();
   const updated = rawItems.filter(
     (i) =>
       i.id !== id &&
       i.id.toLowerCase() !== cleanId &&
-      !deletedList.includes(i.id.toLowerCase())
+      !deletedSet.has(i.id.toLowerCase().trim())
   );
   saveGallery(updated);
 
@@ -264,8 +281,8 @@ export function deleteGalleryItem(id: string) {
           (r: any) =>
             r.id !== id &&
             r.shortcode !== id &&
-            !deletedList.includes(r.id?.toLowerCase()) &&
-            !deletedList.includes(r.shortcode?.toLowerCase())
+            !deletedSet.has(r.id?.toLowerCase()?.trim()) &&
+            !deletedSet.has(r.shortcode?.toLowerCase()?.trim())
         );
         fs.writeFileSync(reelsPath, JSON.stringify(filteredReels, null, 2), "utf-8");
       }
@@ -296,17 +313,49 @@ export function addLead(lead: Omit<LeadItem, "id" | "createdAt" | "status">) {
   };
   leads.unshift(newLead);
   writeJSON("leads", leads);
+
+  if (isPostgresConfigured()) {
+    query(
+      `INSERT INTO leads (id, name, company, phone, email, service, message, status, created_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+       ON CONFLICT (id) DO NOTHING`,
+      [
+        newLead.id,
+        newLead.name,
+        newLead.company || null,
+        newLead.phone,
+        newLead.email || null,
+        newLead.service || null,
+        newLead.message || null,
+        newLead.status,
+        new Date(newLead.createdAt),
+      ]
+    ).catch((err) => console.warn("[Postgres Add Lead Error]:", err.message));
+  }
+
   return newLead;
 }
 
 export function updateLeadStatus(id: string, status: LeadItem["status"]) {
   const leads = getLeads().map((l) => (l.id === id ? { ...l, status } : l));
   writeJSON("leads", leads);
+
+  if (isPostgresConfigured()) {
+    query("UPDATE leads SET status = $1 WHERE id = $2", [status, id]).catch((err) =>
+      console.warn("[Postgres Update Lead Error]:", err.message)
+    );
+  }
 }
 
 export function deleteLead(id: string) {
   const leads = getLeads().filter((l) => l.id !== id);
   writeJSON("leads", leads);
+
+  if (isPostgresConfigured()) {
+    query("DELETE FROM leads WHERE id = $1", [id]).catch((err) =>
+      console.warn("[Postgres Delete Lead Error]:", err.message)
+    );
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -336,8 +385,7 @@ export type CareerJobItem = CareerJob & {
 };
 
 export function getDeletedJobIds(): Set<string> {
-  const list = readJSON<string[]>("deleted_job_ids", []);
-  return new Set(list.map((s) => s.toLowerCase().trim()));
+  return getDeletedSet("deleted_job_ids");
 }
 
 export function getJobs(): CareerJobItem[] {
@@ -421,27 +469,21 @@ export function updateJobItem(id: string, patch: Partial<CareerJobItem>) {
 
 export function deleteJobItem(id: string) {
   const cleanId = (id || "").toLowerCase().trim();
-
-  // 1. Simpan ke deleted_job_ids secara persisten
-  const deletedList = readJSON<string[]>("deleted_job_ids", []);
   const existing = getJobs();
   const target = existing.find((j) => j.id.toLowerCase() === cleanId);
-  const toAdd = [cleanId];
-  if (target) {
-    toAdd.push(slugifyJobTitle(target.title));
-  }
-  toAdd.forEach((k) => {
-    if (k && !deletedList.includes(k)) {
-      deletedList.push(k);
-    }
-  });
-  writeJSON("deleted_job_ids", deletedList);
 
-  // 2. Hapus dari jobs.json
+  // 1. Simpan ke deleted_job_ids secara terpusat
+  recordDeletedKeys("deleted_job_ids", [
+    cleanId,
+    target ? slugifyJobTitle(target.title) : undefined,
+  ]);
+
+  // 2. Hapus dari jobs.json & memoryStore
+  const deletedSet = getDeletedJobIds();
   const jobs = existing.filter(
     (j) =>
       j.id.toLowerCase() !== cleanId &&
-      !deletedList.includes(j.id.toLowerCase().trim())
+      !deletedSet.has(j.id.toLowerCase().trim())
   );
   saveJobs(jobs);
 
@@ -469,8 +511,7 @@ export type MomenAlbumItem = {
 };
 
 export function getDeletedMomenIds(): Set<string> {
-  const list = readJSON<string[]>("deleted_momen_ids", []);
-  return new Set(list.map((s) => s.toLowerCase().trim()));
+  return getDeletedSet("deleted_momen_ids");
 }
 
 export function getMomenAlbums(): MomenAlbumItem[] {
@@ -523,33 +564,34 @@ export function updateMomenAlbum(id: string, patch: Partial<MomenAlbumItem>) {
 
 export function deleteMomenAlbum(id: string) {
   const cleanId = (id || "").toLowerCase().trim();
-
-  // 1. Simpan ke deleted_momen_ids secara persisten
-  const deletedList = readJSON<string[]>("deleted_momen_ids", []);
   const existing = getMomenAlbums();
   const target = existing.find(
     (a) => a.id.toLowerCase() === cleanId || a.category.toLowerCase() === cleanId
   );
-  const toAdd = [cleanId];
-  if (target) {
-    toAdd.push(target.id.toLowerCase(), target.category.toLowerCase());
-  }
-  toAdd.forEach((k) => {
-    if (k && !deletedList.includes(k)) {
-      deletedList.push(k);
-    }
-  });
-  writeJSON("deleted_momen_ids", deletedList);
 
-  // 2. Hapus dari momen.json
+  // 1. Simpan ke deleted_momen_ids secara terpusat
+  recordDeletedKeys("deleted_momen_ids", [
+    cleanId,
+    target?.id,
+    target?.category,
+  ]);
+
+  // 2. Hapus dari momen.json & memoryStore
+  const deletedSet = getDeletedMomenIds();
   const albums = existing.filter(
     (item) =>
       item.id.toLowerCase() !== cleanId &&
       item.category.toLowerCase() !== cleanId &&
-      !deletedList.includes(item.id.toLowerCase()) &&
-      !deletedList.includes(item.category.toLowerCase())
+      !deletedSet.has(item.id.toLowerCase().trim()) &&
+      !deletedSet.has(item.category.toLowerCase().trim())
   );
   saveMomenAlbums(albums);
+
+  if (isPostgresConfigured()) {
+    query("DELETE FROM momen_albums WHERE id = $1 OR category = $2", [id, id]).catch((err) =>
+      console.warn("[Postgres Delete Momen Error]:", err.message)
+    );
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -723,8 +765,7 @@ export function deleteApplicant(id: string) {
 export type BlogArticleItem = ArticleItem;
 
 export function getDeletedBlogIds(): Set<string> {
-  const list = readJSON<string[]>("deleted_blog_ids", []);
-  return new Set(list.map((s) => s.toLowerCase().trim()));
+  return getDeletedSet("deleted_blog_ids");
 }
 
 export function getBlogArticles(): BlogArticleItem[] {
@@ -785,9 +826,6 @@ export function updateBlogArticle(id: string, patch: Partial<BlogArticleItem>) {
 
 export function deleteBlogArticle(id: string) {
   const cleanTarget = (id || "").trim().toLowerCase();
-
-  // 1. Simpan ke deleted_blog_ids secara persisten
-  const deletedList = readJSON<string[]>("deleted_blog_ids", []);
   const existingArticles = getBlogArticles();
   const targetItem = existingArticles.find(
     (a) =>
@@ -795,28 +833,26 @@ export function deleteBlogArticle(id: string) {
       a.slug.toLowerCase().trim() === cleanTarget ||
       a.title.toLowerCase().trim() === cleanTarget
   );
-  const toAdd = [id, cleanTarget];
-  if (targetItem) {
-    toAdd.push(targetItem.id, targetItem.slug, targetItem.title.toLowerCase().trim());
-  }
 
-  toAdd.forEach((key) => {
-    const k = key.toLowerCase().trim();
-    if (k && !deletedList.includes(k)) {
-      deletedList.push(k);
-    }
-  });
-  writeJSON("deleted_blog_ids", deletedList);
+  // 1. Simpan ke deleted_blog_ids secara terpusat
+  recordDeletedKeys("deleted_blog_ids", [
+    id,
+    cleanTarget,
+    targetItem?.id,
+    targetItem?.slug,
+    targetItem?.title,
+  ]);
 
   // 2. Hapus dari blog.json & memoryStore
+  const deletedSet = getDeletedBlogIds();
   const articles = existingArticles.filter(
     (a) =>
       a.id !== id &&
       a.slug !== id &&
       a.title.toLowerCase().trim() !== cleanTarget &&
       a.slug.toLowerCase().trim() !== cleanTarget &&
-      !deletedList.includes(a.id.toLowerCase().trim()) &&
-      !deletedList.includes(a.slug.toLowerCase().trim())
+      !deletedSet.has(a.id.toLowerCase().trim()) &&
+      !deletedSet.has(a.slug.toLowerCase().trim())
   );
   saveBlogArticles(articles);
 }
