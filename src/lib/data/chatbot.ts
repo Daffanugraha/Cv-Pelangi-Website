@@ -7,7 +7,7 @@ export const chatbotKnowledge: ChatbotKnowledgeItem[] = [
   {
     keywords: ["pricelist", "harga", "katalog", "biaya", "tarif", "download", "tarif finishing"],
     reply:
-      '<p class="font-medium text-navbar-black mb-1">📋 Katalog &amp; Pricelist CV Pelangi UV</p><p class="text-text-body mb-2">Tersedia daftar spesifikasi dan tarif lengkap Hot Stamp Foil, Spot UV, BOPP Thermal, Cast &amp; Cure, hingga Pond Die-Cut.</p><a href="/produk/bahan-baku" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-bracket-border text-white text-xs font-semibold hover:bg-primary transition-all">Lihat Daftar Harga &amp; Bahan Baku <span class="material-symbols-outlined text-[14px]">arrow_forward</span></a>',
+      '<p class="font-medium text-navbar-black mb-1">📋 Katalog &amp; Pricelist CV Pelangi UV</p><p class="text-text-body mb-2">Tersedia daftar spesifikasi dan tarif lengkap Hot Stamp Foil, Spot UV, BOPP Thermal, Cast &amp; Cure, hingga Pond Die-Cut.</p><a href="/produk/bahan-baku" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-neutral-900 text-white text-xs font-semibold hover:bg-black transition-all"><span>Lihat Daftar Harga &amp; Bahan Baku</span> <svg class="w-3.5 h-3.5 inline-block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>',
   },
   {
     keywords: [

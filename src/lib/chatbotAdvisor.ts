@@ -108,7 +108,7 @@ export const consultationScenarios: ScenarioPattern[] = [
     ],
     replyGenerator: (input) =>
       formatAdvice({
-        greeting: "Untuk Untuk produk skincare & kecantikan, kemasan adalah kunci trust pertama pelanggan! ✨",
+        greeting: "Untuk produk skincare & kecantikan, kemasan adalah kunci trust pertama pelanggan! ✨",
         explanation:
           "Packaging skincare membutuhkan sentuhan yang lembut saat dipegang (tactile experience) dan aksen kilau berkilau agar terlihat eksklusif di etalase maupun video unboxing.",
         tips: [
