@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { IconPackage, IconX, IconSend } from "@/components/ui/Icons";
 
 interface BahanBakuSampleModalProps {
   isOpen: boolean;
@@ -95,9 +96,7 @@ export default function BahanBakuSampleModal({
         <div className="px-5 py-4 border-b border-surface-container bg-surface-tint-light/50 flex items-center justify-between gap-3 shrink-0">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-bracket-border text-on-primary flex items-center justify-center shadow-sm shrink-0">
-              <span translate="no" className="material-symbols-outlined notranslate text-[22px] notranslate">
-                redeem
-              </span>
+              <IconPackage className="w-5 h-5 text-white" />
             </div>
             <div>
               <h3 className="font-headline-sm text-base sm:text-headline-sm text-on-surface font-bold leading-tight">
@@ -114,9 +113,7 @@ export default function BahanBakuSampleModal({
             aria-label="Tutup Modal"
             className="w-8 h-8 rounded-full bg-surface-canvas border border-outline-variant hover:bg-bracket-border hover:text-on-primary text-on-surface flex items-center justify-center transition-all cursor-pointer"
           >
-            <span translate="no" className="material-symbols-outlined notranslate text-[18px] notranslate">
-              close
-            </span>
+            <IconX className="w-4 h-4" />
           </button>
         </div>
 
@@ -254,9 +251,7 @@ export default function BahanBakuSampleModal({
               type="submit"
               className="px-5 py-2 rounded-full bg-bracket-border hover:bg-primary text-white text-xs sm:text-sm font-semibold transition-all flex items-center gap-1.5 shadow-sm"
             >
-              <span translate="no" className="material-symbols-outlined notranslate text-[16px] notranslate">
-                send
-              </span>
+              <IconSend className="w-3.5 h-3.5" />
               Kirim via WhatsApp
             </button>
           </div>

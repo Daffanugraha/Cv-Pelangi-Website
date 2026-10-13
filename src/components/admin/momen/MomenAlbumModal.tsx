@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import AdminModal from "../AdminModal";
+import { IconPlusCircle } from "@/components/ui/Icons";
 import type { MomenAlbumItem } from "@/lib/admin/db";
 
 interface FormPhotoState {
@@ -545,7 +546,7 @@ export default function MomenAlbumModal({
             onClick={handleAddPhotoSlot}
             className="w-full py-2.5 rounded-xl border border-dashed border-gray-300 hover:border-[#F65456] hover:bg-red-50/30 text-xs font-semibold text-gray-600 hover:text-[#F65456] transition flex items-center justify-center gap-1.5 cursor-pointer"
           >
-            <span className="material-symbols-outlined text-base">add_circle</span>
+            <IconPlusCircle className="w-4 h-4" />
             <span>Tambah Foto Lainnya ke Momen Ini</span>
           </button>
         </div>

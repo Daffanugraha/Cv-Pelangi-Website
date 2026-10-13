@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import { IconUserCheck, IconPlusCircle, IconImagePlus } from "@/components/ui/Icons";
 
 interface DashboardQuickActionsProps {
   newApplicantsCount: number;
@@ -14,7 +15,7 @@ export default function DashboardQuickActions({
         href="/admin/pelamar"
         className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs shadow-2xs transition active:scale-95 cursor-pointer"
       >
-        <span className="material-symbols-outlined text-base">how_to_reg</span>
+        <IconUserCheck className="w-4 h-4" />
         <span>Tinjau Pelamar {newApplicantsCount > 0 ? `(${newApplicantsCount})` : ""}</span>
       </Link>
 
@@ -22,7 +23,7 @@ export default function DashboardQuickActions({
         href="/admin/karir"
         className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-gray-50 text-gray-800 font-semibold text-xs border border-gray-200 shadow-2xs transition active:scale-95 cursor-pointer"
       >
-        <span className="material-symbols-outlined text-base">add_circle</span>
+        <IconPlusCircle className="w-4 h-4 text-gray-600" />
         <span>Tambah Lowongan</span>
       </Link>
 
@@ -30,7 +31,7 @@ export default function DashboardQuickActions({
         href="/admin/momen"
         className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-gray-50 text-gray-800 font-semibold text-xs border border-gray-200 shadow-2xs transition active:scale-95 cursor-pointer"
       >
-        <span className="material-symbols-outlined text-base">add_photo_alternate</span>
+        <IconImagePlus className="w-4 h-4 text-gray-600" />
         <span>Tambah Momen</span>
       </Link>
     </div>

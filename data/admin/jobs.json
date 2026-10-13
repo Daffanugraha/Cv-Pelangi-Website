@@ -5,7 +5,7 @@
     "division": "Finance",
     "type": "Full-Time (WFO)",
     "location": "Bizpark C17-C19, Sidoarjo",
-    "isOpen": true,
+    "isOpen": false,
     "qualifications": [
       "Pendidikan minimal D3 / S1 Jurusan Pajak atau Akuntansi.",
       "Usia maksimal 35 tahun.",
@@ -29,7 +29,7 @@
     "division": "Warehouse",
     "type": "Full-Time (WFO)",
     "location": "Bizpark C17-C19, Sidoarjo",
-    "isOpen": true,
+    "isOpen": false,
     "qualifications": [
       "Pendidikan minimal SMA / SMK / D3 segala jurusan.",
       "Usia maksimal 30 tahun, kondisi fisik prima.",
@@ -51,7 +51,7 @@
     "division": "Marketing",
     "type": "Full-Time (WFO & Field)",
     "location": "Bizpark C17-C19, Sidoarjo",
-    "isOpen": true,
+    "isOpen": false,
     "qualifications": [
       "Pendidikan minimal D3 / S1 semua jurusan (diutamakan Komunikasi / Manajemen / Grafika).",
       "Usia maksimal 32 tahun.",

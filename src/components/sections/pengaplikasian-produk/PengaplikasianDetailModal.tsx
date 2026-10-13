@@ -2,6 +2,7 @@
 
 import React, { useEffect } from "react";
 import { GalleryProduct } from "@/lib/data/galleryProducts";
+import { IconX, IconSliders, IconCheckCircle, IconMessage } from "@/components/ui/Icons";
 
 interface PengaplikasianDetailModalProps {
   product: GalleryProduct | null;
@@ -48,7 +49,7 @@ export default function PengaplikasianDetailModal({
           aria-label="Tutup detail modal"
           className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-black/60 hover:bg-bracket-border text-white flex items-center justify-center transition cursor-pointer backdrop-blur-md"
         >
-          <span className="material-symbols-outlined text-xl">close</span>
+          <IconX className="w-5 h-5 text-white" />
         </button>
 
         {/* Modal Image Hero */}
@@ -104,9 +105,7 @@ export default function PengaplikasianDetailModal({
           <div className="bg-surface-container-low rounded-2xl p-5 sm:p-6 border border-surface-container-high space-y-4">
             <div className="flex items-center justify-between pb-3 border-b border-surface-container">
               <p className="text-xs font-bold text-on-surface uppercase tracking-wider flex items-center gap-2 font-mono">
-                <span className="material-symbols-outlined text-bracket-border text-lg">
-                  tune
-                </span>
+                <IconSliders className="w-4 h-4 text-bracket-border" />
                 Spesifikasi Teknis &amp; Rekomendasi Finishing
               </p>
               <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-surface-container text-text-muted border border-surface-container-high hidden sm:inline-block">
@@ -157,7 +156,7 @@ export default function PengaplikasianDetailModal({
             {/* 3. Hasil Akhir & Keunggulan Produk (Customer-Centric) */}
             <div className="bg-surface-container-lowest p-4 rounded-xl border border-surface-container text-xs space-y-1.5">
               <span className="text-[11px] font-bold text-gray-800 uppercase tracking-wider flex items-center gap-1.5 font-mono">
-                <span className="material-symbols-outlined text-emerald-600 text-base">verified</span>
+                <IconCheckCircle className="w-4 h-4 text-emerald-600" />
                 Karakteristik Hasil Akhir &amp; Ketahanan:
               </span>
               <p className="text-on-surface leading-relaxed text-xs sm:text-[13px] font-sans">
@@ -178,7 +177,7 @@ export default function PengaplikasianDetailModal({
               rel="noopener noreferrer"
               className="w-full sm:flex-1 py-3.5 px-6 rounded-full bg-action-whatsapp hover:bg-action-whatsapp-hover text-white font-bold text-xs flex items-center justify-center gap-2 shadow-lg shadow-action-whatsapp/30 transition active:scale-95"
             >
-              <span className="material-symbols-outlined text-lg">chat</span>
+              <IconMessage className="w-4 h-4 text-white" />
               <span>Konsultasi Produk Ini via WhatsApp</span>
             </a>
             <button

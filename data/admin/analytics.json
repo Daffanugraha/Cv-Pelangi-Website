@@ -1,17 +1,11 @@
 {
-  "totalPageviews": 10,
-  "uniqueVisitors": 1,
+  "totalPageviews": 15,
+  "uniqueVisitors": 5,
   "todayViews": 0,
   "todayVisitors": 0,
   "avgDailyViews": 0,
   "growthRate": 0,
   "dailyStats": [
-    {
-      "date": "2026-09-11",
-      "label": "Jum, 11 Sep",
-      "pageviews": 0,
-      "visitors": 0
-    },
     {
       "date": "2026-09-12",
       "label": "Sab, 12 Sep",
@@ -185,64 +179,105 @@
       "label": "Sen, 12 Okt",
       "pageviews": 10,
       "visitors": 2
+    },
+    {
+      "date": "2026-10-13",
+      "label": "Sel, 13 Okt",
+      "pageviews": 5,
+      "visitors": 6
     }
   ],
   "topPages": [
     {
-      "path": "/kontak",
-      "title": "Kontak & Lokasi Bizpark Sidoarjo",
-      "views": 2,
-      "percentage": 20
+      "path": "/",
+      "title": "Beranda CV Pelangi UV",
+      "views": 6,
+      "percentage": 40
     },
     {
       "path": "/karir",
       "title": "Karir & Lowongan Kerja",
-      "views": 2,
+      "views": 3,
       "percentage": 20
     },
     {
-      "path": "/",
-      "title": "Beranda CV Pelangi UV",
+      "path": "/kontak",
+      "title": "Kontak & Lokasi Bizpark Sidoarjo",
       "views": 2,
-      "percentage": 20
+      "percentage": 13
     },
     {
       "path": "/galeri/pengaplikasian-produk",
       "title": "Halaman /galeri/pengaplikasian-produk",
       "views": 1,
-      "percentage": 10
+      "percentage": 7
     },
     {
       "path": "/galeri/momen",
       "title": "Halaman /galeri/momen",
       "views": 1,
-      "percentage": 10
+      "percentage": 7
     },
     {
       "path": "/layanan",
       "title": "Layanan Finishing Cetak",
       "views": 1,
-      "percentage": 10
+      "percentage": 7
     },
     {
       "path": "/produk/bahan-baku",
       "title": "Grosir Roll Foil & Bahan Baku",
       "views": 1,
-      "percentage": 10
+      "percentage": 7
     }
   ],
   "devices": {
     "mobile": 0,
-    "desktop": 10,
+    "desktop": 15,
     "tablet": 0
   },
   "sources": {
-    "direct": 10,
+    "direct": 15,
     "search": 0,
     "whatsapp": 0,
     "instagram": 0
   },
   "recentVisits": [
+    {
+      "id": "v_1791856029121",
+      "path": "/karir",
+      "timestamp": "Baru saja",
+      "device": "desktop",
+      "referrer": "Direct"
+    },
+    {
+      "id": "v_1791855074423",
+      "path": "/",
+      "timestamp": "Baru saja",
+      "device": "desktop",
+      "referrer": "Direct"
+    },
+    {
+      "id": "v_1791854863552",
+      "path": "/",
+      "timestamp": "Baru saja",
+      "device": "desktop",
+      "referrer": "Direct"
+    },
+    {
+      "id": "v_1791854557259",
+      "path": "/",
+      "timestamp": "Baru saja",
+      "device": "desktop",
+      "referrer": "Direct"
+    },
+    {
+      "id": "v_1791854453627",
+      "path": "/",
+      "timestamp": "Baru saja",
+      "device": "desktop",
+      "referrer": "Direct"
+    },
     {
       "id": "v_1791788946624",
       "path": "/",
@@ -315,11 +350,19 @@
     }
   ],
   "visitorIds": [
-    "v_p93etpz1mv0lvvr4"
+    "v_p93etpz1mv0lvvr4",
+    "v_yzadoo7tmv5zus7y",
+    "v_xgfpe2m4mv5zxm76",
+    "v_4smmmrrbmv6042bz",
+    "v_h3s3xc50mv608jaw"
   ],
   "todayVisitorIds": {
-    "date": "2026-10-12",
+    "date": "2026-10-13",
     "ids": [
+      "v_yzadoo7tmv5zus7y",
+      "v_xgfpe2m4mv5zxm76",
+      "v_4smmmrrbmv6042bz",
+      "v_h3s3xc50mv608jaw",
       "v_p93etpz1mv0lvvr4"
     ]
   }
