@@ -190,16 +190,6 @@ export default function ProductsSection() {
     };
   }, [activeTab]);
 
-  const handlePrev = () => {
-    if (!containerRef.current) return;
-    containerRef.current.scrollBy({ left: -390, behavior: "smooth" });
-  };
-
-  const handleNext = () => {
-    if (!containerRef.current) return;
-    containerRef.current.scrollBy({ left: 390, behavior: "smooth" });
-  };
-
   return (
     <section
       className="w-full bg-surface-neutral-alt py-16 lg:py-24 relative overflow-hidden"
@@ -219,8 +209,8 @@ export default function ProductsSection() {
             </h2>
             <p className="font-body-md text-text-muted text-sm sm:text-base mt-1.5 max-w-2xl leading-relaxed">
               {activeTab === "jasa"
-                ? "Solusi finishing pasca-cetak berpresisi tinggi dengan kapasitas industri langsung dari Bizpark Sidoarjo."
-                : "Pusat grosir distributor resmi bahan baku finishing impor langsung dari pabrik."}
+                ? "Solusi finishing pasca-cetak berpresisi tinggi dengan kapasitas industri untuk mutu kemasan dan cetakan komersial."
+                : "Pusat grosir dan distributor resmi bahan baku finishing impor berkualitas tinggi untuk kebutuhan industri percetakan."}
             </p>
           </div>
 
@@ -242,7 +232,7 @@ export default function ProductsSection() {
                     : "text-text-body hover:text-secondary-container font-medium"
                 }`}
               >
-                Layanan Finishing (5)
+                Layanan Finishing (13)
               </button>
               <button
                 type="button"
@@ -257,31 +247,7 @@ export default function ProductsSection() {
                     : "text-text-body hover:text-secondary-container font-medium"
                 }`}
               >
-                Bahan Baku Finishing (4)
-              </button>
-            </div>
-
-            {/* Prev & Next Navigation Arrows */}
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={handlePrev}
-                aria-label="Geser ke kiri"
-                className="w-10 h-10 rounded-full bg-surface-canvas border border-surface-container hover:bg-secondary-container hover:text-white text-on-surface flex items-center justify-center transition-all duration-200 shadow-xs active:scale-95 cursor-pointer"
-              >
-                <span translate="no" className="material-symbols-outlined notranslate text-[20px]">
-                  chevron_left
-                </span>
-              </button>
-              <button
-                type="button"
-                onClick={handleNext}
-                aria-label="Geser ke kanan"
-                className="w-10 h-10 rounded-full bg-surface-canvas border border-surface-container hover:bg-secondary-container hover:text-white text-on-surface flex items-center justify-center transition-all duration-200 shadow-xs active:scale-95 cursor-pointer"
-              >
-                <span translate="no" className="material-symbols-outlined notranslate text-[20px]">
-                  chevron_right
-                </span>
+                Bahan Baku Finishing (4 Kategori)
               </button>
             </div>
           </div>
