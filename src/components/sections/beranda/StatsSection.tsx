@@ -53,7 +53,7 @@ export default function StatsSection() {
 
   return (
     <section
-      id="tentang-kami"
+      id="statistik"
       style={{ scrollMarginTop: "80px" }}
       className="w-full bg-surface-canvas py-space-2xl relative"
       ref={containerRef}

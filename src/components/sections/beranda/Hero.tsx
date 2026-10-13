@@ -116,9 +116,10 @@ export default function Hero() {
 
   return (
     <section
-      className="relative w-full min-h-[90vh] lg:min-h-[96vh] flex flex-col justify-between overflow-hidden bg-navbar-black pt-2 lg:pt-4"
-      id="beranda"
+      className="relative w-full min-h-[90vh] lg:min-h-[96vh] flex flex-col justify-between overflow-hidden bg-navbar-black pt-2 lg:pt-4 scroll-mt-24"
+      id="tentang-kami"
     >
+      <div id="beranda" className="sr-only" />
       {/* Factory Motion Simulated Visual Plate */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-32 -left-32 w-[520px] h-[520px] rounded-full bg-bracket-border/20 filter blur-3xl anim-aura pointer-events-none z-0"></div>
