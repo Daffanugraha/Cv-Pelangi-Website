@@ -28,17 +28,22 @@ export default function BlogHero() {
   }, []);
 
   return (
-    <section className="w-full relative overflow-hidden bg-navbar-black text-surface pt-8 pb-20 lg:pt-10 lg:pb-28">
-      {/* Background Image with Cinematic Industrial Overlay */}
-      <div className="absolute inset-0 z-0">
-        <div
-          className="w-full h-full bg-cover bg-center opacity-40 scale-105 transform transition-transform duration-1000"
-          style={{
-            backgroundImage: `url('https://lh3.googleusercontent.com/aida-public/AB6AXuAu_3av_j9Z3yGYR5UJNR4-DZ5SOCPk5mpHkoAN_5vQTsS475BWc3Otxy_TBK6sWAlq5UhvDwieFm3zTF3q95ufB5tDWfDAUbQ5orIM_PiaVNkqPjyV5Y5cYBZ9vFqv-hc-wbEtgwlwS3ODaMhWgnEmo3SV4hnIUGGIbfZ6f5hu6CI2qs8XKLORLDEVeUCXFo9ZmP5R8N7O4u0jd73SarVlNomhuI3g7HEhmcWxWTt5nKQqBux-VKrQ')`,
-          }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-navbar-black via-navbar-black/95 to-navbar-black/80" />
-        <div className="absolute inset-0 bg-gradient-to-t from-navbar-black via-transparent to-navbar-black/50" />
+    <section className="w-full relative overflow-hidden bg-[#0B0B0B] text-surface pt-8 pb-20 lg:pt-10 lg:pb-28">
+      {/* Cinematic Video Background (Bright & Clearly Visible) */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          className="w-full h-full object-cover transform scale-105 brightness-[0.98] contrast-[1.05]"
+        >
+          <source src="/videos/video-blog.mp4" type="video/mp4" />
+        </video>
+        {/* Soft elegant gradient overlays - transparent enough so video shines through brightly */}
+        <div className="absolute inset-0 bg-gradient-to-r from-navbar-black/80 via-navbar-black/45 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0B0B0B]/85 via-transparent to-[#0B0B0B]/35" />
       </div>
 
       <div className="relative z-10 max-w-[1440px] mx-auto px-6 lg:px-20">
