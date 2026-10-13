@@ -112,34 +112,6 @@ export default function ContactHero() {
               {/* Subtle top glow line */}
               <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-[#25D366] to-transparent opacity-75" />
 
-              {/* Header Card: Support Agent & Online Badge */}
-              <div className="flex items-center justify-between gap-4 mb-6 relative z-10 pb-5 border-b border-white/10">
-                <div className="flex items-center gap-3.5">
-                  <div className="relative">
-                    <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 text-white flex items-center justify-center shadow-inner group-hover:scale-105 transition-transform duration-300">
-                      <span translate="no" className="material-symbols-outlined notranslate text-[24px] text-white">
-                        support_agent
-                      </span>
-                    </div>
-                    {/* Pulsing Green Online Indicator */}
-                    <span className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-[#25D366] rounded-full border-2 border-[#141518] flex items-center justify-center">
-                      <span className="w-1.5 h-1.5 bg-white rounded-full animate-ping opacity-75" />
-                    </span>
-                  </div>
-                  <div>
-                    <h2 className="text-sm font-label-meta font-bold text-white tracking-wide">
-                      {t("contact_hero_hotline_title")}
-                    </h2>
-                  </div>
-                </div>
-
-                {/* Status Pill */}
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#25D366]/10 border border-[#25D366]/30 text-[#25D366] text-[11px] font-semibold tracking-wide">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#25D366] animate-pulse" />
-                  <span>Online</span>
-                </div>
-              </div>
-
               {/* Direct Phone Link (Klik langsung mengarah ke WhatsApp) */}
               <div className="mb-3 relative z-10">
                 <span className="block text-[11px] font-semibold text-zinc-400 uppercase tracking-wider mb-1.5">
@@ -154,16 +126,25 @@ export default function ContactHero() {
                   target="_blank"
                 >
                   <span>+62 822-3101-9363</span>
-                  <span translate="no" className="material-symbols-outlined notranslate text-[20px] text-zinc-400 group-hover/link:text-[#25D366] transition-colors">
-                    open_in_new
-                  </span>
+                  <span className="text-[#25D366] text-xl">↗</span>
                 </a>
               </div>
 
               {/* Brief Description */}
-              <p className="text-xs text-zinc-300 leading-relaxed relative z-10">
+              <p className="text-xs text-zinc-300 leading-relaxed relative z-10 mb-4">
                 Diskusikan langsung file cetak, alternatif finishing Spot UV / Foil, kalkulasi oplah efisien, atau kirim sampel fisik ke workshop Anda.
               </p>
+
+              <a
+                href={`https://wa.me/6282231019363?text=${encodeURIComponent(
+                  "Halo Customer Service CV Pelangi UV, saya ingin konsultasi seputar layanan finishing cetak dan produk percetakan. Boleh dibantu informasinya? Terima kasih."
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-3 px-5 rounded-full bg-[#25D366] hover:bg-[#1EBE5D] text-white text-xs sm:text-sm font-bold flex items-center justify-center gap-2 shadow-md transition-all active:scale-95 relative z-10"
+              >
+                Chat WhatsApp Sekarang
+              </a>
             </div>
           </div>
         </div>
