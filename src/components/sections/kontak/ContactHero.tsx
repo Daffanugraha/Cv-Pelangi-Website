@@ -54,7 +54,7 @@ export default function ContactHero() {
           poster="https://lh3.googleusercontent.com/aida-public/AB6AXuCsVUIE6UdWFrPCNnSsuLQtBRP2KgbEsCOO_bkna9IveJIUt8Sp_Gb68Q3pu1ohnQNSEC26hors_8KEwfMbs5sTKFsq9wL2kNVRAYY0-qSPLP4dqa9IC5HFFtgC0XzXVgYDDi7yYEX21idpkmONAmV1U5xKd4aJvlUKsFSBAlVrGnn8fnyfPkSgVC14gizg-8h4yfJSMStp0WYpC8UhbzYTWFnFX_H2zrrLz_XjuiQZhgAejkgHNJBq"
         >
           <source
-            src="/videos/video-beranda.mp4"
+            src="/videos/video-marketing.mp4"
             type="video/mp4"
           />
         </video>
