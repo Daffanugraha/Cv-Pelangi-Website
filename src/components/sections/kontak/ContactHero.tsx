@@ -43,23 +43,23 @@ export default function ContactHero() {
 
   return (
     <section className="w-full bg-[#0B0B0B] text-white pt-12 pb-20 lg:pt-20 lg:pb-28 relative overflow-hidden">
-      {/* Cinematic Print Facility Workshop Backdrop */}
+      {/* Cinematic Print Facility Workshop Backdrop (Bright & Clearly Visible) */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <video
           autoPlay
           loop
           muted
           playsInline
-          className="w-full h-full object-cover scale-105 opacity-30 filter brightness-75 contrast-125"
-          poster="https://lh3.googleusercontent.com/aida-public/AB6AXuCsVUIE6UdWFrPCNnSsuLQtBRP2KgbEsCOO_bkna9IveJIUt8Sp_Gb68Q3pu1ohnQNSEC26hors_8KEwfMbs5sTKFsq9wL2kNVRAYY0-qSPLP4dqa9IC5HFFtgC0XzXVgYDDi7yYEX21idpkmONAmV1U5xKd4aJvlUKsFSBAlVrGnn8fnyfPkSgVC14gizg-8h4yfJSMStp0WYpC8UhbzYTWFnFX_H2zrrLz_XjuiQZhgAejkgHNJBq"
+          className="w-full h-full object-cover transform scale-105 brightness-[0.95] contrast-[1.05]"
         >
           <source
             src="/videos/video-marketing.mp4"
             type="video/mp4"
           />
         </video>
-        <div className="absolute inset-0 bg-gradient-to-r from-navbar-black via-[#0B0B0B]/95 to-navbar-black/90" />
-        <div className="absolute inset-0 bg-gradient-to-b from-navbar-dark/90 via-transparent to-[#0B0B0B]" />
+        {/* Soft elegant gradient overlays - transparent enough so video shines through */}
+        <div className="absolute inset-0 bg-gradient-to-r from-navbar-black/80 via-navbar-black/40 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0B0B0B]/90 via-transparent to-[#0B0B0B]/40" />
       </div>
 
       <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
