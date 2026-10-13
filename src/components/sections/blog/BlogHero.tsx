@@ -39,7 +39,7 @@ export default function BlogHero() {
           preload="auto"
           className="w-full h-full object-cover transform scale-105 brightness-[0.98] contrast-[1.05]"
         >
-          <source src="/videos/video-blog.mp4" type="video/mp4" />
+          <source src="/videos/hero/video-blog.mp4" type="video/mp4" />
         </video>
         {/* Soft elegant gradient overlays - transparent enough so video shines through brightly */}
         <div className="absolute inset-0 bg-gradient-to-r from-navbar-black/80 via-navbar-black/45 to-transparent" />

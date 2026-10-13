@@ -123,7 +123,7 @@ export default function KarirHero({
       {/* Background Gambar Galeri Momen (Employee Gathering & Kebersamaan Tim) - Lebih Terang & Jelas */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <img
-          src="/images/gathering-2023/gathering-2023-1.jpg"
+          src="/images/momen/gathering-2023/gathering-2023-1.jpg"
           alt="Latar Belakang Galeri Momen & Kebersamaan Tim CV Pelangi UV"
           className="w-full h-full object-cover object-center transform scale-105 brightness-[0.65] contrast-[1.10]"
         />

@@ -5,7 +5,7 @@ export default function LayananHero() {
     <section className="relative w-full overflow-hidden bg-navbar-black text-on-primary rounded-b-[48px]">
       <div className="absolute inset-0 overflow-hidden pointer-events-none -z-0 bg-navbar-black">
         <video autoPlay loop muted playsInline preload="auto" className="w-full h-full object-cover scale-105 opacity-45 filter brightness-90 contrast-105">
-          <source src="/videos/video-layanan.mp4" type="video/mp4" />
+          <source src="/videos/hero/video-layanan.mp4" type="video/mp4" />
         </video>
         <div className="absolute inset-0 bg-gradient-to-b from-navbar-black/90 via-navbar-black/75 to-navbar-black" style={{ background: "linear-gradient(rgba(10, 12, 16, 0.75) 0%, rgba(15, 17, 23, 0.88) 100%)" }} />
       </div>

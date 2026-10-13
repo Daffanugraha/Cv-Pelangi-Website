@@ -39,7 +39,7 @@ export default function PengaplikasianHero() {
           preload="auto"
           className="w-full h-full object-cover scale-105 opacity-75 filter brightness-100 contrast-105"
         >
-          <source src="/videos/video-pengaplikasian.mp4" type="video/mp4" />
+          <source src="/videos/hero/video-pengaplikasian.mp4" type="video/mp4" />
         </video>
         {/* Soft balanced gradient overlay - clear video visibility */}
         <div className="absolute inset-0 bg-gradient-to-t from-navbar-black/90 via-navbar-black/35 to-navbar-black/55" />

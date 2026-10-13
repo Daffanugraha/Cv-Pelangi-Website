@@ -105,7 +105,7 @@ export default function BahanBakuHero({
           playsInline
           className="w-full h-full object-cover transform scale-110 brightness-[0.65] contrast-[1.15]"
         >
-          <source src="/videos/video-bahan-baku.mp4" type="video/mp4" />
+          <source src="/videos/hero/video-bahan-baku.mp4" type="video/mp4" />
         </video>
         {/* Subtle Vignette & Gradient Overlays for Text Legibility */}
         <div className="absolute inset-0 bg-gradient-to-r from-navbar-black/90 via-navbar-black/45 to-navbar-black/85" />

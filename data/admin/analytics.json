@@ -1,6 +1,6 @@
 {
-  "totalPageviews": 15,
-  "uniqueVisitors": 5,
+  "totalPageviews": 25,
+  "uniqueVisitors": 6,
   "todayViews": 0,
   "todayVisitors": 0,
   "avgDailyViews": 0,
@@ -183,66 +183,142 @@
     {
       "date": "2026-10-13",
       "label": "Sel, 13 Okt",
-      "pageviews": 5,
-      "visitors": 6
+      "pageviews": 15,
+      "visitors": 7
     }
   ],
   "topPages": [
     {
       "path": "/",
       "title": "Beranda CV Pelangi UV",
-      "views": 6,
-      "percentage": 40
-    },
-    {
-      "path": "/karir",
-      "title": "Karir & Lowongan Kerja",
-      "views": 3,
-      "percentage": 20
+      "views": 7,
+      "percentage": 28
     },
     {
       "path": "/kontak",
       "title": "Kontak & Lokasi Bizpark Sidoarjo",
-      "views": 2,
-      "percentage": 13
+      "views": 5,
+      "percentage": 20
     },
     {
-      "path": "/galeri/pengaplikasian-produk",
-      "title": "Halaman /galeri/pengaplikasian-produk",
-      "views": 1,
-      "percentage": 7
-    },
-    {
-      "path": "/galeri/momen",
-      "title": "Halaman /galeri/momen",
-      "views": 1,
-      "percentage": 7
-    },
-    {
-      "path": "/layanan",
-      "title": "Layanan Finishing Cetak",
-      "views": 1,
-      "percentage": 7
+      "path": "/karir",
+      "title": "Karir & Lowongan Kerja",
+      "views": 4,
+      "percentage": 16
     },
     {
       "path": "/produk/bahan-baku",
       "title": "Grosir Roll Foil & Bahan Baku",
+      "views": 2,
+      "percentage": 8
+    },
+    {
+      "path": "/layanan",
+      "title": "Layanan Finishing Cetak",
+      "views": 2,
+      "percentage": 8
+    },
+    {
+      "path": "/galeri/pengaplikasian-produk",
+      "title": "Halaman /galeri/pengaplikasian-produk",
+      "views": 2,
+      "percentage": 8
+    },
+    {
+      "path": "/galeri/momen",
+      "title": "Halaman /galeri/momen",
+      "views": 2,
+      "percentage": 8
+    },
+    {
+      "path": "/blog",
+      "title": "Artikel & Wawasan Percetakan",
       "views": 1,
-      "percentage": 7
+      "percentage": 4
     }
   ],
   "devices": {
     "mobile": 0,
-    "desktop": 15,
+    "desktop": 25,
     "tablet": 0
   },
   "sources": {
-    "direct": 15,
+    "direct": 25,
     "search": 0,
     "whatsapp": 0,
     "instagram": 0
   },
   "recentVisits": [
+    {
+      "id": "v_1791860008727",
+      "path": "/blog",
+      "timestamp": "Baru saja",
+      "device": "desktop",
+      "referrer": "Direct"
+    },
+    {
+      "id": "v_1791859939507",
+      "path": "/kontak",
+      "timestamp": "Baru saja",
+      "device": "desktop",
+      "referrer": "Direct"
+    },
+    {
+      "id": "v_1791859938076",
+      "path": "/",
+      "timestamp": "Baru saja",
+      "device": "desktop",
+      "referrer": "Direct"
+    },
+    {
+      "id": "v_1791859936675",
+      "path": "/karir",
+      "timestamp": "Baru saja",
+      "device": "desktop",
+      "referrer": "Direct"
+    },
+    {
+      "id": "v_1791859932396",
+      "path": "/galeri/momen",
+      "timestamp": "Baru saja",
+      "device": "desktop",
+      "referrer": "Direct"
+    },
+    {
+      "id": "v_1791859930552",
+      "path": "/galeri/pengaplikasian-produk",
+      "timestamp": "Baru saja",
+      "device": "desktop",
+      "referrer": "Direct"
+    },
+    {
+      "id": "v_1791859868345",
+      "path": "/kontak",
+      "timestamp": "Baru saja",
+      "device": "desktop",
+      "referrer": "Direct"
+    },
+    {
+      "id": "v_1791859865383",
+      "path": "/layanan",
+      "timestamp": "Baru saja",
+      "device": "desktop",
+      "referrer": "Direct"
+    },
+    {
+      "id": "v_1791859863752",
+      "path": "/produk/bahan-baku",
+      "timestamp": "Baru saja",
+      "device": "desktop",
+      "referrer": "Direct"
+    },
+    {
+      "id": "v_1791859862322",
+      "path": "/kontak",
+      "timestamp": "Baru saja",
+      "device": "desktop",
+      "referrer": "Direct"
+    },
     {
       "id": "v_1791856029121",
       "path": "/karir",
@@ -312,41 +388,6 @@
       "timestamp": "Baru saja",
       "device": "desktop",
       "referrer": "Direct"
-    },
-    {
-      "id": "v_1791787448992",
-      "path": "/galeri/momen",
-      "timestamp": "Baru saja",
-      "device": "desktop",
-      "referrer": "Direct"
-    },
-    {
-      "id": "v_1791787445361",
-      "path": "/galeri/pengaplikasian-produk",
-      "timestamp": "Baru saja",
-      "device": "desktop",
-      "referrer": "Direct"
-    },
-    {
-      "id": "v_1791787403021",
-      "path": "/",
-      "timestamp": "Baru saja",
-      "device": "desktop",
-      "referrer": "Direct"
-    },
-    {
-      "id": "v_1791787399135",
-      "path": "/kontak",
-      "timestamp": "Baru saja",
-      "device": "desktop",
-      "referrer": "Direct"
-    },
-    {
-      "id": "v_1791787396697",
-      "path": "/karir",
-      "timestamp": "Baru saja",
-      "device": "desktop",
-      "referrer": "Direct"
     }
   ],
   "visitorIds": [
@@ -354,7 +395,8 @@
     "v_yzadoo7tmv5zus7y",
     "v_xgfpe2m4mv5zxm76",
     "v_4smmmrrbmv6042bz",
-    "v_h3s3xc50mv608jaw"
+    "v_h3s3xc50mv608jaw",
+    "v_vg80cuzamv633ejz"
   ],
   "todayVisitorIds": {
     "date": "2026-10-13",
@@ -363,7 +405,8 @@
       "v_xgfpe2m4mv5zxm76",
       "v_4smmmrrbmv6042bz",
       "v_h3s3xc50mv608jaw",
-      "v_p93etpz1mv0lvvr4"
+      "v_p93etpz1mv0lvvr4",
+      "v_vg80cuzamv633ejz"
     ]
   }
 }

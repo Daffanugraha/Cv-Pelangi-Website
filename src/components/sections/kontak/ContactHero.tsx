@@ -53,7 +53,7 @@ export default function ContactHero() {
           className="w-full h-full object-cover transform scale-105 brightness-[0.95] contrast-[1.05]"
         >
           <source
-            src="/videos/video-marketing.mp4"
+            src="/videos/hero/video-kontak.mp4"
             type="video/mp4"
           />
         </video>

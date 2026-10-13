@@ -47,7 +47,7 @@ export default function GaleriMomenHero() {
         <img
           alt="Fasilitas Workshop CV Pelangi UV"
           className="w-full h-full object-cover opacity-20 -z-10"
-          src="/images/momen-hero-backdrop.jpg"
+          src="/images/momen/momen-hero-backdrop.jpg"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-[#0d0e11]/45 via-black/35 to-[#0d0e11]/95" />
         <div className="absolute -top-32 -right-32 w-96 h-96 rounded-full bg-bracket-border/10 blur-3xl" />
