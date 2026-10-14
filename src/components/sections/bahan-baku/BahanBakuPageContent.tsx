@@ -66,7 +66,7 @@ export default function BahanBakuPageContent() {
           cat = window.location.hash.replace("#product-card-", "").replace("#", "");
         }
       }
-      if (cat && ["opp", "foil", "foil-stamping", "lem", "spotuv"].includes(cat)) {
+      if (cat && ["opp", "foil", "lem", "spotuv"].includes(cat)) {
         handleSelectCategoryCard(cat);
       }
     };

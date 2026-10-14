@@ -24,8 +24,8 @@ export default function BahanBakuSampleModal({
   const [extraNotes, setExtraNotes] = useState("");
 
   useEffect(() => {
-    if (defaultCategory === "foil" || defaultCategory === "foil-stamping") {
-      setSelectedSamples(["Hot & Cold Stamping Foil (Gold, Silver, Hologram)"]);
+    if (defaultCategory === "foil") {
+      setSelectedSamples(["Bahan Baku Foil (Gold, Silver, Hologram)"]);
     } else if (defaultCategory === "lem") {
       setSelectedSamples(["Sampel Lem Wet & Dry Laminating"]);
     } else if (defaultCategory === "spotuv") {

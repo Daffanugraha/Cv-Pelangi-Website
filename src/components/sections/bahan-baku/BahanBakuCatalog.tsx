@@ -12,7 +12,6 @@ interface BahanBakuCatalogProps {
 const categoryIcons: Record<string, string> = {
   opp: "filter_frames",
   foil: "auto_awesome",
-  "foil-stamping": "local_fire_department",
   lem: "water_drop",
   spotuv: "brush",
 };
@@ -384,8 +383,6 @@ export default function BahanBakuCatalog({
                     ? "Film OPP / BOPP"
                     : cat.id === "foil"
                     ? "Foil"
-                    : cat.id === "foil-stamping"
-                    ? "Foil Stamping"
                     : cat.id === "lem"
                     ? "Lem Laminasi"
                     : "Spot UV Varnish"}

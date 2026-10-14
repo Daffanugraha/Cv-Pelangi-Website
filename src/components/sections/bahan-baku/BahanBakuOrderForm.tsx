@@ -13,8 +13,15 @@ const RAW_MATERIALS_DATA: Record<
   string,
   { name: string; variants: string[] }
 > = {
+  opp: {
+    name: "1. Film BOPP / OPP Thermal & Waterbase (Doff / Glossy)",
+    variants: [
+      "Semua Varian Film BOPP (Doff & Glossy)",
+      ...(rawMaterialCategories.find((c) => c.id === "opp")?.items.map((i) => i.name) || []),
+    ],
+  },
   foil: {
-    name: "1. Foil (Gold, Silver, Hologram, Transparan & Putih BO1)",
+    name: "2. Foil (Gold, Silver, Hologram, Transparan & Putih BO1)",
     variants: [
       "Semua Varian Foil (Gold, Silver, Hologram, Transparan)",
       ...(rawMaterialCategories.find((c) => c.id === "foil")?.items.map((i) => i.name) || [
@@ -28,30 +35,8 @@ const RAW_MATERIALS_DATA: Record<
       ]),
     ],
   },
-  "foil-stamping": {
-    name: "2. Hot & Cold Foil Stamping (Roll 120M High Precision)",
-    variants: [
-      "Semua Varian Foil Stamping (Gold, Silver, Hologram Laser)",
-      ...(rawMaterialCategories.find((c) => c.id === "foil-stamping")?.items.map((i) => i.name) || [
-        "Gold 120M High Precision",
-        "Silver 120M High Precision",
-        "Warna - Warni 120M (Red, Blue, Green, Copper)",
-        "Gold & Silver Hologram Laser",
-        "Transparan 120M (Security Ghost Stamp)",
-        "Putih BO1 (Pigment White Stamp)",
-        "White BO1 (Extra Width Roll)",
-      ]),
-    ],
-  },
-  opp: {
-    name: "3. Film BOPP Thermal & Waterbase (Doff / Glossy)",
-    variants: [
-      "Semua Varian Film BOPP (Doff & Glossy)",
-      ...(rawMaterialCategories.find((c) => c.id === "opp")?.items.map((i) => i.name) || []),
-    ],
-  },
   lem: {
-    name: "4. Lem Laminating Industri (Wet & Dry Emulsi)",
+    name: "3. Lem Laminating Industri (Wet & Dry Emulsi)",
     variants: [
       "Semua Varian Lem Laminating (Wet & Dry)",
       ...(rawMaterialCategories.find((c) => c.id === "lem")?.items.map((i) => i.name) || []),
@@ -236,7 +221,7 @@ export default function BahanBakuOrderForm({
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div className="flex flex-col gap-2">
                 <label className="font-label-nav text-xs sm:text-sm font-bold text-on-surface flex items-center gap-1.5">
-                  Pilihan Bahan Baku Finishing (5 Kategori) <span className="text-primary text-sm">*</span>
+                  Pilihan Bahan Baku Finishing (4 Kategori) <span className="text-primary text-sm">*</span>
                 </label>
                 <select
                   id="quote-category"
@@ -244,11 +229,10 @@ export default function BahanBakuOrderForm({
                   onChange={(e) => handleCategoryChange(e.target.value)}
                   className="w-full h-14 px-5 rounded-2xl bg-surface-neutral-alt border border-surface-container text-sm sm:text-base text-on-surface focus:bg-white focus:border-bracket-border focus:ring-2 focus:ring-bracket-border/20 outline-none transition-all cursor-pointer font-medium"
                 >
-                  <option value="foil">1. Foil (Gold, Silver, Hologram, Transparan &amp; Putih BO1)</option>
-                  <option value="foil-stamping">2. Hot &amp; Cold Foil Stamping (Roll 120M Presisi Mesin)</option>
-                  <option value="opp">3. Film BOPP Thermal &amp; Waterbase (Doff / Glossy)</option>
-                  <option value="lem">4. Lem Laminating Industri (Wet &amp; Dry Emulsi)</option>
-                  <option value="spotuv">5. Varnish &amp; Tinta Spot UV (Gloss, Matte &amp; Pasir)</option>
+                  <option value="opp">1. Film OPP / BOPP Thermal &amp; Waterbase (Doff / Glossy)</option>
+                  <option value="foil">2. Foil (Gold, Silver, Hologram, Transparan &amp; Putih BO1)</option>
+                  <option value="lem">3. Lem Laminating Industri (Wet &amp; Dry Emulsi)</option>
+                  <option value="spotuv">4. Varnish &amp; Tinta Spot UV (Gloss, Matte &amp; Pasir)</option>
                 </select>
               </div>
 

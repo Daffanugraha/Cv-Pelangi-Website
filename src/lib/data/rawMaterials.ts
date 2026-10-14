@@ -177,57 +177,8 @@ export const rawMaterialCategories: MaterialCategory[] = [
     ],
   },
   {
-    id: "foil-stamping",
-    num: "03",
-    tag: "Stamping Roll",
-    title: "Hot & Cold Foil Stamping",
-    shortDesc:
-      "Memberikan sentuhan kilau logam mewah emas, perak, dan hologram ornamen untuk meningkatkan nilai prestisius kemasan retail.",
-    fullDesc:
-      "Hot & Cold Stamping Foil Pelangi UV dirancang khusus untuk kemasan prestisius dan etiket segel security. Memiliki rilis lepas sangat rapi tanpa serabut pada suhu mesin optimal 100°C–120°C serta daya kilau cermin tahan pudar terhadap gesekan dan oksidasi cuaca.",
-    specsHighlight: [
-      "Standar Panjang: 120 M, 240 M, 3000 M",
-      "Suhu Transfer: 100°C - 120°C",
-      "Kompatibilitas: Silinder, Platen, & Mesin Otomatis",
-      "Pilihan: Emas, Perak, Laser Hologram, Custom",
-    ],
-    startingPrice: "Rp 186.000",
-    img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCfExHr5NtXgfBa9u2YHnpxRRPEPCE73orW9lZA_d_yzBZcitN95z8S3pGSlnw0Vc_o4jp8LEEH85ZkYlaGZx52GZ7PCxlskaWo1RA-_VT5VcXAAkmIdlpXO8dWn0DF87l1VwHTUoGFWjEatCW5qZYHk2YsveDx1oMuWaumvjNyX8Mbh2ouSnuIGC9NR0hRsKS0-W_mtnmZQU0CYudQbp5V-u9HpIbLwZd2xudSjVdWQtgj0Xiu_5T3",
-    popularVariants: [
-      "Gold & Silver 120M High Precision",
-      "Gold & Silver Hologram Laser Security",
-      "Transparan, White BO1 & Warna Custom",
-    ],
-    features: [
-      {
-        icon: "auto_awesome",
-        title: "Kilap Reflektif Cermin",
-        desc: "Pigmentasi logam murni memberikan efek emas cemerlang dan mewah pada cover.",
-      },
-      {
-        icon: "center_focus_strong",
-        title: "Lepas Rilis Presisi",
-        desc: "Sangat tajam untuk tulisan mikro dan garis tipis tanpa serabut pinggir.",
-      },
-      {
-        icon: "shield",
-        title: "Tahan Gesekan Kemasan",
-        desc: "Tidak mudah rontok atau mengelupas saat tumpuk karton dalam pengiriman.",
-      },
-    ],
-    items: [
-      { id: "foil-st-01", name: "Gold 120M High Precision", unit: "Roll (64cm x 120m)", price: "Rp 186.000", priceNumber: 186000, stockStatus: "ready" },
-      { id: "foil-st-02", name: "Silver 120M High Precision", unit: "Roll (64cm x 120m)", price: "Rp 186.000", priceNumber: 186000, stockStatus: "ready" },
-      { id: "foil-st-03", name: "Warna - Warni 120M (Red, Blue, Green, Copper)", unit: "Roll (64cm x 120m)", price: "Rp 227.000", priceNumber: 227000, stockStatus: "ready" },
-      { id: "foil-st-04", name: "Gold & Silver Hologram Laser", unit: "Roll (64cm x 120m)", price: "Rp 314.500", priceNumber: 314500, stockStatus: "ready" },
-      { id: "foil-st-05", name: "Transparan 120M (Security Ghost Stamp)", unit: "Roll (64cm x 120m)", price: "Rp 360.500", priceNumber: 360500, stockStatus: "ready" },
-      { id: "foil-st-06", name: "Putih BO1 (Pigment White Stamp)", unit: "Roll", price: "Rp 398.000", priceNumber: 398000, stockStatus: "ready" },
-      { id: "foil-st-07", name: "White BO1 (Extra Width Roll)", unit: "Roll Jumbo", price: "Rp 815.500", priceNumber: 815500, stockStatus: "ready" },
-    ],
-  },
-  {
     id: "lem",
-    num: "04",
+    num: "03",
     tag: "Adhesive Emulsion",
     title: "Lem Wet & Dry Laminating",
     shortDesc:
@@ -275,7 +226,7 @@ export const rawMaterialCategories: MaterialCategory[] = [
   },
   {
     id: "spotuv",
-    num: "05",
+    num: "04",
     tag: "UV Varnish & Ink",
     title: "Tinta & Varnish Spot UV",
     shortDesc:
