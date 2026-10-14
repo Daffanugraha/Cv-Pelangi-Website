@@ -59,6 +59,14 @@ function mapSupabaseRow(row: any): JobApplicantItem {
 export async function GET() {
   if (!isAuthenticated()) return unauthorized();
 
+  const applicantMap = new Map<string, JobApplicantItem>();
+
+  // 1. Ambil data lokal terlebih dahulu
+  for (const item of getApplicants()) {
+    applicantMap.set(item.id, item);
+  }
+
+  // 2. Timpa dan perkaya dengan data real-time dari Supabase
   try {
     const sb = getSupabaseAdmin();
     if (sb) {
@@ -67,19 +75,22 @@ export async function GET() {
         .select("*")
         .order("created_at", { ascending: false });
 
-      if (!error && Array.isArray(data) && data.length > 0) {
-        return NextResponse.json(data.map(mapSupabaseRow), {
-          headers: {
-            "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
-          },
-        });
+      if (!error && Array.isArray(data)) {
+        for (const row of data) {
+          applicantMap.set(row.id, mapSupabaseRow(row));
+        }
       }
     }
   } catch (err) {
     console.warn("[Supabase GET Applicants Fallback]:", err);
   }
 
-  return NextResponse.json(getApplicants(), {
+  // 3. Urutkan dari yang paling baru
+  const merged = Array.from(applicantMap.values()).sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  );
+
+  return NextResponse.json(merged, {
     headers: {
       "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
     },

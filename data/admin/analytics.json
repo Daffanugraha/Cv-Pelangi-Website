@@ -1,6 +1,6 @@
 {
-  "totalPageviews": 31,
-  "uniqueVisitors": 6,
+  "totalPageviews": 33,
+  "uniqueVisitors": 8,
   "todayViews": 0,
   "todayVisitors": 0,
   "avgDailyViews": 0,
@@ -183,8 +183,8 @@
     {
       "date": "2026-10-14",
       "label": "Rab, 14 Okt",
-      "pageviews": 5,
-      "visitors": 2
+      "pageviews": 7,
+      "visitors": 4
     }
   ],
   "topPages": [
@@ -192,25 +192,25 @@
       "path": "/",
       "title": "Beranda CV Pelangi UV",
       "views": 9,
-      "percentage": 29
+      "percentage": 27
     },
     {
       "path": "/kontak",
       "title": "Kontak & Lokasi Bizpark Sidoarjo",
       "views": 6,
-      "percentage": 19
+      "percentage": 18
     },
     {
       "path": "/karir",
       "title": "Karir & Lowongan Kerja",
       "views": 5,
-      "percentage": 16
+      "percentage": 15
     },
     {
       "path": "/layanan",
       "title": "Layanan Finishing Cetak",
       "views": 4,
-      "percentage": 13
+      "percentage": 12
     },
     {
       "path": "/produk/bahan-baku",
@@ -231,6 +231,12 @@
       "percentage": 6
     },
     {
+      "path": "/test-qa",
+      "title": "Halaman /test-qa",
+      "views": 2,
+      "percentage": 6
+    },
+    {
       "path": "/blog",
       "title": "Artikel & Wawasan Percetakan",
       "views": 1,
@@ -238,17 +244,31 @@
     }
   ],
   "devices": {
-    "mobile": 0,
+    "mobile": 2,
     "desktop": 31,
     "tablet": 0
   },
   "sources": {
-    "direct": 31,
+    "direct": 33,
     "search": 0,
     "whatsapp": 0,
     "instagram": 0
   },
   "recentVisits": [
+    {
+      "id": "v_1791957728360",
+      "path": "/test-qa",
+      "timestamp": "Baru saja",
+      "device": "mobile",
+      "referrer": "Direct"
+    },
+    {
+      "id": "v_1791957335323",
+      "path": "/test-qa",
+      "timestamp": "Baru saja",
+      "device": "mobile",
+      "referrer": "Direct"
+    },
     {
       "id": "v_1791946956372",
       "path": "/layanan",
@@ -374,20 +394,6 @@
       "timestamp": "Baru saja",
       "device": "desktop",
       "referrer": "Direct"
-    },
-    {
-      "id": "v_1791854863552",
-      "path": "/",
-      "timestamp": "Baru saja",
-      "device": "desktop",
-      "referrer": "Direct"
-    },
-    {
-      "id": "v_1791854557259",
-      "path": "/",
-      "timestamp": "Baru saja",
-      "device": "desktop",
-      "referrer": "Direct"
     }
   ],
   "visitorIds": [
@@ -396,12 +402,16 @@
     "v_xgfpe2m4mv5zxm76",
     "v_4smmmrrbmv6042bz",
     "v_h3s3xc50mv608jaw",
-    "v_vg80cuzamv633ejz"
+    "v_vg80cuzamv633ejz",
+    "anon_9871g3",
+    "anon_ggs0r5"
   ],
   "todayVisitorIds": {
     "date": "2026-10-14",
     "ids": [
-      "v_p93etpz1mv0lvvr4"
+      "v_p93etpz1mv0lvvr4",
+      "anon_9871g3",
+      "anon_ggs0r5"
     ]
   }
 }

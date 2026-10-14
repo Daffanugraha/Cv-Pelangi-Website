@@ -27,6 +27,14 @@ function mapSupabaseLead(row: any): LeadItem {
 export async function GET() {
   if (!isAuthenticated()) return unauthorized();
 
+  const leadMap = new Map<string, LeadItem>();
+
+  // 1. Ambil data lokal terlebih dahulu
+  for (const item of getLeads()) {
+    leadMap.set(item.id, item);
+  }
+
+  // 2. Timpa dan perkaya dengan data real-time dari Supabase
   try {
     const sb = getSupabaseAdmin();
     if (sb) {
@@ -35,19 +43,22 @@ export async function GET() {
         .select("*")
         .order("created_at", { ascending: false });
 
-      if (!error && Array.isArray(data) && data.length > 0) {
-        return NextResponse.json(data.map(mapSupabaseLead), {
-          headers: {
-            "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
-          },
-        });
+      if (!error && Array.isArray(data)) {
+        for (const row of data) {
+          leadMap.set(row.id, mapSupabaseLead(row));
+        }
       }
     }
   } catch (err) {
     console.warn("[Supabase GET Leads Fallback]:", err);
   }
 
-  return NextResponse.json(getLeads(), {
+  // 3. Urutkan dari yang paling baru
+  const merged = Array.from(leadMap.values()).sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  );
+
+  return NextResponse.json(merged, {
     headers: {
       "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
     },
