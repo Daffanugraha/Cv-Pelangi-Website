@@ -1,0 +1,35 @@
+[
+  {
+    "id": "lead_001",
+    "name": "Gunawan Wibisono",
+    "company": "PT Sinar Grafika Abadi Surabaya",
+    "phone": "081234567890",
+    "email": "gunawan@sinargrafika.co.id",
+    "service": "Layanan Jasa Finishing > Spot UV Selektif (Spot UV Pasir & Gloss)",
+    "message": "[Kuantitas: 10.000 lembar plano] [Bahan: Ivory 350gsm] Mohon info estimasi penawaran harga finishing kombinasi spot UV pasir untuk dus skincare dan kesiapan jadwal produksi.",
+    "status": "new",
+    "createdAt": "2026-10-13T23:25:48.336Z"
+  },
+  {
+    "id": "lead_002",
+    "name": "Rina Wijaya",
+    "company": "CV Surya Packaging Malang",
+    "phone": "081398765432",
+    "email": "rina.packaging@gmail.com",
+    "service": "Bahan Baku > Roll Stamping Foil (Hot Print Foil Emas & Rose Gold)",
+    "message": "[Kuantitas: 25 Roll] [Bahan: Foil 12 Micron] Memerlukan sampel swatch roll foil emas 12 micron dan info harga grosir roll per karton.",
+    "status": "contacted",
+    "createdAt": "2026-10-13T01:25:48.354Z"
+  },
+  {
+    "id": "lead_003",
+    "name": "Fandi Ahmad",
+    "company": "Kopi Nusantara Roastery Sidoarjo",
+    "phone": "085612348899",
+    "email": "fandi@kopinusantara.id",
+    "service": "Layanan Jasa Finishing > Pond & Die-Cut / Creasing (Emboss 3D)",
+    "message": "[Kuantitas: 5.000 pcs] [Bahan: Kraft Paper Laminated] Ingin konsultasi pembuatan hardbox hampers kopi dan ketepatan rel pond agar karton tebal tidak retak.",
+    "status": "sample_sent",
+    "createdAt": "2026-10-11T01:25:48.354Z"
+  }
+]

@@ -208,9 +208,9 @@ export default function ContactSection() {
     const paper = formData.paper;
     const message = formData.message.trim();
 
-    // Catat ke admin leads jika tersedia
+    // Catat ke database leads (publik)
     try {
-      fetch("/api/admin/leads", {
+      fetch("/api/leads", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
