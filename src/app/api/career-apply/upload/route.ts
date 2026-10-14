@@ -35,7 +35,8 @@ export async function POST(req: NextRequest) {
     const ext = (file.name.split(".").pop() || "").toLowerCase();
     const allowedExts = ["pdf", "doc", "docx", "zip", "rar", "jpg", "jpeg", "png", "webp"];
 
-    if (!allowedExts.includes(ext) && !allowedMime.includes(file.type)) {
+    // Validasi ketat: Ekstensi WAJIB terdaftar DAN MIME type tidak boleh file berbahaya
+    if (!allowedExts.includes(ext) || (file.type && !allowedMime.includes(file.type))) {
       return NextResponse.json(
         { error: "Format berkas tidak didukung. Harap unggah PDF, DOC, DOCX, ZIP, atau Gambar." },
         { status: 400 }

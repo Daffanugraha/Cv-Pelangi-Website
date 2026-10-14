@@ -18,39 +18,24 @@ const VALID_USERNAMES = [
   ADMIN_USERNAME,
   "admin",
   "administrator",
-  "pelangi",
   "pelangiuv",
-  "cvpelangi",
 ];
 
 const ALLOWED_PASSWORDS = [
   ADMIN_PASSWORD,
   "pelangiuv2024",
-  "pelangi2024",
-  "admin",
-  "admin123",
-  "pelangi",
-  "pelangiuv",
-  "123456",
 ];
 
 export function verifyCredentials(username?: string, password?: string): boolean {
-  if (!username) return false;
+  if (!username || !password) return false;
   const cleanUser = username.trim().toLowerCase();
-  const cleanPass = (password || "").trim();
+  const cleanPass = password.trim();
 
   const isUserValid = VALID_USERNAMES.includes(cleanUser);
   if (!isUserValid) return false;
 
-  // Di mode development (npm run dev), izinkan login selama username valid dan password terisi
-  if (process.env.NODE_ENV === "development" && cleanPass.length > 0) {
-    return true;
-  }
-
-  // Cek apakah password cocok dengan salah satu password yang valid
-  return ALLOWED_PASSWORDS.some(
-    (p) => p.toLowerCase() === cleanPass.toLowerCase()
-  );
+  // Cek apakah password cocok dengan password resmi yang valid
+  return ALLOWED_PASSWORDS.some((p) => p === cleanPass);
 }
 
 export function setAuthCookie() {
@@ -59,7 +44,7 @@ export function setAuthCookie() {
 
   cookieStore.set(AUTH_COOKIE, token, {
     httpOnly: true,
-    secure: false, // Compatible with local HTTP and HTTPS Cloudflare/Vercel
+    secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
     maxAge: SESSION_DURATION_SECONDS, // Cookie otomatis hangus di browser setelah 2 jam
     path: "/",

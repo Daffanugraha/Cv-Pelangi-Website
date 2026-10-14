@@ -375,6 +375,27 @@ export function getSettings(): SiteSettings {
 
 export function saveSettings(settings: SiteSettings) {
   writeJSON("settings", settings);
+
+  // Sync ke Supabase site_settings
+  try {
+    import("@/lib/supabase/admin").then(({ getSupabaseAdmin }) => {
+      const sb = getSupabaseAdmin();
+      if (sb) {
+        sb.from("site_settings")
+          .upsert(
+            {
+              key: "general",
+              value: settings,
+              updated_at: new Date().toISOString(),
+            },
+            { onConflict: "key" }
+          )
+          .then(({ error }: any) => {
+            if (error) console.warn("[Supabase Sync Settings Error]:", error.message);
+          });
+      }
+    });
+  } catch {}
 }
 
 // ---------------------------------------------------------------------------
@@ -1016,9 +1037,10 @@ export function deleteBlogArticle(id: string) {
     import("@/lib/supabase/admin").then(({ getSupabaseAdmin }) => {
       const sb = getSupabaseAdmin();
       if (sb) {
+        const exactId = targetItem?.id || id.replace(/[^a-zA-Z0-9_-]/g, "");
         sb.from("blog_articles")
           .delete()
-          .or(`id.eq.${id},slug.eq.${id}`)
+          .eq("id", exactId)
           .then(({ error }: any) => {
             if (error) console.warn("[Supabase Delete Blog Error]:", error.message);
           });

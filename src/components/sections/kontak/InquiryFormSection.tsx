@@ -246,9 +246,9 @@ export default function InquiryFormSection() {
     const kertas = formData.kertas;
     const pesan = formData.pesan.trim();
 
-    // Simpan lead ke backend jika memungkinkan
+    // Simpan lead ke backend database publik (/api/leads)
     try {
-      fetch("/api/admin/leads", {
+      fetch("/api/leads", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

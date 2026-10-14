@@ -31,7 +31,8 @@ export async function POST(req: NextRequest) {
   const ext = (file.name.split(".").pop() || "").toLowerCase();
   const allowedExts = ["jpg", "jpeg", "png", "webp", "gif", "pdf", "doc", "docx", "zip", "rar"];
 
-  if (!allowedTypes.includes(file.type) && !allowedExts.includes(ext)) {
+  // Validasi ketat: Ekstensi WAJIB terdaftar DAN MIME type valid
+  if (!allowedExts.includes(ext) || (file.type && !allowedTypes.includes(file.type))) {
     return NextResponse.json({ error: "Tipe file tidak didukung. Gunakan JPG, PNG, WEBP, PDF, atau Dokumen." }, { status: 400 });
   }
 
