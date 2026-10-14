@@ -174,10 +174,6 @@ HRD CV Pelangi UV`;
               className="w-full px-3 py-1.5 bg-white border border-gray-300 rounded-lg text-xs font-mono text-gray-900 focus:outline-none focus:border-[#F65456]"
             />
           </div>
-          <div className="sm:col-span-2 flex items-center gap-1.5 px-3 py-2 bg-neutral-100 border border-neutral-200 rounded-lg text-neutral-700 text-xs font-medium">
-            <span className="material-symbols-outlined text-neutral-500 text-base">location_on</span>
-            <span>Lokasi Interview: <strong className="text-neutral-900">Bizpark C17-C19, Sidoarjo</strong> (Pakem Pabrik CV Pelangi UV)</span>
-          </div>
           <div className="sm:col-span-2">
             <label className="block font-bold text-gray-700 mb-1">Kontak Konfirmasi:</label>
             <input
