@@ -8,20 +8,12 @@ export default function FactoryLocationSection() {
       id="lokasi-peta"
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
-        <div className="mb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-50 text-secondary text-xs font-label-meta font-bold uppercase tracking-wider mb-2">
-            <span translate="no" className="material-symbols-outlined notranslate text-[16px]">
-              warehouse
-            </span>
-            Pabrik &amp; Pergudangan Utama
-          </div>
+        <div className="mb-6 sm:mb-8">
           <h2 className="font-headline-xl text-2xl lg:text-3xl font-extrabold text-slate-900 tracking-tight">
             Lokasi Pabrik &amp; Gudang Operasional
           </h2>
-          <p className="font-body-md text-sm text-slate-600 mt-1 max-w-3xl leading-relaxed">
-            Berada di pusat pergudangan strategis Waru Sidoarjo, memudahkan akses
-            penjemputan dan pengantaran armada box untuk seluruh wilayah
-            Surabaya, Sidoarjo, Gresik, dan sekitarnya.
+          <p className="font-body-md text-xs sm:text-sm text-slate-600 mt-1">
+            Kompleks Pergudangan Bizpark Waru, Sidoarjo — Akses cepat dan mudah untuk seluruh wilayah Surabaya &amp; sekitarnya.
           </p>
         </div>
 
