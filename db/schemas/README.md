@@ -11,7 +11,8 @@ Struktur skema database SQL telah dipisahkan per modul fitur agar rapi, modular,
 | [`01_career_jobs.sql`](./01_career_jobs.sql) | `career_jobs` | Lowongan Kerja | `/api/jobs`<br>`/api/admin/jobs` | `/karir`<br>`/karir/[slug]`<br>`/admin/karir` |
 | [`02_job_applicants.sql`](./02_job_applicants.sql) | `job_applicants` | Rekrutmen & Berkas CV Pelamar | `/api/career-apply`<br>`/api/career-apply/upload`<br>`/api/admin/applicants` | Modal Lamar Karir<br>`/admin/pelamar` |
 | [`03_leads.sql`](./03_leads.sql) | `leads` | Formulir Konsultasi Klien | `/api/admin/leads` | Form Konsultasi Beranda<br>`/kontak`<br>`/admin/leads` |
-| [`04_gallery_products.sql`](./04_gallery_products.sql) | `gallery_products` | Katalog Produk & Finishing | `/api/admin/gallery` | Showcase Beranda<br>`/galeri/produk`<br>`/admin/galeri` |
+| [`04_a_gallery_beranda.sql`](./04_a_gallery_beranda.sql) | `gallery_beranda_videos` | Galeri Video Reels & Mesin Beranda | `/api/instagram`<br>`/api/admin/gallery` | Showcase Video Beranda (/) |
+| [`04_b_gallery_produk.sql`](./04_b_gallery_produk.sql) | `gallery_products` | Galeri Pengaplikasian Produk & Swatch | `/api/admin/gallery` | `/galeri/pengaplikasian-produk`<br>`/galeri/produk`<br>`/admin/galeri` |
 | [`05_momen_albums.sql`](./05_momen_albums.sql) | `momen_albums` | Dokumentasi Kegiatan & Event | `/api/momen`<br>`/api/admin/momen` | `/galeri/momen`<br>`/admin/momen` |
 | [`06_blog_articles.sql`](./06_blog_articles.sql) | `blog_articles` | Berita & Edukasi Grafika | `/api/blog`<br>`/api/admin/blog` | `/blog`<br>`/blog/[slug]`<br>`/admin/blog` |
 | [`07_site_settings.sql`](./07_site_settings.sql) | `site_settings` | Pengaturan Situs & Banner | `/api/admin/settings` | Header Banner, Jam Operasional<br>`/admin/pengaturan` |

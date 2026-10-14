@@ -91,18 +91,54 @@ CREATE TABLE IF NOT EXISTS leads (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- 5. TABEL KATALOG PRODUK FINISHING (gallery_products)
+-- 5A. TABEL GALERI BERANDA (Video Reels & Mesin Finishing Beranda)
+CREATE TABLE IF NOT EXISTS gallery_beranda_videos (
+    id VARCHAR(64) PRIMARY KEY,
+    shortcode VARCHAR(64),
+    title VARCHAR(255) NOT NULL,
+    category VARCHAR(100) DEFAULT 'Finishing',
+    tag VARCHAR(100),
+    description TEXT,
+    duration VARCHAR(50),
+    capacity VARCHAR(100),
+    source VARCHAR(100) DEFAULT 'Instagram Reels',
+    image_url TEXT NOT NULL,
+    video_url TEXT,
+    embed_url TEXT,
+    is_real BOOLEAN DEFAULT TRUE,
+    sort_order INT DEFAULT 0,
+    featured BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX IF NOT EXISTS idx_gallery_beranda_featured ON gallery_beranda_videos(featured);
+CREATE INDEX IF NOT EXISTS idx_gallery_beranda_order ON gallery_beranda_videos(sort_order ASC);
+
+-- 5B. TABEL KATALOG PENGAPLIKASIAN PRODUK (gallery_products)
 CREATE TABLE IF NOT EXISTS gallery_products (
     id VARCHAR(64) PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     category VARCHAR(100) NOT NULL,
-    technique VARCHAR(150),
+    category_label VARCHAR(150),
+    technique VARCHAR(255),
+    tag VARCHAR(100),
+    description TEXT,
+    badges JSONB DEFAULT '[]'::jsonb,
+    material TEXT,
+    notes TEXT,
+    highlight VARCHAR(150),
+    paper_suitability TEXT,
+    result_characteristics TEXT,
+    alternative_option TEXT,
     image_url TEXT NOT NULL,
     file_name VARCHAR(255),
+    object_position VARCHAR(50) DEFAULT 'center',
     sort_order INT DEFAULT 0,
     featured BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
+CREATE INDEX IF NOT EXISTS idx_gallery_products_category ON gallery_products(category);
+CREATE INDEX IF NOT EXISTS idx_gallery_products_featured ON gallery_products(featured);
+CREATE INDEX IF NOT EXISTS idx_gallery_products_order ON gallery_products(sort_order ASC);
 
 -- 6. TABEL MOMEN & ALBUM KEGIATAN (momen_albums)
 CREATE TABLE IF NOT EXISTS momen_albums (
