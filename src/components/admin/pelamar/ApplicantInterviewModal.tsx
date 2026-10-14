@@ -27,9 +27,8 @@ export default function ApplicantInterviewModal({
 
   const [interviewDateRaw, setInterviewDateRaw] = useState(defaultDateRaw);
   const [interviewTimeRaw, setInterviewTimeRaw] = useState("09:00");
-  const [interviewAddress, setInterviewAddress] = useState(
-    "Kompleks Pergudangan Bizpark C17, Tambak Sawah (Laporan ke Security dahulu)"
-  );
+  const interviewAddress =
+    "Kompleks Pergudangan Bizpark Blok C17-C19, Tambak Sawah, Kec. Waru, Kabupaten Sidoarjo (Laporan ke Security dahulu)";
   const [contactPerson, setContactPerson] = useState("08563444213 - Dliyauddin");
 
   // Format tanggal ke Bahasa Indonesia (cth: Kamis, 24 September 2026)
@@ -175,14 +174,9 @@ HRD CV Pelangi UV`;
               className="w-full px-3 py-1.5 bg-white border border-gray-300 rounded-lg text-xs font-mono text-gray-900 focus:outline-none focus:border-[#F65456]"
             />
           </div>
-          <div className="sm:col-span-2">
-            <label className="block font-bold text-gray-700 mb-1">Alamat Penempatan:</label>
-            <input
-              type="text"
-              value={interviewAddress}
-              onChange={(e) => setInterviewAddress(e.target.value)}
-              className="w-full px-3 py-1.5 bg-white border border-gray-300 rounded-lg text-xs text-gray-900 focus:outline-none focus:border-[#F65456]"
-            />
+          <div className="sm:col-span-2 flex items-center gap-1.5 px-3 py-2 bg-neutral-100 border border-neutral-200 rounded-lg text-neutral-700 text-xs font-medium">
+            <span className="material-symbols-outlined text-neutral-500 text-base">location_on</span>
+            <span>Lokasi Interview: <strong className="text-neutral-900">Bizpark C17-C19, Sidoarjo</strong> (Pakem Pabrik CV Pelangi UV)</span>
           </div>
           <div className="sm:col-span-2">
             <label className="block font-bold text-gray-700 mb-1">Kontak Konfirmasi:</label>

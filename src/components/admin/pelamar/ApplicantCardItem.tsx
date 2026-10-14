@@ -108,7 +108,9 @@ export default function ApplicantCardItem({
             }}
             className="px-3 py-1.5 text-xs font-semibold bg-gray-50 border border-gray-300 rounded-xl focus:outline-none focus:border-[#F65456] text-gray-700 cursor-pointer"
           >
-            <option value="new">Status: Baru</option>
+            {applicant.status === "new" && (
+              <option value="new" disabled>Ubah Status...</option>
+            )}
             <option value="reviewed">Ditinjau</option>
             <option value="interview">Jadwal Interview</option>
             <option value="accepted">Diterima</option>

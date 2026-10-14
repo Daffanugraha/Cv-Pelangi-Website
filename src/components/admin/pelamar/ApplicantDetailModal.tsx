@@ -187,9 +187,11 @@ export default function ApplicantDetailModal({
             <select
               value={applicant.status}
               onChange={(e) => onUpdateStatus(applicant, e.target.value as any)}
-              className="px-3 py-1.5 text-xs font-bold bg-white border border-gray-300 rounded-xl focus:outline-none focus:border-[#F65456] text-gray-800"
+              className="px-3 py-1.5 text-xs font-bold bg-white border border-gray-300 rounded-xl focus:outline-none focus:border-[#F65456] text-gray-800 cursor-pointer"
             >
-              <option value="new">Status: Baru</option>
+              {applicant.status === "new" && (
+                <option value="new" disabled>Ubah Status...</option>
+              )}
               <option value="reviewed">Ditinjau</option>
               <option value="interview">Jadwal Interview</option>
               <option value="accepted">Diterima</option>
