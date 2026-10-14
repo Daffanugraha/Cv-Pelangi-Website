@@ -1,5 +1,5 @@
 {
-  "totalPageviews": 27,
+  "totalPageviews": 30,
   "uniqueVisitors": 6,
   "todayViews": 0,
   "todayVisitors": 0,
@@ -183,7 +183,7 @@
     {
       "date": "2026-10-14",
       "label": "Rab, 14 Okt",
-      "pageviews": 1,
+      "pageviews": 4,
       "visitors": 2
     }
   ],
@@ -191,30 +191,30 @@
     {
       "path": "/",
       "title": "Beranda CV Pelangi UV",
-      "views": 8,
+      "views": 9,
       "percentage": 30
     },
     {
       "path": "/kontak",
       "title": "Kontak & Lokasi Bizpark Sidoarjo",
       "views": 6,
-      "percentage": 22
+      "percentage": 20
     },
     {
       "path": "/karir",
       "title": "Karir & Lowongan Kerja",
-      "views": 4,
-      "percentage": 15
-    },
-    {
-      "path": "/produk/bahan-baku",
-      "title": "Grosir Roll Foil & Bahan Baku",
-      "views": 2,
-      "percentage": 7
+      "views": 5,
+      "percentage": 17
     },
     {
       "path": "/layanan",
       "title": "Layanan Finishing Cetak",
+      "views": 3,
+      "percentage": 10
+    },
+    {
+      "path": "/produk/bahan-baku",
+      "title": "Grosir Roll Foil & Bahan Baku",
       "views": 2,
       "percentage": 7
     },
@@ -234,21 +234,42 @@
       "path": "/blog",
       "title": "Artikel & Wawasan Percetakan",
       "views": 1,
-      "percentage": 4
+      "percentage": 3
     }
   ],
   "devices": {
     "mobile": 0,
-    "desktop": 27,
+    "desktop": 30,
     "tablet": 0
   },
   "sources": {
-    "direct": 27,
+    "direct": 30,
     "search": 0,
     "whatsapp": 0,
     "instagram": 0
   },
   "recentVisits": [
+    {
+      "id": "v_1791944684278",
+      "path": "/",
+      "timestamp": "Baru saja",
+      "device": "desktop",
+      "referrer": "Direct"
+    },
+    {
+      "id": "v_1791944654604",
+      "path": "/karir",
+      "timestamp": "Baru saja",
+      "device": "desktop",
+      "referrer": "Direct"
+    },
+    {
+      "id": "v_1791944636959",
+      "path": "/layanan",
+      "timestamp": "Baru saja",
+      "device": "desktop",
+      "referrer": "Direct"
+    },
     {
       "id": "v_1791943673301",
       "path": "/kontak",
@@ -364,27 +385,6 @@
     {
       "id": "v_1791854453627",
       "path": "/",
-      "timestamp": "Baru saja",
-      "device": "desktop",
-      "referrer": "Direct"
-    },
-    {
-      "id": "v_1791788946624",
-      "path": "/",
-      "timestamp": "Baru saja",
-      "device": "desktop",
-      "referrer": "Direct"
-    },
-    {
-      "id": "v_1791788943930",
-      "path": "/karir",
-      "timestamp": "Baru saja",
-      "device": "desktop",
-      "referrer": "Direct"
-    },
-    {
-      "id": "v_1791787530440",
-      "path": "/produk/bahan-baku",
       "timestamp": "Baru saja",
       "device": "desktop",
       "referrer": "Direct"
