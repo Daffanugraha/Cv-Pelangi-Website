@@ -45,7 +45,7 @@ export default function GaleriMomenHero() {
           />
         </div>
         <img
-          alt="Fasilitas Workshop CV Pelangi UV"
+          alt="Fasilitas Pabrik CV Pelangi UV"
           className="w-full h-full object-cover opacity-20 -z-10"
           src="/images/momen/momen-hero-backdrop.jpg"
         />

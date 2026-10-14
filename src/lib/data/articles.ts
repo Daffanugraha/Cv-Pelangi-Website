@@ -49,7 +49,7 @@ export const featuredArticle: ArticleItem = {
     "Dalam lanskap industri percetakan dan pengemasan (packaging) modern di Indonesia, efisiensi serta akurasi proses die-cutting atau pond memegang peranan krusial terhadap kualitas produk akhir. Kegagalan akurasi garis potong (cut line) dan lipatan (creasing rule) dapat mengakibatkan tingkat afkir (scrap rate) yang tinggi.",
     "Mesin pond manual tipe platen ML 930 dan ML 750 yang dihadirkan oleh CV Pelangi UV dirancang khusus menjawab tantangan tersebut. Dibuat menggunakan paduan material baja tuang HT250 berkualitas tinggi, struktur rangka mesin mampu menahan tekanan kompresi hingga ratusan ton tanpa mengalami deformasi struktur mikroskopis.",
     "Fitur kopling elektromagnetik responsif menjamin keselamatan kerja operator secara optimal. Dilengkapi dengan dual safety bar dan sensor infra-merah di sekeliling area kerja platen, mesin akan berhenti seketika dalam hitungan milidetik jika tangan operator mendekati area berbahaya.",
-    "CV Pelangi UV tidak hanya menyediakan unit mesin, namun juga didukung ketersediaan suku cadang asli di Kompleks Pergudangan Bizpark Waru Sidoarjo serta pelatihan teknisi operator langsung di workshop percetakan Anda.",
+    "CV Pelangi UV tidak hanya menyediakan unit mesin, namun juga didukung ketersediaan suku cadang asli di Kompleks Pergudangan Bizpark Waru Sidoarjo serta pelatihan teknisi operator langsung di pabrik percetakan Anda.",
   ],
 };
 
@@ -295,8 +295,8 @@ export const articlesData: ArticleItem[] = [
   },
   {
     id: "art-11",
-    slug: "ekspansi-kapasitas-mesin-workshop-bizpark-sidoarjo",
-    title: "Ekspansi Kapasitas Workshop Bizpark Sidoarjo: Siap Layani 200.000 Lembar Plano Per Hari",
+    slug: "ekspansi-kapasitas-mesin-pabrik-bizpark-sidoarjo",
+    title: "Ekspansi Kapasitas Pabrik Bizpark Sidoarjo: Siap Layani 200.000 Lembar Plano Per Hari",
     category: "Kabar Perusahaan",
     categoryKey: "kabar-perusahaan",
     date: "15/11/2024",
@@ -307,12 +307,12 @@ export const articlesData: ArticleItem[] = [
     desc: "Penambahan lini mesin cetak otomatis dan armada logistik truk boks tertutup untuk mempercepat pengiriman bebas ongkir di seluruh wilayah Jawa Timur.",
     img: "https://lh3.googleusercontent.com/aida-public/AB6AXuAzmZ7Zm60qcltUqfUXnZWiG1p0tdNhcDYXDZ-mpniBnJZJ91Pk3pTKdEJ7Kogyo0C2hqk8VHwsxdP7C4OEIlki0UXnviV8KfUiUBb-g6g6yM-g3fwziEmQWUexAG1DsFzLVPI-M_4G-Sk0BKmxrkNWXtwq1A95Q2zKkvqxUjPJmYDJgi6MdX5gTqtnZtUIg5zPudYVaw6gNs7RAb-JRPeixxOJD5g4_3p6efhdBI2_oO4Gco2aHiZp",
     keyTakeaways: [
-      "Total 35+ unit mesin otomatis dan semi-otomatis siap beroperasi multi-shift.",
+      "Total 40+ unit mesin otomatis dan manual siap beroperasi multi-shift.",
       "Jangkauan antar-jemput gratis diperluas ke Surabaya, Sidoarjo, Gresik, Pasuruan, dan Malang.",
       "Dukungan teknisi standby untuk pengujian sampel finishing langsung di hari yang sama.",
     ],
     content: [
-      "Menjawab tingginya permintaan industri manufaktur kemasan di kawasan Jawa Timur, CV Pelangi UV resmi menyelesaikan ekspansi workshop di Pergudangan Bizpark Blok C17-C19 Waru Sidoarjo.",
+      "Menjawab tingginya permintaan industri manufaktur kemasan di kawasan Jawa Timur, CV Pelangi UV resmi menyelesaikan ekspansi fasilitas pabrik di Pergudangan Bizpark Blok C17-C19 Waru Sidoarjo.",
       "Dengan integrasi mesin generasi terbaru, waktu pengerjaan order skala ratusan ribu lembar kini dapat diselesaikan lebih cepat dengan standar presisi register mikron yang konsisten.",
     ],
   },

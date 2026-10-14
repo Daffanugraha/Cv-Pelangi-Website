@@ -15,12 +15,12 @@ export const faqData: FaqItem[] = [
     num: "02",
     question: "Bagaimana layanan gratis antar-jemput se-Jawa Timur?",
     answer:
-      "Armada truk tertutup kami siap jemput dan antar barang cetakan plano ke workshop Anda tanpa biaya tambahan untuk area Surabaya, Sidoarjo, Gresik, Malang, dan sekitarnya.",
+      "Armada truk tertutup kami siap jemput dan antar barang cetakan plano ke lokasi percetakan Anda tanpa biaya tambahan untuk area Surabaya, Sidoarjo, Gresik, Malang, dan sekitarnya.",
   },
   {
     num: "03",
     question: "Berapa estimasi waktu pengerjaan dan apakah bisa minta sampel fisik?",
     answer:
-      "Lead time berkisar 1–3 hari kerja dengan opsi pengerjaan kilat. Swatch sample kit fisik gratis juga tersedia dan siap dikirim ke workshop Anda.",
+      "Lead time berkisar 1–3 hari kerja dengan opsi pengerjaan kilat. Swatch sample kit fisik gratis juga tersedia dan siap dikirim ke lokasi percetakan Anda.",
   },
 ];

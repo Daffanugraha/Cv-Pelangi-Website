@@ -61,7 +61,7 @@ export const b2bServicePerks = [
   {
     icon: "inventory_2",
     title: "Paket Swatch Sample Gratis",
-    desc: "Kami kirimkan paket lembar contoh fisik (sample swatch) film BOPP, aneka warna foil, dan lem uji lab langsung ke workshop percetakan Anda.",
+    desc: "Kami kirimkan paket lembar contoh fisik (sample swatch) film BOPP, aneka warna foil, dan lem uji lab langsung ke pabrik percetakan Anda.",
   },
   {
     icon: "warehouse",

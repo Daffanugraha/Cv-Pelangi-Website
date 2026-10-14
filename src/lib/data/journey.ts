@@ -104,7 +104,7 @@ export const journeyStoryPhases: JourneyStoryPhase[] = [
       },
       {
         url: "https://lh3.googleusercontent.com/aida-public/AB6AXuCMolZsN9yvmI-fKWoie6H_V2zLDxo7ivK0kNvONjo3RoDbmHXjSVJUiQEMeG4zYamZ7DTZeKLjwaAJ-r0vjUZFrxwnCdR1dtmKWapSiV1zoWRVfDZDwCGAldYZc-1uWSfbzIo5U19LzucaD9t0AUsU8UT9QmbIusfCgqMlWeJNzrvcqHmcYt-XzZfjGq_g6b1LU_x27Vz2aSzU49OG2h0fgpuh02KUxXVUdTGa0KsDkohyDOe8uF77",
-        caption: "Penataan tata letak workshop produksi di area pergudangan modern berstandar industri.",
+        caption: "Penataan tata letak fasilitas produksi di area pergudangan modern berstandar industri.",
       },
       {
         url: "https://lh3.googleusercontent.com/aida-public/AB6AXuCfExHr5NtXgfBa9u2YHnpxRRPEPCE73orW9lZA_d_yzBZcitN95z8S3pGSlnw0Vc_o4jp8LEEH85ZkYlaGZx52GZ7PCxlskaWo1RA-_VT5VcXAAkmIdlpXO8dWn0DF87l1VwHTUoGFWjEatCW5qZYHk2YsveDx1oMuWaumvjNyX8Mbh2ouSnuIGC9NR0hRsKS0-W_mtnmZQU0CYudQbp5V-u9HpIbLwZd2xudSjVdWQtgj0Xiu_5T3",
@@ -140,7 +140,7 @@ export const journeyStoryPhases: JourneyStoryPhase[] = [
     images: [
       {
         url: "/images/layanan/hot-stamp.jpg",
-        caption: "Ekspansi workshop ke unit Bizpark B8 dan C17–C19 yang lebih luas untuk menunjang kapasitas tinggi.",
+        caption: "Ekspansi pabrik ke unit Bizpark B8 dan C17–C19 yang lebih luas untuk menunjang kapasitas tinggi.",
       },
       {
         url: "https://lh3.googleusercontent.com/aida-public/AB6AXuDV_Ux6pj5Ckh1wckXqpgyZ1YVqpt8dlkr2eBzdoFeqj4iYtacQpmmcIGeogtYXmWj-r2bVt_Lu2HUP90T9Hbt25Vn2pgbsRyzxJrEiLRCGDker_oAg1JelsQuKA1WMWYR8-MDuczbWHcP6lw2wPaIpxcms9VmRCWUMrY7DVncdcaMb7hlnMFUwS5WvzWMsgjtAfV_dutj8HEjsW2Of_pjErALLV-Ci0Kc7JZkVP--OM_dccwPNFf66",

@@ -43,7 +43,7 @@ export default function ContactHero() {
 
   return (
     <section className="w-full bg-[#0B0B0B] text-white pt-12 pb-20 lg:pt-20 lg:pb-28 relative overflow-hidden">
-      {/* Cinematic Print Facility Workshop Backdrop (Bright & Clearly Visible) */}
+      {/* Cinematic Print Facility Pabrik Backdrop (Bright & Clearly Visible) */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <video
           autoPlay
@@ -132,7 +132,7 @@ export default function ContactHero() {
 
               {/* Brief Description */}
               <p className="text-xs text-zinc-300 leading-relaxed relative z-10 mb-4">
-                Diskusikan langsung file cetak, alternatif finishing Spot UV / Foil, kalkulasi oplah efisien, atau kirim sampel fisik ke workshop Anda.
+                Diskusikan langsung file cetak, alternatif finishing Spot UV / Foil, kalkulasi oplah efisien, atau kirim sampel fisik ke lokasi percetakan Anda.
               </p>
 
               <a

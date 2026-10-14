@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   title:
     "Kontak & Tim Marketing - CV Pelangi UV | Konsultasi Finishing Percetakan",
   description:
-    "Hubungi tim Marketing & Sales Executive CV Pelangi UV. Konsultasi gratis Spot UV, Hot Stamping Foil, Laminasi Doff/Glossy, kalkulasi harga cepat, serta pengiriman sampel swatch fisik langsung ke workshop Anda.",
+    "Hubungi tim Marketing & Sales Executive CV Pelangi UV. Konsultasi gratis Spot UV, Hot Stamping Foil, Laminasi Doff/Glossy, kalkulasi harga cepat, serta pengiriman sampel swatch fisik langsung ke lokasi percetakan Anda.",
   keywords: [
     "kontak pelangi uv",
     "tim marketing pelangi uv",

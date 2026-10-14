@@ -101,7 +101,7 @@ export default function LocationSection() {
               <a
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-space-lg py-space-sm rounded-full bg-action-whatsapp hover:bg-action-whatsapp-hover text-on-primary font-cta-pill text-cta-pill transition-all duration-200 shadow-md"
                 href={`https://wa.me/6282231019363?text=${encodeURIComponent(
-                  "Halo Customer Service CV Pelangi UV, saya ingin konfirmasi jadwal kunjungan ke workshop Bizpark Sidoarjo. Boleh dibantu? Terima kasih."
+                  "Halo Customer Service CV Pelangi UV, saya ingin konfirmasi jadwal kunjungan ke pabrik Bizpark Sidoarjo. Boleh dibantu? Terima kasih."
                 )}`}
                 rel="noopener noreferrer"
                 target="_blank"

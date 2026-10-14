@@ -141,7 +141,7 @@ const BERANDA_SERVICE_CONFIG: Record<string, ServiceGroup> = {
         variants: [
           "Swatch Card Lengkap (Spot UV, Foil, Laminating)",
           "Sample Pack Dus Kemasan Skincare & Makanan",
-          "Uji Coba Proofing Kertas Klien di Mesin Workshop",
+          "Uji Coba Proofing Kertas Klien di Mesin Pabrik",
           "Katalog Fisik & Pricelist Lengkap Percetakan",
         ],
       },

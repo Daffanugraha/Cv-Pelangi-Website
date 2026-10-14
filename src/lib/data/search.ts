@@ -277,7 +277,7 @@ export const searchCatalog: SearchCatalogItem[] = [
   {
     title: "Lowongan Teknisi Maintenance Mesin Industri",
     type: "Lowongan Karir",
-    desc: "Posisi Pemeliharaan elektro-mekanikal 35+ mesin finishing, inverter, & kelistrikan pabrik",
+    desc: "Posisi Pemeliharaan elektro-mekanikal 40+ mesin finishing, inverter, & kelistrikan pabrik",
     link: "/karir#teknisi-maintenance",
     tag: "Karir",
     categoryGroup: "karir",
@@ -293,7 +293,7 @@ export const searchCatalog: SearchCatalogItem[] = [
   {
     title: "Pelangi Life (Budaya Kerja & Video Kegiatan)",
     type: "Karir & Budaya",
-    desc: "Lihat video reels keseruan kerja tim, workshop modern Bizpark, dan fasilitas pabrik Pelangi UV",
+    desc: "Lihat video reels keseruan kerja tim, pabrik modern Bizpark, dan fasilitas pabrik Pelangi UV",
     link: "/karir#pelangi-life",
     tag: "Pelangi Life",
     categoryGroup: "karir",
@@ -385,7 +385,7 @@ export const searchCatalog: SearchCatalogItem[] = [
   {
     title: "Hubungi Kami & Konsultasi Spesifikasi",
     type: "Kontak",
-    desc: "Konsultasi gratis, alamat workshop Bizpark Sidoarjo, dan nomor WhatsApp",
+    desc: "Konsultasi gratis, alamat pabrik Bizpark Sidoarjo, dan nomor WhatsApp",
     link: "/kontak",
     tag: "Kontak",
     categoryGroup: "semua",

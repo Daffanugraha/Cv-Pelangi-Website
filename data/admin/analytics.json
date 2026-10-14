@@ -1,5 +1,5 @@
 {
-  "totalPageviews": 30,
+  "totalPageviews": 31,
   "uniqueVisitors": 6,
   "todayViews": 0,
   "todayVisitors": 0,
@@ -183,7 +183,7 @@
     {
       "date": "2026-10-14",
       "label": "Rab, 14 Okt",
-      "pageviews": 4,
+      "pageviews": 5,
       "visitors": 2
     }
   ],
@@ -192,43 +192,43 @@
       "path": "/",
       "title": "Beranda CV Pelangi UV",
       "views": 9,
-      "percentage": 30
+      "percentage": 29
     },
     {
       "path": "/kontak",
       "title": "Kontak & Lokasi Bizpark Sidoarjo",
       "views": 6,
-      "percentage": 20
+      "percentage": 19
     },
     {
       "path": "/karir",
       "title": "Karir & Lowongan Kerja",
       "views": 5,
-      "percentage": 17
+      "percentage": 16
     },
     {
       "path": "/layanan",
       "title": "Layanan Finishing Cetak",
-      "views": 3,
-      "percentage": 10
+      "views": 4,
+      "percentage": 13
     },
     {
       "path": "/produk/bahan-baku",
       "title": "Grosir Roll Foil & Bahan Baku",
       "views": 2,
-      "percentage": 7
+      "percentage": 6
     },
     {
       "path": "/galeri/pengaplikasian-produk",
       "title": "Halaman /galeri/pengaplikasian-produk",
       "views": 2,
-      "percentage": 7
+      "percentage": 6
     },
     {
       "path": "/galeri/momen",
       "title": "Halaman /galeri/momen",
       "views": 2,
-      "percentage": 7
+      "percentage": 6
     },
     {
       "path": "/blog",
@@ -239,16 +239,23 @@
   ],
   "devices": {
     "mobile": 0,
-    "desktop": 30,
+    "desktop": 31,
     "tablet": 0
   },
   "sources": {
-    "direct": 30,
+    "direct": 31,
     "search": 0,
     "whatsapp": 0,
     "instagram": 0
   },
   "recentVisits": [
+    {
+      "id": "v_1791946956372",
+      "path": "/layanan",
+      "timestamp": "Baru saja",
+      "device": "desktop",
+      "referrer": "Direct"
+    },
     {
       "id": "v_1791944684278",
       "path": "/",
@@ -377,13 +384,6 @@
     },
     {
       "id": "v_1791854557259",
-      "path": "/",
-      "timestamp": "Baru saja",
-      "device": "desktop",
-      "referrer": "Direct"
-    },
-    {
-      "id": "v_1791854453627",
       "path": "/",
       "timestamp": "Baru saja",
       "device": "desktop",

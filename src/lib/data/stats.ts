@@ -25,8 +25,8 @@ export const statsData: StatItem[] = [
     desc: "Tuntas tepat waktu dengan jaminan kualitas prima",
   },
   {
-    target: 35,
-    suffix: "",
+    target: 40,
+    suffix: "+",
     label: "Mesin Finishing",
     desc: "Unit otomatis & semi-otomatis berkapasitas besar",
   },

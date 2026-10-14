@@ -151,18 +151,18 @@ export default function Hero() {
                 : "Pusat Jasa Finishing Cetak"}
             </span>
 
-            {/* Baris Utama: 35+ Mesin Finishing & Teks Layanan Looping Atas-Bawah */}
+            {/* Baris Utama: 40+ Mesin Finishing & Teks Layanan Looping Atas-Bawah */}
             <div
               translate="no"
               className="notranslate text-bracket-border font-extrabold [text-shadow:0_0_24px_rgba(246,84,86,0.6)] flex flex-wrap items-center gap-x-3.5 gap-y-2"
             >
-              {/* 35+ Mesin Finishing (Nilai diperbesar & diproteksi translate) */}
+              {/* 40+ Mesin Finishing (Nilai diperbesar & diproteksi translate) */}
               <span className="inline-flex items-baseline hover:scale-105 transition-transform duration-300 whitespace-nowrap">
                 <span
                   translate="no"
                   className="notranslate font-black text-white text-[32px] sm:text-[40px] lg:text-[48px] tracking-tight leading-none drop-shadow-[0_2px_14px_rgba(255,255,255,0.45)]"
                 >
-                  35+
+                  40+
                 </span>
                 <span className="font-extrabold text-white/95 text-[18px] sm:text-[22px] lg:text-[26px] ml-1.5 align-baseline">
                   {language === "EN"

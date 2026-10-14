@@ -70,7 +70,7 @@ export default function VisionMissionSection() {
               Mengapa Harus <span translate="no" className="notranslate">CV Pelangi UV</span>
             </h2>
             <p className="font-body-md text-surface-dim text-sm sm:text-base leading-relaxed">
-              Didukung 35 unit mesin berkecepatan tinggi dan pasokan bahan langsung,
+              Didukung 40+ unit mesin berkecepatan tinggi dan pasokan bahan langsung,
               kami memproses kebutuhan pasca-cetak skala ribuan lembar dengan mutu presisi
               dan kepastian waktu.
             </p>

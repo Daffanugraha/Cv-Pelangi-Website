@@ -249,7 +249,7 @@ export default function BlogDetailContent({
                   Butuh Solusi Finishing atau Sampel Cetak?
                 </h3>
                 <p className="text-xs sm:text-sm text-surface-container-high leading-relaxed">
-                  Hubungi tim teknisi CV Pelangi UV untuk uji coba sampel swatch Spot UV, Hot Stamp Foil, dan Laminasi di workshop Anda.
+                  Hubungi tim teknisi CV Pelangi UV untuk uji coba sampel swatch Spot UV, Hot Stamp Foil, dan Laminasi di pabrik Anda.
                 </p>
                 <a
                   href={waConsultUrl}

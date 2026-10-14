@@ -78,7 +78,7 @@ export const pillarsData: PillarItem[] = [
   },
   {
     title: "Harga Bersaing",
-    desc: "Efisiensi 35 lini mesin modern memberikan penawaran harga terbaik untuk percetakan skala mikro hingga pabrikan.",
+    desc: "Efisiensi 40+ lini mesin modern memberikan penawaran harga terbaik untuk percetakan skala mikro hingga pabrikan.",
     icon: "pricing",
   },
   {
@@ -101,12 +101,12 @@ export const whyChooseUsCards: WhyChooseUsCard[] = [
   },
   {
     id: "02",
-    title: "35 Lini Mesin Beroperasi Paralel",
+    title: "40+ Lini Mesin Beroperasi Paralel",
     desc: "Terbagi dalam unit terpisah Spot UV, Hot Stamping Foil, Laminasi Thermal, hingga Pond Die-Cut otomatis. Pekerjaan skala puluhan ribu lembar dapat diproses simultan tanpa antrean mesin.",
   },
   {
     id: "03",
     title: "Armada Pick-Up Bahan & Antar Hasil Jadi",
-    desc: "Armada pengiriman rutin siap mengambil lembaran cetakan dari workshop percetakan Anda dan mengantarkan kembali hasil finishing yang sudah siap kemas ke berbagai kota se-Jawa Timur.",
+    desc: "Armada pengiriman rutin siap mengambil lembaran cetakan dari lokasi percetakan Anda dan mengantarkan kembali hasil finishing yang sudah siap kemas ke berbagai kota se-Jawa Timur.",
   },
 ];

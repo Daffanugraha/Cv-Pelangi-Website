@@ -126,7 +126,7 @@ export const consultationScenarios: ScenarioPattern[] = [
           },
         ],
         conclusion:
-          "Mau kami kirimkan Swatch Sample Kit fisik kemasan skincare langsung ke workshop/workshop Anda?",
+          "Mau kami kirimkan Swatch Sample Kit fisik kemasan skincare langsung ke lokasi percetakan Anda?",
         waTopic: `Rekomendasi Finishing Kemasan Skincare (${input})`,
         chips: [
           "Minta Sampel Foil Rose Gold",
@@ -176,13 +176,13 @@ export const consultationScenarios: ScenarioPattern[] = [
           },
         ],
         conclusion:
-          "Tim teknisi kami siap uji coba pond sampel cetakan Anda di workshop Sidoarjo untuk memastikan 100% aman sebelum diproduksi massal.",
+          "Tim teknisi kami siap uji coba pond sampel cetakan Anda di pabrik Sidoarjo untuk memastikan 100% aman sebelum diproduksi massal.",
         waTopic: `Konsultasi Problem Solving Box Pecah/Retak (${input})`,
         chips: [
           "Solusi Laminasi Thermal BOPP",
           "Uji Coba Sampel Cetakan",
           "Konsultasi Setting Mesin Pond",
-          "Jadwal Jemput Bahan ke Workshop",
+          "Jadwal Jemput Bahan Cetak",
         ],
       }),
   },
@@ -465,7 +465,7 @@ export const consultationScenarios: ScenarioPattern[] = [
           },
           {
             title: "Langkah 2: Pegang Contoh Fisik (Gratis dari Kami!)",
-            desc: "Jangan menebak-nebak di layar monitor! Minta <strong>Sample Kit Swatch</strong> dari Pelangi UV. Kami kirimkan sampel foil, doff velvet, dan spot UV ke workshop Anda tanpa biaya.",
+            desc: "Jangan menebak-nebak di layar monitor! Minta <strong>Sample Kit Swatch</strong> dari Pelangi UV. Kami kirimkan sampel foil, doff velvet, dan spot UV ke lokasi percetakan Anda tanpa biaya.",
           },
           {
             title: "Langkah 3: Uji Coba Proofing Sebelum Cetak Banyak",
@@ -508,7 +508,7 @@ export const consultationScenarios: ScenarioPattern[] = [
       formatAdvice({
         greeting: "CV Pelangi UV menyediakan fasilitas Antar-Jemput Plano Cetakan Gratis se-Jawa Timur: 🚚✨",
         explanation:
-          "Anda tidak perlu khawatir memikirkan biaya transportasi atau repot membawa lembaran plano yang berat ke workshop.",
+          "Anda tidak perlu khawatir memikirkan biaya transportasi atau repot membawa lembaran plano yang berat ke pabrik.",
         tips: [
           {
             title: "Area Cakupan Antar-Jemput Gratis",
@@ -528,7 +528,7 @@ export const consultationScenarios: ScenarioPattern[] = [
         waTopic: `Request Jadwal Antar-Jemput Cetakan (${input})`,
         chips: [
           "Jadwalkan Penjemputan Bahan",
-          "Alamat Workshop Sidoarjo",
+          "Alamat Pabrik Sidoarjo",
           "Hubungi Driver / Logistik",
           "Cek Pricelist & Brosur",
         ],
@@ -562,7 +562,7 @@ export const consultationScenarios: ScenarioPattern[] = [
           },
           {
             title: "Cara Mendapatkannya Mudah Sekali",
-            desc: "Cukup klik tombol WhatsApp di bawah, kirimkan Nama Percetakan/Brand dan Alamat Pengiriman Anda. Tim kami akan segera mengirimkannya ke workshop Anda!",
+            desc: "Cukup klik tombol WhatsApp di bawah, kirimkan Nama Percetakan/Brand dan Alamat Pengiriman Anda. Tim kami akan segera mengirimkannya ke lokasi percetakan Anda!",
           },
         ],
         conclusion: "100% Gratis untuk rekan percetakan, desainer grafis, dan pemilik brand.",
@@ -570,7 +570,7 @@ export const consultationScenarios: ScenarioPattern[] = [
         chips: [
           "Kirim Alamat Pengiriman via WA",
           "Cek Pilihan Warna Foil",
-          "Tanya Lokasi Workshop",
+          "Tanya Lokasi Pabrik",
           "Layanan Antar-Jemput Gratis",
         ],
       }),
@@ -639,7 +639,7 @@ export const consultationScenarios: ScenarioPattern[] = [
       "whatsapp",
       "admin",
       "hubungi",
-      "workshop",
+      "pabrik",
       "pabrik",
       "maps",
       "peta",
@@ -655,12 +655,12 @@ export const consultationScenarios: ScenarioPattern[] = [
           "Berikut informasi resmi operasional kami:",
         tips: [
           {
-            title: "Alamat Workshop & Pabrik Utama",
+            title: "Alamat Pabrik & Gudang Utama",
             desc: 'Kompleks Pergudangan Bizpark C17-C19, Jabon, Tambaksawah, Kec. Waru, Kabupaten Sidoarjo, Jawa Timur 61256 (Akses strategis dekat Bandara Juanda & Tol Rungkut).<br><a href="https://maps.app.goo.gl/sfBs972qUZfScwMJ6" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-[#e62129] font-semibold text-xs mt-1 hover:underline">📍 Buka Rute di Google Maps</a>',
           },
           {
             title: "Jam Operasional",
-            desc: "Senin – Jumat: 07.30 – 15.30 WIB<br>Sabtu: 07.30 – 13.00 WIB (Kapasitas mesin 35+ unit dengan sistem shift beroperasi untuk pesanan volume besar).",
+            desc: "Senin – Jumat: 07.30 – 15.30 WIB<br>Sabtu: 07.30 – 13.00 WIB (Kapasitas mesin 40+ unit dengan sistem shift beroperasi untuk pesanan volume besar).",
           },
           {
             title: "Kontak Resmi",
@@ -719,7 +719,7 @@ export const consultationScenarios: ScenarioPattern[] = [
           },
         ],
         conclusion:
-          "Siap kirim ke workshop Anda dengan fasilitas Antar-Jemput Gratis se-Jawa Timur.",
+          "Siap kirim ke lokasi percetakan Anda dengan fasilitas Antar-Jemput Gratis se-Jawa Timur.",
         waTopic: `Tanya Stok & Harga Bahan Baku (${input})`,
         chips: [
           "Cek Stok Film BOPP Thermal",
@@ -765,7 +765,7 @@ export const consultationScenarios: ScenarioPattern[] = [
           },
         ],
         conclusion:
-          "Workshop kami di Bizpark Sidoarjo siap uji coba proofing sampel kemasan industri Anda.",
+          "Pabrik kami di Bizpark Sidoarjo siap uji coba proofing sampel kemasan industri Anda.",
         waTopic: `Finishing Kemasan Rokok & Industri (${input})`,
         chips: [
           "Konsultasi Kemasan Rokok",
@@ -854,7 +854,7 @@ export const getSmartAdvisorReply = (userText: string): AdvisorResponse => {
             Maaf, pertanyaan Anda di luar topik layanan kami. 🙏
           </p>
           <p class="text-neutral-600 text-xs leading-relaxed">
-            Saya adalah asisten virtual khusus <strong>CV Pelangi UV</strong> yang difokuskan membantu konsultasi seputar <strong>jasa finishing percetakan</strong> (Spot UV, Hot Stamping Foil, Laminating Doff/Glossy, Pond & Emboss), <strong>bahan baku cetak</strong>, serta informasi layanan workshop kami di Bizpark Sidoarjo.
+            Saya adalah asisten virtual khusus <strong>CV Pelangi UV</strong> yang difokuskan membantu konsultasi seputar <strong>jasa finishing percetakan</strong> (Spot UV, Hot Stamping Foil, Laminating Doff/Glossy, Pond & Emboss), <strong>bahan baku cetak</strong>, serta informasi layanan pabrik kami di Bizpark Sidoarjo.
           </p>
           <p class="text-neutral-500 text-[11px] leading-relaxed pt-1">
             Apakah ada kebutuhan spesifikasi kemasan, masalah karton cetak, atau bahan baku yang bisa saya bantu?

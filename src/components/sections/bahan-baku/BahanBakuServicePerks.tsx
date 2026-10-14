@@ -72,7 +72,7 @@ export default function BahanBakuServicePerks({
                 <span translate="no" className="material-symbols-outlined notranslate text-[13px] notranslate">
                   redeem
                 </span>
-                Gratis untuk Percetakan &amp; Workshop Cetak
+                Gratis untuk Percetakan &amp; Industri Kemasan
               </div>
               <h3 className="font-headline-sm text-[18px] sm:text-[20px] font-bold text-white">
                 Butuh Swatch Sample Fisik Sebelum Order Massal?

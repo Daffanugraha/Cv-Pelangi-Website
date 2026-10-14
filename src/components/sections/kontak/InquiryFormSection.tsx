@@ -133,7 +133,7 @@ const SERVICE_CONFIG: Record<string, ServiceGroup> = {
       {
         name: "Uji Coba / Demo Mesin",
         variants: [
-          "Trial Uji Kertas Milik Klien di Mesin Workshop",
+          "Trial Uji Kertas Milik Klien di Mesin Pabrik",
           "Konsultasi Kalibrasi Warna & Bahan Cetak Baru",
         ],
       },

@@ -17,7 +17,7 @@ export default function LayananCtaSection() {
           </a>
           <a href="/kontak" className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-white/10 hover:bg-white/15 text-white font-bold text-base border border-white/20 transition-all hover:scale-105">
             <span translate="no" className="material-symbols-outlined notranslate text-[20px]">location_on</span>
-            <span>Kunjungi Workshop Bizpark</span>
+            <span>Kunjungi Pabrik Bizpark</span>
           </a>
         </div>
       </div>

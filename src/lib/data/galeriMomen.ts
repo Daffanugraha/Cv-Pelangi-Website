@@ -146,7 +146,7 @@ export const MOMEN_HIGHLIGHTS: MomenHighlight[] = [
         title: "HUT Republik Indonesia 79th - Perlombaan Karyawan",
         src: "/images/momen/hut-79/hut-79-2.jpg",
         cardTitle: "Lomba Kekompakan & Kebersamaan",
-        cardDesc: "Ragam perlombaan seru mempererat keakraban antar divisi workshop percetakan.",
+        cardDesc: "Ragam perlombaan seru mempererat keakraban antar divisi produksi pabrik.",
       },
       {
         alt: "HUT Republik Indonesia 79th - Upacara Bersama",
@@ -577,7 +577,7 @@ export const MOMEN_ALBUMS: MomenAlbum[] = [
         caption: "Momen Pertama 3",
         title: "Momen Pertama 3",
         src: "/images/momen/momen-pertama/momen-3.jpg",
-        cardTitle: "Workshop & Fasilitas Awal",
+        cardTitle: "Pabrik & Fasilitas Awal",
         cardDesc: "Dokumentasi penataan lini kerja pertama percetakan dan finishing presisi.",
       },
       {

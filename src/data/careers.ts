@@ -196,7 +196,7 @@ export const CAREER_JOBS: CareerJob[] = [
       "Mampu membaca wiring diagram dan melakukan trouble-shooting mekanikal dengan cepat.",
     ],
     responsibilities: [
-      "Melakukan pemeliharaan berkala (preventive maintenance) pada seluruh 35+ mesin finishing di workshop.",
+      "Melakukan pemeliharaan berkala (preventive maintenance) pada seluruh 40+ mesin finishing di pabrik.",
       "Mendiagnosa dan mengatasi kendala teknis (troubleshooting) saat terjadi kendala operasional mesin.",
       "Memastikan ketersediaan suku cadang kritis dan pelumas mesin industri tetap aman.",
       "Mendukung optimalisasi efisiensi dan keamanan kelistrikan area pabrik.",
