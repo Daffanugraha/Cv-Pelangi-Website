@@ -57,6 +57,49 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // Validasi apakah posisi lowongan masih dibuka atau sudah ditutup
+    try {
+      const { getJobs } = await import("@/lib/admin/db");
+      const allJobs = getJobs();
+      const matched = allJobs.find(
+        (j) =>
+          (jobId && (j.id === jobId || j.id.toLowerCase() === String(jobId).toLowerCase())) ||
+          (jobTitle && j.title.toLowerCase() === String(jobTitle).toLowerCase())
+      );
+
+      if (matched && matched.isOpen === false) {
+        return NextResponse.json(
+          {
+            error: `Mohon maaf, posisi lowongan "${matched.title}" saat ini telah ditutup dan tidak menerima berkas lamaran baru.`,
+          },
+          { status: 400 }
+        );
+      }
+
+      // Validasi tambahan via Supabase (bila terkoneksi)
+      const { getSupabaseAdmin } = await import("@/lib/supabase/admin");
+      const sb = getSupabaseAdmin();
+      if (sb && (jobId || jobTitle)) {
+        let query = sb.from("career_jobs").select("id, title, is_open");
+        if (jobId) {
+          query = query.eq("id", jobId);
+        } else {
+          query = query.ilike("title", jobTitle);
+        }
+        const { data: sbJob } = await query.maybeSingle();
+        if (sbJob && sbJob.is_open === false) {
+          return NextResponse.json(
+            {
+              error: `Mohon maaf, posisi lowongan "${sbJob.title}" saat ini telah ditutup dan tidak menerima berkas lamaran baru.`,
+            },
+            { status: 400 }
+          );
+        }
+      }
+    } catch (checkErr) {
+      console.warn("[Job Closure Check Warning]:", checkErr);
+    }
+
     const applicant = addApplicant({
       jobId: jobId || "",
       jobTitle: jobTitle.trim(),

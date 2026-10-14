@@ -295,6 +295,10 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
   // Submit Final
   const handleSubmitFinal = async () => {
     setErrorMsg("");
+    if (job.isOpen === false) {
+      setErrorMsg("Mohon maaf, posisi lowongan ini saat ini telah ditutup dan tidak menerima lamaran baru.");
+      return;
+    }
     if (!formData.threeStrengths.trim()) {
       setErrorMsg("Silakan sebutkan 3 kelebihan Anda.");
       return;
@@ -423,7 +427,13 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
               <span className="px-2.5 py-0.5 rounded-full bg-bracket-border text-white text-[11px] font-bold font-mono uppercase">
                 {job.division}
               </span>
-              <span className="text-gray-400 text-xs">Formulir Rekrutmen</span>
+              {job.isOpen !== false ? (
+                <span className="text-gray-400 text-xs">Formulir Rekrutmen</span>
+              ) : (
+                <span className="px-2 py-0.5 rounded-full bg-red-600/80 text-white text-[10px] font-bold uppercase tracking-wider">
+                  Lowongan Ditutup
+                </span>
+              )}
             </div>
             <h3 className="font-heading font-extrabold text-xl sm:text-2xl text-white">
               {job.title}
@@ -438,6 +448,16 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
             &times;
           </button>
         </div>
+
+        {/* Warning Banner jika lowongan sudah ditutup */}
+        {job.isOpen === false && (
+          <div className="px-6 py-3 bg-red-500/10 border-b border-red-500/20 text-red-600 text-xs font-bold flex items-center gap-2">
+            <span className="material-symbols-outlined text-base">lock</span>
+            <span>
+              Perhatian: Lowongan untuk posisi ini saat ini telah <strong>DITUTUP</strong> dan tidak lagi menerima pendaftaran baru.
+            </span>
+          </div>
+        )}
 
         {/* Wizard Steps Header */}
         {!isSuccess && (
@@ -1416,21 +1436,23 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
                     </button>
 
                     <div className="flex items-center gap-3 w-full sm:w-auto justify-end">
-                      <a
-                        href={waHref}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition shadow-sm active:scale-95"
-                      >
-                        <span className="material-symbols-outlined text-sm">chat</span>
-                        <span>Fast-Track WA HRD</span>
-                      </a>
+                      {job.isOpen !== false && (
+                        <a
+                          href={waHref}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition shadow-sm active:scale-95"
+                        >
+                          <span className="material-symbols-outlined text-sm">chat</span>
+                          <span>Fast-Track WA HRD</span>
+                        </a>
+                      )}
 
                       <button
                         type="button"
                         onClick={handleSubmitFinal}
-                        disabled={isSubmitting || isUploadingFile || isUploadingPortfolio}
-                        className="flex-1 sm:flex-none px-7 py-3 rounded-xl bg-bracket-border hover:bg-bracket-border/90 disabled:opacity-50 text-xs font-bold text-white transition shadow-sm active:scale-95 flex items-center justify-center gap-2 cursor-pointer"
+                        disabled={isSubmitting || isUploadingFile || isUploadingPortfolio || job.isOpen === false}
+                        className="flex-1 sm:flex-none px-7 py-3 rounded-xl bg-bracket-border hover:bg-bracket-border/90 disabled:opacity-50 disabled:cursor-not-allowed text-xs font-bold text-white transition shadow-sm active:scale-95 flex items-center justify-center gap-2 cursor-pointer"
                       >
                         {isSubmitting ? (
                           <>
@@ -1438,6 +1460,11 @@ export default function KarirApplyModal({ job, onClose }: KarirApplyModalProps) 
                               progress_activity
                             </span>
                             <span>Menyimpan...</span>
+                          </>
+                        ) : job.isOpen === false ? (
+                          <>
+                            <span className="material-symbols-outlined text-sm">lock</span>
+                            <span>Lowongan Ditutup</span>
                           </>
                         ) : (
                           <>

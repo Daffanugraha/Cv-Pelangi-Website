@@ -54,7 +54,9 @@ export default function KarirPageContent({ initialJobs }: KarirPageContentProps)
           j.title.toLowerCase().includes(clean.replace(/-/g, " "))
       );
       if (match) {
-        setSelectedJobToApply(match);
+        if (match.isOpen !== false) {
+          setSelectedJobToApply(match);
+        }
         setTimeout(() => {
           const el = document.getElementById("posisi-terbuka");
           if (el) {

@@ -100,6 +100,17 @@ export default function KarirJobListings({ jobs, onApply }: KarirJobListingsProp
                   >
                     Divisi {job.division}
                   </span>
+                  {job.isOpen !== false ? (
+                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center gap-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                      <span>Dibuka</span>
+                    </span>
+                  ) : (
+                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-gray-100 text-gray-600 border border-gray-300 flex items-center gap-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-gray-400" />
+                      <span>Ditutup</span>
+                    </span>
+                  )}
                 </div>
                 <h3 className="font-heading font-bold text-lg sm:text-xl text-on-surface hover:text-bracket-border transition-colors">
                   {job.title}
@@ -108,16 +119,28 @@ export default function KarirJobListings({ jobs, onApply }: KarirJobListingsProp
 
               {/* Right side toggle & action */}
               <div className="flex items-center gap-3 shrink-0 self-end md:self-center">
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onApply(job);
-                  }}
-                  className="px-5 py-2 rounded-full bg-bracket-border hover:bg-primary text-white text-xs font-bold transition shadow-md active:scale-95"
-                >
-                  Lamar Sekarang
-                </button>
+                {job.isOpen !== false ? (
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onApply(job);
+                    }}
+                    className="px-5 py-2 rounded-full bg-bracket-border hover:bg-primary text-white text-xs font-bold transition shadow-md active:scale-95 cursor-pointer"
+                  >
+                    Lamar Sekarang
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    disabled
+                    onClick={(e) => e.stopPropagation()}
+                    className="px-4 py-2 rounded-full bg-gray-100 text-gray-500 text-xs font-bold border border-gray-300 cursor-not-allowed select-none opacity-80"
+                    title="Lowongan untuk posisi ini saat ini sedang ditutup"
+                  >
+                    Lowongan Ditutup
+                  </button>
+                )}
                 <div
                   className={`w-8 h-8 rounded-full bg-surface-neutral-alt flex items-center justify-center text-on-surface transition-transform duration-300 ${
                     isExpanded ? "rotate-180 bg-bracket-border/10 text-bracket-border" : ""

@@ -109,8 +109,10 @@ export default function KarirHero({
     e.preventDefault();
     setIsDropdownOpen(false);
     if (searchQuery.trim() && matchingJobs.length > 0 && onApply) {
-      onApply(matchingJobs[0]);
-      return;
+      if (matchingJobs[0].isOpen !== false) {
+        onApply(matchingJobs[0]);
+        return;
+      }
     }
     const targetEl = document.getElementById("posisi-terbuka");
     if (targetEl) {

@@ -436,6 +436,32 @@ export function addJobItem(job: Omit<CareerJobItem, "id" | "createdAt">): Career
   };
   jobs.unshift(newJob);
   saveJobs(jobs);
+
+  // Sync ke Supabase
+  try {
+    import("@/lib/supabase/admin").then(({ getSupabaseAdmin }) => {
+      const sb = getSupabaseAdmin();
+      if (sb) {
+        sb.from("career_jobs")
+          .upsert({
+            id: newJob.id,
+            title: newJob.title,
+            division: newJob.division,
+            type: newJob.type,
+            location: newJob.location,
+            qualifications: newJob.qualifications || [],
+            responsibilities: newJob.responsibilities || [],
+            is_open: newJob.isOpen !== false,
+            created_at: newJob.createdAt,
+            updated_at: new Date().toISOString(),
+          })
+          .then(({ error }: any) => {
+            if (error) console.warn("[Supabase Add Job Error]:", error.message);
+          });
+      }
+    });
+  } catch {}
+
   return newJob;
 }
 
@@ -443,27 +469,50 @@ export function updateJobItem(id: string, patch: Partial<CareerJobItem>) {
   const jobs = getJobs().map((j) => (j.id === id ? { ...j, ...patch } : j));
   saveJobs(jobs);
 
-  if (isPostgresConfigured()) {
-    const existing = jobs.find((j) => j.id === id);
-    if (existing) {
-      query(
-        `UPDATE career_jobs SET
-          title = $1, division = $2, type = $3, location = $4,
-          qualifications = $5, responsibilities = $6, is_open = $7,
-          updated_at = NOW()
-        WHERE id = $8`,
-        [
-          existing.title,
-          existing.division,
-          existing.type,
-          existing.location,
-          JSON.stringify(existing.qualifications || []),
-          JSON.stringify(existing.responsibilities || []),
-          existing.isOpen !== false,
-          id,
-        ]
-      ).catch((err) => console.warn("[Postgres Update Job Error]:", err.message));
-    }
+  const existing = jobs.find((j) => j.id === id);
+
+  // Sync ke Supabase
+  try {
+    import("@/lib/supabase/admin").then(({ getSupabaseAdmin }) => {
+      const sb = getSupabaseAdmin();
+      if (sb && existing) {
+        sb.from("career_jobs")
+          .update({
+            title: existing.title,
+            division: existing.division,
+            type: existing.type,
+            location: existing.location,
+            qualifications: existing.qualifications || [],
+            responsibilities: existing.responsibilities || [],
+            is_open: existing.isOpen !== false,
+            updated_at: new Date().toISOString(),
+          })
+          .eq("id", id)
+          .then(({ error }: any) => {
+            if (error) console.warn("[Supabase Update Job Error]:", error.message);
+          });
+      }
+    });
+  } catch {}
+
+  if (isPostgresConfigured() && existing) {
+    query(
+      `UPDATE career_jobs SET
+        title = $1, division = $2, type = $3, location = $4,
+        qualifications = $5, responsibilities = $6, is_open = $7,
+        updated_at = NOW()
+      WHERE id = $8`,
+      [
+        existing.title,
+        existing.division,
+        existing.type,
+        existing.location,
+        JSON.stringify(existing.qualifications || []),
+        JSON.stringify(existing.responsibilities || []),
+        existing.isOpen !== false,
+        id,
+      ]
+    ).catch((err) => console.warn("[Postgres Update Job Error]:", err.message));
   }
 }
 
@@ -486,6 +535,21 @@ export function deleteJobItem(id: string) {
       !deletedSet.has(j.id.toLowerCase().trim())
   );
   saveJobs(jobs);
+
+  // Sync ke Supabase
+  try {
+    import("@/lib/supabase/admin").then(({ getSupabaseAdmin }) => {
+      const sb = getSupabaseAdmin();
+      if (sb) {
+        sb.from("career_jobs")
+          .delete()
+          .eq("id", id)
+          .then(({ error }: any) => {
+            if (error) console.warn("[Supabase Delete Job Error]:", error.message);
+          });
+      }
+    });
+  } catch {}
 
   if (isPostgresConfigured()) {
     query("DELETE FROM career_jobs WHERE id = $1", [id]).catch((err) =>
@@ -840,6 +904,38 @@ export function addBlogArticle(
   };
   articles.unshift(newArticle);
   saveBlogArticles(articles);
+
+  // Sync ke Supabase
+  try {
+    import("@/lib/supabase/admin").then(({ getSupabaseAdmin }) => {
+      const sb = getSupabaseAdmin();
+      if (sb) {
+        sb.from("blog_articles")
+          .upsert({
+            id: newArticle.id,
+            slug: newArticle.slug,
+            title: newArticle.title,
+            category: newArticle.category,
+            category_key: newArticle.categoryKey || null,
+            date: newArticle.date,
+            read_time: newArticle.readTime || null,
+            views: newArticle.views || null,
+            comments_count: newArticle.commentsCount || null,
+            author: newArticle.author || "Admin Pelangi UV",
+            description: newArticle.desc || "",
+            image_url: newArticle.img || "",
+            is_featured: !!newArticle.isFeatured,
+            key_takeaways: newArticle.keyTakeaways || [],
+            content: newArticle.content || [],
+            updated_at: new Date().toISOString(),
+          })
+          .then(({ error }: any) => {
+            if (error) console.warn("[Supabase Add Blog Error]:", error.message);
+          });
+      }
+    });
+  } catch {}
+
   return newArticle;
 }
 
@@ -848,6 +944,39 @@ export function updateBlogArticle(id: string, patch: Partial<BlogArticleItem>) {
     a.id === id || a.slug === id ? { ...a, ...patch } : a
   );
   saveBlogArticles(articles);
+
+  const updated = articles.find((a) => a.id === id || a.slug === id);
+
+  // Sync ke Supabase
+  try {
+    import("@/lib/supabase/admin").then(({ getSupabaseAdmin }) => {
+      const sb = getSupabaseAdmin();
+      if (sb && updated) {
+        sb.from("blog_articles")
+          .update({
+            title: updated.title,
+            slug: updated.slug,
+            category: updated.category,
+            category_key: updated.categoryKey || null,
+            date: updated.date,
+            read_time: updated.readTime || null,
+            views: updated.views || null,
+            comments_count: updated.commentsCount || null,
+            author: updated.author || "Admin Pelangi UV",
+            description: updated.desc || "",
+            image_url: updated.img || "",
+            is_featured: !!updated.isFeatured,
+            key_takeaways: updated.keyTakeaways || [],
+            content: updated.content || [],
+            updated_at: new Date().toISOString(),
+          })
+          .eq("id", updated.id)
+          .then(({ error }: any) => {
+            if (error) console.warn("[Supabase Update Blog Error]:", error.message);
+          });
+      }
+    });
+  } catch {}
 }
 
 export function deleteBlogArticle(id: string) {
@@ -881,5 +1010,20 @@ export function deleteBlogArticle(id: string) {
       !deletedSet.has(a.slug.toLowerCase().trim())
   );
   saveBlogArticles(articles);
+
+  // Sync ke Supabase
+  try {
+    import("@/lib/supabase/admin").then(({ getSupabaseAdmin }) => {
+      const sb = getSupabaseAdmin();
+      if (sb) {
+        sb.from("blog_articles")
+          .delete()
+          .or(`id.eq.${id},slug.eq.${id}`)
+          .then(({ error }: any) => {
+            if (error) console.warn("[Supabase Delete Blog Error]:", error.message);
+          });
+      }
+    });
+  } catch {}
 }
 

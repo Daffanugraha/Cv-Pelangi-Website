@@ -17,14 +17,14 @@ export default function KarirJobDetailClient({
 }: KarirJobDetailClientProps) {
   const searchParams = useSearchParams();
   const autoApply = searchParams?.get("apply") === "true";
-  const [isApplyModalOpen, setIsApplyModalOpen] = useState(autoApply);
+  const [isApplyModalOpen, setIsApplyModalOpen] = useState(autoApply && job.isOpen !== false);
   const [copiedLink, setCopiedLink] = useState(false);
 
   useEffect(() => {
-    if (autoApply) {
+    if (autoApply && job.isOpen !== false) {
       setIsApplyModalOpen(true);
     }
-  }, [autoApply]);
+  }, [autoApply, job.isOpen]);
 
   const handleCopyLink = () => {
     if (typeof window === "undefined") return;
