@@ -4,149 +4,122 @@ import FactoryMapEmbed from "@/components/ui/FactoryMapEmbed";
 export default function FactoryLocationSection() {
   return (
     <section
-      className="w-full bg-white border-y border-slate-200/80 py-16 lg:py-20"
+      className="w-full bg-white border-y border-slate-200/80 py-12 lg:py-16"
       id="lokasi-peta"
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
-        <div className="mb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-50 text-secondary text-xs font-label-meta font-bold uppercase tracking-wider mb-2">
-            <span translate="no" className="material-symbols-outlined notranslate text-[16px]">
+        {/* Header Bersih & To-the-Point */}
+        <div className="mb-8">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-bold uppercase tracking-wider mb-2">
+            <span translate="no" className="material-symbols-outlined notranslate text-[16px] text-secondary">
               warehouse
             </span>
-            Pabrik &amp; Pergudangan Utama
+            Pabrik &amp; Workshop
           </div>
           <h2 className="font-headline-xl text-2xl lg:text-3xl font-extrabold text-slate-900 tracking-tight">
             Lokasi Pabrik &amp; Gudang Operasional
           </h2>
-          <p className="font-body-md text-sm text-slate-600 mt-1 max-w-3xl leading-relaxed">
-            Berada di pusat pergudangan strategis Waru Sidoarjo, memudahkan akses
-            penjemputan dan pengantaran armada box untuk seluruh wilayah
-            Surabaya, Sidoarjo, Gresik, dan sekitarnya.
+          <p className="font-body-md text-sm text-slate-600 mt-1 max-w-2xl leading-relaxed">
+            Kompleks Pergudangan Bizpark Waru, Sidoarjo — Akses muat armada box &amp; pick-up mudah, hanya 10 menit dari Tol Tambak Sumur dan Bandara Juanda.
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-          {/* Map Preview Left Column (60%) */}
+          {/* Peta Google Maps Interaktif (7 Kolom) */}
           <div className="lg:col-span-7 flex flex-col">
-            <FactoryMapEmbed minHeightClass="min-h-[380px] lg:min-h-full" />
+            <FactoryMapEmbed minHeightClass="min-h-[360px] lg:min-h-full" />
           </div>
 
-          {/* Location Information Details Card Right Column (40%) */}
-          <div className="lg:col-span-5 bg-white rounded-2xl p-7 border border-slate-200 shadow-xs flex flex-col justify-between">
-            <div className="space-y-6">
-              <div>
-                <h3 className="font-headline-sm text-lg font-bold text-slate-900">
-                  Kunjungi Pabrik Kami
-                </h3>
-                <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                  Datang langsung untuk konsultasi bahan plano, cek mesin, atau
-                  membawa file cetakan Anda.
-                </p>
+          {/* Kartu Informasi & Aksi Langsung (5 Kolom) */}
+          <div className="lg:col-span-5 bg-slate-50/70 rounded-2xl p-6 lg:p-7 border border-slate-200 flex flex-col justify-between shadow-xs">
+            <div className="space-y-5">
+              {/* 1. Alamat Pabrik */}
+              <div className="flex items-start gap-3.5">
+                <div className="w-9 h-9 rounded-xl bg-red-100 text-secondary-container flex items-center justify-center shrink-0 mt-0.5">
+                  <span translate="no" className="material-symbols-outlined notranslate text-[20px]">
+                    location_on
+                  </span>
+                </div>
+                <div>
+                  <h4 className="font-bold text-slate-900 text-sm">
+                    Alamat Lengkap
+                  </h4>
+                  <p className="text-xs sm:text-[13px] text-slate-600 mt-1 leading-relaxed">
+                    Kompleks Pergudangan Bizpark C17-C19, Tambaksawah, Kec. Waru, Kabupaten Sidoarjo, Jawa Timur 61256
+                  </p>
+                </div>
               </div>
 
-              <div className="space-y-4 text-xs font-body-sm">
-                <div className="flex items-start gap-3.5">
-                  <div className="w-8 h-8 rounded-lg bg-red-50 text-secondary-container flex items-center justify-center shrink-0 mt-0.5">
-                    <span translate="no" className="material-symbols-outlined notranslate text-[18px]">
-                      location_on
-                    </span>
-                  </div>
-                  <div>
-                    <p className="font-bold text-slate-800 text-xs">
-                      Alamat Pabrik:
-                    </p>
-                    <a
-                      href="https://maps.app.goo.gl/sfBs972qUZfScwMJ6"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-slate-600 mt-0.5 leading-relaxed block hover:text-secondary-container transition-colors group"
-                      title="Buka lokasi di Google Maps"
-                    >
-                      <span>
-                        Kompleks Pergudangan Bizpark C17-C19, Jabon, Tambaksawah,
-                        Kec. Waru, Kabupaten Sidoarjo, Jawa Timur 61256
-                      </span>
-                      <span className="inline-flex items-center gap-1 text-[11px] text-secondary-container font-semibold mt-0.5">
-                        <span translate="no" className="material-symbols-outlined notranslate text-[13px]">near_me</span>
-                        Buka di Google Maps
-                      </span>
-                    </a>
-                  </div>
+              {/* 2. Jam Operasional */}
+              <div className="flex items-start gap-3.5">
+                <div className="w-9 h-9 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center shrink-0 mt-0.5">
+                  <span translate="no" className="material-symbols-outlined notranslate text-[20px]">
+                    schedule
+                  </span>
                 </div>
-
-                <div className="flex items-start gap-3.5">
-                  <div className="w-8 h-8 rounded-lg bg-red-50 text-secondary-container flex items-center justify-center shrink-0 mt-0.5">
-                    <span translate="no" className="material-symbols-outlined notranslate text-[18px]">
-                      near_me
-                    </span>
-                  </div>
-                  <div>
-                    <p className="font-bold text-slate-800 text-xs">
-                      Aksesibilitas:
-                    </p>
-                    <p className="text-slate-600 mt-0.5 leading-relaxed">
-                      Hanya 10 menit dari Tol Tambak Sumur &amp; Bandara Juanda.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3.5">
-                  <div className="w-8 h-8 rounded-lg bg-red-50 text-secondary-container flex items-center justify-center shrink-0 mt-0.5">
-                    <span translate="no" className="material-symbols-outlined notranslate text-[18px]">
-                      schedule
-                    </span>
-                  </div>
-                  <div className="w-full">
-                    <p className="font-bold text-slate-800 text-xs">
-                      Jam Operasional:
-                    </p>
-                    <div className="mt-2 space-y-1 text-slate-600 bg-slate-50 p-2.5 rounded-xl border border-slate-100">
-                      <div className="flex justify-between">
-                        <span className="font-medium">Senin - Jumat:</span>
-                        <span className="font-semibold text-slate-900">
-                          07.30 - 15.30 WIB
-                        </span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="font-medium">Sabtu:</span>
-                        <span className="font-semibold text-slate-900">
-                          07.30 - 13.00 WIB
-                        </span>
-                      </div>
-                      <div className="flex justify-between text-secondary">
-                        <span className="font-medium">Minggu &amp; Libur:</span>
-                        <span className="font-semibold">
-                          Tutup (Hotline WA Aktif)
-                        </span>
-                      </div>
+                <div className="w-full">
+                  <h4 className="font-bold text-slate-900 text-sm">
+                    Jam Operasional Kantor &amp; Workshop
+                  </h4>
+                  <div className="mt-2 text-xs text-slate-700 bg-white p-3 rounded-xl border border-slate-200 space-y-1.5 shadow-2xs">
+                    <div className="flex justify-between items-center">
+                      <span className="font-medium text-slate-500">Senin – Jumat</span>
+                      <span className="font-bold text-slate-900">07.30 – 15.30 WIB</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="font-medium text-slate-500">Sabtu</span>
+                      <span className="font-bold text-slate-900">07.30 – 13.00 WIB</span>
+                    </div>
+                    <div className="flex justify-between items-center pt-1 border-t border-slate-100 text-secondary">
+                      <span className="font-medium">Minggu &amp; Tanggal Merah</span>
+                      <span className="font-bold text-[11px]">Tutup (Hotline WA Aktif)</span>
                     </div>
                   </div>
                 </div>
               </div>
+
+              {/* 3. Fasilitas Kunjungan */}
+              <div className="flex items-start gap-3.5">
+                <div className="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5">
+                  <span translate="no" className="material-symbols-outlined notranslate text-[20px]">
+                    check_circle
+                  </span>
+                </div>
+                <div>
+                  <h4 className="font-bold text-slate-900 text-sm">
+                    Layanan Langsung di Lokasi
+                  </h4>
+                  <p className="text-xs text-slate-600 mt-1 leading-relaxed">
+                    Terima drop-off lembaran cetak plano, pengecekan swatch fisik, dan konsultasi teknis mesin.
+                  </p>
+                </div>
+              </div>
             </div>
 
-            <div className="pt-6 space-y-2.5">
+            {/* Dua Tombol Aksi Utama: Google Maps & Janji Kunjungan WhatsApp */}
+            <div className="pt-6 border-t border-slate-200/80 mt-6 space-y-2.5">
               <a
-                className="w-full py-3 px-6 rounded-full bg-secondary-container hover:bg-primary text-white font-cta-pill text-xs font-semibold flex items-center justify-center gap-2 shadow-[0_4px_16px_rgba(254,84,83,0.3)] transition-all cursor-pointer active:scale-95"
+                className="w-full py-3 px-5 rounded-xl bg-secondary-container hover:bg-primary text-white text-xs font-bold flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer active:scale-98"
                 href="https://maps.app.goo.gl/sfBs972qUZfScwMJ6"
                 rel="noopener noreferrer"
                 target="_blank"
               >
                 <span translate="no" className="material-symbols-outlined notranslate text-[18px]">
-                  directions
+                  near_me
                 </span>
-                Buka di Google Maps
+                <span>Buka Navigasi Google Maps</span>
               </a>
+
               <a
-                className="w-full py-2.5 px-6 rounded-full bg-slate-50 hover:bg-slate-100 text-slate-700 font-label-nav text-xs font-medium flex items-center justify-center gap-2 border border-slate-200 transition-colors cursor-pointer active:scale-95"
-                href="https://wa.me/6282231019363?text=Halo%20Pelangi%20UV,%20saya%20mau%20konfirmasi%20jadwal%20kunjungan%20ke%20gudang"
+                className="w-full py-2.5 px-5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer active:scale-98 shadow-2xs"
+                href="https://wa.me/6282231019363?text=Halo%20Tim%20Pelangi%20UV,%20saya%20ingin%20jadwalkan%20kunjungan%20ke%20workshop%20Bizpark"
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                <span translate="no" className="material-symbols-outlined notranslate text-[16px]">
-                  calendar_month
+                <span translate="no" className="material-symbols-outlined notranslate text-[18px]">
+                  chat
                 </span>
-                Konfirmasi Jadwal Kunjungan
+                <span>Jadwalkan Kunjungan via WhatsApp</span>
               </a>
             </div>
           </div>

@@ -40,22 +40,10 @@ export default function LocationSection() {
                   <h4 className="font-headline-sm text-headline-sm text-on-surface font-bold">
                     Alamat Utama
                   </h4>
-                  <a
-                    href="https://maps.app.goo.gl/sfBs972qUZfScwMJ6"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="font-body-sm text-body-sm text-text-body mt-1 leading-relaxed block hover:text-bracket-border transition-colors group"
-                    title="Buka alamat di Google Maps"
-                  >
-                    <span>
-                      Kompleks Pergudangan Bizpark C17-C19, Jabon, Tambaksawah, Kec.
-                      Waru, Kabupaten Sidoarjo, Jawa Timur 61256
-                    </span>
-                    <span className="inline-flex items-center gap-1 text-[11px] text-bracket-border font-semibold mt-1">
-                      <span translate="no" className="material-symbols-outlined notranslate text-[14px]">near_me</span>
-                      Petunjuk Arah Google Maps
-                    </span>
-                  </a>
+                  <p className="font-body-sm text-body-sm text-text-body mt-1 leading-relaxed">
+                    Kompleks Pergudangan Bizpark C17-C19, Tambaksawah, Kec.
+                    Waru, Kabupaten Sidoarjo, Jawa Timur 61256
+                  </p>
                 </div>
               </div>
 
