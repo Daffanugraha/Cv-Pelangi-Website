@@ -95,7 +95,7 @@ export const CAREER_JOBS: CareerJob[] = [
     id: "admin-pajak",
     title: "Admin Pajak & Keuangan",
     division: "Finance",
-    type: "Full-Time (WFO)",
+    type: "Full-Time",
     location: "Bizpark C17-C19, Sidoarjo",
     isOpen: true,
     qualifications: [
@@ -119,7 +119,7 @@ export const CAREER_JOBS: CareerJob[] = [
     id: "checker-gudang",
     title: "Checker Gudang & Logistik",
     division: "Warehouse",
-    type: "Full-Time (WFO)",
+    type: "Full-Time",
     location: "Bizpark C17-C19, Sidoarjo",
     isOpen: true,
     qualifications: [
@@ -141,7 +141,7 @@ export const CAREER_JOBS: CareerJob[] = [
     id: "marketing-executive",
     title: "Marketing & Account Executive Percetakan",
     division: "Marketing",
-    type: "Full-Time (WFO & Field)",
+    type: "Full-Time",
     location: "Bizpark C17-C19, Sidoarjo",
     isOpen: true,
     qualifications: [
@@ -163,7 +163,7 @@ export const CAREER_JOBS: CareerJob[] = [
     id: "operator-mesin-finishing",
     title: "Operator Mesin Finishing (Spot UV / Foil / Laminating)",
     division: "Production",
-    type: "Full-Time (WFO)",
+    type: "Full-Time",
     location: "Bizpark C17-C19, Sidoarjo",
     isOpen: true,
     qualifications: [
@@ -185,7 +185,7 @@ export const CAREER_JOBS: CareerJob[] = [
     id: "teknisi-maintenance",
     title: "Teknisi Maintenance Mesin Industri",
     division: "Operational",
-    type: "Full-Time (WFO)",
+    type: "Full-Time",
     location: "Bizpark C17-C19, Sidoarjo",
     isOpen: true,
     qualifications: [
@@ -206,7 +206,7 @@ export const CAREER_JOBS: CareerJob[] = [
     id: "admin-operasional",
     title: "Admin Operasional & Surat Perintah Kerja (SPK)",
     division: "Operational",
-    type: "Full-Time (WFO)",
+    type: "Full-Time",
     location: "Bizpark C17-C19, Sidoarjo",
     isOpen: true,
     qualifications: [

@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
     const job = addJobItem({
       title: body.title,
       division: body.division,
-      type: body.type || "Full-Time (WFO)",
+      type: body.type || "Full-Time",
       location: body.location || "Bizpark C17-C19, Sidoarjo",
       isOpen: body.isOpen !== false,
       qualifications: Array.isArray(body.qualifications) ? body.qualifications : [],

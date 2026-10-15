@@ -20,7 +20,7 @@ INSERT INTO career_jobs (
     'operator-mesin-finishing',
     'Operator Mesin Finishing (Spot UV / Foil / Laminating)',
     'Production',
-    'Full-Time (WFO)',
+    'Full-Time',
     'Bizpark C17-C19, Sidoarjo',
     TRUE,
     '[
@@ -42,7 +42,7 @@ INSERT INTO career_jobs (
     'teknisi-maintenance',
     'Teknisi Maintenance Mesin Industri',
     'Operational',
-    'Full-Time (WFO)',
+    'Full-Time',
     'Bizpark C17-C19, Sidoarjo',
     TRUE,
     '[
@@ -63,7 +63,7 @@ INSERT INTO career_jobs (
     'admin-operasional',
     'Admin Operasional & Surat Perintah Kerja (SPK)',
     'Operational',
-    'Full-Time (WFO)',
+    'Full-Time',
     'Bizpark C17-C19, Sidoarjo',
     TRUE,
     '[
@@ -84,7 +84,7 @@ INSERT INTO career_jobs (
     'admin-pajak',
     'Admin Pajak & Keuangan',
     'Finance',
-    'Full-Time (WFO)',
+    'Full-Time',
     'Bizpark C17-C19, Sidoarjo',
     FALSE,
     '[
@@ -108,7 +108,7 @@ INSERT INTO career_jobs (
     'checker-gudang',
     'Checker Gudang & Logistik',
     'Warehouse',
-    'Full-Time (WFO)',
+    'Full-Time',
     'Bizpark C17-C19, Sidoarjo',
     FALSE,
     '[
@@ -130,7 +130,7 @@ INSERT INTO career_jobs (
     'marketing-executive',
     'Marketing & Account Executive Percetakan',
     'Marketing',
-    'Full-Time (WFO & Field)',
+    'Full-Time',
     'Bizpark C17-C19, Sidoarjo',
     FALSE,
     '[

@@ -20,7 +20,7 @@ INSERT INTO career_jobs (
     'posisi-baru-slug', -- ID unik (contoh: 'staff-desain-grafis', 'qc-inspector')
     'Staff Desain Grafis & Prepress', -- Judul lowongan kerja
     'Prepress', -- Divisi ('Production', 'Operational', 'Marketing', 'Finance', dll)
-    'Full-Time (WFO)', -- Tipe pekerjaan ('Full-Time (WFO)', 'Part-Time', 'Magang / Internship')
+    'Full-Time', -- Tipe pekerjaan ('Full-Time', 'Part-Time', 'Magang / Internship')
     'Bizpark C17-C19, Sidoarjo', -- Lokasi penempatan kerja
     TRUE, -- Status: TRUE (Dibuka), FALSE (Ditutup)
     '[

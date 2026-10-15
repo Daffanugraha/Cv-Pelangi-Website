@@ -38,7 +38,7 @@ export default function AdminKarirPage() {
   const [formDivision, setFormDivision] = useState<string>("Production");
   const [isCustomDivision, setIsCustomDivision] = useState(false);
   const [customDivisionInput, setCustomDivisionInput] = useState("");
-  const [formType, setFormType] = useState("Full-Time (WFO)");
+  const [formType, setFormType] = useState("Full-Time");
   const [formLocation, setFormLocation] = useState("Bizpark C17-C19, Sidoarjo");
   const [formIsOpen, setFormIsOpen] = useState(true);
 
@@ -135,7 +135,7 @@ export default function AdminKarirPage() {
     setFormDivision("Production");
     setIsCustomDivision(false);
     setCustomDivisionInput("");
-    setFormType("Full-Time (WFO)");
+    setFormType("Full-Time");
     setFormLocation("Bizpark C17-C19, Sidoarjo");
     setFormIsOpen(true);
     setQualifications([]);

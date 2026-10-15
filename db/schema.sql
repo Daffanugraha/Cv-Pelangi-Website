@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS career_jobs (
     id VARCHAR(64) PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     division VARCHAR(100) NOT NULL,
-    type VARCHAR(100) DEFAULT 'Full-Time (WFO)',
+    type VARCHAR(100) DEFAULT 'Full-Time',
     location VARCHAR(255) DEFAULT 'Bizpark C17-C19, Sidoarjo',
     qualifications JSONB DEFAULT '[]'::jsonb,
     responsibilities JSONB DEFAULT '[]'::jsonb,
