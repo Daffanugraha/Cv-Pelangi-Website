@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     template: "%s | CV Pelangi UV",
   },
   description:
-    "Pusat jasa finishing percetakan presisi dan grosir bahan baku: Spot UV, Hot Stamping Foil, Laminating Thermal, dan Pond Otomatis di Bizpark Sidoarjo. Didukung 40+ unit mesin berkecepatan tinggi.",
+    "Pusat jasa finishing percetakan presisi dan grosir bahan baku: Spot UV, Hot Stamping Foil, Laminating Thermal, dan Pond Otomatis di Jawa Timur & Indonesia. Didukung 40+ unit mesin modern berkecepatan tinggi.",
   keywords: [
     "finishing cetak",
     "jasa finishing percetakan",
@@ -30,8 +30,11 @@ export const metadata: Metadata = {
     "grosir roll foil",
     "lem percetakan",
     "CV Pelangi UV",
+    "finishing percetakan jawa timur",
     "percetakan sidoarjo",
     "percetakan surabaya",
+    "percetakan jawa timur",
+    "percetakan indonesia",
     "finishing kemasan packaging",
     "cetak buku eksklusif",
   ],
@@ -49,7 +52,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "CV Pelangi UV - When Quality Be A Priority | Finishing Percetakan",
     description:
-      "Pusat jasa finishing percetakan presisi (Spot UV, Foil Stamping, Laminating, Pond Otomatis) & grosir bahan baku di Bizpark Sidoarjo.",
+      "Pusat jasa finishing percetakan presisi (Spot UV, Foil Stamping, Laminating, Pond Otomatis) & grosir bahan baku di Jawa Timur & Indonesia.",
     url: siteUrl,
     siteName: "CV Pelangi UV",
     images: [
@@ -67,7 +70,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "CV Pelangi UV - Jasa Finishing Percetakan Presisi",
     description:
-      "Spot UV, Hot Stamping Foil, Laminating Thermal & Pond Otomatis di Bizpark Sidoarjo.",
+      "Spot UV, Hot Stamping Foil, Laminating Thermal & Pond Otomatis di Jawa Timur & Indonesia.",
     images: ["/images/logo.png"],
   },
   robots: {
@@ -137,8 +140,18 @@ export default function RootLayout({
               logo: `${siteUrl}/images/logo.png`,
               image: `${siteUrl}/images/logo.png`,
               description:
-                "Pusat jasa finishing percetakan presisi (Spot UV, Hot Stamping Foil, Laminating Thermal, Pond Otomatis) & grosir bahan baku berkualitas sejak 2004 di Bizpark Sidoarjo.",
+                "Pusat jasa finishing percetakan presisi (Spot UV, Hot Stamping Foil, Laminating Thermal, Pond Otomatis) & distributor bahan baku cetak berkualitas sejak 2004 melayani Jawa Timur dan seluruh Indonesia.",
               telephone: "+62318667469",
+              areaServed: [
+                {
+                  "@type": "AdministrativeArea",
+                  name: "Jawa Timur",
+                },
+                {
+                  "@type": "Country",
+                  name: "Indonesia",
+                },
+              ],
               address: {
                 "@type": "PostalAddress",
                 streetAddress:
