@@ -1,7 +1,7 @@
 export interface CareerJob {
   id: string;
   title: string;
-  division: "Finance" | "Marketing" | "Operational" | "Production" | "Warehouse";
+  division: string;
   type: string;
   location: string;
   isOpen: boolean;

@@ -85,14 +85,24 @@ export default function KarirHero({
     }, 50);
   };
 
-  const divisionsList = [
-    { id: "ALL", label: "Semua Posisi" },
-    { id: "Finance", label: "Finance & Pajak" },
-    { id: "Production", label: "Produksi & Mesin" },
-    { id: "Warehouse", label: "Gudang & Logistik" },
-    { id: "Marketing", label: "Marketing & Sales" },
-    { id: "Operational", label: "Operasional & Maintenance" },
-  ];
+  const divisionsList = useMemo(() => {
+    const base = [
+      { id: "ALL", label: "Semua Posisi" },
+      { id: "Finance", label: "Finance & Pajak" },
+      { id: "Production", label: "Produksi & Mesin" },
+      { id: "Warehouse", label: "Gudang & Logistik" },
+      { id: "Marketing", label: "Marketing & Sales" },
+      { id: "Operational", label: "Operasional & Maintenance" },
+    ];
+    const baseIds = new Set(base.map((b) => b.id.toLowerCase()));
+    (jobs || []).forEach((j) => {
+      if (j.division && !baseIds.has(j.division.toLowerCase())) {
+        base.push({ id: j.division, label: `Divisi ${j.division}` });
+        baseIds.add(j.division.toLowerCase());
+      }
+    });
+    return base;
+  }, [jobs]);
 
   const matchingJobs = useMemo(() => {
     if (!searchQuery.trim() || !jobs) return [];

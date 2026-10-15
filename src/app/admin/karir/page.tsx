@@ -5,12 +5,23 @@ import Link from "next/link";
 import AdminShell from "../AdminShell";
 import { CareerJobItem, JobApplicantItem } from "@/lib/admin/db";
 
-const DIVISIONS = ["Finance", "Marketing", "Operational", "Production", "Warehouse"] as const;
+const DEFAULT_DIVISIONS = ["Production", "Operational", "Marketing", "Finance", "Warehouse"];
 
 export default function AdminKarirPage() {
   const [jobs, setJobs] = useState<CareerJobItem[]>([]);
   const [applicants, setApplicants] = useState<JobApplicantItem[]>([]);
   const [loading, setLoading] = useState(true);
+
+  // Dynamic divisions based on existing jobs + default
+  const allDivisions = useMemo(() => {
+    const list = [...DEFAULT_DIVISIONS];
+    jobs.forEach((j) => {
+      if (j.division && !list.includes(j.division)) {
+        list.push(j.division);
+      }
+    });
+    return list;
+  }, [jobs]);
 
   // Filter Jobs
   const [searchQuery, setSearchQuery] = useState("");
@@ -24,7 +35,9 @@ export default function AdminKarirPage() {
 
   // Form Fields Jobs
   const [formTitle, setFormTitle] = useState("");
-  const [formDivision, setFormDivision] = useState<CareerJobItem["division"]>("Production");
+  const [formDivision, setFormDivision] = useState<string>("Production");
+  const [isCustomDivision, setIsCustomDivision] = useState(false);
+  const [customDivisionInput, setCustomDivisionInput] = useState("");
   const [formType, setFormType] = useState("Full-Time (WFO)");
   const [formLocation, setFormLocation] = useState("Bizpark C17-C19, Sidoarjo");
   const [formIsOpen, setFormIsOpen] = useState(true);
@@ -120,6 +133,8 @@ export default function AdminKarirPage() {
     setEditingJob(null);
     setFormTitle("");
     setFormDivision("Production");
+    setIsCustomDivision(false);
+    setCustomDivisionInput("");
     setFormType("Full-Time (WFO)");
     setFormLocation("Bizpark C17-C19, Sidoarjo");
     setFormIsOpen(true);
@@ -134,6 +149,8 @@ export default function AdminKarirPage() {
     setEditingJob(job);
     setFormTitle(job.title);
     setFormDivision(job.division);
+    setIsCustomDivision(false);
+    setCustomDivisionInput("");
     setFormType(job.type);
     setFormLocation(job.location);
     setFormIsOpen(job.isOpen);
@@ -169,11 +186,15 @@ export default function AdminKarirPage() {
     e.preventDefault();
     if (!formTitle.trim()) return;
 
+    const finalDivision = isCustomDivision
+      ? (customDivisionInput.trim() || "Operational")
+      : formDivision;
+
     setSaving(true);
     try {
       const payload = {
         title: formTitle.trim(),
-        division: formDivision,
+        division: finalDivision,
         type: formType.trim(),
         location: formLocation.trim(),
         isOpen: formIsOpen,
@@ -357,7 +378,7 @@ export default function AdminKarirPage() {
               className="px-3 py-2 text-xs sm:text-sm bg-gray-50 border border-gray-200 rounded-xl text-gray-700 font-medium focus:outline-none focus:border-[#F65456]"
             >
               <option value="ALL">Semua Divisi</option>
-              {DIVISIONS.map((d) => (
+              {allDivisions.map((d) => (
                 <option key={d} value={d}>Divisi {d}</option>
               ))}
             </select>
@@ -580,16 +601,49 @@ export default function AdminKarirPage() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
                   <div>
-                    <label className="block text-xs font-bold text-gray-800 mb-1">Divisi Pekerjaan</label>
-                    <select
-                      value={formDivision}
-                      onChange={(e) => setFormDivision(e.target.value as any)}
-                      className="w-full px-3.5 py-2 text-xs sm:text-sm bg-white border border-gray-300 rounded-xl focus:outline-none focus:border-[#F65456]"
-                    >
-                      {DIVISIONS.map((d) => (
-                        <option key={d} value={d}>Divisi {d}</option>
-                      ))}
-                    </select>
+                    <div className="flex items-center justify-between mb-1">
+                      <label className="block text-xs font-bold text-gray-800">Divisi Pekerjaan</label>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setIsCustomDivision(!isCustomDivision);
+                          if (!isCustomDivision) setCustomDivisionInput("");
+                        }}
+                        className="text-[11px] font-semibold text-[#F65456] hover:underline cursor-pointer"
+                      >
+                        {isCustomDivision ? "Pilih dari daftar" : "+ Tambah Divisi Baru"}
+                      </button>
+                    </div>
+
+                    {isCustomDivision ? (
+                      <input
+                        type="text"
+                        required
+                        value={customDivisionInput}
+                        onChange={(e) => setCustomDivisionInput(e.target.value)}
+                        placeholder="Ketik nama divisi baru..."
+                        className="w-full px-3.5 py-2 text-xs sm:text-sm bg-white border border-gray-300 rounded-xl focus:outline-none focus:border-[#F65456]"
+                        autoFocus
+                      />
+                    ) : (
+                      <select
+                        value={formDivision}
+                        onChange={(e) => {
+                          if (e.target.value === "__NEW__") {
+                            setIsCustomDivision(true);
+                            setCustomDivisionInput("");
+                          } else {
+                            setFormDivision(e.target.value);
+                          }
+                        }}
+                        className="w-full px-3.5 py-2 text-xs sm:text-sm bg-white border border-gray-300 rounded-xl focus:outline-none focus:border-[#F65456]"
+                      >
+                        {allDivisions.map((d) => (
+                          <option key={d} value={d}>Divisi {d}</option>
+                        ))}
+                        <option value="__NEW__">+ Tambah Divisi Baru...</option>
+                      </select>
+                    )}
                   </div>
 
                   <div>
