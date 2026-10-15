@@ -6,20 +6,81 @@ import Script from "next/script";
 import "./globals.css";
 import SiteLayoutWrapper from "@/components/layout/SiteLayoutWrapper";
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://cv-pelangi-website.vercel.app";
+
 export const metadata: Metadata = {
-  title: "CV Pelangi UV - When Quality Be A Priority | Finishing Percetakan",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "CV Pelangi UV - Jasa Finishing Percetakan Presisi & Bahan Baku",
+    template: "%s | CV Pelangi UV",
+  },
   description:
-    "CV Pelangi UV adalah pusat jasa finishing percetakan presisi dan grosir bahan baku: Spot UV, Hot Stamping Foil, Laminating Thermal, dan Pond Otomatis di Bizpark Sidoarjo.",
+    "Pusat jasa finishing percetakan presisi dan grosir bahan baku: Spot UV, Hot Stamping Foil, Laminating Thermal, dan Pond Otomatis di Bizpark Sidoarjo. Didukung 40+ unit mesin berkecepatan tinggi.",
   keywords: [
     "finishing cetak",
+    "jasa finishing percetakan",
     "spot uv",
+    "spot uv pasir",
     "hot stamping foil",
+    "foil emas perak",
     "laminating thermal",
+    "laminasi doff glossy",
     "pond otomatis",
+    "die cutting",
+    "grosir roll foil",
+    "lem percetakan",
     "CV Pelangi UV",
     "percetakan sidoarjo",
     "percetakan surabaya",
+    "finishing kemasan packaging",
+    "cetak buku eksklusif",
   ],
+  authors: [{ name: "CV Pelangi UV", url: siteUrl }],
+  creator: "CV Pelangi UV",
+  publisher: "CV Pelangi UV",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    title: "CV Pelangi UV - When Quality Be A Priority | Finishing Percetakan",
+    description:
+      "Pusat jasa finishing percetakan presisi (Spot UV, Foil Stamping, Laminating, Pond Otomatis) & grosir bahan baku di Bizpark Sidoarjo.",
+    url: siteUrl,
+    siteName: "CV Pelangi UV",
+    images: [
+      {
+        url: "/images/logo.png",
+        width: 800,
+        height: 600,
+        alt: "Logo Resmi CV Pelangi UV - Finishing Percetakan",
+      },
+    ],
+    locale: "id_ID",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "CV Pelangi UV - Jasa Finishing Percetakan Presisi",
+    description:
+      "Spot UV, Hot Stamping Foil, Laminating Thermal & Pond Otomatis di Bizpark Sidoarjo.",
+    images: ["/images/logo.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
   icons: {
     icon: [
       { url: "/icons/favicon-32x32.png", sizes: "32x32", type: "image/png" },
@@ -62,6 +123,59 @@ export default function RootLayout({
         <link
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=block"
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "LocalBusiness",
+              "@id": `${siteUrl}/#organization`,
+              name: "CV Pelangi UV",
+              alternateName: "Pelangi UV",
+              url: siteUrl,
+              logo: `${siteUrl}/images/logo.png`,
+              image: `${siteUrl}/images/logo.png`,
+              description:
+                "Pusat jasa finishing percetakan presisi (Spot UV, Hot Stamping Foil, Laminating Thermal, Pond Otomatis) & grosir bahan baku berkualitas sejak 2004 di Bizpark Sidoarjo.",
+              telephone: "+62318667469",
+              address: {
+                "@type": "PostalAddress",
+                streetAddress:
+                  "Kompleks Pergudangan Bizpark C17-C19, Jabon, Tambaksawah, Kec. Waru",
+                addressLocality: "Kabupaten Sidoarjo",
+                addressRegion: "Jawa Timur",
+                postalCode: "61256",
+                addressCountry: "ID",
+              },
+              geo: {
+                "@type": "GeoCoordinates",
+                latitude: -7.3688,
+                longitude: 112.7667,
+              },
+              openingHoursSpecification: [
+                {
+                  "@type": "OpeningHoursSpecification",
+                  dayOfWeek: [
+                    "Monday",
+                    "Tuesday",
+                    "Wednesday",
+                    "Thursday",
+                    "Friday",
+                  ],
+                  opens: "07:30",
+                  closes: "15:30",
+                },
+                {
+                  "@type": "OpeningHoursSpecification",
+                  dayOfWeek: ["Saturday"],
+                  opens: "07:30",
+                  closes: "13:00",
+                },
+              ],
+              priceRange: "$$",
+            }),
+          }}
         />
         <Script
           id="react-dom-patch"
