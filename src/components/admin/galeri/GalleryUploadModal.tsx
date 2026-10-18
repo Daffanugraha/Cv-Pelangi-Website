@@ -58,8 +58,39 @@ export default function GalleryUploadModal({
   const [uploading, setUploading] = useState(false);
   const [fetchingThumb, setFetchingThumb] = useState(false);
   const [thumbSuccessMsg, setThumbSuccessMsg] = useState("");
+  const [previewTab, setPreviewTab] = useState<"foto" | "video">("foto");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+
+  function getEmbedUrl(url: string): { type: "iframe" | "video" | "external"; embedUrl: string } | null {
+    if (!url) return null;
+    const clean = url.trim();
+
+    // YouTube / YouTube Shorts
+    const yt = clean.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]+)/);
+    if (yt) {
+      return { type: "iframe", embedUrl: `https://www.youtube-nocookie.com/embed/${yt[1]}` };
+    }
+
+    // Instagram Reel / Post
+    const ig = clean.match(/(?:instagram\.com)\/(?:reel|p)\/([a-zA-Z0-9_\-]+)/);
+    if (ig) {
+      return { type: "iframe", embedUrl: `https://www.instagram.com/reel/${ig[1]}/embed/` };
+    }
+
+    // TikTok
+    const tt = clean.match(/tiktok\.com\/@[^/]+\/video\/(\d+)/);
+    if (tt) {
+      return { type: "iframe", embedUrl: `https://www.tiktok.com/embed/v2/${tt[1]}` };
+    }
+
+    // Direct MP4 / WebM
+    if (clean.match(/\.(mp4|webm|ogg|mov)(\?.*)?$/i)) {
+      return { type: "video", embedUrl: clean };
+    }
+
+    return { type: "external", embedUrl: clean };
+  }
 
   function parsePosition(pos?: string) {
     if (!pos || pos === "center") return { x: 50, y: 50 };
@@ -406,145 +437,163 @@ export default function GalleryUploadModal({
           {/* Kolom Kiri: Foto / Preview & Pengaturan Fokus Crop (Lebih Luas) */}
           <div className="lg:col-span-7 space-y-3">
             <div className="flex items-center justify-between">
-              <label className="text-xs font-bold text-gray-700 uppercase tracking-wider font-mono">
-                Foto / Sampul <span className="text-red-500">*</span>
-              </label>
-              {previewUrl && (
-                <button
-                  type="button"
-                  onClick={() => fileInputRef.current?.click()}
-                  className="text-xs text-[#F65456] hover:underline font-semibold flex items-center gap-1 cursor-pointer"
-                >
-                  <span className="material-symbols-outlined text-xs">upload_file</span>
-                  Ganti Foto
-                </button>
-              )}
-            </div>
-
-            {/* Container Preview Gambar yang Besar & Interaktif Pan/Drag */}
-            <div
-              ref={containerRef}
-              onClick={() => !previewUrl && fileInputRef.current?.click()}
-              onMouseDown={handleMouseDown}
-              onMouseMove={handleMouseMove}
-              onMouseUp={handleMouseUp}
-              onMouseLeave={handleMouseUp}
-              onTouchStart={handleTouchStart}
-              onTouchMove={handleTouchMove}
-              onTouchEnd={handleTouchEnd}
-              className={`relative aspect-[16/10] sm:aspect-[16/9] min-h-[260px] sm:min-h-[320px] w-full rounded-2xl border-2 ${
-                previewUrl
-                  ? `border-gray-200 select-none ${isDragging ? "cursor-grabbing" : "cursor-grab"}`
-                  : "border-dashed border-gray-300 hover:border-[#F65456] cursor-pointer"
-              } transition-colors overflow-hidden bg-gray-900 flex items-center justify-center group shadow-xs`}
-            >
-              {previewUrl ? (
-                <>
-                  <img
-                    src={previewUrl}
-                    alt="Preview"
-                    draggable={false}
-                    className="w-full h-full object-cover pointer-events-none select-none transition-[object-position] duration-75"
-                    style={{ objectPosition: `${posX}% ${posY}%` }}
-                  />
-                  {/* Badge Posisi Saat Ini */}
-                  <div className="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-black/75 backdrop-blur-md text-white text-[11px] font-bold flex items-center gap-1.5 shadow-sm pointer-events-none">
-                    <span className="material-symbols-outlined text-xs text-[#F65456]">pan_tool</span>
-                    <span>
-                      Posisi: {posX}% X, {posY}% Y
-                    </span>
-                  </div>
-                  {/* Hint Drag Overlay */}
-                  <div className="absolute bottom-3 right-3 px-2.5 py-1 rounded-lg bg-black/60 backdrop-blur-md text-white/90 text-[10px] font-medium flex items-center gap-1 pointer-events-none">
-                    <span className="material-symbols-outlined text-[13px]">drag_indicator</span>
-                    <span>Tahan & Geser Foto Bebas</span>
-                  </div>
-                </>
+              {videoUrl.trim() ? (
+                <div className="p-0.5 bg-gray-100 rounded-lg flex gap-1">
+                  <button
+                    type="button"
+                    onClick={() => setPreviewTab("foto")}
+                    className={`px-2.5 py-1 text-xs font-bold rounded-md transition cursor-pointer flex items-center gap-1 ${
+                      previewTab === "foto"
+                        ? "bg-white text-gray-900 shadow-2xs"
+                        : "text-gray-500 hover:text-gray-900"
+                    }`}
+                  >
+                    <span className="material-symbols-outlined text-xs text-[#F65456]">image</span>
+                    <span>Thumbnail Foto</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setPreviewTab("video")}
+                    className={`px-2.5 py-1 text-xs font-bold rounded-md transition cursor-pointer flex items-center gap-1 ${
+                      previewTab === "video"
+                        ? "bg-[#F65456] text-white shadow-2xs"
+                        : "text-gray-500 hover:text-gray-900"
+                    }`}
+                  >
+                    <span className="material-symbols-outlined text-xs">play_circle</span>
+                    <span>Preview Video</span>
+                  </button>
+                </div>
               ) : (
-                <div className="text-center p-6">
-                  <span className="material-symbols-outlined text-5xl text-gray-400 group-hover:text-[#F65456] transition">
-                    upload_file
-                  </span>
-                  <p className="text-gray-200 text-sm mt-3 font-bold">
-                    Klik untuk Pilih Foto
-                  </p>
-                  <p className="text-gray-400 text-xs mt-1">Maks. 10MB (JPG, PNG, WEBP)</p>
-                </div>
+                <label className="text-xs font-bold text-gray-700 uppercase tracking-wider font-mono">
+                  Foto / Sampul <span className="text-red-500">*</span>
+                </label>
               )}
-              {uploading && (
-                <div className="absolute inset-0 bg-white/80 backdrop-blur-sm flex items-center justify-center">
-                  <div className="w-8 h-8 border-2 border-gray-200 border-t-[#F65456] rounded-full animate-spin" />
-                </div>
-              )}
-            </div>
 
-            {/* Kontrol Reposisi Bebas (Slider Vertikal & Horizontal + Reset) */}
-            {previewUrl && (
-              <div className="p-3.5 bg-gray-50 rounded-xl border border-gray-200 space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-gray-700 font-mono flex items-center gap-1.5">
-                    <span className="material-symbols-outlined text-sm text-[#F65456]">tune</span>
-                    Atur Posisi Thumbnail
-                  </span>
+              <div className="flex items-center gap-2">
+                {previewUrl && previewTab === "foto" && (
                   <button
                     type="button"
                     onClick={() => {
                       setPosX(50);
                       setPosY(50);
                     }}
-                    className="text-[11px] font-bold text-gray-600 hover:text-[#F65456] transition cursor-pointer flex items-center gap-1 px-2 py-0.5 rounded bg-white border border-gray-200 shadow-2xs"
+                    title="Kembalikan posisi thumbnail ke tengah (50% 50%)"
+                    className="text-[11px] text-gray-500 hover:text-[#F65456] font-semibold flex items-center gap-0.5 cursor-pointer px-2 py-0.5 rounded bg-gray-100 hover:bg-gray-200 transition"
                   >
                     <span className="material-symbols-outlined text-xs">restart_alt</span>
-                    Reset ke Tengah
+                    Reset Posisi
                   </button>
-                </div>
+                )}
+                {previewUrl && (
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    className="text-xs text-[#F65456] hover:underline font-semibold flex items-center gap-1 cursor-pointer"
+                  >
+                    <span className="material-symbols-outlined text-xs">upload_file</span>
+                    Ganti Foto
+                  </button>
+                )}
+              </div>
+            </div>
 
-                {/* Slider Vertikal (Atas - Bawah) */}
-                <div className="space-y-1">
-                  <div className="flex justify-between text-[11px] font-semibold text-gray-600">
-                    <span>Vertikal (Atas - Bawah)</span>
-                    <span className="font-mono text-gray-500">{posY}%</span>
+            {/* Container Preview: Foto (Mouse Drag) atau Video Player */}
+            {previewTab === "video" && videoUrl.trim() ? (
+              (() => {
+                const embedInfo = getEmbedUrl(videoUrl);
+                return (
+                  <div className="relative aspect-[16/10] sm:aspect-[16/9] min-h-[260px] sm:min-h-[320px] w-full rounded-2xl border-2 border-gray-200 overflow-hidden bg-black flex items-center justify-center shadow-xs">
+                    {embedInfo?.type === "iframe" ? (
+                      <iframe
+                        src={embedInfo.embedUrl}
+                        className="w-full h-full border-0"
+                        allowFullScreen
+                        scrolling="no"
+                        allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                        title="Preview Video"
+                      />
+                    ) : embedInfo?.type === "video" ? (
+                      <video
+                        src={embedInfo.embedUrl}
+                        controls
+                        className="w-full h-full object-contain"
+                      />
+                    ) : (
+                      <div className="p-6 text-center text-white flex flex-col items-center justify-center">
+                        <span className="material-symbols-outlined text-5xl text-[#F65456] mb-2">play_circle</span>
+                        <p className="text-sm font-bold text-white mb-1">Preview Video Siap</p>
+                        <p className="text-gray-400 text-xs mb-3 max-w-sm truncate">{videoUrl}</p>
+                        <a
+                          href={videoUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#F65456] hover:bg-[#E03F41] text-white text-xs font-bold transition shadow-xs"
+                        >
+                          <span>Tonton Video di Tab Baru</span>
+                          <span className="material-symbols-outlined text-xs">open_in_new</span>
+                        </a>
+                      </div>
+                    )}
                   </div>
-                  <input
-                    type="range"
-                    min="0"
-                    max="100"
-                    value={posY}
-                    onChange={(e) => setPosY(Number(e.target.value))}
-                    className="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#F65456]"
-                  />
-                  <div className="flex justify-between text-[10px] text-gray-400">
-                    <span>0% (Atas)</span>
-                    <span>50% (Tengah)</span>
-                    <span>100% (Bawah)</span>
+                );
+              })()
+            ) : (
+              /* Container Preview Gambar yang Besar & Interaktif Pan/Drag via Mouse */
+              <div
+                ref={containerRef}
+                onClick={() => !previewUrl && fileInputRef.current?.click()}
+                onMouseDown={handleMouseDown}
+                onMouseMove={handleMouseMove}
+                onMouseUp={handleMouseUp}
+                onMouseLeave={handleMouseUp}
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
+                className={`relative aspect-[16/10] sm:aspect-[16/9] min-h-[260px] sm:min-h-[320px] w-full rounded-2xl border-2 ${
+                  previewUrl
+                    ? `border-gray-200 select-none ${isDragging ? "cursor-grabbing" : "cursor-grab"}`
+                    : "border-dashed border-gray-300 hover:border-[#F65456] cursor-pointer"
+                } transition-colors overflow-hidden bg-gray-900 flex items-center justify-center group shadow-xs`}
+              >
+                {previewUrl ? (
+                  <>
+                    <img
+                      src={previewUrl}
+                      alt="Preview"
+                      draggable={false}
+                      className="w-full h-full object-cover pointer-events-none select-none transition-[object-position] duration-75"
+                      style={{ objectPosition: `${posX}% ${posY}%` }}
+                    />
+                    {/* Badge Posisi Saat Ini */}
+                    <div className="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-black/75 backdrop-blur-md text-white text-[11px] font-bold flex items-center gap-1.5 shadow-sm pointer-events-none">
+                      <span className="material-symbols-outlined text-xs text-[#F65456]">pan_tool</span>
+                      <span>
+                        Posisi: {posX}% X, {posY}% Y
+                      </span>
+                    </div>
+                    {/* Hint Drag Overlay */}
+                    <div className="absolute bottom-3 right-3 px-2.5 py-1 rounded-lg bg-black/60 backdrop-blur-md text-white/90 text-[10px] font-medium flex items-center gap-1 pointer-events-none">
+                      <span className="material-symbols-outlined text-[13px]">drag_indicator</span>
+                      <span>Geser Foto dengan Mouse</span>
+                    </div>
+                  </>
+                ) : (
+                  <div className="text-center p-6">
+                    <span className="material-symbols-outlined text-5xl text-gray-400 group-hover:text-[#F65456] transition">
+                      upload_file
+                    </span>
+                    <p className="text-gray-200 text-sm mt-3 font-bold">
+                      Klik untuk Pilih Foto
+                    </p>
+                    <p className="text-gray-400 text-xs mt-1">Maks. 10MB (JPG, PNG, WEBP)</p>
                   </div>
-                </div>
-
-                {/* Slider Horizontal (Kiri - Kanan) */}
-                <div className="space-y-1">
-                  <div className="flex justify-between text-[11px] font-semibold text-gray-600">
-                    <span>Horizontal (Kiri - Kanan)</span>
-                    <span className="font-mono text-gray-500">{posX}%</span>
+                )}
+                {uploading && (
+                  <div className="absolute inset-0 bg-white/80 backdrop-blur-sm flex items-center justify-center">
+                    <div className="w-8 h-8 border-2 border-gray-200 border-t-[#F65456] rounded-full animate-spin" />
                   </div>
-                  <input
-                    type="range"
-                    min="0"
-                    max="100"
-                    value={posX}
-                    onChange={(e) => setPosX(Number(e.target.value))}
-                    className="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#F65456]"
-                  />
-                  <div className="flex justify-between text-[10px] text-gray-400">
-                    <span>0% (Kiri)</span>
-                    <span>50% (Tengah)</span>
-                    <span>100% (Kanan)</span>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-1.5 text-[11px] text-gray-500 bg-white p-2 rounded-lg border border-gray-100">
-                  <span className="material-symbols-outlined text-xs text-[#F65456]">touch_app</span>
-                  <span>Anda juga bisa klik dan geser langsung pada foto di atas untuk reposisi secara fleksibel.</span>
-                </div>
+                )}
               </div>
             )}
 
