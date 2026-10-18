@@ -59,6 +59,7 @@ export default function GalleryUploadModal({
   const [fetchingThumb, setFetchingThumb] = useState(false);
   const [thumbSuccessMsg, setThumbSuccessMsg] = useState("");
   const [previewTab, setPreviewTab] = useState<"foto" | "video">("foto");
+  const [caption, setCaption] = useState("");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
 
@@ -120,6 +121,7 @@ export default function GalleryUploadModal({
       const { x, y } = parsePosition(item.objectPosition);
       setPosX(x);
       setPosY(y);
+      setCaption(item.caption || item.description || item.desc || "");
     } else {
       setGalleryType(defaultGalleryType);
       setTitle("");
@@ -133,6 +135,7 @@ export default function GalleryUploadModal({
       setPreviewUrl("");
       setPosX(50);
       setPosY(50);
+      setCaption("");
     }
     setError("");
     setThumbSuccessMsg("");
@@ -306,6 +309,8 @@ export default function GalleryUploadModal({
         fileName,
         galleryType,
         objectPosition: `${posX}% ${posY}%`,
+        caption: caption.trim(),
+        description: caption.trim(),
       };
 
       let res;
@@ -752,6 +757,23 @@ export default function GalleryUploadModal({
                 </div>
               </>
             )}
+
+            <div>
+              <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1 font-mono">
+                Caption / Deskripsi Singkat
+              </label>
+              <textarea
+                value={caption}
+                onChange={(e) => setCaption(e.target.value)}
+                rows={2}
+                placeholder={
+                  galleryType === "beranda"
+                    ? "cth. Hasil pengerjaan mesin Spot UV berkecepatan tinggi dengan detail kilap presisi..."
+                    : "cth. Finishing cetak hot stamping gold mewah dengan kombinasi laminasi doff..."
+                }
+                className="w-full bg-white border border-gray-300 rounded-xl px-3 py-2 text-gray-900 text-xs sm:text-sm focus:outline-none focus:border-[#F65456] transition resize-none placeholder:text-gray-400"
+              />
+            </div>
 
             <label className="flex items-center gap-2 cursor-pointer select-none pt-2">
               <input

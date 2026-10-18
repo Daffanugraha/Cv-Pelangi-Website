@@ -129,6 +129,8 @@ export interface GalleryItem {
   tag?: string;
   objectPosition?: "top" | "center" | "bottom" | string;
   desc?: string;
+  description?: string;
+  caption?: string;
   badges?: string[];
   material?: string;
   notes?: string;

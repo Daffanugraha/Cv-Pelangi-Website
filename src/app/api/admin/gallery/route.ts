@@ -46,6 +46,9 @@ export async function GET(req: NextRequest) {
             videoUrl: d.video_url || "",
             tag: d.tag || d.category || "Finishing",
             objectPosition: "center",
+            description: d.description || "",
+            caption: d.description || "",
+            desc: d.description || "",
           }));
           return NextResponse.json(formatted, {
             headers: {
@@ -78,6 +81,8 @@ export async function GET(req: NextRequest) {
             tag: d.tag || d.technique || "",
             objectPosition: d.object_position || "center",
             description: d.description || undefined,
+            caption: d.description || undefined,
+            desc: d.description || undefined,
             badges: d.badges || undefined,
             material: d.material || undefined,
             notes: d.notes || undefined,
@@ -176,6 +181,7 @@ export async function POST(req: NextRequest) {
   if (!isAuthenticated()) return unauthorized();
   try {
     const body = await req.json();
+    const captionVal = body.caption || body.description || body.desc || "";
     const item = addGalleryItem({
       title: body.title ?? "",
       category: body.category ?? "Umum",
@@ -187,6 +193,9 @@ export async function POST(req: NextRequest) {
       videoUrl: body.videoUrl ?? "",
       tag: body.tag ?? "",
       objectPosition: body.objectPosition || "center",
+      caption: captionVal,
+      description: captionVal,
+      desc: captionVal,
     });
 
     // Sinkronisasi Real-Time ke Supabase
@@ -208,7 +217,7 @@ export async function POST(req: NextRequest) {
             title: item.title,
             category: item.category || "Finishing",
             tag: item.tag || item.category || "Finishing",
-            description: item.technique || "",
+            description: captionVal || item.technique || "",
             duration: "0:45 • Pelangi UV",
             capacity: "CV Pelangi UV Showcase",
             source: "Instagram Reels",
@@ -227,6 +236,7 @@ export async function POST(req: NextRequest) {
             category_label: item.category,
             technique: item.technique || item.tag || "",
             tag: item.tag || item.technique || "",
+            description: captionVal || null,
             image_url: item.imageUrl,
             file_name: item.fileName || null,
             object_position: item.objectPosition || "center",
@@ -292,6 +302,11 @@ export async function PATCH(req: NextRequest) {
         if (patch.technique !== undefined) {
           bUpdate.description = patch.technique;
           pUpdate.technique = patch.technique;
+        }
+        if (patch.caption !== undefined || patch.description !== undefined || patch.desc !== undefined) {
+          const cVal = patch.caption ?? patch.description ?? patch.desc ?? "";
+          bUpdate.description = cVal;
+          pUpdate.description = cVal;
         }
         if (patch.imageUrl !== undefined) {
           bUpdate.image_url = patch.imageUrl;
