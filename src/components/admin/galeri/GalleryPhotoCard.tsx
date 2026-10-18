@@ -26,13 +26,8 @@ export default function GalleryPhotoCard({
           <img
             src={item.imageUrl}
             alt={item.title}
-            className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 ${
-              item.objectPosition === "top"
-                ? "object-top"
-                : item.objectPosition === "bottom"
-                ? "object-bottom"
-                : "object-center"
-            }`}
+            style={{ objectPosition: item.objectPosition || "center" }}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             loading="lazy"
           />
         ) : (
@@ -57,7 +52,7 @@ export default function GalleryPhotoCard({
           {item.objectPosition && item.objectPosition !== "center" && (
             <div className="flex items-center gap-1 bg-black/75 backdrop-blur-md text-white/90 text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm">
               <span className="material-symbols-outlined text-[11px] text-[#F65456]">crop</span>
-              <span>{item.objectPosition === "top" ? "Fokus Atas" : "Fokus Bawah"}</span>
+              <span>Crop Kustom</span>
             </div>
           )}
         </div>

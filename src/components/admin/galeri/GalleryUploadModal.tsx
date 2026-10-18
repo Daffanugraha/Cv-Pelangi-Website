@@ -50,12 +50,27 @@ export default function GalleryUploadModal({
   const [imageUrl, setImageUrl] = useState("");
   const [fileName, setFileName] = useState("");
   const [previewUrl, setPreviewUrl] = useState("");
-  const [objectPosition, setObjectPosition] = useState<"top" | "center" | "bottom">("center");
+  const [posX, setPosX] = useState(50);
+  const [posY, setPosY] = useState(50);
+  const [isDragging, setIsDragging] = useState(false);
+  const dragStartRef = useRef<{ startX: number; startY: number; initX: number; initY: number } | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [uploading, setUploading] = useState(false);
   const [fetchingThumb, setFetchingThumb] = useState(false);
   const [thumbSuccessMsg, setThumbSuccessMsg] = useState("");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+
+  function parsePosition(pos?: string) {
+    if (!pos || pos === "center") return { x: 50, y: 50 };
+    if (pos === "top") return { x: 50, y: 15 };
+    if (pos === "bottom") return { x: 50, y: 85 };
+    const m = pos.match(/(\d+)%\s+(\d+)%/);
+    if (m) {
+      return { x: parseInt(m[1], 10), y: parseInt(m[2], 10) };
+    }
+    return { x: 50, y: 50 };
+  }
 
   useEffect(() => {
     if (!isOpen) return;
@@ -71,7 +86,9 @@ export default function GalleryUploadModal({
       setImageUrl(item.imageUrl || "");
       setFileName(item.fileName || "");
       setPreviewUrl(item.imageUrl || "");
-      setObjectPosition((item.objectPosition as "top" | "center" | "bottom") || "center");
+      const { x, y } = parsePosition(item.objectPosition);
+      setPosX(x);
+      setPosY(y);
     } else {
       setGalleryType(defaultGalleryType);
       setTitle("");
@@ -83,7 +100,8 @@ export default function GalleryUploadModal({
       setImageUrl("");
       setFileName("");
       setPreviewUrl("");
-      setObjectPosition("center");
+      setPosX(50);
+      setPosY(50);
     }
     setError("");
     setThumbSuccessMsg("");
@@ -165,6 +183,73 @@ export default function GalleryUploadModal({
     }
   }
 
+  // Interactive Drag & Pan handlers for custom thumbnail positioning
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (!previewUrl) return;
+    setIsDragging(true);
+    dragStartRef.current = {
+      startX: e.clientX,
+      startY: e.clientY,
+      initX: posX,
+      initY: posY,
+    };
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging || !dragStartRef.current || !containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const deltaX = e.clientX - dragStartRef.current.startX;
+    const deltaY = e.clientY - dragStartRef.current.startY;
+
+    const pctX = (deltaX / rect.width) * 100;
+    const pctY = (deltaY / rect.height) * 100;
+
+    const newX = Math.min(100, Math.max(0, Math.round(dragStartRef.current.initX - pctX)));
+    const newY = Math.min(100, Math.max(0, Math.round(dragStartRef.current.initY - pctY)));
+
+    setPosX(newX);
+    setPosY(newY);
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+    dragStartRef.current = null;
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (!previewUrl || e.touches.length === 0) return;
+    const touch = e.touches[0];
+    setIsDragging(true);
+    dragStartRef.current = {
+      startX: touch.clientX,
+      startY: touch.clientY,
+      initX: posX,
+      initY: posY,
+    };
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isDragging || !dragStartRef.current || !containerRef.current || e.touches.length === 0) return;
+    const touch = e.touches[0];
+    const rect = containerRef.current.getBoundingClientRect();
+    const deltaX = touch.clientX - dragStartRef.current.startX;
+    const deltaY = touch.clientY - dragStartRef.current.startY;
+
+    const pctX = (deltaX / rect.width) * 100;
+    const pctY = (deltaY / rect.height) * 100;
+
+    const newX = Math.min(100, Math.max(0, Math.round(dragStartRef.current.initX - pctX)));
+    const newY = Math.min(100, Math.max(0, Math.round(dragStartRef.current.initY - pctY)));
+
+    setPosX(newX);
+    setPosY(newY);
+  };
+
+  const handleTouchEnd = () => {
+    setIsDragging(false);
+    dragStartRef.current = null;
+  };
+
   async function handleSave() {
     if (!title.trim()) {
       setError("Judul foto/media wajib diisi.");
@@ -189,7 +274,7 @@ export default function GalleryUploadModal({
         imageUrl: imageUrl.trim(),
         fileName,
         galleryType,
-        objectPosition,
+        objectPosition: `${posX}% ${posY}%`,
       };
 
       let res;
@@ -336,36 +421,43 @@ export default function GalleryUploadModal({
               )}
             </div>
 
-            {/* Container Preview Gambar yang Besar */}
+            {/* Container Preview Gambar yang Besar & Interaktif Pan/Drag */}
             <div
+              ref={containerRef}
               onClick={() => !previewUrl && fileInputRef.current?.click()}
+              onMouseDown={handleMouseDown}
+              onMouseMove={handleMouseMove}
+              onMouseUp={handleMouseUp}
+              onMouseLeave={handleMouseUp}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
               className={`relative aspect-[16/10] sm:aspect-[16/9] min-h-[260px] sm:min-h-[320px] w-full rounded-2xl border-2 ${
-                previewUrl ? "border-gray-200" : "border-dashed border-gray-300 hover:border-[#F65456] cursor-pointer"
-              } transition overflow-hidden bg-gray-900 flex items-center justify-center group shadow-xs`}
+                previewUrl
+                  ? `border-gray-200 select-none ${isDragging ? "cursor-grabbing" : "cursor-grab"}`
+                  : "border-dashed border-gray-300 hover:border-[#F65456] cursor-pointer"
+              } transition-colors overflow-hidden bg-gray-900 flex items-center justify-center group shadow-xs`}
             >
               {previewUrl ? (
                 <>
                   <img
                     src={previewUrl}
                     alt="Preview"
-                    className={`w-full h-full object-cover transition-all duration-300 ${
-                      objectPosition === "top"
-                        ? "object-top"
-                        : objectPosition === "bottom"
-                        ? "object-bottom"
-                        : "object-center"
-                    }`}
+                    draggable={false}
+                    className="w-full h-full object-cover pointer-events-none select-none transition-[object-position] duration-75"
+                    style={{ objectPosition: `${posX}% ${posY}%` }}
                   />
                   {/* Badge Posisi Saat Ini */}
-                  <div className="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-black/70 backdrop-blur-md text-white text-[11px] font-bold flex items-center gap-1 shadow-sm">
-                    <span className="material-symbols-outlined text-xs text-[#F65456]">crop</span>
+                  <div className="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-black/75 backdrop-blur-md text-white text-[11px] font-bold flex items-center gap-1.5 shadow-sm pointer-events-none">
+                    <span className="material-symbols-outlined text-xs text-[#F65456]">pan_tool</span>
                     <span>
-                      {objectPosition === "top"
-                        ? "Fokus Atas"
-                        : objectPosition === "bottom"
-                        ? "Fokus Bawah"
-                        : "Fokus Tengah"}
+                      Posisi: {posX}% X, {posY}% Y
                     </span>
+                  </div>
+                  {/* Hint Drag Overlay */}
+                  <div className="absolute bottom-3 right-3 px-2.5 py-1 rounded-lg bg-black/60 backdrop-blur-md text-white/90 text-[10px] font-medium flex items-center gap-1 pointer-events-none">
+                    <span className="material-symbols-outlined text-[13px]">drag_indicator</span>
+                    <span>Tahan & Geser Foto Bebas</span>
                   </div>
                 </>
               ) : (
@@ -386,52 +478,72 @@ export default function GalleryUploadModal({
               )}
             </div>
 
-            {/* Kontrol Fokus Crop (Atas, Tengah, Bawah) */}
+            {/* Kontrol Reposisi Bebas (Slider Vertikal & Horizontal + Reset) */}
             {previewUrl && (
-              <div className="p-3 bg-gray-50 rounded-xl border border-gray-200 space-y-2">
+              <div className="p-3.5 bg-gray-50 rounded-xl border border-gray-200 space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-gray-700 font-mono flex items-center gap-1.5">
-                    <span className="material-symbols-outlined text-sm text-[#F65456]">crop</span>
-                    Posisi Fokus Gambar (Crop)
+                    <span className="material-symbols-outlined text-sm text-[#F65456]">tune</span>
+                    Atur Posisi Thumbnail
                   </span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setPosX(50);
+                      setPosY(50);
+                    }}
+                    className="text-[11px] font-bold text-gray-600 hover:text-[#F65456] transition cursor-pointer flex items-center gap-1 px-2 py-0.5 rounded bg-white border border-gray-200 shadow-2xs"
+                  >
+                    <span className="material-symbols-outlined text-xs">restart_alt</span>
+                    Reset ke Tengah
+                  </button>
                 </div>
-                <div className="grid grid-cols-3 gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setObjectPosition("top")}
-                    className={`py-2 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer ${
-                      objectPosition === "top"
-                        ? "bg-[#F65456] text-white shadow-xs"
-                        : "bg-white border border-gray-200 text-gray-700 hover:bg-gray-100"
-                    }`}
-                  >
-                    <span className="material-symbols-outlined text-sm">align_vertical_top</span>
-                    <span>Atas</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setObjectPosition("center")}
-                    className={`py-2 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer ${
-                      objectPosition === "center"
-                        ? "bg-[#F65456] text-white shadow-xs"
-                        : "bg-white border border-gray-200 text-gray-700 hover:bg-gray-100"
-                    }`}
-                  >
-                    <span className="material-symbols-outlined text-sm">align_vertical_center</span>
-                    <span>Tengah</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setObjectPosition("bottom")}
-                    className={`py-2 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer ${
-                      objectPosition === "bottom"
-                        ? "bg-[#F65456] text-white shadow-xs"
-                        : "bg-white border border-gray-200 text-gray-700 hover:bg-gray-100"
-                    }`}
-                  >
-                    <span className="material-symbols-outlined text-sm">align_vertical_bottom</span>
-                    <span>Bawah</span>
-                  </button>
+
+                {/* Slider Vertikal (Atas - Bawah) */}
+                <div className="space-y-1">
+                  <div className="flex justify-between text-[11px] font-semibold text-gray-600">
+                    <span>Vertikal (Atas - Bawah)</span>
+                    <span className="font-mono text-gray-500">{posY}%</span>
+                  </div>
+                  <input
+                    type="range"
+                    min="0"
+                    max="100"
+                    value={posY}
+                    onChange={(e) => setPosY(Number(e.target.value))}
+                    className="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#F65456]"
+                  />
+                  <div className="flex justify-between text-[10px] text-gray-400">
+                    <span>0% (Atas)</span>
+                    <span>50% (Tengah)</span>
+                    <span>100% (Bawah)</span>
+                  </div>
+                </div>
+
+                {/* Slider Horizontal (Kiri - Kanan) */}
+                <div className="space-y-1">
+                  <div className="flex justify-between text-[11px] font-semibold text-gray-600">
+                    <span>Horizontal (Kiri - Kanan)</span>
+                    <span className="font-mono text-gray-500">{posX}%</span>
+                  </div>
+                  <input
+                    type="range"
+                    min="0"
+                    max="100"
+                    value={posX}
+                    onChange={(e) => setPosX(Number(e.target.value))}
+                    className="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#F65456]"
+                  />
+                  <div className="flex justify-between text-[10px] text-gray-400">
+                    <span>0% (Kiri)</span>
+                    <span>50% (Tengah)</span>
+                    <span>100% (Kanan)</span>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-1.5 text-[11px] text-gray-500 bg-white p-2 rounded-lg border border-gray-100">
+                  <span className="material-symbols-outlined text-xs text-[#F65456]">touch_app</span>
+                  <span>Anda juga bisa klik dan geser langsung pada foto di atas untuk reposisi secara fleksibel.</span>
                 </div>
               </div>
             )}
