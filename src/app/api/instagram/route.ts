@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
 import { getDeletedGalleryIds } from "@/lib/admin/db";
+import { getSupabaseAdmin } from "@/lib/supabase/admin";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -137,7 +138,64 @@ export async function GET(request: Request) {
     }
   }
 
-  // 2. Return cached authentic reels, filtered from deleted items
+  // 2. Cek database Supabase untuk reels / video beranda terupdate
+  try {
+    const sb = getSupabaseAdmin();
+    if (sb) {
+      const { data, error } = await sb
+        .from("gallery_beranda_videos")
+        .select("*")
+        .order("sort_order", { ascending: true });
+
+      if (!error && Array.isArray(data) && data.length > 0) {
+        const reels: ReelItem[] = data.map((d: any) => ({
+          id: d.id,
+          shortcode: d.shortcode || d.id,
+          source: d.source || "Instagram Reels",
+          tag: d.tag || d.category || "Finishing",
+          duration: d.duration || "0:45 • Pelangi UV",
+          title: d.title,
+          desc: d.description || "",
+          capacity: d.capacity || "CV Pelangi UV Showcase",
+          img: d.image_url,
+          videoUrl: d.video_url || "",
+          embedUrl:
+            d.embed_url ||
+            (d.video_url
+              ? d.video_url.endsWith("/")
+                ? `${d.video_url}embed/`
+                : `${d.video_url}/embed/`
+              : ""),
+          date: d.created_at,
+          isReal: d.is_real !== false,
+        }));
+
+        const filtered = filterDeleted(reels);
+        if (filtered.length > 0) {
+          return NextResponse.json(
+            {
+              success: true,
+              source: "supabase_db",
+              count: filtered.length,
+              lastUpdated: new Date().toISOString(),
+              account: "pelangi.uv",
+              profileUrl: "https://www.instagram.com/pelangi.uv/",
+              data: filtered,
+            },
+            {
+              headers: {
+                "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+              },
+            }
+          );
+        }
+      }
+    }
+  } catch (err) {
+    console.warn("[Supabase Instagram Feed Fallback]:", err);
+  }
+
+  // 3. Return cached authentic reels, filtered from deleted items
   const cached = filterDeleted(getStoredReels());
   return NextResponse.json(
     {
