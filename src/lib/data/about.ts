@@ -5,6 +5,7 @@ export interface AboutSlide {
   desc: string;
   points?: string[];
   img?: string;
+  videoUrl?: string;
   youtubeId?: string;
   locationTitle?: string;
   locationSub?: string;
@@ -34,8 +35,8 @@ export const aboutSlides: AboutSlide[] = [
     tabLabel: "Profil Perusahaan",
     title: "Ahlinya Jasa Finishing Cetak & Grosir Bahan Baku Berkualitas",
     desc: "Berdiri sejak 2004, CV Pelangi UV menghadirkan solusi finishing cetak presisi tinggi dan penyediaan bahan baku impor langsung. Kami memprioritaskan ketepatan waktu, efisiensi pengerjaan, dan standar mutu terbaik untuk mendukung kesuksesan setiap mitra percetakan.",
-    youtubeId: "HAawkWRQK1M",
-    img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCsVUIE6UdWFrPCNnSsuLQtBRP2KgbEsCOO_bkna9IveJIUt8Sp_Gb68Q3pu1ohnQNSEC26hors_8KEwfMbs5sTKFsq9wL2kNVRAYY0-qSPLP4dqa9IC5HFFtgC0XzXVgYDDi7yYEX21idpkmONAmV1U5xKd4aJvlUKsFSBAlVrGnn8fnyfPkSgVC14gizg-8h4yfJSMStp0WYpC8UhbzYTWFnFX_H2zrrLz_XjuiQZhgAejkgHNJBq",
+    videoUrl: "/videos/perjalanan-pelangi-uv.mp4",
+    img: "/videos/perjalanan-pelangi-uv-thumb.jpg",
     locationTitle: "Bizpark C17-C19",
     locationSub: "Tambaksawah, Waru, Sidoarjo",
     tag: "",

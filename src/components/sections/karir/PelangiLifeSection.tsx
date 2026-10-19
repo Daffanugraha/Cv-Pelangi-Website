@@ -52,6 +52,52 @@ export default function PelangiLifeSection() {
           </div>
         </div>
 
+        {/* Featured Brand & Culture Video */}
+        <div className="mb-10 rounded-3xl overflow-hidden bg-neutral-900 border border-surface-container shadow-xl text-white">
+          <div className="grid grid-cols-1 lg:grid-cols-12 items-center">
+            {/* Video Player (16:9 Aspect) */}
+            <div className="lg:col-span-7 bg-black aspect-video relative group">
+              <video
+                src="/videos/perjalanan-pelangi-uv.mp4"
+                poster="/videos/perjalanan-pelangi-uv-thumb.jpg"
+                controls
+                playsInline
+                preload="metadata"
+                className="w-full h-full object-cover"
+              />
+            </div>
+
+            {/* Video Story & Description */}
+            <div className="lg:col-span-5 p-6 sm:p-8 flex flex-col justify-center">
+              <div className="inline-flex items-center gap-2 mb-3">
+                <span className="px-3 py-1 rounded-full bg-bracket-border/20 border border-bracket-border/40 text-bracket-border text-xs font-bold uppercase tracking-wider">
+                  Kisah & Budaya Perusahaan
+                </span>
+                <span className="text-white/50 text-xs font-medium">• 3 Menit 25 Detik</span>
+              </div>
+
+              <h3 className="font-heading font-extrabold text-xl sm:text-2xl text-white tracking-tight mb-2.5">
+                Perjalanan Pelangi UV
+              </h3>
+
+              <p className="font-sans text-white/80 text-xs sm:text-sm leading-relaxed mb-4">
+                Setiap hasil cetak yang terlihat premium memiliki satu cerita di baliknya. Ada proses, ketelitian, teknologi, dan dedikasi orang-orang yang memastikan setiap detailnya menghasilkan kualitas terbaik sejak 2004.
+              </p>
+
+              <div className="p-3 sm:p-3.5 rounded-xl bg-white/5 border border-white/10 text-xs text-white/70 italic leading-relaxed">
+                &ldquo;Finishing bukan sekadar tahap terakhir dalam proses printing. Finishing adalah bagian yang membuat sebuah karya terlihat berbeda.&rdquo;
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Subheader untuk Reels */}
+        <div className="flex items-center justify-between mb-4">
+          <span className="text-xs font-bold uppercase tracking-wider text-text-muted">
+            Koleksi Aktivitas & Reels Tim
+          </span>
+        </div>
+
         {/* Reels Grid (5 Vertical Cards) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
           {PELANGI_LIFE_REELS.map((reel) => (

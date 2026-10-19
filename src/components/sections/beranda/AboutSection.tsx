@@ -188,9 +188,28 @@ export default function AboutSection() {
               </div>
             </div>
 
-            {/* Right Media Card (YouTube Video or Image) */}
+            {/* Right Media Card (Local MP4 Video, YouTube Video, or Image) */}
             <div className="lg:col-span-6">
-              {slide.youtubeId ? (
+              {slide.videoUrl ? (
+                <div
+                  className="relative rounded-3xl overflow-hidden shadow-2xl aspect-video bg-black border border-surface-container group"
+                  onMouseEnter={() => setIsPaused(true)}
+                  onMouseLeave={() => setIsPaused(false)}
+                >
+                  <video
+                    key={slide.videoUrl}
+                    src={slide.videoUrl}
+                    poster={slide.img}
+                    controls
+                    playsInline
+                    preload="metadata"
+                    className="w-full h-full object-cover"
+                    onPlay={() => setIsVideoPlaying(true)}
+                    onPause={() => setIsVideoPlaying(false)}
+                    onEnded={() => setIsVideoPlaying(false)}
+                  />
+                </div>
+              ) : slide.youtubeId ? (
                 <div
                   className="relative rounded-3xl overflow-hidden shadow-2xl aspect-video bg-black border border-surface-container"
                   onMouseEnter={() => setIsPaused(true)}

@@ -7,27 +7,29 @@ import JawaTimurGlobe from "./JawaTimurGlobe";
 export default function JourneySection() {
   const [activeIdx, setActiveIdx] = useState(0); // Start from 2004
   const [enlargedImageIndex, setEnlargedImageIndex] = useState<number | null>(null);
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
 
   useEffect(() => {
-    if (enlargedImageIndex !== null) return;
+    if (enlargedImageIndex !== null || isVideoModalOpen) return;
 
     const interval = setInterval(() => {
       setActiveIdx((prev) => (prev + 1) % journeyStoryPhases.length);
     }, 10000);
 
     return () => clearInterval(interval);
-  }, [enlargedImageIndex]);
+  }, [enlargedImageIndex, isVideoModalOpen]);
 
   useEffect(() => {
-    if (enlargedImageIndex === null) return;
+    if (enlargedImageIndex === null && !isVideoModalOpen) return;
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setEnlargedImageIndex(null);
+        setIsVideoModalOpen(false);
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [enlargedImageIndex]);
+  }, [enlargedImageIndex, isVideoModalOpen]);
 
   const navJourney = (dir: number) => {
     setActiveIdx(
@@ -61,6 +63,22 @@ export default function JourneySection() {
             CV PELANGI UV
           </h2>
           <div className="w-16 sm:w-24 h-[2px] mx-auto mt-3 bg-gradient-to-r from-transparent via-white/50 to-transparent anim-title-glow rounded-full"></div>
+
+          {/* Watch Video Button */}
+          <div className="mt-6 flex justify-center">
+            <button
+              type="button"
+              onClick={() => setIsVideoModalOpen(true)}
+              className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-white/10 hover:bg-bracket-border border border-white/20 hover:border-bracket-border text-white text-xs sm:text-sm font-semibold transition-all duration-300 shadow-lg hover:scale-105 active:scale-95 cursor-pointer group backdrop-blur-sm"
+            >
+              <span className="w-6 h-6 rounded-full bg-bracket-border group-hover:bg-white text-white group-hover:text-bracket-border flex items-center justify-center transition-colors">
+                <span translate="no" className="material-symbols-outlined notranslate text-[16px] translate-x-0.5">
+                  play_arrow
+                </span>
+              </span>
+              <span>Tonton Video Perjalanan Pelangi UV</span>
+            </button>
+          </div>
         </div>
 
         {/* Phase Story Narration (Clean without box, proportional size) */}
@@ -255,6 +273,59 @@ export default function JourneySection() {
                 src={cur.images[enlargedImageIndex].url}
                 alt="Foto Dokumentasi CV Pelangi UV"
                 className="max-h-[78vh] max-w-[88vw] w-auto h-auto object-contain rounded-2xl"
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Video Modal Lightbox (Perjalanan Pelangi UV) */}
+      {isVideoModalOpen && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-8 bg-black/90 backdrop-blur-2xl animate-fade-in"
+          onClick={() => setIsVideoModalOpen(false)}
+        >
+          {/* Ambient blurred backdrop */}
+          <div
+            className="absolute inset-0 bg-cover bg-center filter blur-3xl opacity-20 pointer-events-none scale-125"
+            style={{
+              backgroundImage: "url(/videos/perjalanan-pelangi-uv-thumb.jpg)",
+            }}
+          />
+
+          <div
+            className="relative w-full max-w-4xl flex flex-col items-center justify-center z-10"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header with Title & Close Button */}
+            <div className="w-full flex items-center justify-between mb-3 text-white">
+              <div className="flex items-center gap-2.5">
+                <span className="w-2.5 h-2.5 rounded-full bg-bracket-border animate-pulse" />
+                <h3 className="text-sm sm:text-base font-bold text-white tracking-wide">
+                  Perjalanan CV Pelangi UV (Sejak 2004)
+                </h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsVideoModalOpen(false)}
+                aria-label="Tutup video"
+                className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/10 hover:bg-bracket-border text-white flex items-center justify-center border border-white/20 transition-all cursor-pointer hover:scale-105 active:scale-95 shadow-xl"
+              >
+                <span translate="no" className="material-symbols-outlined notranslate text-[20px]">close</span>
+              </button>
+            </div>
+
+            {/* Video Player */}
+            <div className="w-full aspect-video rounded-2xl overflow-hidden border border-white/20 shadow-[0_20px_60px_rgba(0,0,0,0.9)] bg-black">
+              <video
+                src="/videos/perjalanan-pelangi-uv.mp4"
+                poster="/videos/perjalanan-pelangi-uv-thumb.jpg"
+                controls
+                autoPlay
+                playsInline
+                className="w-full h-full object-cover"
               />
             </div>
           </div>
