@@ -317,6 +317,21 @@ export default function Navbar() {
                   </span>
                   <span>{t("nav_materials")}</span>
                 </Link>
+                <a
+                  href="/katalog/katalog-pelangi-uv.pdf"
+                  download="KATALOG PELANGI UV.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2.5 px-3.5 py-2.5 text-xs 2xl:text-sm rounded-lg transition-all group/item text-white/85 hover:text-white hover:bg-bracket-border active:bg-bracket-border"
+                >
+                  <span
+                    translate="no"
+                    className="material-symbols-outlined notranslate text-[18px] text-bracket-border group-hover/item:text-white transition-colors"
+                  >
+                    download
+                  </span>
+                  <span>{t("nav_download_catalog")} (PDF)</span>
+                </a>
               </div>
             </div>
 
@@ -514,7 +529,7 @@ export default function Navbar() {
               download="KATALOG PELANGI UV.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden 2xl:inline-flex items-center justify-center px-4 py-1.5 rounded-full border border-white/25 text-white hover:bg-white/15 hover:border-white/50 text-xs font-medium transition-all duration-200 active:scale-95 shrink-0 whitespace-nowrap"
+              className="hidden xl:inline-flex items-center justify-center px-3.5 2xl:px-4 py-1.5 rounded-full border border-white/25 text-white hover:bg-white/15 hover:border-white/50 text-xs font-medium transition-all duration-200 active:scale-95 shrink-0 whitespace-nowrap"
             >
               {t("nav_download_catalog")}
             </a>
@@ -720,6 +735,22 @@ export default function Navbar() {
                   </span>
                   <span>{t("nav_materials")}</span>
                 </Link>
+                <a
+                  href="/katalog/katalog-pelangi-uv.pdf"
+                  download="KATALOG PELANGI UV.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-sm transition-all text-white/85 hover:bg-bracket-border hover:text-white active:bg-bracket-border font-medium"
+                >
+                  <span
+                    translate="no"
+                    className="material-symbols-outlined notranslate text-[18px] text-bracket-border"
+                  >
+                    download
+                  </span>
+                  <span>{t("nav_download_catalog")} (PDF)</span>
+                </a>
               </div>
             </div>
 

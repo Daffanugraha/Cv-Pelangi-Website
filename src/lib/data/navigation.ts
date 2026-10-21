@@ -24,6 +24,12 @@ export const navLinks: NavLink[] = [
         desc: "Grosir roll foil, film BOPP, lem wet & tinta UV",
         icon: "inventory_2",
       },
+      {
+        label: "Unduh Katalog Resmi (PDF)",
+        href: "/katalog/katalog-pelangi-uv.pdf",
+        desc: "Download katalog produk & spesifikasi lengkap",
+        icon: "download",
+      },
     ],
   },
   { label: "Partner", href: "#partner" },
