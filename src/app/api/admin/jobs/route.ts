@@ -45,8 +45,17 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Title and division are required" }, { status: 400 });
     }
 
-    const idSlug = slugifyJobTitle(body.title);
-    const newId = `${idSlug || "posisi"}-${Date.now().toString().slice(-4)}`;
+    const baseSlug = (body.id || body.slug || slugifyJobTitle(body.title) || "posisi").trim();
+    const cleanSlug = slugifyJobTitle(baseSlug);
+
+    // Dapatkan data lowongan terkini untuk memastikan slug bersih dan unik tanpa angka acak
+    const existingJobs = await getJobsFromSupabase();
+    let newId = cleanSlug;
+    let counter = 2;
+    while (existingJobs.some((j) => j.id.toLowerCase() === newId.toLowerCase())) {
+      newId = `${cleanSlug}-${counter}`;
+      counter++;
+    }
     const createdAt = new Date().toISOString();
 
     const newJob: CareerJobItem = {

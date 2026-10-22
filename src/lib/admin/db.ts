@@ -473,7 +473,8 @@ export async function getJobBySlugAsync(slug: string): Promise<CareerJobItem | u
     const idMatch = j.id.toLowerCase() === clean;
     const titleSlug = slugifyJobTitle(j.title);
     const idSlug = slugifyJobTitle(j.id);
-    return idMatch || titleSlug === clean || idSlug === clean;
+    const prefixMatch = clean.startsWith(idSlug) || clean.startsWith(titleSlug) || idSlug.startsWith(clean);
+    return idMatch || titleSlug === clean || idSlug === clean || prefixMatch;
   });
 }
 
@@ -507,7 +508,8 @@ export function getJobBySlug(slug: string): CareerJobItem | undefined {
     const idMatch = j.id.toLowerCase() === clean;
     const titleSlug = slugifyJobTitle(j.title);
     const idSlug = slugifyJobTitle(j.id);
-    return idMatch || titleSlug === clean || idSlug === clean;
+    const prefixMatch = clean.startsWith(idSlug) || clean.startsWith(titleSlug) || idSlug.startsWith(clean);
+    return idMatch || titleSlug === clean || idSlug === clean || prefixMatch;
   });
 }
 
@@ -515,13 +517,25 @@ export function saveJobs(jobs: CareerJobItem[]) {
   writeJSON("jobs", jobs);
 }
 
-export function addJobItem(job: Omit<CareerJobItem, "id" | "createdAt">): CareerJobItem {
+export function addJobItem(
+  job: Omit<CareerJobItem, "id" | "createdAt"> & { id?: string; createdAt?: string }
+): CareerJobItem {
   const jobs = getJobs();
-  const idSlug = slugifyJobTitle(job.title);
+  const baseSlug = (job.id || slugifyJobTitle(job.title) || "posisi").trim();
+  const cleanSlug = slugifyJobTitle(baseSlug);
+  let newId = job.id || cleanSlug;
+  if (!job.id) {
+    let counter = 2;
+    while (jobs.some((j) => j.id.toLowerCase() === newId.toLowerCase())) {
+      newId = `${cleanSlug}-${counter}`;
+      counter++;
+    }
+  }
+
   const newJob: CareerJobItem = {
     ...job,
-    id: `${idSlug || "posisi"}-${Date.now().toString().slice(-4)}`,
-    createdAt: new Date().toISOString(),
+    id: newId,
+    createdAt: job.createdAt || new Date().toISOString(),
   };
   jobs.unshift(newJob);
   saveJobs(jobs);
