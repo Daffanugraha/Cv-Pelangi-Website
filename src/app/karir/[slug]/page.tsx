@@ -1,6 +1,6 @@
 import { notFound, redirect } from "next/navigation";
 import type { Metadata } from "next";
-import { getJobBySlug } from "@/lib/admin/db";
+import { getJobBySlugAsync } from "@/lib/admin/db";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -14,7 +14,7 @@ interface KarirDetailPageProps {
 export async function generateMetadata({
   params,
 }: KarirDetailPageProps): Promise<Metadata> {
-  const job = getJobBySlug(params.slug);
+  const job = await getJobBySlugAsync(params.slug);
 
   if (!job) {
     return {
@@ -46,8 +46,8 @@ export async function generateMetadata({
   };
 }
 
-export default function KarirDetailPage({ params }: KarirDetailPageProps) {
-  const job = getJobBySlug(params.slug);
+export default async function KarirDetailPage({ params }: KarirDetailPageProps) {
+  const job = await getJobBySlugAsync(params.slug);
   if (!job) {
     notFound();
   }

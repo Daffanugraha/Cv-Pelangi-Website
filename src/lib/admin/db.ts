@@ -411,6 +411,68 @@ export function getDeletedJobIds(): Set<string> {
   return getDeletedSet("deleted_job_ids");
 }
 
+export function mapSupabaseJob(d: any): CareerJobItem {
+  return {
+    id: d.id,
+    title: d.title || "",
+    division: d.division || "Operational",
+    type: d.type || "Full-Time",
+    location: d.location || "Bizpark C17-C19, Sidoarjo",
+    isOpen: d.is_open !== false,
+    qualifications: Array.isArray(d.qualifications)
+      ? d.qualifications
+      : typeof d.qualifications === "string"
+      ? JSON.parse(d.qualifications || "[]")
+      : [],
+    responsibilities: Array.isArray(d.responsibilities)
+      ? d.responsibilities
+      : typeof d.responsibilities === "string"
+      ? JSON.parse(d.responsibilities || "[]")
+      : [],
+    createdAt: d.created_at || new Date().toISOString(),
+  };
+}
+
+/**
+ * Mengambil lowongan kerja langsung dari Supabase sebagai single source of truth.
+ * Menjamin perubahan (tambah/edit/hapus langsung di Supabase) langsung terlihat di semua device.
+ */
+export async function getJobsFromSupabase(): Promise<CareerJobItem[]> {
+  try {
+    const { getSupabaseAdmin } = await import("@/lib/supabase/admin");
+    const sb = getSupabaseAdmin();
+    if (sb) {
+      const { data, error } = await sb
+        .from("career_jobs")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (!error && Array.isArray(data)) {
+        const mapped = data.map(mapSupabaseJob);
+        // Simpan ke cache lokal agar tetap tersedia saat offline
+        saveJobs(mapped);
+        return mapped;
+      }
+    }
+  } catch (err) {
+    console.warn("[getJobsFromSupabase Exception]:", err);
+  }
+
+  // Fallback ke penyimpanan lokal jika koneksi Supabase terputus
+  return getJobs();
+}
+
+export async function getJobBySlugAsync(slug: string): Promise<CareerJobItem | undefined> {
+  const jobs = await getJobsFromSupabase();
+  const clean = decodeURIComponent(slug).toLowerCase().trim();
+  return jobs.find((j) => {
+    const idMatch = j.id.toLowerCase() === clean;
+    const titleSlug = slugifyJobTitle(j.title);
+    const idSlug = slugifyJobTitle(j.id);
+    return idMatch || titleSlug === clean || idSlug === clean;
+  });
+}
+
 export function getJobs(): CareerJobItem[] {
   let jobs = readJSON<CareerJobItem[]>("jobs", CAREER_JOBS);
   const deletedIds = getDeletedJobIds();

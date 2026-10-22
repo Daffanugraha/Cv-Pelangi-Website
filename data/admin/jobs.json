@@ -1,27 +1,90 @@
 [
   {
-    "id": "admin-pajak",
-    "title": "Admin Pajak & Keuangan",
-    "division": "Finance",
+    "id": "operator-forklift-roll-clamp-9517",
+    "title": "operator forklift roll clamp",
+    "division": "Warehouse",
     "type": "Full-Time",
+    "location": "Bizpark C17-C19, Sidoarjo",
+    "isOpen": true,
+    "qualifications": [
+      "- pendidikan minimal SMA",
+      "memiliki SIO forklift",
+      "sehat jasmani dan tidak buta warna",
+      "memiliki koordinasi dan konsentrasi yang baik"
+    ],
+    "responsibilities": [
+      "Mengemudikan unit dan mengoperasikan clamp untuk loading/unloading gulungan, serta memindahkan barang ke area penyimpanan sesuai jenis dan ukuran",
+      "Menyesuaikan tekanan hidrolik agar gulungan tidak rusak, serta melakukan pengecekan harian unit dan mengisi check sheet",
+      "Menerapkan prosedur Keselamatan dan Kesehatan Kerja, berkoordinasi dengan tim, dan membuat laporan stok."
+    ],
+    "createdAt": "2026-10-22T03:51:19.517+00:00"
+  },
+  {
+    "id": "admin-operasional",
+    "title": "Admin Operasional & Surat Perintah Kerja (SPK)",
+    "division": "Operational",
+    "type": "Full-Time (WFO)",
+    "location": "Bizpark C17-C19, Sidoarjo",
+    "isOpen": true,
+    "qualifications": [
+      "Pendidikan minimal D3 / S1 Manajemen, Administrasi, atau Grafika.",
+      "Usia maksimal 28 tahun.",
+      "Memiliki pengalaman kerja minimal 1 tahun di bidang administrasi produksi percetakan.",
+      "Mahir Microsoft Office (Word, Excel) dan cepat beradaptasi dengan sistem software internal.",
+      "Komunikatif, terbiasa berkoordinasi lintas divisi (marketing, gudang, dan operator pabrik)."
+    ],
+    "responsibilities": [
+      "Menerbitkan dan mengontrol Surat Perintah Kerja (SPK) finishing sesuai spesifikasi dari tim marketing.",
+      "Memantau jadwal antrean lembaran plano per mesin agar proses finishing selesai tepat waktu.",
+      "Mencatat data output lembaran harian dan membuat rekapitulasi efisiensi produksi.",
+      "Mengkoordinasikan jadwal penjemputan dan pengiriman lembaran bersama tim driver armada Pelangi UV."
+    ],
+    "createdAt": "2026-10-14T01:21:29.337543+00:00"
+  },
+  {
+    "id": "teknisi-maintenance",
+    "title": "Teknisi Maintenance Mesin Industri",
+    "division": "Operational",
+    "type": "Full-Time (WFO)",
+    "location": "Bizpark C17-C19, Sidoarjo",
+    "isOpen": true,
+    "qualifications": [
+      "Pendidikan minimal SMK / D3 Teknik Elektro / Mekatronika / Teknik Mesin Industri.",
+      "Usia maksimal 35 tahun.",
+      "Berpengalaman minimal 2 tahun dalam pemeliharaan mesin industri cetak, motor listrik, dan inverter.",
+      "Memahami rangkaian kelistrikan 3-phase, sistem kontrol PLC sederhana, hidrolik, dan pneumatik.",
+      "Mampu membaca wiring diagram dan melakukan trouble-shooting mekanikal dengan cepat."
+    ],
+    "responsibilities": [
+      "Melakukan pemeliharaan berkala (preventive maintenance) pada seluruh 35+ mesin finishing di workshop.",
+      "Mendiagnosa dan mengatasi kendala teknis (troubleshooting) saat terjadi kendala operasional mesin.",
+      "Memastikan ketersediaan suku cadang kritis dan pelumas mesin industri tetap aman.",
+      "Mendukung optimalisasi efisiensi dan keamanan kelistrikan area pabrik."
+    ],
+    "createdAt": "2026-10-14T01:21:29.24162+00:00"
+  },
+  {
+    "id": "marketing-executive",
+    "title": "Marketing & Account Executive Percetakan",
+    "division": "Marketing",
+    "type": "Full-Time (WFO & Field)",
     "location": "Bizpark C17-C19, Sidoarjo",
     "isOpen": false,
     "qualifications": [
-      "Pendidikan minimal D3 / S1 Jurusan Pajak atau Akuntansi.",
-      "Usia maksimal 35 tahun.",
-      "Memiliki pengalaman kerja minimal 2 tahun di bidang perpajakan / akuntansi manufaktur.",
-      "Memahami administrasi perpajakan (PPh 21, PPh 23, PPh Final, dan PPN e-Faktur).",
-      "Menguasai Microsoft Excel tingkat menengah ke atas (VLOOKUP, Pivot, Rumus Logika).",
-      "Memiliki sertifikat Brevet A & B menjadi nilai tambah.",
-      "Mampu bekerja dengan tingkat ketelitian tinggi, jujur, dan berintegritas."
+      "Pendidikan minimal D3 / S1 semua jurusan (diutamakan Komunikasi / Manajemen / Grafika).",
+      "Usia maksimal 32 tahun.",
+      "Memiliki pengalaman minimal 1–2 tahun di bidang sales B2B percetakan, packaging, atau agensi kreatif.",
+      "Memiliki pemahaman dasar mengenai ragam finishing (Spot UV, Foil Stamping, Laminasi, Pond).",
+      "Keahlian komunikasi, negosiasi, dan presentasi yang ramah dan solutif.",
+      "Memiliki kendaraan pribadi dan SIM aktif."
     ],
     "responsibilities": [
-      "Mengumpulkan, mengatur, dan menyiapkan dokumen serta database perpajakan perusahaan.",
-      "Menghitung, membayar, dan melaporkan SPT Masa dan Tahunan secara tepat waktu.",
-      "Membuat perencanaan dan rekonsiliasi laporan keuangan terkait perpajakan.",
-      "Memperbarui database pajak dan selalu up-to-date dengan regulasi pajak terbaru.",
-      "Berkoordinasi dengan tim keuangan dan kantor pajak terkait verifikasi data."
-    ]
+      "Membangun dan memelihara hubungan kemitraan dengan percetakan, penerbit, dan brand packaging di Jawa Timur.",
+      "Memberikan konsultasi teknis pemilihan jenis finishing yang tepat sesuai budget dan konsep desain klien.",
+      "Menyusun kalkulasi estimasi penawaran harga finishing dan follow-up progress order.",
+      "Mengantarkan Swatch Sample Kit fisik dan mempresentasikan portofolio finishing kepada calon mitra."
+    ],
+    "createdAt": "2026-10-14T01:21:29.0432+00:00"
   },
   {
     "id": "checker-gudang",
@@ -43,35 +106,84 @@
       "Memeriksa kesesuaian surat jalan antar-jemput barang dengan fisik lembaran sebelum diproses ke mesin finishing.",
       "Melakukan quality control akhir sebelum barang hasil finishing dimuat ke armada pengiriman.",
       "Membantu pengaturan stok roll foil, BOPP thermal film, dan lem di area rak gudang."
-    ]
+    ],
+    "createdAt": "2026-10-14T01:21:28.976736+00:00"
   },
   {
-    "id": "marketing-executive",
-    "title": "Marketing & Account Executive Percetakan",
-    "division": "Marketing",
+    "id": "admin-pajak",
+    "title": "Admin Pajak & Keuangan",
+    "division": "Finance",
     "type": "Full-Time",
     "location": "Bizpark C17-C19, Sidoarjo",
     "isOpen": false,
     "qualifications": [
-      "Pendidikan minimal D3 / S1 semua jurusan (diutamakan Komunikasi / Manajemen / Grafika).",
-      "Usia maksimal 32 tahun.",
-      "Memiliki pengalaman minimal 1–2 tahun di bidang sales B2B percetakan, packaging, atau agensi kreatif.",
-      "Memiliki pemahaman dasar mengenai ragam finishing (Spot UV, Foil Stamping, Laminasi, Pond).",
-      "Keahlian komunikasi, negosiasi, dan presentasi yang ramah dan solutif.",
-      "Memiliki kendaraan pribadi dan SIM aktif."
+      "Pendidikan minimal D3 / S1 Jurusan Pajak atau Akuntansi.",
+      "Usia maksimal 35 tahun.",
+      "Memahami administrasi perpajakan (PPh 21, PPh 23, PPh Final, dan PPN e-Faktur).",
+      "Menguasai Microsoft Excel tingkat menengah ke atas (VLOOKUP, Pivot, Rumus Logika).",
+      "Memiliki sertifikat Brevet A & B menjadi nilai tambah.",
+      "Mampu bekerja dengan tingkat ketelitian tinggi, jujur, dan berintegritas."
     ],
     "responsibilities": [
-      "Membangun dan memelihara hubungan kemitraan dengan percetakan, penerbit, dan brand packaging di Jawa Timur.",
-      "Memberikan konsultasi teknis pemilihan jenis finishing yang tepat sesuai budget dan konsep desain klien.",
-      "Menyusun kalkulasi estimasi penawaran harga finishing dan follow-up progress order.",
-      "Mengantarkan Swatch Sample Kit fisik dan mempresentasikan portofolio finishing kepada calon mitra."
-    ]
+      "Mengumpulkan, mengatur, dan menyiapkan dokumen serta database perpajakan perusahaan.",
+      "Menghitung, membayar, dan melaporkan SPT Masa dan Tahunan secara tepat waktu.",
+      "Membuat perencanaan dan rekonsiliasi laporan keuangan terkait perpajakan.",
+      "Memperbarui database pajak dan selalu up-to-date dengan regulasi pajak terbaru.",
+      "Berkoordinasi dengan tim keuangan dan kantor pajak terkait verifikasi data."
+    ],
+    "createdAt": "2026-10-14T01:21:28.750518+00:00"
+  },
+  {
+    "id": "job-desain-grafis",
+    "title": "Desainer Grafis & Pre-Press",
+    "division": "Pre-Press",
+    "type": "Full-Time (WFO)",
+    "location": "Bizpark C17-C19, Sidoarjo",
+    "isOpen": true,
+    "qualifications": [
+      "Mahir Adobe Illustrator & Photoshop",
+      "Paham separasi warna CMYK"
+    ],
+    "responsibilities": [
+      "Memeriksa file pra-cetak dan kalkulasi pisau pond"
+    ],
+    "createdAt": "2026-10-13T08:41:10.800228+00:00"
+  },
+  {
+    "id": "job-operator-foil",
+    "title": "Operator Mesin Hot Stamping Foil",
+    "division": "Production",
+    "type": "Full-Time (WFO)",
+    "location": "Bizpark C17-C19, Sidoarjo",
+    "isOpen": true,
+    "qualifications": [
+      "Keahlian temperatur & register foil"
+    ],
+    "responsibilities": [
+      "Aplikasi hot stamping foil emas/perak"
+    ],
+    "createdAt": "2026-10-13T08:41:10.67149+00:00"
+  },
+  {
+    "id": "job-operator-pond",
+    "title": "Operator Mesin Pond & Die Cutting",
+    "division": "Production",
+    "type": "Full-Time (WFO)",
+    "location": "Bizpark C17-C19, Sidoarjo",
+    "isOpen": true,
+    "qualifications": [
+      "Pengalaman set pisau pond"
+    ],
+    "responsibilities": [
+      "Setting pisau pond dan potong presisi"
+    ],
+    "createdAt": "2026-10-13T08:41:10.582399+00:00"
   },
   {
     "id": "operator-mesin-finishing",
     "title": "Operator Mesin Finishing (Spot UV / Foil / Laminating)",
     "division": "Production",
-    "type": "Full-Time",
+    "type": "Full-Time (WFO)",
     "location": "Bizpark C17-C19, Sidoarjo",
     "isOpen": true,
     "qualifications": [
@@ -87,48 +199,7 @@
       "Menyetel tekanan plat, kecepatan jalan kertas, dan suhu pemanas agar hasil cetak presisi dan tidak cacat.",
       "Melakukan pemeriksaan berkala terhadap kestabilan lem, ketebalan coating varnish, dan register foil.",
       "Menjaga kebersihan dan melakukan perawatan preventif harian pada mesin kerja."
-    ]
-  },
-  {
-    "id": "teknisi-maintenance",
-    "title": "Teknisi Maintenance Mesin Industri",
-    "division": "Operational",
-    "type": "Full-Time",
-    "location": "Bizpark C17-C19, Sidoarjo",
-    "isOpen": true,
-    "qualifications": [
-      "Pendidikan minimal SMK / D3 Teknik Elektro / Mekatronika / Teknik Mesin Industri.",
-      "Usia maksimal 35 tahun.",
-      "Berpengalaman minimal 2 tahun dalam pemeliharaan mesin industri cetak, motor listrik, dan inverter.",
-      "Memahami rangkaian kelistrikan 3-phase, sistem kontrol PLC sederhana, hidrolik, dan pneumatik.",
-      "Mampu membaca wiring diagram dan melakukan trouble-shooting mekanikal dengan cepat."
     ],
-    "responsibilities": [
-      "Melakukan pemeliharaan berkala (preventive maintenance) pada seluruh 35+ mesin finishing di pabrik.",
-      "Mendiagnosa dan mengatasi kendala teknis (troubleshooting) saat terjadi kendala operasional mesin.",
-      "Memastikan ketersediaan suku cadang kritis dan pelumas mesin industri tetap aman.",
-      "Mendukung optimalisasi efisiensi dan keamanan kelistrikan area pabrik."
-    ]
-  },
-  {
-    "id": "admin-operasional",
-    "title": "Admin Operasional & Surat Perintah Kerja (SPK)",
-    "division": "Operational",
-    "type": "Full-Time",
-    "location": "Bizpark C17-C19, Sidoarjo",
-    "isOpen": true,
-    "qualifications": [
-      "Pendidikan minimal D3 / S1 Manajemen, Administrasi, atau Grafika.",
-      "Usia maksimal 28 tahun.",
-      "Memiliki pengalaman kerja minimal 1 tahun di bidang administrasi produksi percetakan.",
-      "Mahir Microsoft Office (Word, Excel) dan cepat beradaptasi dengan sistem software internal.",
-      "Komunikatif, terbiasa berkoordinasi lintas divisi (marketing, gudang, dan operator pabrik)."
-    ],
-    "responsibilities": [
-      "Menerbitkan dan mengontrol Surat Perintah Kerja (SPK) finishing sesuai spesifikasi dari tim marketing.",
-      "Memantau jadwal antrean lembaran plano per mesin agar proses finishing selesai tepat waktu.",
-      "Mencatat data output lembaran harian dan membuat rekapitulasi efisiensi produksi.",
-      "Mengkoordinasikan jadwal penjemputan dan pengiriman lembaran bersama tim driver armada Pelangi UV."
-    ]
+    "createdAt": "2026-10-13T08:41:10.323005+00:00"
   }
 ]

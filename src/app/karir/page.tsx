@@ -1,9 +1,10 @@
 import React from "react";
 import type { Metadata } from "next";
 import KarirPageContent from "@/components/sections/karir/KarirPageContent";
-import { getJobs } from "@/lib/admin/db";
+import { getJobsFromSupabase } from "@/lib/admin/db";
 
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export const metadata: Metadata = {
   title: "Karir & Rekrutmen - CV Pelangi UV | Peluang Kerja Industri Percetakan",
@@ -19,8 +20,8 @@ export const metadata: Metadata = {
   ],
 };
 
-export default function KarirPage() {
-  const jobs = getJobs();
+export default async function KarirPage() {
+  const jobs = await getJobsFromSupabase();
   return <KarirPageContent initialJobs={jobs} />;
 }
 
