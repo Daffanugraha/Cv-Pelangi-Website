@@ -86,12 +86,17 @@ export default function AdminKarirPage() {
   // Filter Jobs Memo
   const filteredJobs = useMemo(() => {
     return jobs.filter((job) => {
-      const matchSearch =
-        job.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        job.division.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        job.qualifications?.some((q) => q.toLowerCase().includes(searchQuery.toLowerCase()));
+      if (!job || !job.title) return false;
+      const title = job.title || "";
+      const division = job.division || "";
+      const quals = Array.isArray(job.qualifications) ? job.qualifications : [];
 
-      const matchDivision = filterDivision === "ALL" || job.division === filterDivision;
+      const matchSearch =
+        title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        division.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        quals.some((q) => typeof q === "string" && q.toLowerCase().includes(searchQuery.toLowerCase()));
+
+      const matchDivision = filterDivision === "ALL" || division === filterDivision;
       const matchStatus =
         filterStatus === "ALL" ||
         (filterStatus === "OPEN" && job.isOpen) ||
@@ -114,19 +119,20 @@ export default function AdminKarirPage() {
   }, [applicants]);
 
   const getApplicantCountForJob = (job: CareerJobItem) => {
-    if (jobApplicantStats[job.title]) return jobApplicantStats[job.title];
-    if (jobApplicantStats[job.id]) return jobApplicantStats[job.id];
+    if (!job) return { total: 0, newCount: 0 };
+    if (job.title && jobApplicantStats[job.title]) return jobApplicantStats[job.title];
+    if (job.id && jobApplicantStats[job.id]) return jobApplicantStats[job.id];
     const match = Object.entries(jobApplicantStats).find(
       ([k]) =>
-        k.toLowerCase() === job.title.toLowerCase() ||
-        k.toLowerCase() === job.id.toLowerCase()
+        (job.title && k.toLowerCase() === job.title.toLowerCase()) ||
+        (job.id && k.toLowerCase() === job.id.toLowerCase())
     );
     return match ? match[1] : { total: 0, newCount: 0 };
   };
 
   // Stats
-  const openCount = jobs.filter((j) => j.isOpen).length;
-  const closedCount = jobs.length - openCount;
+  const openCount = jobs.filter((j) => j && j.isOpen).length;
+  const closedCount = jobs.filter((j) => j && !j.isOpen).length;
   const newApplicantCount = applicants.filter((a) => a.status === "new").length;
 
   function handleOpenCreate() {
@@ -211,8 +217,17 @@ export default function AdminKarirPage() {
         });
         if (res.ok) {
           const updated = await res.json();
-          setJobs((prev) => prev.map((j) => (j.id === updated.id ? updated : j)));
+          const validJob = updated && updated.title ? updated : { ...editingJob, ...payload };
+          setJobs((prev) => prev.map((j) => (j.id === editingJob.id ? validJob : j)));
           setIsModalOpen(false);
+        } else {
+          const errData = await res.json().catch(() => ({}));
+          if (res.status === 401) {
+            alert("Sesi login Anda telah berakhir. Halaman akan dialihkan ke halaman login.");
+            window.location.href = "/admin";
+            return;
+          }
+          alert(`Gagal menyimpan perubahan: ${errData.error || "Terjadi kesalahan server"}`);
         }
       } else {
         const res = await fetch("/api/admin/jobs", {
@@ -222,8 +237,20 @@ export default function AdminKarirPage() {
         });
         if (res.ok) {
           const created = await res.json();
-          setJobs((prev) => [created, ...prev]);
+          if (created && created.title) {
+            setJobs((prev) => [created, ...prev]);
+          } else {
+            await fetchJobs();
+          }
           setIsModalOpen(false);
+        } else {
+          const errData = await res.json().catch(() => ({}));
+          if (res.status === 401) {
+            alert("Sesi login Anda telah berakhir. Halaman akan dialihkan ke halaman login.");
+            window.location.href = "/admin";
+            return;
+          }
+          alert(`Gagal menerbitkan lowongan baru: ${errData.error || "Terjadi kesalahan server"}`);
         }
       }
     } catch (err) {

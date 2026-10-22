@@ -56,14 +56,14 @@ export async function PUT(req: NextRequest) {
     if (!id) {
       return NextResponse.json({ error: "Job ID is required" }, { status: 400 });
     }
-    updateJobItem(id, patch);
+    const updated = updateJobItem(id, patch);
 
     try {
       revalidatePath("/karir", "layout");
       revalidatePath("/api/jobs");
     } catch {}
 
-    return NextResponse.json({ ok: true, id });
+    return NextResponse.json(updated || { ok: true, id });
   } catch (error) {
     return NextResponse.json({ error: "Failed to update job" }, { status: 500 });
   }
@@ -76,14 +76,14 @@ export async function PATCH(req: NextRequest) {
     if (!id) {
       return NextResponse.json({ error: "Job ID is required" }, { status: 400 });
     }
-    updateJobItem(id, patch);
+    const updated = updateJobItem(id, patch);
 
     try {
       revalidatePath("/karir", "layout");
       revalidatePath("/api/jobs");
     } catch {}
 
-    return NextResponse.json({ ok: true, id });
+    return NextResponse.json(updated || { ok: true, id });
   } catch (error) {
     return NextResponse.json({ error: "Failed to update job" }, { status: 500 });
   }

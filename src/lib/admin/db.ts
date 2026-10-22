@@ -488,7 +488,7 @@ export function addJobItem(job: Omit<CareerJobItem, "id" | "createdAt">): Career
   return newJob;
 }
 
-export function updateJobItem(id: string, patch: Partial<CareerJobItem>) {
+export function updateJobItem(id: string, patch: Partial<CareerJobItem>): CareerJobItem | undefined {
   const jobs = getJobs().map((j) => (j.id === id ? { ...j, ...patch } : j));
   saveJobs(jobs);
 
@@ -537,6 +537,8 @@ export function updateJobItem(id: string, patch: Partial<CareerJobItem>) {
       ]
     ).catch((err) => console.warn("[Postgres Update Job Error]:", err.message));
   }
+
+  return existing;
 }
 
 export function deleteJobItem(id: string) {
