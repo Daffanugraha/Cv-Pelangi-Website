@@ -31,7 +31,7 @@ export async function GET(req: NextRequest) {
           .select("*")
           .order("sort_order", { ascending: true });
 
-        if (!error && Array.isArray(data) && data.length > 0) {
+        if (!error && Array.isArray(data)) {
           const formatted: GalleryItem[] = data.map((d: any) => ({
             id: d.id,
             title: d.title,
@@ -65,7 +65,7 @@ export async function GET(req: NextRequest) {
           .select("*")
           .order("sort_order", { ascending: true });
 
-        if (!error && Array.isArray(data) && data.length > 0) {
+        if (!error && Array.isArray(data)) {
           const formatted: GalleryItem[] = data.map((d: any) => ({
             id: d.id,
             title: d.title,
@@ -115,7 +115,7 @@ export async function GET(req: NextRequest) {
         const bData = Array.isArray(bRes.data) ? bRes.data : [];
         const pData = Array.isArray(pRes.data) ? pRes.data : [];
 
-        if (bData.length > 0 || pData.length > 0) {
+        if (!bRes.error && !pRes.error && Array.isArray(bRes.data) && Array.isArray(pRes.data)) {
           const bFormatted: GalleryItem[] = bData.map((d: any) => ({
             id: d.id,
             title: d.title,

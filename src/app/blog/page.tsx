@@ -2,7 +2,7 @@ import React from "react";
 import type { Metadata } from "next";
 import { BlogPageContent } from "@/components/sections/blog";
 
-import { getBlogArticles } from "@/lib/admin/db";
+import { getBlogArticlesFromSupabase } from "@/lib/admin/db";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   ],
 };
 
-export default function BlogPage() {
-  const initialArticles = getBlogArticles();
+export default async function BlogPage() {
+  const initialArticles = await getBlogArticlesFromSupabase();
   return <BlogPageContent initialArticles={initialArticles} />;
 }

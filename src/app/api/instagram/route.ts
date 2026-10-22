@@ -147,7 +147,7 @@ export async function GET(request: Request) {
         .select("*")
         .order("sort_order", { ascending: true });
 
-      if (!error && Array.isArray(data) && data.length > 0) {
+      if (!error && Array.isArray(data)) {
         const reels: ReelItem[] = data.map((d: any) => ({
           id: d.id,
           shortcode: d.shortcode || d.id,
@@ -171,24 +171,22 @@ export async function GET(request: Request) {
         }));
 
         const filtered = filterDeleted(reels);
-        if (filtered.length > 0) {
-          return NextResponse.json(
-            {
-              success: true,
-              source: "supabase_db",
-              count: filtered.length,
-              lastUpdated: new Date().toISOString(),
-              account: "pelangi.uv",
-              profileUrl: "https://www.instagram.com/pelangi.uv/",
-              data: filtered,
+        return NextResponse.json(
+          {
+            success: true,
+            source: "supabase_db",
+            count: filtered.length,
+            lastUpdated: new Date().toISOString(),
+            account: "pelangi.uv",
+            profileUrl: "https://www.instagram.com/pelangi.uv/",
+            data: filtered,
+          },
+          {
+            headers: {
+              "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
             },
-            {
-              headers: {
-                "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
-              },
-            }
-          );
-        }
+          }
+        );
       }
     }
   } catch (err) {

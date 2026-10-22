@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { isAuthenticated } from "@/lib/admin/auth";
 import {
   getApplicants,
+  saveApplicants,
   updateApplicant,
   deleteApplicant,
   JobApplicantItem,
@@ -59,14 +60,6 @@ function mapSupabaseRow(row: any): JobApplicantItem {
 export async function GET() {
   if (!isAuthenticated()) return unauthorized();
 
-  const applicantMap = new Map<string, JobApplicantItem>();
-
-  // 1. Ambil data lokal terlebih dahulu
-  for (const item of getApplicants()) {
-    applicantMap.set(item.id, item);
-  }
-
-  // 2. Timpa dan perkaya dengan data real-time dari Supabase
   try {
     const sb = getSupabaseAdmin();
     if (sb) {
@@ -76,21 +69,22 @@ export async function GET() {
         .order("created_at", { ascending: false });
 
       if (!error && Array.isArray(data)) {
-        for (const row of data) {
-          applicantMap.set(row.id, mapSupabaseRow(row));
-        }
+        const mapped = data.map(mapSupabaseRow);
+        // Write-through cache lokal
+        saveApplicants(mapped);
+        return NextResponse.json(mapped, {
+          headers: {
+            "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+          },
+        });
       }
     }
   } catch (err) {
     console.warn("[Supabase GET Applicants Fallback]:", err);
   }
 
-  // 3. Urutkan dari yang paling baru
-  const merged = Array.from(applicantMap.values()).sort(
-    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-  );
-
-  return NextResponse.json(merged, {
+  // Fallback ke penyimpanan lokal jika koneksi Supabase gagal
+  return NextResponse.json(getApplicants(), {
     headers: {
       "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
     },
@@ -142,8 +136,13 @@ export async function PATCH(req: NextRequest) {
 export async function DELETE(req: NextRequest) {
   if (!isAuthenticated()) return unauthorized();
   try {
-    const { searchParams } = new URL(req.url);
-    const id = searchParams.get("id");
+    let id = req.nextUrl.searchParams.get("id");
+    if (!id) {
+      try {
+        const body = await req.json();
+        id = body?.id;
+      } catch {}
+    }
     if (!id) {
       return NextResponse.json({ error: "ID diperlukan" }, { status: 400 });
     }

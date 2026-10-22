@@ -1,17 +1,11 @@
 {
-  "totalPageviews": 33,
+  "totalPageviews": 37,
   "uniqueVisitors": 8,
   "todayViews": 0,
   "todayVisitors": 0,
   "avgDailyViews": 0,
   "growthRate": 0,
   "dailyStats": [
-    {
-      "date": "2026-09-13",
-      "label": "Min, 13 Sep",
-      "pageviews": 0,
-      "visitors": 0
-    },
     {
       "date": "2026-09-14",
       "label": "Sen, 14 Sep",
@@ -185,6 +179,12 @@
       "label": "Rab, 14 Okt",
       "pageviews": 7,
       "visitors": 4
+    },
+    {
+      "date": "2026-10-19",
+      "label": "Sen, 19 Okt",
+      "pageviews": 4,
+      "visitors": 2
     }
   ],
   "topPages": [
@@ -192,49 +192,49 @@
       "path": "/",
       "title": "Beranda CV Pelangi UV",
       "views": 9,
-      "percentage": 27
+      "percentage": 24
     },
     {
       "path": "/kontak",
       "title": "Kontak & Lokasi Bizpark Sidoarjo",
-      "views": 6,
-      "percentage": 18
+      "views": 7,
+      "percentage": 19
     },
     {
       "path": "/karir",
       "title": "Karir & Lowongan Kerja",
-      "views": 5,
-      "percentage": 15
+      "views": 6,
+      "percentage": 16
     },
     {
       "path": "/layanan",
       "title": "Layanan Finishing Cetak",
       "views": 4,
-      "percentage": 12
-    },
-    {
-      "path": "/produk/bahan-baku",
-      "title": "Grosir Roll Foil & Bahan Baku",
-      "views": 2,
-      "percentage": 6
+      "percentage": 11
     },
     {
       "path": "/galeri/pengaplikasian-produk",
       "title": "Halaman /galeri/pengaplikasian-produk",
-      "views": 2,
-      "percentage": 6
+      "views": 3,
+      "percentage": 8
+    },
+    {
+      "path": "/produk/bahan-baku",
+      "title": "Grosir Roll Foil & Bahan Baku",
+      "views": 3,
+      "percentage": 8
     },
     {
       "path": "/galeri/momen",
       "title": "Halaman /galeri/momen",
       "views": 2,
-      "percentage": 6
+      "percentage": 5
     },
     {
       "path": "/test-qa",
       "title": "Halaman /test-qa",
       "views": 2,
-      "percentage": 6
+      "percentage": 5
     },
     {
       "path": "/blog",
@@ -245,16 +245,44 @@
   ],
   "devices": {
     "mobile": 2,
-    "desktop": 31,
+    "desktop": 35,
     "tablet": 0
   },
   "sources": {
-    "direct": 33,
+    "direct": 37,
     "search": 0,
     "whatsapp": 0,
     "instagram": 0
   },
   "recentVisits": [
+    {
+      "id": "v_1792377849381",
+      "path": "/produk/bahan-baku",
+      "timestamp": "Baru saja",
+      "device": "desktop",
+      "referrer": "Direct"
+    },
+    {
+      "id": "v_1792377790554",
+      "path": "/kontak",
+      "timestamp": "Baru saja",
+      "device": "desktop",
+      "referrer": "Direct"
+    },
+    {
+      "id": "v_1792377787410",
+      "path": "/galeri/pengaplikasian-produk",
+      "timestamp": "Baru saja",
+      "device": "desktop",
+      "referrer": "Direct"
+    },
+    {
+      "id": "v_1792377616622",
+      "path": "/karir",
+      "timestamp": "Baru saja",
+      "device": "desktop",
+      "referrer": "Direct"
+    },
     {
       "id": "v_1791957728360",
       "path": "/test-qa",
@@ -366,34 +394,6 @@
       "timestamp": "Baru saja",
       "device": "desktop",
       "referrer": "Direct"
-    },
-    {
-      "id": "v_1791859863752",
-      "path": "/produk/bahan-baku",
-      "timestamp": "Baru saja",
-      "device": "desktop",
-      "referrer": "Direct"
-    },
-    {
-      "id": "v_1791859862322",
-      "path": "/kontak",
-      "timestamp": "Baru saja",
-      "device": "desktop",
-      "referrer": "Direct"
-    },
-    {
-      "id": "v_1791856029121",
-      "path": "/karir",
-      "timestamp": "Baru saja",
-      "device": "desktop",
-      "referrer": "Direct"
-    },
-    {
-      "id": "v_1791855074423",
-      "path": "/",
-      "timestamp": "Baru saja",
-      "device": "desktop",
-      "referrer": "Direct"
     }
   ],
   "visitorIds": [
@@ -407,11 +407,9 @@
     "anon_ggs0r5"
   ],
   "todayVisitorIds": {
-    "date": "2026-10-14",
+    "date": "2026-10-19",
     "ids": [
-      "v_p93etpz1mv0lvvr4",
-      "anon_9871g3",
-      "anon_ggs0r5"
+      "v_p93etpz1mv0lvvr4"
     ]
   }
 }

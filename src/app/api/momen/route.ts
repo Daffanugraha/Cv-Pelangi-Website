@@ -9,6 +9,7 @@ export const revalidate = 0;
 export async function GET() {
   try {
     let albums: MomenAlbumItem[] = [];
+    let hasSupabaseData = false;
 
     // 1. Coba baca dari Supabase
     try {
@@ -19,7 +20,7 @@ export async function GET() {
           .select("*")
           .order("order", { ascending: true });
 
-        if (!error && Array.isArray(data) && data.length > 0) {
+        if (!error && Array.isArray(data)) {
           albums = data.map((d: any) => ({
             id: d.id,
             category: d.category,
@@ -30,14 +31,15 @@ export async function GET() {
             order: d.order || 0,
             createdAt: d.created_at,
           }));
+          hasSupabaseData = true;
         }
       }
     } catch (sbErr) {
       console.warn("[Supabase Momen Fetch Fallback]:", sbErr);
     }
 
-    // 2. Fallback jika Supabase kosong
-    if (albums.length === 0) {
+    // 2. Fallback jika Supabase gagal/tidak terkoneksi
+    if (!hasSupabaseData) {
       albums = getMomenAlbums();
     }
 

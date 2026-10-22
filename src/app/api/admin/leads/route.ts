@@ -1,6 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { isAuthenticated } from "@/lib/admin/auth";
-import { getLeads, addLead, updateLeadStatus, deleteLead, LeadItem } from "@/lib/admin/db";
+import {
+  getLeads,
+  saveLeads,
+  addLead,
+  updateLeadStatus,
+  deleteLead,
+  LeadItem,
+} from "@/lib/admin/db";
 import { getSupabaseAdmin } from "@/lib/supabase/admin";
 
 export const dynamic = "force-dynamic";
@@ -27,14 +34,6 @@ function mapSupabaseLead(row: any): LeadItem {
 export async function GET() {
   if (!isAuthenticated()) return unauthorized();
 
-  const leadMap = new Map<string, LeadItem>();
-
-  // 1. Ambil data lokal terlebih dahulu
-  for (const item of getLeads()) {
-    leadMap.set(item.id, item);
-  }
-
-  // 2. Timpa dan perkaya dengan data real-time dari Supabase
   try {
     const sb = getSupabaseAdmin();
     if (sb) {
@@ -44,21 +43,22 @@ export async function GET() {
         .order("created_at", { ascending: false });
 
       if (!error && Array.isArray(data)) {
-        for (const row of data) {
-          leadMap.set(row.id, mapSupabaseLead(row));
-        }
+        const mapped = data.map(mapSupabaseLead);
+        // Write-through cache lokal
+        saveLeads(mapped);
+        return NextResponse.json(mapped, {
+          headers: {
+            "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+          },
+        });
       }
     }
   } catch (err) {
     console.warn("[Supabase GET Leads Fallback]:", err);
   }
 
-  // 3. Urutkan dari yang paling baru
-  const merged = Array.from(leadMap.values()).sort(
-    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-  );
-
-  return NextResponse.json(merged, {
+  // Fallback ke penyimpanan lokal jika koneksi Supabase gagal
+  return NextResponse.json(getLeads(), {
     headers: {
       "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
     },
@@ -118,7 +118,17 @@ export async function PATCH(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
   if (!isAuthenticated()) return unauthorized();
-  const { id } = await req.json();
+  let id = req.nextUrl.searchParams.get("id");
+  if (!id) {
+    try {
+      const body = await req.json();
+      id = body?.id;
+    } catch {}
+  }
+
+  if (!id) {
+    return NextResponse.json({ error: "ID pesan/lead diperlukan" }, { status: 400 });
+  }
 
   try {
     const sb = getSupabaseAdmin();

@@ -305,6 +305,10 @@ export function getLeads(): LeadItem[] {
   return readJSON<LeadItem[]>("leads", []);
 }
 
+export function saveLeads(leads: LeadItem[]) {
+  writeJSON("leads", leads);
+}
+
 export function addLead(lead: Omit<LeadItem, "id" | "createdAt" | "status">) {
   const leads = getLeads();
   const newLead: LeadItem = {
@@ -941,8 +945,63 @@ export function deleteApplicant(id: string) {
 // ---------------------------------------------------------------------------
 export type BlogArticleItem = ArticleItem;
 
+export function mapSupabaseBlogArticle(row: any): BlogArticleItem {
+  return {
+    id: row.id,
+    slug: row.slug || `artikel-${row.id}`,
+    title: row.title || "Tanpa Judul",
+    category: row.category || "Kabar Perusahaan",
+    categoryKey: (row.category_key || "kabar-perusahaan") as any,
+    tag: row.tag || row.category,
+    date: row.date || new Date().toLocaleDateString("id-ID", { day: "2-digit", month: "short", year: "numeric" }),
+    readTime: row.read_time || "4 Menit Baca",
+    views: row.views || "1 Views",
+    commentsCount: row.comments_count || "0 Komentar",
+    author: row.author || "Admin Pelangi UV",
+    desc: row.description || "",
+    img: row.image_url || "/images/placeholder.jpg",
+    isFeatured: !!row.is_featured,
+    technicalChips: Array.isArray(row.technical_chips) ? row.technical_chips : [],
+    content: Array.isArray(row.content) && row.content.length > 0 ? row.content : [row.description || ""],
+    keyTakeaways: Array.isArray(row.key_takeaways) ? row.key_takeaways : [],
+  };
+}
+
 export function getDeletedBlogIds(): Set<string> {
   return getDeletedSet("deleted_blog_ids");
+}
+
+export async function getBlogArticlesFromSupabase(): Promise<BlogArticleItem[]> {
+  try {
+    const { getSupabaseAdmin } = await import("@/lib/supabase/admin");
+    const sb = getSupabaseAdmin();
+    if (sb) {
+      const { data, error } = await sb
+        .from("blog_articles")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (!error && Array.isArray(data)) {
+        const mapped = data.map(mapSupabaseBlogArticle);
+        saveBlogArticles(mapped);
+        return mapped;
+      }
+    }
+  } catch (err) {
+    console.warn("[getBlogArticlesFromSupabase Exception]:", err);
+  }
+  return getBlogArticles();
+}
+
+export async function getBlogArticleBySlugAsync(slug: string): Promise<BlogArticleItem | undefined> {
+  const articles = await getBlogArticlesFromSupabase();
+  const clean = decodeURIComponent(slug).toLowerCase().trim();
+  return articles.find(
+    (a) =>
+      a.id.toLowerCase().trim() === clean ||
+      a.slug.toLowerCase().trim() === clean ||
+      a.title.toLowerCase().trim() === clean
+  );
 }
 
 export function getBlogArticles(): BlogArticleItem[] {

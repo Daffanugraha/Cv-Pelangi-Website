@@ -1,7 +1,11 @@
 import React from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getBlogArticles, getDeletedBlogIds } from "@/lib/admin/db";
+import {
+  getBlogArticlesFromSupabase,
+  getBlogArticleBySlugAsync,
+  getDeletedBlogIds,
+} from "@/lib/admin/db";
 import { BlogDetailContent } from "@/components/sections/blog";
 
 export const dynamic = "force-dynamic";
@@ -12,7 +16,7 @@ interface PageProps {
 }
 
 export async function generateStaticParams() {
-  const articles = getBlogArticles();
+  const articles = await getBlogArticlesFromSupabase();
   return articles.map((article) => ({
     slug: article.slug,
   }));
@@ -30,12 +34,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     };
   }
 
-  const adminArticles = getBlogArticles();
-  const article = adminArticles.find(
-    (a) =>
-      a.slug.toLowerCase().trim() === cleanSlug ||
-      a.id.toLowerCase().trim() === cleanSlug
-  );
+  const article = await getBlogArticleBySlugAsync(cleanSlug);
 
   if (!article) {
     return {
@@ -72,17 +71,13 @@ export default async function BlogDetailPage({ params }: PageProps) {
     notFound();
   }
 
-  const adminArticles = getBlogArticles();
-  const article = adminArticles.find(
-    (a) =>
-      a.slug.toLowerCase().trim() === cleanSlug ||
-      a.id.toLowerCase().trim() === cleanSlug
-  );
+  const article = await getBlogArticleBySlugAsync(cleanSlug);
 
   if (!article) {
     notFound();
   }
 
+  const adminArticles = await getBlogArticlesFromSupabase();
   const related = adminArticles.filter((a) => a.id !== article.id && a.slug !== article.slug);
   return <BlogDetailContent article={article} relatedArticles={related} />;
 }

@@ -3,6 +3,7 @@ import { revalidatePath } from "next/cache";
 import { isAuthenticated } from "@/lib/admin/auth";
 import {
   getMomenAlbums,
+  saveMomenAlbums,
   addMomenAlbum,
   updateMomenAlbum,
   deleteMomenAlbum,
@@ -29,7 +30,7 @@ export async function GET() {
         .select("*")
         .order("order", { ascending: true });
 
-      if (!error && Array.isArray(data) && data.length > 0) {
+      if (!error && Array.isArray(data)) {
         const formatted: MomenAlbumItem[] = data.map((d: any) => ({
           id: d.id,
           category: d.category,
@@ -40,6 +41,7 @@ export async function GET() {
           order: d.order || 0,
           createdAt: d.created_at,
         }));
+        saveMomenAlbums(formatted);
         return NextResponse.json(formatted, {
           headers: {
             "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
