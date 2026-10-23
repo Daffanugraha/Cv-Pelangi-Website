@@ -82,7 +82,7 @@ export default function GallerySection() {
                   duration: "00:45",
                   views: "1.2K",
                   source: "instagram",
-                  capacity: "CV Pelangi UV Showcase",
+                  capacity: item.capacity || "",
                   embedUrl,
                   objectPosition: item.objectPosition || "center",
                 };
@@ -140,7 +140,7 @@ export default function GallerySection() {
         v.title?.toLowerCase().includes(query) ||
         v.tag?.toLowerCase().includes(query) ||
         v.desc?.toLowerCase().includes(query) ||
-        v.capacity?.toLowerCase().includes(query);
+        Boolean(v.capacity && v.capacity !== "CV Pelangi UV Showcase" && v.capacity.toLowerCase().includes(query));
 
       return matchTag && matchSearch;
     });
@@ -380,9 +380,13 @@ export default function GallerySection() {
                   </p>
                 </div>
                 <div className="pt-3 border-t border-surface-container/60 flex items-center justify-between mt-auto">
-                  <span className="font-sans text-xs text-text-muted">
-                    {video.capacity}
-                  </span>
+                  {video.capacity && video.capacity !== "CV Pelangi UV Showcase" ? (
+                    <span className="font-sans text-xs text-text-muted">
+                      {video.capacity}
+                    </span>
+                  ) : (
+                    <span />
+                  )}
                   <span className="inline-flex items-center gap-1 font-sans text-xs font-semibold text-bracket-border group-hover:text-primary transition-colors">
                     <span>Putar di Website</span>
                     <span translate="no" className="material-symbols-outlined notranslate text-[16px]">

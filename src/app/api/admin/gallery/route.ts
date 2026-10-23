@@ -219,7 +219,7 @@ export async function POST(req: NextRequest) {
             tag: item.tag || item.category || "Finishing",
             description: captionVal || item.technique || "",
             duration: "0:45 • Pelangi UV",
-            capacity: "CV Pelangi UV Showcase",
+            capacity: (item as any).capacity || null,
             source: "Instagram Reels",
             image_url: item.imageUrl,
             video_url: item.videoUrl || "",

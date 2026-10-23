@@ -156,7 +156,7 @@ export async function GET(request: Request) {
           duration: d.duration || "0:45 • Pelangi UV",
           title: d.title,
           desc: d.description || "",
-          capacity: d.capacity || "CV Pelangi UV Showcase",
+          capacity: d.capacity && d.capacity !== "CV Pelangi UV Showcase" ? d.capacity : "",
           img: d.image_url,
           videoUrl: d.video_url || "",
           embedUrl:

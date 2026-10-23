@@ -138,6 +138,7 @@ export interface GalleryItem {
   paperSuitability?: string;
   resultCharacteristics?: string;
   alternativeOption?: string;
+  capacity?: string;
 }
 
 export interface LeadItem {
