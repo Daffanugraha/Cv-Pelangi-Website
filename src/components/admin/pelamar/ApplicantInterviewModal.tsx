@@ -33,6 +33,20 @@ export default function ApplicantInterviewModal({
     "Kompleks Pergudangan Bizpark Blok C17-C19, Tambak Sawah, Kec. Waru, Kabupaten Sidoarjo (Laporan ke Security dahulu)"
   );
 
+  const initialJobLink = useMemo(() => {
+    if (!applicant) return "https://www.pelangiuv.com/karir";
+    const slug = (applicant.jobId || "").trim();
+    return slug
+      ? `https://www.pelangiuv.com/karir?posisi=${encodeURIComponent(slug)}`
+      : "https://www.pelangiuv.com/karir";
+  }, [applicant]);
+
+  const [jobLink, setJobLink] = useState(initialJobLink);
+
+  useEffect(() => {
+    setJobLink(initialJobLink);
+  }, [initialJobLink]);
+
   // Format tanggal ke Bahasa Indonesia (cth: Kamis, 24 September 2026)
   const formattedDate = useMemo(() => {
     if (!interviewDateRaw) return "";
@@ -69,12 +83,9 @@ export default function ApplicantInterviewModal({
 
     return `Halo ${applicant.name},
 
-Perkenalkan saya ${hrName.trim() || "dari HRD"} dari CV PELANGI. Kami sudah menerima lamaran Anda untuk lowongan *${applicant.jobTitle}* yang Anda kirimkan melalui website kami (pelangiuv.com/karir) dan ingin melanjutkan proses rekrutmen ke tahap selanjutnya.
+Perkenalkan saya ${hrName.trim() || "dari HRD"} dari CV PELANGI. Kami sudah menerima lamaran Anda untuk lowongan *${applicant.jobTitle}* yang kami buka di website kami dan ingin melanjutkan proses rekrutmen ke tahap selanjutnya.
 
-Lamaran kamu yang kami terima:
-• Posisi: ${applicant.jobTitle}
-• No. Referensi: #${applicant.id}
-• Status: Lolos Seleksi Berkas
+Lamaran kamu yang kami terima: ${jobLink}
 
 Berdasarkan berkas yang kami terima, kami mengundang saudara pada:
 
@@ -93,7 +104,7 @@ Harap konfirmasi hadir / tidak melalui chat WA (${contactPerson})
 
 Regards,
 HRD CV Pelangi UV`;
-  }, [applicant, hrName, formattedDate, formattedTime, interviewAddress, contactPerson]);
+  }, [applicant, hrName, jobLink, formattedDate, formattedTime, interviewAddress, contactPerson]);
 
   const [message, setMessage] = useState(defaultMessage);
   const [isCustomized, setIsCustomized] = useState(false);
@@ -203,6 +214,15 @@ HRD CV Pelangi UV`;
               onChange={(e) => setContactPerson(e.target.value)}
               placeholder="cth: 08563444213 - Dliyauddin"
               className="w-full px-3 py-1.5 bg-white border border-gray-300 rounded-lg text-xs text-gray-900 focus:outline-none focus:border-[#F65456]"
+            />
+          </div>
+          <div className="sm:col-span-2">
+            <label className="block font-bold text-gray-700 mb-1">Tautan Lowongan yang Dilamar:</label>
+            <input
+              type="text"
+              value={jobLink}
+              onChange={(e) => setJobLink(e.target.value)}
+              className="w-full px-3 py-1.5 bg-white border border-gray-300 rounded-lg text-xs font-mono text-gray-900 focus:outline-none focus:border-[#F65456]"
             />
           </div>
           <div>

@@ -132,7 +132,7 @@ export default function ApplicantCardItem({
 
           {/* Tombol WhatsApp Direct */}
           <a
-            href={`https://wa.me/${applicant.phone.replace(/^0/, "62")}?text=Halo%20${encodeURIComponent(applicant.name)}%2C%20kami%20dari%20Tim%20HRD%20CV%20Pelangi%20UV%20terkait%20lamaran%20posisi%20*${encodeURIComponent(applicant.jobTitle)}*...`}
+            href={`https://wa.me/${applicant.phone.replace(/^0/, "62")}?text=${encodeURIComponent(`Halo ${applicant.name}, perkenalkan saya dari HRD CV PELANGI terkait lamaran Anda untuk lowongan *${applicant.jobTitle}* di website kami: https://www.pelangiuv.com/karir?posisi=${encodeURIComponent(applicant.jobId || "")}`)}`}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition shadow-xs cursor-pointer active:scale-95"
