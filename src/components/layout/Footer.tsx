@@ -250,7 +250,7 @@ export default function Footer() {
               </a>
               <a
                 className="w-9 h-9 rounded-full bg-surface-canvas/10 hover:bg-bracket-border flex items-center justify-center transition-all text-on-secondary hover:scale-110"
-                href="https://www.tiktok.com/@pelangi.uv"
+                href="https://www.tiktok.com/@pelangiuv"
                 rel="noopener noreferrer"
                 target="_blank"
                 title="TikTok Pelangi UV"
