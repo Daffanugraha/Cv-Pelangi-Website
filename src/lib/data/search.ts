@@ -119,9 +119,9 @@ export const searchCatalog: SearchCatalogItem[] = [
     categoryGroup: "layanan",
   },
   {
-    title: "Potong Foil (Slitting) Lebar Custom",
+    title: "Potong Foil Lebar Custom",
     type: "Layanan Jasa",
-    desc: "Jasa pemotongan slitting roll stamping foil presisi sesuai area klise",
+    desc: "Jasa pemotongan roll stamping foil presisi sesuai area klise",
     link: "/layanan?service=potongfoil",
     tag: "Layanan",
     categoryGroup: "layanan",

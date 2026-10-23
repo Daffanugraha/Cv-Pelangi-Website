@@ -89,7 +89,7 @@ const SERVICE_CONFIG: Record<string, ServiceGroup> = {
           "Roll Foil Perak (Silver Mirror)",
           "Roll Foil Hologram & Pattern",
           "Roll Foil Rose Gold & Cooper",
-          "Jasa Slitting / Potong Lebar Roll Foil Custom",
+          "Jasa Potong Foil Custom",
         ],
       },
       {
