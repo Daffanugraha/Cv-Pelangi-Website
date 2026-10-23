@@ -117,6 +117,19 @@ export default function ApplicantCardItem({
             <option value="rejected">Ditolak</option>
           </select>
 
+          {/* Tombol Lanjut Tahap Selanjutnya */}
+          {onOpenInterview && (
+            <button
+              type="button"
+              onClick={() => onOpenInterview(applicant)}
+              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl border border-purple-200 bg-purple-50 hover:bg-purple-100 text-purple-700 text-xs font-bold transition shadow-xs cursor-pointer active:scale-95"
+              title="Lanjut proses rekrutmen ke tahap selanjutnya (Undangan & Tes)"
+            >
+              <span className="material-symbols-outlined text-sm">forward</span>
+              <span>Lanjut Tahap</span>
+            </button>
+          )}
+
           {/* Tombol WhatsApp Direct */}
           <a
             href={`https://wa.me/${applicant.phone.replace(/^0/, "62")}?text=Halo%20${encodeURIComponent(applicant.name)}%2C%20kami%20dari%20Tim%20HRD%20CV%20Pelangi%20UV%20terkait%20lamaran%20posisi%20*${encodeURIComponent(applicant.jobTitle)}*...`}

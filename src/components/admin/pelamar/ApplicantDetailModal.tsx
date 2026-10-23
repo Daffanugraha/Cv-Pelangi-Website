@@ -211,6 +211,20 @@ export default function ApplicantDetailModal({
                 <span>Hubungi via WA</span>
               </a>
             )}
+            {onOpenInterview && (
+              <button
+                type="button"
+                onClick={() => {
+                  onClose();
+                  onOpenInterview(applicant);
+                }}
+                className="px-3.5 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-xs font-bold shadow-xs transition flex items-center gap-1.5 cursor-pointer active:scale-95"
+                title="Lanjut proses rekrutmen ke tahap selanjutnya"
+              >
+                <span className="material-symbols-outlined text-sm">forward</span>
+                <span>Lanjut Tahap Selanjutnya</span>
+              </button>
+            )}
             <button
               type="button"
               onClick={onClose}
