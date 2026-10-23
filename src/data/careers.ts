@@ -75,19 +75,6 @@ export const PELANGI_LIFE_REELS: PelangiLifeReel[] = [
     videoSrc: "/videos/reels/reel-DcuZvbjTsu3.mp4",
     caption: "Satu Tim, Satu Semangat, Satu Cerita. Momen kebersamaan dan energi baru tim CV Pelangi UV & CV GRC Sukses Sejahtera.",
   },
-  {
-    id: "reel-4",
-    title: "Ragam Solusi Finishing: Spot UV, Hot Foil & Emboss",
-    tag: "Produk & Jasa",
-    category: "Layanan",
-    duration: "0:41",
-    views: "29.4K",
-    likes: "1.8K",
-    thumbnail: "/images/instagram/DdiyORrzfGw.jpg",
-    instagramUrl: "https://www.instagram.com/p/DdiyORrzfGw/",
-    videoSrc: "/videos/reels/reel-DdiyORrzfGw.mp4",
-    caption: "Pilihan lengkap finishing percetakan & packaging: Mulai dari Spot UV, Hot Foil Stamping, Laminasi Doff/Glossy, hingga Pond & Emboss presisi.",
-  },
 ];
 
 export const CAREER_JOBS: CareerJob[] = [
