@@ -1,17 +1,11 @@
 {
-  "totalPageviews": 37,
+  "totalPageviews": 38,
   "uniqueVisitors": 8,
   "todayViews": 0,
   "todayVisitors": 0,
   "avgDailyViews": 0,
   "growthRate": 0,
   "dailyStats": [
-    {
-      "date": "2026-09-14",
-      "label": "Sen, 14 Sep",
-      "pageviews": 0,
-      "visitors": 0
-    },
     {
       "date": "2026-09-15",
       "label": "Sel, 15 Sep",
@@ -185,6 +179,12 @@
       "label": "Sen, 19 Okt",
       "pageviews": 4,
       "visitors": 2
+    },
+    {
+      "date": "2026-10-23",
+      "label": "Jum, 23 Okt",
+      "pageviews": 1,
+      "visitors": 2
     }
   ],
   "topPages": [
@@ -198,13 +198,13 @@
       "path": "/kontak",
       "title": "Kontak & Lokasi Bizpark Sidoarjo",
       "views": 7,
-      "percentage": 19
+      "percentage": 18
     },
     {
       "path": "/karir",
       "title": "Karir & Lowongan Kerja",
-      "views": 6,
-      "percentage": 16
+      "views": 7,
+      "percentage": 18
     },
     {
       "path": "/layanan",
@@ -245,16 +245,23 @@
   ],
   "devices": {
     "mobile": 2,
-    "desktop": 35,
+    "desktop": 36,
     "tablet": 0
   },
   "sources": {
-    "direct": 37,
+    "direct": 38,
     "search": 0,
     "whatsapp": 0,
     "instagram": 0
   },
   "recentVisits": [
+    {
+      "id": "v_1792743124030",
+      "path": "/karir",
+      "timestamp": "Baru saja",
+      "device": "desktop",
+      "referrer": "Direct"
+    },
     {
       "id": "v_1792377849381",
       "path": "/produk/bahan-baku",
@@ -387,13 +394,6 @@
       "timestamp": "Baru saja",
       "device": "desktop",
       "referrer": "Direct"
-    },
-    {
-      "id": "v_1791859865383",
-      "path": "/layanan",
-      "timestamp": "Baru saja",
-      "device": "desktop",
-      "referrer": "Direct"
     }
   ],
   "visitorIds": [
@@ -407,7 +407,7 @@
     "anon_ggs0r5"
   ],
   "todayVisitorIds": {
-    "date": "2026-10-19",
+    "date": "2026-10-23",
     "ids": [
       "v_p93etpz1mv0lvvr4"
     ]

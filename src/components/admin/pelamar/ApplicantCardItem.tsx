@@ -8,7 +8,7 @@ interface ApplicantCardItemProps {
   dateTime: { day: string; date: string; time: string; full: string };
   onUpdateStatus: (applicant: JobApplicantItem, status: JobApplicantItem["status"]) => void;
   onOpenDetail: (applicant: JobApplicantItem, tab?: "identitas" | "pengalaman" | "komitmen" | "skill" | "berkas") => void;
-  onOpenRejection: (applicant: JobApplicantItem) => void;
+  onOpenRejection?: (applicant: JobApplicantItem) => void;
   onOpenInterview?: (applicant: JobApplicantItem) => void;
   onDelete: (id: string, name: string) => void;
 }
@@ -26,8 +26,6 @@ export default function ApplicantCardItem({
   dateTime,
   onUpdateStatus,
   onOpenDetail,
-  onOpenRejection,
-  onOpenInterview,
   onDelete,
 }: ApplicantCardItemProps) {
   const currentStatus = APPLICANT_STATUS_CONFIG[applicant.status] || APPLICANT_STATUS_CONFIG.new;
@@ -100,6 +98,7 @@ export default function ApplicantCardItem({
 
         {/* Kolom Kanan: Status Dropdown & Tombol Aksi */}
         <div className="flex flex-wrap items-center gap-2.5 pt-3 lg:pt-0 border-t lg:border-t-0 border-gray-100 shrink-0">
+          {/* Status Dropdown */}
           <select
             value={applicant.status}
             onChange={(e) => {
@@ -117,19 +116,6 @@ export default function ApplicantCardItem({
             <option value="rejected">Ditolak</option>
           </select>
 
-          {/* Tombol Lanjut Tahap Selanjutnya */}
-          {onOpenInterview && (
-            <button
-              type="button"
-              onClick={() => onOpenInterview(applicant)}
-              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl border border-purple-200 bg-purple-50 hover:bg-purple-100 text-purple-700 text-xs font-bold transition shadow-xs cursor-pointer active:scale-95"
-              title="Lanjut proses rekrutmen ke tahap selanjutnya (Undangan & Tes)"
-            >
-              <span className="material-symbols-outlined text-sm">forward</span>
-              <span>Lanjut Tahap</span>
-            </button>
-          )}
-
           {/* Tombol WhatsApp Direct */}
           <a
             href={`https://wa.me/${applicant.phone.replace(/^0/, "62")}?text=${encodeURIComponent(`Halo ${applicant.name}, perkenalkan saya dari HRD CV PELANGI terkait lamaran Anda untuk lowongan *${applicant.jobTitle}* di website kami: https://www.pelangiuv.com/karir?posisi=${encodeURIComponent(applicant.jobId || "")}`)}`}
@@ -141,27 +127,6 @@ export default function ApplicantCardItem({
             <span className="material-symbols-outlined text-sm">chat</span>
             <span>WA</span>
           </a>
-
-          {/* Tombol Template Tolak */}
-          <button
-            type="button"
-            onClick={() => onOpenRejection(applicant)}
-            className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl border border-gray-200 hover:bg-gray-100 text-gray-600 text-xs font-semibold transition cursor-pointer"
-            title="Kirim template penolakan ramah"
-          >
-            <span className="material-symbols-outlined text-sm text-gray-400">mail</span>
-            <span>Tolak</span>
-          </button>
-
-          {/* Tombol Hapus */}
-          <button
-            type="button"
-            onClick={() => onDelete(applicant.id, applicant.name)}
-            className="w-8 h-8 rounded-xl border border-gray-200 hover:bg-red-50 hover:text-red-600 text-gray-400 flex items-center justify-center transition cursor-pointer"
-            title="Hapus Berkas"
-          >
-            <span className="material-symbols-outlined text-sm">delete</span>
-          </button>
 
           {/* Tombol Preview CV Langsung */}
           <button
@@ -189,6 +154,16 @@ export default function ApplicantCardItem({
           >
             <span className="material-symbols-outlined text-sm">visibility</span>
             <span>Rincian Berkas</span>
+          </button>
+
+          {/* Tombol Hapus */}
+          <button
+            type="button"
+            onClick={() => onDelete(applicant.id, applicant.name)}
+            className="w-8 h-8 rounded-xl border border-gray-200 hover:bg-red-50 hover:text-red-600 text-gray-400 flex items-center justify-center transition cursor-pointer"
+            title="Hapus berkas pelamar"
+          >
+            <span className="material-symbols-outlined text-base">delete</span>
           </button>
         </div>
       </div>
