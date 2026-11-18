@@ -50,12 +50,78 @@
     ]
   },
   {
+    "id": "expo2026",
+    "category": "expo2026",
+    "title": "Surabaya Printing Expo (SPE) 2026",
+    "desc": "Dokumentasi kehadiran booth CV Pelangi UV & CV GRC Sukses Sejahtera menampilkan solusi mesin industri grafika, vacuum pumps Becker, dan display material hot stamping foil berstandar ekspor di ajang akbar Surabaya Printing Expo 2026.",
+    "isHighlight": true,
+    "order": 2,
+    "photos": [
+      {
+        "alt": "Surabaya Printing Expo 2026 - Stand Utama Pelangi UV & CV GRC",
+        "caption": "Kemegahan instalasi booth resmi CV Pelangi UV & CV GRC Sukses Sejahtera menampilkan display inovasi industri dan material foil lengkap di SPE 2026.",
+        "title": "SPE 2026 — Booth Resmi Pelangi UV & CV GRC Sukses Sejahtera",
+        "src": "/images/momen/expo-2026/spe-2026-booth-utama.png",
+        "cardTitle": "Stand Utama Pelangi UV & CV GRC",
+        "cardDesc": "Instalasi booth modern memamerkan ragam solusi finishing kemasan komersial dan material foil premium."
+      },
+      {
+        "alt": "Surabaya Printing Expo 2026 - Sinergi Tim Stand & Mitra Strategis",
+        "caption": "Kekompakan tim profesional CV Pelangi UV bersama mitra strategis APRIL dan PT Ultima Solusi Paperindo menyambut pengunjung pameran.",
+        "title": "SPE 2026 — Sinergi Tim Stand & Kolaborasi Mitra Strategis",
+        "src": "/images/momen/expo-2026/spe-2026-tim-stand.png",
+        "cardTitle": "Sinergi Tim & Mitra Stand",
+        "cardDesc": "Kolaborasi solid tim CV Pelangi UV bersama principal industri grafika nasional menghadirkan layanan terpadu."
+      },
+      {
+        "alt": "Surabaya Printing Expo 2026 - Konsultasi Teknis Spesifikasi Foil",
+        "caption": "Edukasi dan konsultasi langsung mengenai variasi warna, ketahanan kilap, dan register hot stamping foil berstandar ekspor.",
+        "title": "SPE 2026 — Konsultasi Teknis Spesifikasi Roll Foil",
+        "src": "/images/momen/expo-2026/spe-2026-konsultasi-foil.png",
+        "cardTitle": "Konsultasi Spesifikasi Foil",
+        "cardDesc": "Penjelasan langsung karakter material foil emas, perak, dan hologram untuk kemasan produk."
+      },
+      {
+        "alt": "Surabaya Printing Expo 2026 - Showcase Mesin Industri & Pompa Becker",
+        "caption": "Display teknologi unit mesin industri terintegrasi vacuum pump Becker untuk kestabilan operasional tanpa hambatan di booth SPE 2026.",
+        "title": "SPE 2026 — Showcase Mesin Industri & Becker Vacuum Pump",
+        "src": "/images/momen/expo-2026/spe-2026-showcase-mesin.png",
+        "cardTitle": "Showcase Mesin & Pompa Becker",
+        "cardDesc": "Display keunggulan teknologi mesin industri dan keandalan sistem pompa hisap Becker dalam mendukung finishing presisi."
+      },
+      {
+        "alt": "Surabaya Printing Expo 2026 - Display Swatch Roll Foil Premium",
+        "caption": "Presentasi etalase swatch roll foil dengan aneka gradasi warna metalik dan hologram untuk packaging eksklusif.",
+        "title": "SPE 2026 — Showcase Swatch Roll Foil & Katalog Layanan",
+        "src": "/images/momen/expo-2026/spe-2026-display-swatch-foil.png",
+        "cardTitle": "Showcase Swatch Foil & Katalog",
+        "cardDesc": "Deretan pilihan roll foil hot stamping berkualitas prima untuk menunjang nilai estetika kemasan."
+      },
+      {
+        "alt": "Surabaya Printing Expo 2026 - Antusiasme Pengunjung Memadati Booth",
+        "caption": "Tingginya antusiasme pelaku industri kemasan dan percetakan B2B memadati area booth CV Pelangi UV sepanjang pameran berlangsung.",
+        "title": "SPE 2026 — Antusiasme Mitra B2B Memadati Booth",
+        "src": "/images/momen/expo-2026/spe-2026-antusiasme-pengunjung.png",
+        "cardTitle": "Antusiasme Pengunjung B2B",
+        "cardDesc": "Ratusan pengunjung memadati booth untuk berkonsultasi seputar layanan finishing dan supply bahan baku."
+      },
+      {
+        "alt": "Surabaya Printing Expo 2026 - Konsultasi Brosur Layanan & Media Display",
+        "caption": "Pengunjung mempelajari brosur price list layanan dan melihat video demonstrasi mesin finishing cetak di layar monitor booth.",
+        "title": "SPE 2026 — Konsultasi Brosur Layanan & Media Interaktif",
+        "src": "/images/momen/expo-2026/spe-2026-konsultasi-brosur.png",
+        "cardTitle": "Eksplorasi Brosur & Layanan",
+        "cardDesc": "Pemberian informasi komprehensif melalui brosur teknis dan display visual proses finishing modern."
+      }
+    ]
+  },
+  {
     "id": "expo2025",
     "category": "expo2025",
     "title": "Printing Expo Surabaya 2025",
     "desc": "Dokumentasi keikutsertaan booth CV Pelangi UV & CV GRC Sukses Sejahtera memamerkan solusi cetak kemasan dan konsultasi teknis B2B di gelaran Printing Expo Surabaya 2025.",
     "isHighlight": true,
-    "order": 2,
+    "order": 3,
     "photos": [
       {
         "alt": "Printing Expo Surabaya 2025 - Dokumentasi Booth & Showcase",
@@ -97,7 +163,7 @@
     "title": "Surabaya Printing Expo (SPE) 2024",
     "desc": "Konsultasi spesifikasi hot stamping foil, varnish UV, dan kemasan berstandar ekspor bersama para pelaku industri percetakan nasional di SPE 2024.",
     "isHighlight": true,
-    "order": 3,
+    "order": 4,
     "photos": [
       {
         "alt": "Surabaya Printing Expo 2024 - Tim Berseragam Merah",
@@ -139,7 +205,7 @@
     "title": "Semangat Kemerdekaan HUT RI ke-79",
     "desc": "Keseruan aneka perlombaan ketangkasan, tarik tambang, dan penganugerahan juara kemerdekaan keluarga besar CV Pelangi UV di workshop pabrik.",
     "isHighlight": true,
-    "order": 4,
+    "order": 5,
     "photos": [
       {
         "alt": "HUT RI ke-79 - Lomba Tarik Tambang Pabrik",
@@ -189,7 +255,7 @@
     "title": "Employee Gathering 2023 — Pacet",
     "desc": "Kebersamaan dan outbound keluarga besar CV Pelangi UV & PT 3Pack di Villa Radissa Pacet bertema 'Etos Kerja, Motivasi & Kerja Keras Menjadi Yang Terbaik'.",
     "isHighlight": true,
-    "order": 5,
+    "order": 6,
     "photos": [
       {
         "alt": "Gathering 2023 - Apel Pembukaan di Lapangan Pacet",
@@ -271,7 +337,7 @@
     "title": "Surabaya Printing Expo (SPE) 2023",
     "desc": "Partisipasi aktif CV Pelangi UV dalam pameran percetakan akbar SPE 2023 di Grand City Surabaya, memamerkan keunggulan laminating, spot UV, dan ragam material cetak.",
     "isHighlight": true,
-    "order": 6,
+    "order": 7,
     "photos": [
       {
         "alt": "SPE 2023 - Etalase Produk Bahan Baku Finishing",
@@ -329,7 +395,7 @@
     "title": "Momen Pertama Pelangi UV",
     "desc": "Kilas balik rekam jejak awal perjalanan CV Pelangi UV dari inisiasi bengkel sablon manual hingga berkembang melayani ribuan mitra industri kemasan se-Indonesia.",
     "isHighlight": true,
-    "order": 7,
+    "order": 8,
     "photos": [
       {
         "alt": "Momen Pertama - Pengoperasian Mesin Laminating",
