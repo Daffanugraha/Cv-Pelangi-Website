@@ -24,25 +24,100 @@ export interface MomenHighlight {
 }
 
 export const MOMEN_FILTERS = [
-  { key: "all", label: "Semua Momen" },
-  { key: "expo2025", label: "Printing Expo Surabaya 2025" },
-  { key: "expo2024", label: "Surabaya Printing Expo 2024" },
-  { key: "hut79", label: "HUT RI ke-79" },
-  { key: "gathering2023", label: "Employee Gathering 2023" },
-  { key: "expo2023", label: "Surabaya Printing Expo 2023" },
-  { key: "momenpertama", label: "Momen Pertama" },
+  {
+    "key": "all",
+    "label": "Semua Momen"
+  },
+  {
+    "key": "allinprintshanghai",
+    "label": "All in Print China (Shanghai)"
+  },
+  {
+    "key": "expo2025",
+    "label": "Printing Expo Surabaya 2025"
+  },
+  {
+    "key": "expo2024",
+    "label": "Surabaya Printing Expo 2024"
+  },
+  {
+    "key": "hut79",
+    "label": "HUT RI ke-79"
+  },
+  {
+    "key": "gathering2023",
+    "label": "Employee Gathering 2023"
+  },
+  {
+    "key": "expo2023",
+    "label": "Surabaya Printing Expo 2023"
+  },
+  {
+    "key": "momenpertama",
+    "label": "Momen Pertama"
+  }
 ];
 
 export const HERO_LOOPING_ITEMS = [
+  "Studi Banding Global: All in Print China (Shanghai)",
   "Pameran Industri Percetakan Nasional (SPE)",
   "Semangat Kebersamaan HUT RI ke-79",
   "Kegiatan Employee Gathering & Rekreasi Tim",
   "Surabaya Printing Expo (SPE) 2023",
   "Standarisasi Mutu Fasilitas Bengkel Modern",
-  "Momen Pertama & Kilas Bersejarah Pelangi UV",
+  "Momen Pertama & Kilas Bersejarah Pelangi UV"
 ];
 
 export const MOMEN_HIGHLIGHTS: MomenHighlight[] = [
+  {
+    "filterKey": "allinprintshanghai",
+    "title": "All in Print China — Shanghai",
+    "desc": "Studi banding dan riset inovasi teknologi percetakan grafika global CV Pelangi UV pada pameran internasional bergengsi The 10th All in Print China di Shanghai New International Expo Centre (SNIEC).",
+    "img": "/images/momen/all-in-print-shanghai/all-in-print-shanghai-1.png",
+    "caption": "Delegasi CV Pelangi UV membentangkan spanduk resmi di depan landmark The 10th All in Print China di Shanghai New International Expo Centre (SNIEC).",
+    "photos": [
+      {
+        "alt": "All in Print China Shanghai - Delegasi Pelangi UV di SNIEC",
+        "caption": "Delegasi CV Pelangi UV membentangkan spanduk resmi di depan landmark The 10th All in Print China di Shanghai New International Expo Centre (SNIEC).",
+        "title": "All in Print China — Delegasi Pelangi UV di SNIEC Shanghai",
+        "src": "/images/momen/all-in-print-shanghai/all-in-print-shanghai-1.png",
+        "cardTitle": "Landmark SNIEC All in Print China",
+        "cardDesc": "Kehadiran delegasi Pelangi UV di pameran percetakan grafika terbesar Asia di Shanghai New International Expo Centre."
+      },
+      {
+        "alt": "All in Print China Shanghai - Pelepasan & Pembentangan Spanduk Resmi",
+        "caption": "Rombongan tim dan jajaran manajemen CV Pelangi UV membentangkan spanduk resmi perjalanan studi teknologi grafika ke Shanghai.",
+        "title": "All in Print China — Spanduk Resmi Itinerary Shanghai Trip",
+        "src": "/images/momen/all-in-print-shanghai/all-in-print-shanghai-2.png",
+        "cardTitle": "Delegasi Resmi Itinerary Shanghai Trip",
+        "cardDesc": "Pembentangan spanduk resmi delegasi CV Pelangi UV mengawali rangkaian eksplorasi teknologi cetak dunia."
+      },
+      {
+        "alt": "All in Print China Shanghai - Keberangkatan Bandara Juanda",
+        "caption": "Persiapan keberangkatan tim dari Bandara Internasional Juanda Surabaya menuju Shanghai untuk agenda studi banding industri.",
+        "title": "All in Print China — Keberangkatan dari Bandara Juanda",
+        "src": "/images/momen/all-in-print-shanghai/all-in-print-shanghai-3.png",
+        "cardTitle": "Titik Keberangkatan Bandara Juanda",
+        "cardDesc": "Momen pelepasan rombongan delegasi di Bandara Internasional Juanda bersiap menuju pameran global di Shanghai."
+      },
+      {
+        "alt": "All in Print China Shanghai - Malam Keakraban Delegasi & Mitra",
+        "caption": "Sesi foto bersama delegasi CV Pelangi UV dan mitra bisnis internasional di pelataran berarsitektur klasik Shanghai pada malam hari.",
+        "title": "All in Print China — Ramah Tamah Malam Hari di Shanghai",
+        "src": "/images/momen/all-in-print-shanghai/all-in-print-shanghai-4.png",
+        "cardTitle": "Malam Keakraban Mitra Internasional",
+        "cardDesc": "Pertemuan hangat bersama mitra industri percetakan usai seharian meninjau pameran mesin finishing grafika."
+      },
+      {
+        "alt": "All in Print China Shanghai - Kebersamaan Menjelajah Kota Shanghai",
+        "caption": "Kebersamaan dan semangat kekeluargaan rombongan delegasi CV Pelangi UV menikmati suasana kota metropolitan Shanghai.",
+        "title": "All in Print China — Eksplorasi Kota Metropolitan Shanghai",
+        "src": "/images/momen/all-in-print-shanghai/all-in-print-shanghai-5.png",
+        "cardTitle": "Kebersamaan Rombongan Delegasi",
+        "cardDesc": "Mempererat relasi dan kekompakan tim di sela-sela agenda padat riset inovasi percetakan global."
+      }
+    ]
+  },
   {
     "filterKey": "expo2025",
     "title": "Printing Expo Surabaya 2025",
@@ -380,6 +455,53 @@ export const MOMEN_HIGHLIGHTS: MomenHighlight[] = [
 ];
 
 export const MOMEN_ALBUMS: MomenAlbum[] = [
+  {
+    "category": "allinprintshanghai",
+    "title": "All in Print China — Shanghai",
+    "desc": "Studi banding dan riset inovasi teknologi percetakan grafika global CV Pelangi UV pada pameran internasional bergengsi The 10th All in Print China di Shanghai New International Expo Centre (SNIEC).",
+    "photos": [
+      {
+        "alt": "All in Print China Shanghai - Delegasi Pelangi UV di SNIEC",
+        "caption": "Delegasi CV Pelangi UV membentangkan spanduk resmi di depan landmark The 10th All in Print China di Shanghai New International Expo Centre (SNIEC).",
+        "title": "All in Print China — Delegasi Pelangi UV di SNIEC Shanghai",
+        "src": "/images/momen/all-in-print-shanghai/all-in-print-shanghai-1.png",
+        "cardTitle": "Landmark SNIEC All in Print China",
+        "cardDesc": "Kehadiran delegasi Pelangi UV di pameran percetakan grafika terbesar Asia di Shanghai New International Expo Centre."
+      },
+      {
+        "alt": "All in Print China Shanghai - Pelepasan & Pembentangan Spanduk Resmi",
+        "caption": "Rombongan tim dan jajaran manajemen CV Pelangi UV membentangkan spanduk resmi perjalanan studi teknologi grafika ke Shanghai.",
+        "title": "All in Print China — Spanduk Resmi Itinerary Shanghai Trip",
+        "src": "/images/momen/all-in-print-shanghai/all-in-print-shanghai-2.png",
+        "cardTitle": "Delegasi Resmi Itinerary Shanghai Trip",
+        "cardDesc": "Pembentangan spanduk resmi delegasi CV Pelangi UV mengawali rangkaian eksplorasi teknologi cetak dunia."
+      },
+      {
+        "alt": "All in Print China Shanghai - Keberangkatan Bandara Juanda",
+        "caption": "Persiapan keberangkatan tim dari Bandara Internasional Juanda Surabaya menuju Shanghai untuk agenda studi banding industri.",
+        "title": "All in Print China — Keberangkatan dari Bandara Juanda",
+        "src": "/images/momen/all-in-print-shanghai/all-in-print-shanghai-3.png",
+        "cardTitle": "Titik Keberangkatan Bandara Juanda",
+        "cardDesc": "Momen pelepasan rombongan delegasi di Bandara Internasional Juanda bersiap menuju pameran global di Shanghai."
+      },
+      {
+        "alt": "All in Print China Shanghai - Malam Keakraban Delegasi & Mitra",
+        "caption": "Sesi foto bersama delegasi CV Pelangi UV dan mitra bisnis internasional di pelataran berarsitektur klasik Shanghai pada malam hari.",
+        "title": "All in Print China — Ramah Tamah Malam Hari di Shanghai",
+        "src": "/images/momen/all-in-print-shanghai/all-in-print-shanghai-4.png",
+        "cardTitle": "Malam Keakraban Mitra Internasional",
+        "cardDesc": "Pertemuan hangat bersama mitra industri percetakan usai seharian meninjau pameran mesin finishing grafika."
+      },
+      {
+        "alt": "All in Print China Shanghai - Kebersamaan Menjelajah Kota Shanghai",
+        "caption": "Kebersamaan dan semangat kekeluargaan rombongan delegasi CV Pelangi UV menikmati suasana kota metropolitan Shanghai.",
+        "title": "All in Print China — Eksplorasi Kota Metropolitan Shanghai",
+        "src": "/images/momen/all-in-print-shanghai/all-in-print-shanghai-5.png",
+        "cardTitle": "Kebersamaan Rombongan Delegasi",
+        "cardDesc": "Mempererat relasi dan kekompakan tim di sela-sela agenda padat riset inovasi percetakan global."
+      }
+    ]
+  },
   {
     "category": "expo2025",
     "title": "Printing Expo Surabaya 2025",

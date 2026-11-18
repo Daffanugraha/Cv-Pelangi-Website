@@ -1,11 +1,61 @@
 [
   {
+    "id": "allinprintshanghai",
+    "category": "allinprintshanghai",
+    "title": "All in Print China — Shanghai",
+    "desc": "Studi banding dan riset inovasi teknologi percetakan grafika global CV Pelangi UV pada pameran internasional bergengsi The 10th All in Print China di Shanghai New International Expo Centre (SNIEC).",
+    "isHighlight": true,
+    "order": 1,
+    "photos": [
+      {
+        "alt": "All in Print China Shanghai - Delegasi Pelangi UV di SNIEC",
+        "caption": "Delegasi CV Pelangi UV membentangkan spanduk resmi di depan landmark The 10th All in Print China di Shanghai New International Expo Centre (SNIEC).",
+        "title": "All in Print China — Delegasi Pelangi UV di SNIEC Shanghai",
+        "src": "/images/momen/all-in-print-shanghai/all-in-print-shanghai-1.png",
+        "cardTitle": "Landmark SNIEC All in Print China",
+        "cardDesc": "Kehadiran delegasi Pelangi UV di pameran percetakan grafika terbesar Asia di Shanghai New International Expo Centre."
+      },
+      {
+        "alt": "All in Print China Shanghai - Pelepasan & Pembentangan Spanduk Resmi",
+        "caption": "Rombongan tim dan jajaran manajemen CV Pelangi UV membentangkan spanduk resmi perjalanan studi teknologi grafika ke Shanghai.",
+        "title": "All in Print China — Spanduk Resmi Itinerary Shanghai Trip",
+        "src": "/images/momen/all-in-print-shanghai/all-in-print-shanghai-2.png",
+        "cardTitle": "Delegasi Resmi Itinerary Shanghai Trip",
+        "cardDesc": "Pembentangan spanduk resmi delegasi CV Pelangi UV mengawali rangkaian eksplorasi teknologi cetak dunia."
+      },
+      {
+        "alt": "All in Print China Shanghai - Keberangkatan Bandara Juanda",
+        "caption": "Persiapan keberangkatan tim dari Bandara Internasional Juanda Surabaya menuju Shanghai untuk agenda studi banding industri.",
+        "title": "All in Print China — Keberangkatan dari Bandara Juanda",
+        "src": "/images/momen/all-in-print-shanghai/all-in-print-shanghai-3.png",
+        "cardTitle": "Titik Keberangkatan Bandara Juanda",
+        "cardDesc": "Momen pelepasan rombongan delegasi di Bandara Internasional Juanda bersiap menuju pameran global di Shanghai."
+      },
+      {
+        "alt": "All in Print China Shanghai - Malam Keakraban Delegasi & Mitra",
+        "caption": "Sesi foto bersama delegasi CV Pelangi UV dan mitra bisnis internasional di pelataran berarsitektur klasik Shanghai pada malam hari.",
+        "title": "All in Print China — Ramah Tamah Malam Hari di Shanghai",
+        "src": "/images/momen/all-in-print-shanghai/all-in-print-shanghai-4.png",
+        "cardTitle": "Malam Keakraban Mitra Internasional",
+        "cardDesc": "Pertemuan hangat bersama mitra industri percetakan usai seharian meninjau pameran mesin finishing grafika."
+      },
+      {
+        "alt": "All in Print China Shanghai - Kebersamaan Menjelajah Kota Shanghai",
+        "caption": "Kebersamaan dan semangat kekeluargaan rombongan delegasi CV Pelangi UV menikmati suasana kota metropolitan Shanghai.",
+        "title": "All in Print China — Eksplorasi Kota Metropolitan Shanghai",
+        "src": "/images/momen/all-in-print-shanghai/all-in-print-shanghai-5.png",
+        "cardTitle": "Kebersamaan Rombongan Delegasi",
+        "cardDesc": "Mempererat relasi dan kekompakan tim di sela-sela agenda padat riset inovasi percetakan global."
+      }
+    ]
+  },
+  {
     "id": "expo2025",
     "category": "expo2025",
     "title": "Printing Expo Surabaya 2025",
     "desc": "Dokumentasi keikutsertaan booth CV Pelangi UV & CV GRC Sukses Sejahtera memamerkan solusi cetak kemasan dan konsultasi teknis B2B di gelaran Printing Expo Surabaya 2025.",
     "isHighlight": true,
-    "order": 1,
+    "order": 2,
     "photos": [
       {
         "alt": "Printing Expo Surabaya 2025 - Dokumentasi Booth & Showcase",
@@ -47,7 +97,7 @@
     "title": "Surabaya Printing Expo (SPE) 2024",
     "desc": "Konsultasi spesifikasi hot stamping foil, varnish UV, dan kemasan berstandar ekspor bersama para pelaku industri percetakan nasional di SPE 2024.",
     "isHighlight": true,
-    "order": 2,
+    "order": 3,
     "photos": [
       {
         "alt": "Surabaya Printing Expo 2024 - Tim Berseragam Merah",
@@ -89,7 +139,7 @@
     "title": "Semangat Kemerdekaan HUT RI ke-79",
     "desc": "Keseruan aneka perlombaan ketangkasan, tarik tambang, dan penganugerahan juara kemerdekaan keluarga besar CV Pelangi UV di workshop pabrik.",
     "isHighlight": true,
-    "order": 3,
+    "order": 4,
     "photos": [
       {
         "alt": "HUT RI ke-79 - Lomba Tarik Tambang Pabrik",
@@ -139,7 +189,7 @@
     "title": "Employee Gathering 2023 — Pacet",
     "desc": "Kebersamaan dan outbound keluarga besar CV Pelangi UV & PT 3Pack di Villa Radissa Pacet bertema 'Etos Kerja, Motivasi & Kerja Keras Menjadi Yang Terbaik'.",
     "isHighlight": true,
-    "order": 4,
+    "order": 5,
     "photos": [
       {
         "alt": "Gathering 2023 - Apel Pembukaan di Lapangan Pacet",
@@ -221,7 +271,7 @@
     "title": "Surabaya Printing Expo (SPE) 2023",
     "desc": "Partisipasi aktif CV Pelangi UV dalam pameran percetakan akbar SPE 2023 di Grand City Surabaya, memamerkan keunggulan laminating, spot UV, dan ragam material cetak.",
     "isHighlight": true,
-    "order": 5,
+    "order": 6,
     "photos": [
       {
         "alt": "SPE 2023 - Etalase Produk Bahan Baku Finishing",
@@ -279,7 +329,7 @@
     "title": "Momen Pertama Pelangi UV",
     "desc": "Kilas balik rekam jejak awal perjalanan CV Pelangi UV dari inisiasi bengkel sablon manual hingga berkembang melayani ribuan mitra industri kemasan se-Indonesia.",
     "isHighlight": true,
-    "order": 6,
+    "order": 7,
     "photos": [
       {
         "alt": "Momen Pertama - Pengoperasian Mesin Laminating",
