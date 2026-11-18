@@ -87,7 +87,7 @@ export const rawMaterialCategories: MaterialCategory[] = [
       "Varian: Thermal & Waterbase",
     ],
     startingPrice: "Rp 41.100",
-    img: "https://lh3.googleusercontent.com/aida-public/AB6AXuDV_Ux6pj5Ckh1wckXqpgyZ1YVqpt8dlkr2eBzdoFeqj4iYtacQpmmcIGeogtYXmWj-r2bVt_Lu2HUP90T9Hbt25Vn2pgbsRyzxJrEiLRCGDker_oAg1JelsQuKA1WMWYR8-MDuczbWHcP6lw2wPaIpxcms9VmRCWUMrY7DVncdcaMb7hlnMFUwS5WvzWMsgjtAfV_dutj8HEjsW2Of_pjErALLV-Ci0Kc7JZkVP--OM_dccwPNFf66",
+    img: "/images/bahan-baku/bopp-thermal-film.png",
     popularVariants: [
       "Thermal Glossy & Doff 18 mic",
       "Glossy & Doff Waterbase 12-15 mic",
@@ -141,7 +141,7 @@ export const rawMaterialCategories: MaterialCategory[] = [
       "Standar Kualitas: Presisi Tinggi Tanpa Serabut",
     ],
     startingPrice: "Rp 186.000",
-    img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCfExHr5NtXgfBa9u2YHnpxRRPEPCE73orW9lZA_d_yzBZcitN95z8S3pGSlnw0Vc_o4jp8LEEH85ZkYlaGZx52GZ7PCxlskaWo1RA-_VT5VcXAAkmIdlpXO8dWn0DF87l1VwHTUoGFWjEatCW5qZYHk2YsveDx1oMuWaumvjNyX8Mbh2ouSnuIGC9NR0hRsKS0-W_mtnmZQU0CYudQbp5V-u9HpIbLwZd2xudSjVdWQtgj0Xiu_5T3",
+    img: "/images/bahan-baku/foil-hot-stamping.png",
     popularVariants: [
       "Gold & Silver 120 Meter",
       "Warna - Warni 120 Meter",
@@ -240,7 +240,7 @@ export const rawMaterialCategories: MaterialCategory[] = [
       "Kemasan: Can 5 Kg & Drum 20 Kg",
     ],
     startingPrice: "Rp 35.200",
-    img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCssjTnAwOEGVKo7KwtxhOpEae4ilO4sQ3Y2F1eRaffAVhhIZ3tY3sGHSVOn02JmmeeDuItJej2ifnz1tieagVAfnGNoOddGwdrVO1qoWzQBtlUppvwN6VyLujidsmzNH1Kn2kyw_g5gGRQo_KqR7yRADmTplyZcL0j3jsS6ZwR0dG-zNUx7Ke7KlbPO9EtwYAi8iVpVhPI1wggEv9QsjR-9p4XraD6hD8R1lcPrP37Kv3HIN_v_JbX",
+    img: "/images/bahan-baku/tinta-varnish-spot-uv.png",
     popularVariants: [
       "Tinta Spot UV LumineX Gloss & Mix",
       "Bluish & Spot UV HG-25 Cepat Kering",
