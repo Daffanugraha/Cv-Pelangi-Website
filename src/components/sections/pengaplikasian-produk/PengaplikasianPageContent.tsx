@@ -20,16 +20,22 @@ export default function PengaplikasianPageContent() {
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
-  // 2. State produk yang disinkronkan langsung dari Admin Galeri
-  const [adminProducts, setAdminProducts] = useState<GalleryProduct[] | null>(null);
+  // 2. State produk yang disinkronkan langsung dari Admin Galeri (default instan, bebas kedip)
+  const [adminProducts, setAdminProducts] = useState<GalleryProduct[]>(DEFAULT_GALLERY_PRODUCTS);
 
   useEffect(() => {
     fetch("/api/admin/gallery?type=produk", { cache: "no-store" })
       .then((res) => (res.ok ? res.json() : null))
       .then((data: any[]) => {
-        if (Array.isArray(data)) {
+        if (Array.isArray(data) && data.length > 0) {
           const mapped: GalleryProduct[] = data
-            .filter((item) => !item.galleryType || item.galleryType === "produk")
+            .filter((item) => {
+              if (item.galleryType && item.galleryType !== "produk") return false;
+              // Bersihkan dummy foto admin & file test yang tidak valid
+              if (item.id && (item.id.includes("admin_") || item.id.startsWith("g_179"))) return false;
+              if (item.imageUrl && (item.imageUrl.includes("admin_") || item.imageUrl.includes("placeholder"))) return false;
+              return true;
+            })
             .map((item) => {
               const defaultItem = DEFAULT_GALLERY_PRODUCTS.find((d) => d.id === item.id);
               const catLower = (item.category || "").toLowerCase();
@@ -39,6 +45,12 @@ export default function PengaplikasianPageContent() {
               else if (catLower.includes("bag") || catLower.includes("paper")) catKey = "paperbag";
               else if (catLower.includes("rokok")) catKey = "rokok";
               else if (catLower.includes("ident") || catLower.includes("kartu")) catKey = "identity";
+
+              // Pastikan image URL selalu valid dan tidak menggunakan link external usang
+              let cleanImg = item.imageUrl || "";
+              if (!cleanImg || cleanImg.includes("aida-public") || cleanImg.includes("admin_")) {
+                cleanImg = defaultItem?.img || "/images/gallery/bhs-cosmo-box.png";
+              }
 
               return {
                 id: item.id,
@@ -52,14 +64,17 @@ export default function PengaplikasianPageContent() {
                 material: item.material || defaultItem?.material || "Sesuai permintaan percetakan mitra",
                 notes: item.notes || defaultItem?.notes || "Diproduksi dengan kalibrasi presisi tinggi oleh tim spesialis CV Pelangi UV.",
                 highlight: item.highlight || defaultItem?.highlight || "Presisi CV Pelangi UV",
-                img: item.imageUrl,
+                img: cleanImg,
                 paperSuitability: item.paperSuitability || defaultItem?.paperSuitability,
                 resultCharacteristics: item.resultCharacteristics || defaultItem?.resultCharacteristics,
                 alternativeOption: item.alternativeOption || defaultItem?.alternativeOption,
                 objectPosition: item.objectPosition || defaultItem?.objectPosition || "center",
               };
             });
-          setAdminProducts(mapped);
+
+          if (mapped.length > 0) {
+            setAdminProducts(mapped);
+          }
         }
       })
       .catch(() => {});
@@ -67,7 +82,7 @@ export default function PengaplikasianPageContent() {
 
   // 3. Gunakan data admin saat sudah termuat, atau fallback default saat loading
   const allProducts = useMemo(() => {
-    return adminProducts !== null ? adminProducts : DEFAULT_GALLERY_PRODUCTS;
+    return adminProducts && adminProducts.length > 0 ? adminProducts : DEFAULT_GALLERY_PRODUCTS;
   }, [adminProducts]);
 
   const filteredProducts = useMemo(() => {
