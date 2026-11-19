@@ -128,13 +128,14 @@ export default function Hero() {
           style={{ animationDelay: "-3.5s" }}
         ></div>
         <video
+          key="video-beranda-v2"
           autoPlay
           loop
           muted
           playsInline
           className="w-full h-full object-cover transform scale-105 brightness-[0.85] contrast-[1.05]"
         >
-          <source src="/videos/hero/video-beranda.mp4" type="video/mp4" />
+          <source src="/videos/hero/video-beranda.mp4?v=2" type="video/mp4" />
         </video>
         <div className="absolute inset-0 bg-gradient-to-r from-navbar-black/85 via-navbar-black/45 to-transparent"></div>
         <div className="absolute inset-0 bg-gradient-to-t from-navbar-black/90 via-transparent to-transparent"></div>
