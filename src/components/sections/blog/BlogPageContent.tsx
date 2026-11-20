@@ -87,7 +87,7 @@ export default function BlogPageContent({
     }
 
     return list;
-  }, [activeCategory, searchQuery]);
+  }, [articlesList, activeCategory, searchQuery]);
 
   // Calculate pagination
   const totalPages = Math.ceil(filteredArticles.length / ITEMS_PER_PAGE) || 1;
